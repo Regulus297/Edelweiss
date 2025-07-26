@@ -1,2 +1,2 @@
-﻿using var game = new Edelweiss.Game1();
+﻿using var game = new Edelweiss.Main();
 game.Run();

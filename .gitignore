@@ -1,1 +1,5 @@
 /prefs.json
+/bin/*
+/.vscode/*
+/.config/*
+/obj/*
