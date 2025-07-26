@@ -2,7 +2,10 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using Edelweiss.Network;
 using Edelweiss.RegistryTypes;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Plugins
 {
@@ -10,11 +13,14 @@ namespace Edelweiss.Plugins
     {
         public static void LoadPlugins()
         {
+            LoadPythonPlugins(Directory.GetCurrentDirectory());
             LoadAssembly(Assembly.GetExecutingAssembly());
+            
             string directory = Path.Join(Directory.GetCurrentDirectory(), "Plugins");
 
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
+
 
             foreach (string modDirectory in Directory.GetDirectories(directory, "*", SearchOption.TopDirectoryOnly))
             {
@@ -22,6 +28,7 @@ namespace Edelweiss.Plugins
                 {
                     Assembly assembly = Assembly.LoadFile(modFilePath);
                     Plugin plugin = LoadAssembly(assembly);
+                    LoadPythonPlugins(directory);
                 }
             }
 
@@ -52,7 +59,6 @@ namespace Edelweiss.Plugins
                 if (!type.IsAbstract && type.IsAssignableTo(typeof(Plugin)))
                 {
                     plugin = (Plugin)Activator.CreateInstance(type);
-                    Console.WriteLine(plugin.ID);
                     Registry.registry[typeof(Plugin)].Add(plugin);
                     plugin.OnRegister();
                 }
@@ -76,6 +82,23 @@ namespace Edelweiss.Plugins
                 }
             }
             return plugin;
+        }
+
+        public static void LoadPythonPlugins(string directory)
+        {
+            string pluginDirectory = Path.Join(directory, "PythonPlugins");
+            if (!Directory.Exists(pluginDirectory))
+                return;
+
+            var files = Directory.GetFiles(pluginDirectory, "*.py", SearchOption.AllDirectories);
+            if (files.Length == 0)
+                return;
+            JToken token = JToken.FromObject(files);
+            JObject obj = new()
+            {
+                { "files", token }
+            };
+            NetworkManager.SendPacket(Netcode.REGISTER_PYTHON_PLUGINS, obj);
         }
 
         public static void LoadBaseRegistryObjects(Assembly assembly)
