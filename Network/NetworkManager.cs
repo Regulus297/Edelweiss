@@ -20,7 +20,6 @@ namespace Edelweiss.Network
 
         public static void ReceivePacket(Packet packet)
         {
-
         }
     }
 }

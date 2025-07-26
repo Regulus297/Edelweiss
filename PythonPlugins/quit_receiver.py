@@ -10,5 +10,4 @@ class QuitReceiver(PacketReceiver):
         super().__init__(Netcode.QUIT)
 
     def process_packet(self, packet):
-        print("HALT")
         PyNetworkManager.halt = True

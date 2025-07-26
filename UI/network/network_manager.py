@@ -12,7 +12,7 @@ from System.Reflection import Assembly
 import System
 from System import Activator, Int32, String
 
-build_path: str = os.path.join(os.getcwd(), "Build/")
+build_path: str = os.path.join(os.getcwd(), "Build")
 clr.AddReference(os.path.join(build_path, "Newtonsoft.Json.dll"))
 
 

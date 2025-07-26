@@ -5,3 +5,4 @@
 /obj/*
 */.idea/*
 */.idea
+*/__pycache__/*

@@ -1,0 +1,58 @@
+QListWidget {
+    background-color: #111111;
+    padding: 5px;
+    border: none;
+}
+
+QLineEdit {
+    background-color: #1f2329;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+QListView::item {
+    background-color: #1f2329;
+    padding: 5px;
+    color: white;
+    outline: none;
+    border: none;
+}
+
+QListView::item:hover {
+    background-color: #888;
+}
+
+QListView::item:selected {
+    background-color: #6d9eed;
+    padding: 5px;
+    color: white;
+    border: none;
+    outline: none;
+}
+
+QListView::item:focus {
+    outline: none;
+}
+
+QScrollBar:vertical {
+    background: transparent;  /* Hide background */
+    width: 4px;  /* Adjust width of scrollbar */
+    margin: 0px;  /* Remove margins */
+    border: none;
+}
+
+QScrollBar::handle:vertical {
+    background: #555;  /* Handle color */
+    min-height: 20px;  /* Minimum handle size */
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical,
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical,
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: none;  /* Hide arrows and track */
+    border: none;
+}
