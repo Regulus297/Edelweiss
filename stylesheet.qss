@@ -11,7 +11,7 @@ QLineEdit {
     padding: 5px;
 }
 
-QListView::item {
+QListView::item, QPushButton {
     background-color: #1f2329;
     padding: 5px;
     color: white;
@@ -19,8 +19,19 @@ QListView::item {
     border: none;
 }
 
-QListView::item:hover {
-    background-color: #888;
+QPushButton {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 10px;
+    font-size: 15px;
+}
+
+MappingWindow {
+    background-color: #111111;
+}
+
+QListView::item:hover, QPushButton:hover {
+    background-color: #888888;
 }
 
 QListView::item:selected {
@@ -54,5 +65,9 @@ QScrollBar::down-arrow:vertical,
 QScrollBar::add-page:vertical,
 QScrollBar::sub-page:vertical {
     background: none;  /* Hide arrows and track */
+    border: none;
+}
+
+QGraphicsView {
     border: none;
 }

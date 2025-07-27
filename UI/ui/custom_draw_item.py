@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QPoint, QRectF, Qt
 from PyQt5.QtGui import QPainterPath, QPen, QPainter, QColor, QBrush
-from PyQt5.QtWidgets import QGraphicsItem
+from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView
 
 
 class CustomDrawItem(QGraphicsItem):
@@ -13,6 +13,7 @@ class CustomDrawItem(QGraphicsItem):
         self.height = data["height"]
         self.name = data["name"]
         self.setPos(QPoint(data["x"], data["y"]))
+
 
 
     def paint(self, painter, option, widget = ...):

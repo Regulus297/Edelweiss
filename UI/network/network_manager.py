@@ -5,6 +5,8 @@ import os
 import clr_loader
 import pythonnet
 
+from plugins.plugin_loader import PluginLoader
+
 pythonnet.load("coreclr")
 
 import clr
@@ -40,27 +42,13 @@ class PyNetworkManager:
             if packet.code == Netcode.REGISTER_PYTHON_PLUGINS:
                 data = json.loads(packet.data)
                 for file in data["files"]:
-                    PyNetworkManager.load_python_plugin(file)
+                    PluginLoader.load_python_plugin(file)
             elif packet.code in PyNetworkManager.receivers.keys():
                 PyNetworkManager.receivers[packet.code].process_packet(packet)
 
             NetworkManager.DequeuePacket()
             break
         Main.Update()
-
-    @staticmethod
-    def load_python_plugin(filePath):
-        with open(filePath, "r") as f:
-            exec_env = {}
-            exec(f.read(), exec_env)
-            classes = {
-                obj
-                for obj in exec_env.values()
-                if inspect.isclass(obj)
-                if getattr(obj, "__is_loadable__", False)
-            }
-            for plugin in classes:
-                plugin()
 
     @staticmethod
     def exit():

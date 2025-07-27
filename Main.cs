@@ -8,51 +8,55 @@ namespace Edelweiss;
 
 public class Main
 {
-    static int times = 0;
     public static void Initialize()
     {
         PluginSaveablePreference.LoadPrefs();
         PluginLoader.LoadPlugins();
 
-        JObject rect = new()
-        {
-            {"name", "rect1"},
-            {"x", 0},
-            {"y", 0},
-            {"width", 90},
-            {"height", 80},
-            {"shapes", JToken.FromObject(new List<JObject>() {
-                new JObject() {
-                    {"type", "rectangle"},
-                    {"color", "#ffffff"},
-                    {"fill", "#ff0000"},
-                    { "thickness", 5f},
-                    {"x", 0},
-                    {"y", 0},
-                    {"width", 1.0},
-                    {"height", 1.0}
-                }
-            })}
-        };
-        NetworkManager.SendPacket(Netcode.ADD_ITEM, rect);
+        // JObject rect = new()
+        // {
+        //     {"name", "rect1"},
+        //     {"x", 0},
+        //     {"y", 0},
+        //     {"width", 90},
+        //     {"height", 80},
+        //     {"shapes", JToken.FromObject(new List<JObject>() {
+        //         new JObject() {
+        //             {"type", "rectangle"},
+        //             {"color", "#ffffff"},
+        //             {"fill", "#ff0000"},
+        //             { "thickness", 5f},
+        //             {"x", 0},
+        //             {"y", 0},
+        //             {"width", 1.0},
+        //             {"height", 1.0}
+        //         }
+        //     })}
+        // };
+        // NetworkManager.SendPacket(Netcode.ADD_ITEM, rect);
 
-        JObject rect2 = new()
+        // JObject rect2 = new()
+        // {
+        //     {"name", "rect1"},
+        //     {"shape",
+        //         new JObject() {
+        //             {"type", "rectangle"},
+        //             {"color", "#ffffff"},
+        //             { "thickness", 5f},
+        //             {"x", 0},
+        //             {"y", 0},
+        //             {"width", 0.5},
+        //             {"height", 1.0}
+        //         }
+        //     }
+        // };
+        // NetworkManager.SendPacket(Netcode.ADD_SHAPE, rect2);
+
+        NetworkManager.SendPacket(Netcode.REGISTER_SCENE, new JObject()
         {
-            {"name", "rect1"},
-            {"shape",
-                new JObject() {
-                    {"type", "rectangle"},
-                    {"color", "#ffffff"},
-                    { "thickness", 5f},
-                    {"x", 0},
-                    {"y", 0},
-                    {"width", 0.5},
-                    {"height", 1.0}
-                }
-            }
-        };
-        NetworkManager.SendPacket(Netcode.ADD_SHAPE, rect2);
-        Console.WriteLine(rect.ToString());
+            {"type", "MappingSceneWidget"},
+            {"name", "Mapping"}
+        });
     }
     public static void Update()
     {
