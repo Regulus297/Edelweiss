@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QWidget, QLayout, QSplitter, QPushButton, QSizePolic
 class JSONWidgetLoader:
     widget_creators = {}
     layout_creators = {}
+    common_property_setters = {}
 
     @staticmethod
     def init_widget(data, parent=None) -> QWidget:
@@ -31,27 +32,10 @@ class JSONWidgetLoader:
 
     @staticmethod
     def set_common_widget_props(widget: QWidget, data: dict):
-        if "id" in data.keys():
-            widget.setObjectName(data["id"])
-        if "sizePolicyX" in data.keys():
-            policy = widget.sizePolicy()
-            policy.setHorizontalPolicy(JSONWidgetLoader.get_size_policy(data["sizePolicyX"]))
-            widget.setSizePolicy(policy)
-        if "sizePolicyY" in data.keys():
-            policy = widget.sizePolicy()
-            policy.setHorizontalPolicy(JSONWidgetLoader.get_size_policy(data["sizePolicyY"]))
-            widget.setSizePolicy(policy)
-        if "stylesheet" in data.keys():
-            widget.setStyleSheet(data["stylesheet"])
+        for key, value in data.items():
+            if key in JSONWidgetLoader.common_property_setters.keys():
+                JSONWidgetLoader.common_property_setters[key].set_property(widget, value)
 
-    @staticmethod
-    def get_size_policy(policy: str) -> QSizePolicy:
-        if policy == "Expanding":
-            return QSizePolicy.Expanding
-        elif policy == "Preferred":
-            return QSizePolicy.Preferred
-
-        return  QSizePolicy.Fixed
 
 class WidgetCreator:
     def __init__(self, name):
@@ -65,4 +49,11 @@ class LayoutCreator:
         JSONWidgetLoader.layout_creators[name] = self
 
     def create_layout(self, data) -> QLayout:
+        ...
+
+class CommonPropertySetter:
+    def __init__(self, prop):
+        JSONWidgetLoader.common_property_setters[prop] = self
+
+    def set_property(self, widget, property_value):
         ...
