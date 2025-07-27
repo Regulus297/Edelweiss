@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QLayout, QSplitter, QPushButton
+from PyQt5.QtWidgets import QWidget, QLayout, QSplitter, QPushButton, QSizePolicy
 
 
 class JSONWidgetLoader:
@@ -33,6 +33,25 @@ class JSONWidgetLoader:
     def set_common_widget_props(widget: QWidget, data: dict):
         if "id" in data.keys():
             widget.setObjectName(data["id"])
+        if "sizePolicyX" in data.keys():
+            policy = widget.sizePolicy()
+            policy.setHorizontalPolicy(JSONWidgetLoader.get_size_policy(data["sizePolicyX"]))
+            widget.setSizePolicy(policy)
+        if "sizePolicyY" in data.keys():
+            policy = widget.sizePolicy()
+            policy.setHorizontalPolicy(JSONWidgetLoader.get_size_policy(data["sizePolicyY"]))
+            widget.setSizePolicy(policy)
+        if "stylesheet" in data.keys():
+            widget.setStyleSheet(data["stylesheet"])
+
+    @staticmethod
+    def get_size_policy(policy: str) -> QSizePolicy:
+        if policy == "Expanding":
+            return QSizePolicy.Expanding
+        elif policy == "Preferred":
+            return QSizePolicy.Preferred
+
+        return  QSizePolicy.Fixed
 
 class WidgetCreator:
     def __init__(self, name):

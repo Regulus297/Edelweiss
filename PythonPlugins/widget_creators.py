@@ -4,6 +4,7 @@ from plugins.load_dependencies import load_dependencies
 from network.network_manager import PyNetworkManager
 from PyQt5.QtWidgets import QWidget, QSplitter, QPushButton
 from PyQt5.QtCore import Qt, QTimer
+import json
 
 
 @plugin_loadable
@@ -37,7 +38,6 @@ class QPushButtonWidgetCreator(WidgetCreator):
         widget = QPushButton(data["text"], parent)
 
         if "onclick" in data.keys():
-            setattr(widget, "clickCode", data["onclick"])
             widget.clicked.connect(lambda: PyNetworkManager.send_packet(data["onclick"], widget.objectName()))
 
         return widget
@@ -55,3 +55,41 @@ class ZoomableViewWidgetCreator(WidgetCreator):
             widget.grScene.backgroundColor = data["bgcolor"]
 
         return widget
+    
+
+@load_dependencies("widgets/resizing_list.py")
+@plugin_loadable
+class ResizingListWidgetCreator(WidgetCreator):
+    def __init__(self):
+        super().__init__("ResizingList")
+
+    def create_widget(self, data, parent=None) -> QWidget:
+        widget = ResizingList(parent)
+        if "items" in data.keys():
+            for item in data["items"]:
+                widget.addItem(item)
+        
+        if "onCurrentItemChanged" in data.keys():
+            def send_packet(curr, prev):
+                send_data = json.dumps({
+                    "id": widget.objectName(),
+                    "prev": prev.text() if prev is not None else "",
+                    "curr": curr.text(),
+                    "prevRow": widget.row(prev) if prev is not None else -1,
+                    "currRow": widget.row(curr)
+                })
+                PyNetworkManager.send_packet(data["onCurrentItemChanged"], send_data)
+
+            widget.currentItemChanged.connect(send_packet)
+
+
+        return widget
+    
+
+@plugin_loadable
+class QWidgetWidgetCreate(WidgetCreator):
+    def __init__(self):
+        super().__init__("QWidget")
+
+    def create_widget(self, data, parent=None) -> QWidget:
+        return QWidget(parent)

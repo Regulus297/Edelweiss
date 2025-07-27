@@ -5,10 +5,33 @@
     "sizes": [1, 5],
     "children": [
         {
-            "type": "QPushButton",
-            "text": "Click me for blahaj",
-            "id": "blahajButton",
-            "onclick": -1
+            "type": "QWidget",
+            "id": "HUD",
+            "layout": {
+                "type": "QHBoxLayout",
+                "children": [
+                    {
+                        "type": "QWidget",
+                        "layout": {
+                            "type": "QVBoxLayout",
+                            "children": [
+                                {
+                                    "type": "ResizingList",
+                                    "items": ["Blahaj 1", "Blahaj 2", "Blahaj 3"],
+                                    "sizePolicyX": "Expanding",
+                                    "onCurrentItemChanged": -2,
+                                    "id": "blahajList"
+                                },
+                                {
+                                    "type": "QWidget",
+                                    "sizePolicyX": "Expanding",
+                                    "sizePolicyY": "Expanding"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
         },
         {
             "type": "ZoomableView"
