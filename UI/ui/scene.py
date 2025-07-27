@@ -8,9 +8,7 @@ from ui.mapping_scene import MappingScene
 
 class Scene:
     def __init__(self):
-        self.nodes = []
-        self.edges = []
-
+        self.elements = {}
 
         self.scene_width = 64000
         self.scene_height = 64000
@@ -22,4 +20,10 @@ class Scene:
         self.grScene.setScene(self.scene_width, self.scene_height)
 
     def addItem(self, data):
-        self.grScene.addItem(CustomDrawItem(json.loads(data)))
+        item = CustomDrawItem(json.loads(data))
+        self.grScene.addItem(item)
+        self.elements[item.name] = item
+
+    def addShape(self, data):
+        data = json.loads(data)
+        self.elements[data["name"]].shapes.append(data["shape"])

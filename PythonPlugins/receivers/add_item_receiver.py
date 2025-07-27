@@ -11,5 +11,4 @@ class AddItemReceiver(PacketReceiver):
         super().__init__(Netcode.ADD_ITEM)
 
     def process_packet(self, packet):
-        print("E")
         MappingWindow.instance.scene.addItem(packet.data)
