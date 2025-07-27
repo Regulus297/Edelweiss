@@ -11,4 +11,4 @@ class AddItemReceiver(PacketReceiver):
         super().__init__(Netcode.REGISTER_SCENE)
 
     def process_packet(self, packet):
-        MappingWindow.instance.register_scene(packet.data)
+        MappingWindow.instance.register_scene_json(packet.data)

@@ -26,12 +26,15 @@ class MappingWindow(QWidget):
 
         self.initUI()
 
-    def register_scene(self, data):
+    def register_scene_json(self, data):
         data = json.loads(data)
         widget = MappingWindow.scene_widgets[data["type"]](parent = self)
+        self.register_scene(widget, data["name"])
+
+    def register_scene(self, widget, name):
         self.stack.addWidget(widget)
 
-        button = QPushButton(data["name"])
+        button = QPushButton(name)
         button.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
         self.top_bar.insertWidget(self.top_bar.count() - 1, button)
@@ -53,6 +56,7 @@ class MappingWindow(QWidget):
         self.stack = QStackedWidget()
         self.layout.addWidget(self.stack)
         self.stack.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+
 
 
         with open("stylesheet.qss", "r") as f:

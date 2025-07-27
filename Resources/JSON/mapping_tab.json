@@ -1,0 +1,18 @@
+{
+    "type": "QSplitter",
+    "name": "Mapping",
+    "horizontal": true,
+    "sizes": [1, 5],
+    "children": [
+        {
+            "type": "QPushButton",
+            "maxWidth": 0.33,
+            "text": "Click me for blahaj"
+        },
+        {
+            "type": "QPushButton",
+            "maxWidth": 0.66,
+            "text": "Hes lying theres no blahaj"
+        }
+    ]
+}

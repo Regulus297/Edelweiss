@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,11 +12,15 @@ namespace Edelweiss.Plugins
 {
     public static class PluginLoader
     {
+        public static Dictionary<string, string> jsonPaths = [];
+        public static Dictionary<string, string> jsonCache = [];
+
         public static void LoadPlugins()
         {
             LoadPythonPlugins(Directory.GetCurrentDirectory());
             LoadAssembly(Assembly.GetExecutingAssembly());
-            
+            LoadJsonFiles(Directory.GetCurrentDirectory(), "Edelweiss");
+
             string directory = Path.Join(Directory.GetCurrentDirectory(), "Plugins");
 
             if (!Directory.Exists(directory))
@@ -29,6 +34,7 @@ namespace Edelweiss.Plugins
                     Assembly assembly = Assembly.LoadFile(modFilePath);
                     Plugin plugin = LoadAssembly(assembly);
                     LoadPythonPlugins(directory);
+                    LoadJsonFiles(directory, plugin.ID);
                 }
             }
 
@@ -99,6 +105,36 @@ namespace Edelweiss.Plugins
                 { "files", token }
             };
             NetworkManager.SendPacket(Netcode.REGISTER_PYTHON_PLUGINS, obj);
+        }
+
+        public static void LoadJsonFiles(string directory, string pluginID)
+        {
+            string jsonDirectory = Path.Join(directory, "Resources", "JSON");
+            if (!Directory.Exists(jsonDirectory))
+                return;
+
+            foreach (string file in Directory.GetFiles(jsonDirectory, "*.json", SearchOption.AllDirectories))
+            {
+                string key = $"{pluginID}:{file.Substring(0, file.Length - 5).Substring(jsonDirectory.Length + 1)}";
+                Console.WriteLine(key);
+                jsonPaths[key] = file;
+            }
+        }
+
+        public static string RequestJson(string key)
+        {
+            if (!jsonPaths.TryGetValue(key, out string jsonPath))
+                return "{}";
+
+            if (jsonCache.TryGetValue(key, out string json))
+                return json;
+
+            using (StreamReader reader = new(jsonPath))
+            {
+                json = reader.ReadToEnd();
+                jsonCache[key] = json;
+                return json;
+            }
         }
 
         public static void LoadBaseRegistryObjects(Assembly assembly)

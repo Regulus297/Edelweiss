@@ -52,11 +52,7 @@ public class Main
         // };
         // NetworkManager.SendPacket(Netcode.ADD_SHAPE, rect2);
 
-        NetworkManager.SendPacket(Netcode.REGISTER_SCENE, new JObject()
-        {
-            {"type", "MappingSceneWidget"},
-            {"name", "Mapping"}
-        });
+        NetworkManager.SendPacket(Netcode.REGISTER_JSON_SCENE, PluginLoader.RequestJson("Edelweiss:mapping_tab"));
     }
     public static void Update()
     {
