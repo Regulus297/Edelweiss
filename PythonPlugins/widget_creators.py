@@ -1,6 +1,7 @@
 from ui.json_widget_loader import WidgetCreator, JSONWidgetLoader
 from plugins.plugin_loadable import plugin_loadable
 from plugins.load_dependencies import load_dependencies
+from network.network_manager import PyNetworkManager
 from PyQt5.QtWidgets import QWidget, QSplitter, QPushButton
 from PyQt5.QtCore import Qt, QTimer
 
@@ -34,5 +35,23 @@ class QPushButtonWidgetCreator(WidgetCreator):
     
     def create_widget(self, data, parent=None) -> QWidget:
         widget = QPushButton(data["text"], parent)
+
+        if "onclick" in data.keys():
+            setattr(widget, "clickCode", data["onclick"])
+            widget.clicked.connect(lambda: PyNetworkManager.send_packet(data["onclick"], widget.objectName()))
+
+        return widget
+    
+
+@load_dependencies("widgets/base_graphics_scene.py", "widgets/zoomable_view.py")
+@plugin_loadable
+class ZoomableViewWidgetCreator(WidgetCreator):
+    def __init__(self):
+        super().__init__("ZoomableView")
+
+    def create_widget(self, data, parent=None) -> QWidget:
+        widget = ZoomableView(parent)
+        if "bgcolor" in data.keys():
+            widget.grScene.backgroundColor = data["bgcolor"]
 
         return widget

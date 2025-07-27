@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QLayout, QSplitter
+from PyQt5.QtWidgets import QWidget, QLayout, QSplitter, QPushButton
 
 
 class JSONWidgetLoader:
@@ -14,6 +14,7 @@ class JSONWidgetLoader:
             return QWidget(parent)
 
         widget: QWidget = JSONWidgetLoader.widget_creators[widget_type].create_widget(data, parent)
+        JSONWidgetLoader.set_common_widget_props(widget, data)
 
         if "layout" in data.keys():
             layout_data = data["layout"]
@@ -27,6 +28,11 @@ class JSONWidgetLoader:
                 layout.addWidget(JSONWidgetLoader.init_widget(child, widget))
 
         return widget
+
+    @staticmethod
+    def set_common_widget_props(widget: QWidget, data: dict):
+        if "id" in data.keys():
+            widget.setObjectName(data["id"])
 
 class WidgetCreator:
     def __init__(self, name):

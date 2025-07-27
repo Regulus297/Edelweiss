@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Edelweiss.Plugins;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Network
@@ -7,7 +9,7 @@ namespace Edelweiss.Network
     {
         public static List<Packet> queued = [];
 
-        public static void SendPacket(ulong code, object message)
+        public static void SendPacket(long code, object message)
         {
             queued.Add(new Packet(code, message.ToString()));
         }
@@ -20,6 +22,13 @@ namespace Edelweiss.Network
 
         public static void ReceivePacket(Packet packet)
         {
+            if (!PluginPacketReceiver.receivers.TryGetValue(packet.code, out var receivers))
+                return;
+
+            foreach (PluginPacketReceiver receiver in receivers)
+            {
+                receiver.ProcessPacket(packet);
+            }
         }
     }
 }

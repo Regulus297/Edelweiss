@@ -5,10 +5,10 @@ from plugins.plugin_loadable import plugin_loadable
 from plugins.load_dependencies import load_dependencies
 
 
-class MappingView(QGraphicsView):
+class ZoomableView(QGraphicsView):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.grScene = MappingScene(self)
+        self.grScene = BaseGraphicsScene(self)
 
         self.initUI()
 

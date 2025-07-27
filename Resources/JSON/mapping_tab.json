@@ -6,13 +6,12 @@
     "children": [
         {
             "type": "QPushButton",
-            "maxWidth": 0.33,
-            "text": "Click me for blahaj"
+            "text": "Click me for blahaj",
+            "id": "blahajButton",
+            "onclick": -1
         },
         {
-            "type": "QPushButton",
-            "maxWidth": 0.66,
-            "text": "Hes lying theres no blahaj"
+            "type": "ZoomableView"
         }
     ]
 }

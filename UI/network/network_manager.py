@@ -19,8 +19,7 @@ clr.AddReference(os.path.join(build_path, "Newtonsoft.Json.dll"))
 
 
 clr.AddReference(os.path.join(build_path, "Edelweiss.dll"))
-from Edelweiss.Network import NetworkManager
-from Edelweiss.Network import Netcode
+from Edelweiss.Network import NetworkManager, Netcode, Packet
 
 
 from Edelweiss import Main
@@ -49,6 +48,10 @@ class PyNetworkManager:
             NetworkManager.DequeuePacket()
             break
         Main.Update()
+
+    @staticmethod
+    def send_packet(code: int, data: str):
+        NetworkManager.ReceivePacket(Packet(System.Int64(code), data))
 
     @staticmethod
     def exit():
