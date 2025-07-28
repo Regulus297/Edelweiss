@@ -5,6 +5,7 @@ from plugins.plugin_loadable import plugin_loadable
 from plugins.load_dependencies import load_dependencies
 
 
+@load_dependencies("base_graphics_scene.py")
 class ZoomableView(QGraphicsView):
     def __init__(self, parent=None):
         super().__init__(parent)
