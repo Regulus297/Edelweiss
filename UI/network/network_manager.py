@@ -43,7 +43,8 @@ class PyNetworkManager:
                 for file in data["files"]:
                     PluginLoader.load_python_plugin(file)
             elif packet.code in PyNetworkManager.receivers.keys():
-                PyNetworkManager.receivers[packet.code].process_packet(packet)
+                for receiver in PyNetworkManager.receivers[packet.code]:
+                    receiver.process_packet(packet)
 
             NetworkManager.DequeuePacket()
             break
