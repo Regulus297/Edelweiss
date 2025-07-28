@@ -10,6 +10,7 @@ public class Main
 {
     public static void Initialize()
     {
+        Netcode.Initialize();
         PluginSaveablePreference.LoadPrefs();
         PluginLoader.LoadPlugins();
 

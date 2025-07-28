@@ -1,4 +1,5 @@
 using System;
+using Edelweiss.Network;
 using Edelweiss.RegistryTypes;
 
 namespace Edelweiss.Plugins
@@ -44,5 +45,12 @@ namespace Edelweiss.Plugins
         {
 
         }
+        
+        /// <summary>
+        /// Creates a netcode with a given identifier prefixed by the plugin's ID.
+        /// </summary>
+        /// <param name="name">The name of the netcode</param>
+        /// <param name="positive">If true, the generated netcode will be positive.</param>
+        public long CreateNetcode(string name, bool positive) => Netcode.CreateNetcode($"{ID}:{name}", positive);
     }
 }

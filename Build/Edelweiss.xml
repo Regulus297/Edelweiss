@@ -85,6 +85,13 @@
             Called after all plugins have been loaded
             </summary>
         </member>
+        <member name="M:Edelweiss.Plugins.Plugin.CreateNetcode(System.String,System.Boolean)">
+            <summary>
+            Creates a netcode with a given identifier prefixed by the plugin's ID.
+            </summary>
+            <param name="name">The name of the netcode</param>
+            <param name="positive">If true, the generated netcode will be positive.</param>
+        </member>
         <member name="T:Edelweiss.Plugins.PluginPacketReceiver">
             <summary>
             The base class for a packet receiver
@@ -172,6 +179,12 @@
             <summary>
             Called if the preference was not found in the saved preferences.
             </summary>
+        </member>
+        <member name="M:Edelweiss.Network.Netcode.Get(System.String)">
+            <summary>
+            Gets the netcode of a certain name
+            </summary>
+            <param name="name">The name of the netcode</param>
         </member>
         <member name="T:Edelweiss.Network.NetworkManager">
             <summary>
