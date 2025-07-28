@@ -3,7 +3,7 @@ using Edelweiss.Plugins;
 
 namespace Edelweiss.Network.PacketReceivers
 {
-    public class BlahajButtonReceiver : PluginPacketReceiver
+    internal class BlahajButtonReceiver : PluginPacketReceiver
     {
         public override long HandledCode => Netcode.BUTTON_PRESSED;
 

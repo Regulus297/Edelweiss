@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Network.PacketReceivers
 {
-    public class TabChangeReceiver : PluginPacketReceiver
+    internal class TabChangeReceiver : PluginPacketReceiver
     {
         public override long HandledCode => Netcode.TAB_CHANGED;
 

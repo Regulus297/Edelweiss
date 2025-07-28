@@ -3,7 +3,7 @@ using Edelweiss.Plugins;
 
 namespace Edelweiss.Tabs
 {
-    public class MappingTab : CustomTab
+    internal class MappingTab : CustomTab
     {
         public override string LayoutJSON => "Edelweiss:mapping_tab";
 

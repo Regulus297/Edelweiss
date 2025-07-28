@@ -3,7 +3,7 @@ using Edelweiss.Plugins;
 
 namespace Edelweiss.Preferences
 {
-    public class CelesteDirectoryPref : PluginSaveablePreference
+    internal class CelesteDirectoryPref : PluginSaveablePreference
     {
         public override void SetDefaultValue()
         {

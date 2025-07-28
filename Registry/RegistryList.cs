@@ -35,8 +35,14 @@ namespace Edelweiss.RegistryTypes
         /// </summary>
         public T GetValue(Type type) => instanceList[type];
 
+        /// <summary>
+        /// Gets the instance of a particular type and casts it to that type
+        /// </summary>
         public U GetValue<U>() where U : class, IRegistryObject => GetValue(typeof(U)) as U;
 
+        /// <summary>
+        /// Returns true if the given type is contained in the registry list, else false.
+        /// </summary>
         public bool ContainsType(Type type) => instanceList.ContainsKey(type);
 
         /// <summary>

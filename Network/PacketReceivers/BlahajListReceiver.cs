@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Network.PacketReceivers
 {
-    public class BlahajListReceiver : PluginPacketReceiver
+    internal class BlahajListReceiver : PluginPacketReceiver
     {
         public override long HandledCode => Netcode.LIST_SELECTION_CHANGED;
 

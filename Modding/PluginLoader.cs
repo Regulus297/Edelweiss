@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Plugins
 {
-    public static class PluginLoader
+    internal static class PluginLoader
     {
         public static Dictionary<string, string> jsonPaths = [];
         public static Dictionary<string, string> jsonCache = [];

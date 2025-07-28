@@ -5,13 +5,23 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Plugins
 {
+    /// <summary>
+    ///
+    /// </summary>
     [BaseRegistryObject()]
     public abstract class PluginSaveablePreference : PluginRegistryObject
     {
+        /// <summary>
+        /// The value of the preference
+        /// </summary>
         public JToken Value { get; set; }
+
+        /// <summary>
+        /// The loaded JSON object containing all currently loaded preferences
+        /// </summary>
         public static JToken AllPrefs { get; private set; }
 
-
+        /// <inheritdoc/>
         public sealed override void Load()
         {
             Value = AllPrefs.Value<JToken>(FullName);
@@ -20,10 +30,13 @@ namespace Edelweiss.Plugins
                 SetDefaultValue();
             }
         }
-
+        
+        /// <summary>
+        /// Called if the preference was not found in the saved preferences.
+        /// </summary>
         public virtual void SetDefaultValue()
         {
-            
+
         }
 
         

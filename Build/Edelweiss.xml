@@ -1,0 +1,304 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Edelweiss</name>
+    </assembly>
+    <members>
+        <member name="T:Edelweiss.Plugins.CustomTab">
+            <summary>
+            Registers a custom UI tab, like the mapping tab.
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.CustomTab.LayoutJSON">
+            <summary>
+            The key for the JSON file containing the layout of the tab
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.CustomTab.ToolbarJSON">
+            <summary>
+            The key for the JSON file containing the toolbar for the tab
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.CustomTab.DisplayName">
+            <summary>
+            The name that will be displayed in the editor
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.CustomTab.registeredTabs">
+            <summary>
+            The list of all custom tabs indexed by their internal IDs
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.CustomTab.PostSetupContent">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Plugins.CustomTab.OnSelect">
+            <summary>
+            Called when the user switches to this tab in the editor
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.CustomTab.OnDeselect">
+            <summary>
+            Called when the user switches away from this tab in the editor
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.CustomTab.HandleToolbarClick(System.String)">
+            <summary>
+            Called when a toolbar action belonging to this tab's toolbar is triggered
+            </summary>
+            <param name="actionName">The identifier for the action that was triggered</param>
+        </member>
+        <member name="T:Edelweiss.Plugins.LoadAfterAttribute">
+            <summary>
+            Classes marked with this attribute will require that the specified types be loaded before they can be loaded
+            </summary>
+            <param name="otherTypes">The types to load before this type</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.LoadAfterAttribute.#ctor(System.Type[])">
+            <summary>
+            Classes marked with this attribute will require that the specified types be loaded before they can be loaded
+            </summary>
+            <param name="otherTypes">The types to load before this type</param>
+        </member>
+        <member name="T:Edelweiss.Plugins.Plugin">
+            <summary>
+            The basic plugin class
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.Plugin.ID">
+            <summary>
+            The ID of the plugin. Every plugin needs to have a unique identifier.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.OnRegister">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.Load">
+            <summary>
+            Called when the plugin is loaded
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.PostSetupContent">
+            <summary>
+            Called after all plugins have been loaded
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.PluginPacketReceiver">
+            <summary>
+            The base class for a packet receiver
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.PluginPacketReceiver.receivers">
+            <summary>
+            All packet receivers, organized by the packet code that they handle.
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginPacketReceiver.HandledCode">
+            <summary>
+            The specific <see cref="T:Edelweiss.Network.Netcode"/> that this receiver handles. 
+            Whenever the backend receives a packet with this code, this class's <see cref="M:Edelweiss.Plugins.PluginPacketReceiver.ProcessPacket(Edelweiss.Network.Packet)"/> method will be called on that packet.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginPacketReceiver.ProcessPacket(Edelweiss.Network.Packet)">
+            <summary>
+            Called whenever the backend receives a packet with this receiver's <see cref="P:Edelweiss.Plugins.PluginPacketReceiver.HandledCode"/>
+            </summary>
+            <param name="packet">The received packet</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginPacketReceiver.Load">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginPacketReceiver.PostLoad">
+            <summary>
+            Called after this class is loaded.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.PluginRegistryObject">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginRegistryObject.Plugin">
+            <summary>
+            The plugin that this object is defined by
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginRegistryObject.Name">
+            <summary>
+            The name of the object
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginRegistryObject.FullName">
+            <summary>
+            The full identifier for the object, consisting of its defining plugin's ID and the object's name
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginRegistryObject.OnRegister">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginRegistryObject.Load">
+            <summary>
+            Called when the object is entered into the registry
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginRegistryObject.PostSetupContent">
+            <summary>
+            Called after all plugins have been loaded.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.PluginSaveablePreference">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginSaveablePreference.Value">
+            <summary>
+            The value of the preference
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginSaveablePreference.AllPrefs">
+            <summary>
+            The loaded JSON object containing all currently loaded preferences
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginSaveablePreference.Load">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginSaveablePreference.SetDefaultValue">
+            <summary>
+            Called if the preference was not found in the saved preferences.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Network.NetworkManager">
+            <summary>
+            The class that handles sending and receiving packets on the backend
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.NetworkManager.queued">
+            <summary>
+            The list of packets that are yet to be processed by the UI
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Network.NetworkManager.SendPacket(System.Int64,System.Object)">
+            <summary>
+            Sends a packet to the UI
+            </summary>
+            <param name="code">The <see cref="T:Edelweiss.Network.Netcode"/> that the packet should have</param>
+            <param name="message">The data that the packet should contain</param>
+        </member>
+        <member name="M:Edelweiss.Network.NetworkManager.DequeuePacket">
+            <summary>
+            Removes the first packet from the queue
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Network.NetworkManager.ReceivePacket(Edelweiss.Network.Packet)">
+            <summary>
+            Called when the UI sends the backend a packet.
+            </summary>
+            <param name="packet">The received packet</param>
+        </member>
+        <member name="T:Edelweiss.Network.Packet">
+            <summary>
+            The class that carries data between backend and UI and vice versa
+            </summary>
+            <param name="code">The <see cref="T:Edelweiss.Network.Netcode"/> of the packet</param>
+            <param name="data">The data the packet contains</param>
+        </member>
+        <member name="M:Edelweiss.Network.Packet.#ctor(System.Int64,System.String)">
+            <summary>
+            The class that carries data between backend and UI and vice versa
+            </summary>
+            <param name="code">The <see cref="T:Edelweiss.Network.Netcode"/> of the packet</param>
+            <param name="data">The data the packet contains</param>
+        </member>
+        <member name="F:Edelweiss.Network.Packet.code">
+            <summary>
+            The <see cref="T:Edelweiss.Network.Netcode"/> of the packet
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Packet.data">
+            <summary>
+            The data the packet contains
+            </summary>
+        </member>
+        <member name="T:Edelweiss.RegistryTypes.IRegistryObject">
+            <summary>
+            An interface that all types to be stored in the registry must implement
+            </summary>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.IRegistryObject.OnRegister">
+            <summary>
+            Called when the object is added to the registry
+            </summary>
+        </member>
+        <member name="T:Edelweiss.RegistryTypes.BaseRegistryObject">
+            <summary>
+            Types marked with this attribute are "base" objects: all types inheriting from them are stored in their list.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.RegistryTypes.Registry">
+            <summary>
+            Contains all registry objects categorised into their respective registry lists
+            </summary>
+        </member>
+        <member name="F:Edelweiss.RegistryTypes.Registry.registry">
+            <summary>
+            The whole registry
+            </summary>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.Registry.ForAll``1(System.Action{``0})">
+            <summary>
+            Performs an action for all registered objects of a given type
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="action"></param>
+        </member>
+        <member name="T:Edelweiss.RegistryTypes.RegistryList`1">
+            <summary>
+            A list of registry objects.
+            Stores an integer ID, an instance of the type, and the type itself.
+            </summary>
+            <typeparam name="T">The type that is stored in the list</typeparam>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.RegistryList`1.Add(`0)">
+            <summary>
+            Adds an instance to the list
+            </summary>
+            <param name="value">An instance of the object to add</param>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.RegistryList`1.GetValue(System.Int32)">
+            <summary>
+            Gets the instance of a particular ID
+            </summary>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.RegistryList`1.GetValue(System.Type)">
+            <summary>
+            Gets the instance of a particular type
+            </summary>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.RegistryList`1.GetValue``1">
+            <summary>
+            Gets the instance of a particular type and casts it to that type
+            </summary>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.RegistryList`1.ContainsType(System.Type)">
+            <summary>
+            Returns true if the given type is contained in the registry list, else false.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.RegistryList`1.GetIndex(`0)">
+            <summary>
+            Gets the ID of a particular instance
+            </summary>
+        </member>
+        <member name="P:Edelweiss.RegistryTypes.RegistryList`1.Count">
+            <summary>
+            The number of entries in the list
+            </summary>
+        </member>
+    </members>
+</doc>
