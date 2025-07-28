@@ -2,7 +2,6 @@ using Edelweiss.Plugins;
 
 namespace Edelweiss.Tabs
 {
-    [LoadAfter(typeof(ResourcesTab))]
     public class MappingTab : CustomTab
     {
         public override string LayoutJSON => "Edelweiss:mapping_tab";

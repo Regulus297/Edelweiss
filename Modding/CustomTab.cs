@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Edelweiss.Network;
 using Edelweiss.RegistryTypes;
 using Newtonsoft.Json.Linq;
@@ -11,7 +12,9 @@ namespace Edelweiss.Plugins
         public abstract string ToolbarJSON { get; }
         public abstract string DisplayName { get; }
         public virtual int LoadWeight => 0;
-        
+
+        public static Dictionary<string, CustomTab> registeredTabs = [];
+
 
         public override void PostSetupContent()
         {
@@ -21,6 +24,23 @@ namespace Edelweiss.Plugins
                 {"internalName", FullName},
                 {"json", PluginLoader.RequestJson(LayoutJSON)}
             });
+            registeredTabs[FullName] = this;
+        }
+
+
+        internal void Select()
+        {
+            OnSelect();
+        }
+
+        public virtual void OnSelect()
+        {
+
+        }
+
+        public virtual void OnDeselect()
+        {
+            
         }
     }
 }

@@ -78,6 +78,12 @@ namespace Edelweiss.Plugins
                 LoadTypes(plugin, failed, out var temp);
                 failed = temp;
             }
+
+            // If any classes still failed to load, log it
+            foreach (Type type in failed)
+            {
+                Console.WriteLine($"Failed to load {type} from {plugin.ID}");
+            }
             return plugin;
         }
 

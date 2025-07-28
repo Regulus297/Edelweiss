@@ -1,7 +1,7 @@
 {
     "type": "QSplitter",
     "name": "Resources",
-    "horizontal": true,
+    "horizontal": false,
     "sizes": [5, 1],
     "children": [
         {

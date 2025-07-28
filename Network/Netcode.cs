@@ -14,5 +14,6 @@ namespace Edelweiss.Network
         // Received packets
         public const long BUTTON_PRESSED = -0x1;
         public const long LIST_SELECTION_CHANGED = -0x2;
+        public const long TAB_CHANGED = -0x3;
     }
 }

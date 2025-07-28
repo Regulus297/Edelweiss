@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QGraphicsView, QGraphicsScene,
     QSpacerItem, QToolBar, QMainWindow, QAction, QFrame, QComboBox
 
 from network.network_manager import PyNetworkManager
+from Edelweiss.Network import Netcode
 
 
 class MappingWindow(QMainWindow):
@@ -34,9 +35,9 @@ class MappingWindow(QMainWindow):
     def register_scene(self, widget, name, internalName):
         self.stack.addWidget(widget)
 
-        self.tab_switcher.addItem(name)
-        self.resize_tab_switcher(self.tab_switcher.currentText())
         self.tabs.append(internalName)
+        self.tab_switcher.addItem(name)
+        self.on_tab_switched(self.tab_switcher.currentText())
 
     def initUI(self):
         self.setGeometry(200, 200, 800, 600)
@@ -60,7 +61,7 @@ class MappingWindow(QMainWindow):
 
 
         self.tab_switcher = QComboBox()
-        self.tab_switcher.currentTextChanged.connect(self.resize_tab_switcher)
+        self.tab_switcher.currentTextChanged.connect(self.on_tab_switched)
 
 
         self.tool_bar.addWidget(self.tab_switcher)
@@ -72,7 +73,17 @@ class MappingWindow(QMainWindow):
 
         self.showMaximized()
 
-    def resize_tab_switcher(self, text):
+    def on_tab_switched(self, text):
+        # Resize box to fit text
         fm = self.tab_switcher.fontMetrics()
         text_width = fm.width(text)
         self.tab_switcher.setFixedWidth(text_width + 40)
+
+        # Notify backend
+        PyNetworkManager.send_packet(Netcode.TAB_CHANGED, json.dumps({
+           "prev": self.tabs[self.stack.currentIndex()],
+            "curr": self.tabs[self.tab_switcher.currentIndex()]
+        }))
+
+        # Set the index of the stackedwidget
+        self.stack.setCurrentIndex(self.tab_switcher.currentIndex())
