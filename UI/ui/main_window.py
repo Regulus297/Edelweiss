@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QGraphicsView, QGraphicsScene,
 
 from network.network_manager import PyNetworkManager
 from Edelweiss.Network import Netcode
+from plugins.json_preprocessor import JSONPreprocessor
 
 
 class MappingWindow(QMainWindow):
@@ -28,7 +29,7 @@ class MappingWindow(QMainWindow):
         self.initUI()
 
     def register_scene_json(self, data):
-        data = json.loads(data)
+        data = JSONPreprocessor.loads(data)
         widget = MappingWindow.scene_widgets[data["type"]](parent = self)
         self.register_scene(widget, data["name"], data["internalName"])
 

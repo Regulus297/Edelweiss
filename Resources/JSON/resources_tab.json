@@ -6,11 +6,15 @@
     "children": [
         {
             "type": "QPushButton",
-            "text": "Blahaj"
+            "text": "Blahaj",
+            "id": "blahajButton",
+            "onclick": "@netcode('Edelweiss:NetcodeDynamic')"
         },
         {
             "type": "QPushButton",
-            "text": "More blahaj"
+            "text": "More blahaj",
+            "id": "moreBlahajButton",
+            "onclick": "@netcode('Edelweiss:NetcodeDynamic')"
         }
     ]
 }

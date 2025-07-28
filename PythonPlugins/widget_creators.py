@@ -38,7 +38,9 @@ class QPushButtonWidgetCreator(WidgetCreator):
         widget = QPushButton(data["text"], parent)
 
         if "onclick" in data.keys():
-            widget.clicked.connect(lambda: PyNetworkManager.send_packet(data["onclick"], widget.objectName()))
+            widget.clicked.connect(lambda: PyNetworkManager.send_packet(data["onclick"], json.dumps({
+                "id": widget.objectName()
+            })))
 
         return widget
     

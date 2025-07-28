@@ -1,6 +1,7 @@
 from network.packet_receiver import PacketReceiver
 from network.network_manager import PyNetworkManager
 from plugins.plugin_loadable import plugin_loadable
+from plugins.json_preprocessor import JSONPreprocessor
 from ui.main_window import MappingWindow
 from ui.json_widget_loader import JSONWidgetLoader
 from Edelweiss.Network import Netcode
@@ -13,5 +14,5 @@ class RegisterJsonSceneReceiver(PacketReceiver):
         super().__init__(Netcode.REGISTER_JSON_SCENE)
 
     def process_packet(self, packet):
-        data = json.loads(packet.data)
-        MappingWindow.instance.register_scene(JSONWidgetLoader.init_widget(json.loads(data["json"]), MappingWindow.instance.stack), data["name"], data["internalName"])
+        data = JSONPreprocessor.loads(packet.data)
+        MappingWindow.instance.register_scene(JSONWidgetLoader.init_widget(JSONPreprocessor.loads(data["json"]), MappingWindow.instance.stack), data["name"], data["internalName"])

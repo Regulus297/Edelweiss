@@ -4,6 +4,7 @@ from plugins.load_dependencies import load_dependencies
 from ui.main_window import MappingWindow
 from Edelweiss.Network import Netcode
 from ui.json_toolbar_loader import JSONToolbarLoader
+from plugins.json_preprocessor import JSONPreprocessor
 import json
 
 
@@ -14,4 +15,4 @@ class RegisterToolbarReceiver(PacketReceiver):
         super().__init__(Netcode.REGISTER_TOOLBAR)
 
     def process_packet(self, packet):
-        JSONToolbarLoader.init_toolbar(MappingWindow.instance.tool_bar, json.loads(packet.data), clear_main_toolbar)
+        JSONToolbarLoader.init_toolbar(MappingWindow.instance.tool_bar, JSONPreprocessor.loads(packet.data), clear_main_toolbar)

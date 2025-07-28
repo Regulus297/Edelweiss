@@ -20,6 +20,7 @@ clr.AddReference(os.path.join(build_path, "Newtonsoft.Json.dll"))
 
 clr.AddReference(os.path.join(build_path, "Edelweiss.dll"))
 from Edelweiss.Network import NetworkManager, Netcode, Packet
+from plugins.json_preprocessor import JSONPreprocessor
 
 
 from Edelweiss import Main
@@ -39,7 +40,7 @@ class PyNetworkManager:
             packet = NetworkManager.queued[0]
 
             if packet.code == Netcode.REGISTER_PYTHON_PLUGINS:
-                data = json.loads(packet.data)
+                data = JSONPreprocessor.loads(packet.data)
                 for file in data["files"]:
                     PluginLoader.load_python_plugin(file)
             elif packet.code in PyNetworkManager.receivers.keys():
