@@ -6,7 +6,7 @@ from Edelweiss.Network import Netcode
 
 
 @plugin_loadable
-class AddItemReceiver(PacketReceiver):
+class RegisterSceneReceiver(PacketReceiver):
     def __init__(self):
         super().__init__(Netcode.REGISTER_SCENE)
 

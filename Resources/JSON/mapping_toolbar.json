@@ -1,0 +1,31 @@
+{
+    "items": [
+        {
+            "type": "action",
+            "name": "Create Room",
+            "onclick": -4
+        },
+        {
+            "type": "menu",
+            "name": "File",
+            "items": [
+                {
+                    "type": "action",
+                    "name": "New File",
+                    "onclick": -4
+                },
+                {
+                    "type": "menu",
+                    "name": "Open Recent",
+                    "items": [
+                        {
+                            "type": "action",
+                            "name": "Blahaj",
+                            "onclick": -4
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

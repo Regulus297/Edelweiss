@@ -77,11 +77,55 @@ QToolBar {
     background-color: #111111;
     outline: none;
     padding: 5px;
+    spacing: 5px;
 }
 
 QToolButton {
     color: white;
     background-color: #1f2329;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+QToolButton[popupMode="1"] {
+    padding-right: 16px;
+}
+
+QToolButton::menu-button {
+    width: 16px;
+    color: white;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+QToolButton::menu-indicator {
+    image: url(downarrow.png);
+}
+
+QToolButton:pressed {
+    border-bottom-left-radius: 0px;
+}
+
+QToolButton::menu-button:pressed {
+    background-color: #6d9eed;
+    border-bottom-right-radius: 0px;
+}
+
+QToolButton::menu-button:hover {
+    background-color: transparent;
+}
+
+QToolButton::hover {
+    background-color: #888888;
+}
+
+QMenu {
+    background-color: #1f2329;
+    color: white;
+}
+
+QMenu::item:selected {
+    background: #6d9eed;
 }
 
 QComboBox {

@@ -30,6 +30,9 @@ namespace Edelweiss.Plugins
 
         internal void Select()
         {
+            // When the tab is selected, tell the UI to update the toolbar
+            NetworkManager.SendPacket(Netcode.REGISTER_TOOLBAR, PluginLoader.RequestJson(ToolbarJSON));
+
             OnSelect();
         }
 
@@ -39,6 +42,11 @@ namespace Edelweiss.Plugins
         }
 
         public virtual void OnDeselect()
+        {
+
+        }
+
+        public virtual void HandleToolbarClick(string actionName)
         {
             
         }

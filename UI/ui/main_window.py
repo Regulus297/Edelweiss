@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QCursor
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QGraphicsView, QGraphicsScene, QMenuBar, QPushButton, QApplication, \
     QSplitter, QListWidget, QSizePolicy, QHBoxLayout, QLineEdit, QListWidgetItem, QTabWidget, QStackedWidget, \
-    QSpacerItem, QToolBar, QMainWindow, QAction, QFrame, QComboBox
+    QSpacerItem, QToolBar, QMainWindow, QAction, QFrame, QComboBox, QMenu, QWidgetAction
 
 from network.network_manager import PyNetworkManager
 from Edelweiss.Network import Netcode
@@ -66,8 +66,6 @@ class MappingWindow(QMainWindow):
 
         self.tool_bar.addWidget(self.tab_switcher)
 
-
-
         with open("stylesheet.qss", "r") as f:
             self.setStyleSheet(f.read())
 
@@ -87,3 +85,7 @@ class MappingWindow(QMainWindow):
 
         # Set the index of the stackedwidget
         self.stack.setCurrentIndex(self.tab_switcher.currentIndex())
+
+    @property
+    def current_tab(self):
+        return self.tabs[self.stack.currentIndex()]
