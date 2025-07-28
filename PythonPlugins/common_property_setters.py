@@ -1,6 +1,7 @@
 from ui.json_widget_loader import JSONWidgetLoader, CommonPropertySetter
 from plugins.plugin_loadable import plugin_loadable
 from plugins.load_dependencies import load_dependencies
+from ui.main_window import MappingWindow
 
 
 @plugin_loadable
@@ -43,3 +44,13 @@ class StylesheetSetter(CommonPropertySetter):
 
     def set_property(self, widget, property_value):
         widget.setStyleSheet(property_value)
+
+
+@plugin_loadable
+class TrackedAsSetter(CommonPropertySetter):
+    def __init__(self):
+        super().__init__("trackedAs")
+
+    def set_property(self, widget, property_value):
+        MappingWindow.instance.trackedWidgets[property_value] = widget
+        print(MappingWindow.instance.trackedWidgets)

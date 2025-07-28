@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QPoint, QRectF, Qt
 from PyQt5.QtGui import QPainterPath, QPen, QPainter, QColor, QBrush
-from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView
+from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView, QGraphicsScene
 
 
 class CustomDrawItem(QGraphicsItem):

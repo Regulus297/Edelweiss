@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text.Json.Nodes;
 using Edelweiss.Network;
 using Edelweiss.RegistryTypes;
 using Newtonsoft.Json.Linq;
@@ -145,6 +146,7 @@ namespace Edelweiss.Plugins
             foreach (string file in Directory.GetFiles(jsonDirectory, "*.json", SearchOption.AllDirectories))
             {
                 string key = $"{pluginID}:{file.Substring(0, file.Length - 5).Substring(jsonDirectory.Length + 1)}";
+                key = key.Replace(Path.DirectorySeparatorChar, '/');
                 Console.WriteLine(key);
                 jsonPaths[key] = file;
             }
@@ -164,6 +166,11 @@ namespace Edelweiss.Plugins
                 jsonCache[key] = json;
                 return json;
             }
+        }
+
+        public static JObject RequestJObject(string key)
+        {
+            return JObject.Parse(RequestJson(key));
         }
 
         public static void LoadBaseRegistryObjects(Assembly assembly)

@@ -21,12 +21,19 @@ class MappingWindow(QMainWindow):
         super().__init__(parent)
         MappingWindow.instance = self
 
+        self.trackedWidgets = {}
+
 
         self.timer = QTimer()
         self.timer.timeout.connect(PyNetworkManager.update)
         self.timer.start(16)
 
         self.initUI()
+
+    def get_tracked_widget(self, key):
+        if key in self.trackedWidgets.keys():
+            return self.trackedWidgets[key]
+        return None
 
     def register_scene_json(self, data):
         data = JSONPreprocessor.loads(data)
