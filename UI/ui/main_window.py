@@ -29,18 +29,20 @@ class MappingWindow(QMainWindow):
     def register_scene_json(self, data):
         data = json.loads(data)
         widget = MappingWindow.scene_widgets[data["type"]](parent = self)
-        self.register_scene(widget, data["name"])
+        self.register_scene(widget, data["name"], data["internalName"])
 
-    def register_scene(self, widget, name):
+    def register_scene(self, widget, name, internalName):
         self.stack.addWidget(widget)
 
         self.tab_switcher.addItem(name)
         self.resize_tab_switcher(self.tab_switcher.currentText())
-        # self.top_bar_layout.insertWidget(self.top_bar_layout.count() - 1, button)
+        self.tabs.append(internalName)
 
     def initUI(self):
         self.setGeometry(200, 200, 800, 600)
         self.setWindowTitle("Edelweiss")
+
+        self.tabs = []
 
         central = QWidget()
         self.setCentralWidget(central)

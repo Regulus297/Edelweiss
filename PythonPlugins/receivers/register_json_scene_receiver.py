@@ -14,4 +14,4 @@ class RegisterJsonSceneReceiver(PacketReceiver):
 
     def process_packet(self, packet):
         data = json.loads(packet.data)
-        MappingWindow.instance.register_scene(JSONWidgetLoader.init_widget(data, MappingWindow.instance.stack), data["name"])
+        MappingWindow.instance.register_scene(JSONWidgetLoader.init_widget(json.loads(data["json"]), MappingWindow.instance.stack), data["name"], data["internalName"])

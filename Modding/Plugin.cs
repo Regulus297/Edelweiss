@@ -1,3 +1,4 @@
+using System;
 using Edelweiss.RegistryTypes;
 
 namespace Edelweiss.Plugins
@@ -6,6 +7,7 @@ namespace Edelweiss.Plugins
     public abstract class Plugin : IRegistryObject
     {
         public virtual string ID => GetType().Name;
+        internal event Action OnPostSetupContent;
         public void OnRegister()
         {
             Load();
@@ -14,6 +16,12 @@ namespace Edelweiss.Plugins
         public virtual void Load()
         {
 
+        }
+
+        internal void PostLoad()
+        {
+            PostSetupContent();
+            OnPostSetupContent.Invoke();
         }
 
         public virtual void PostSetupContent()

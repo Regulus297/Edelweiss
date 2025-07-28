@@ -38,7 +38,7 @@ namespace Edelweiss.Plugins
                 }
             }
 
-            Registry.ForAll<Plugin>(plugin => plugin.PostSetupContent());
+            Registry.ForAll<Plugin>(plugin => plugin.PostLoad());
         }
 
         private static bool ValidateModDirectory(string modDirectory, out string modFilePath)
@@ -69,16 +69,40 @@ namespace Edelweiss.Plugins
                     plugin.OnRegister();
                 }
             }
-            foreach (Type type in assembly.GetTypes())
+            
+            LoadTypes(plugin, assembly.GetTypes(), out var failed);
+            int failedCount = 0;
+            while (failed.Count > 0 && failedCount != failed.Count)
+            {
+                failedCount = failed.Count;
+                LoadTypes(plugin, failed, out var temp);
+                failed = temp;
+            }
+            return plugin;
+        }
+
+        private static void LoadTypes(Plugin plugin, IEnumerable<Type> types, out List<Type> failedLoading)
+        {
+            failedLoading = [];
+            foreach (Type type in types)
             {
                 foreach (Type baseType in Registry.registry.Keys)
                 {
                     if (!type.IsAbstract && type.GetInterfaces().Any(i => i == typeof(IRegistryObject)) && type.IsAssignableTo(baseType) && !type.IsAssignableTo(typeof(Plugin)))
                     {
+                        if (type.CustomAttributes.Any(a => a.AttributeType == typeof(LoadAfterAttribute)))
+                        {
+                            if (type.GetCustomAttribute<LoadAfterAttribute>().otherTypes.Any(t => !Registry.registry[baseType].ContainsType(t)))
+                            {
+                                failedLoading.Add(type);
+                                break;
+                            }
+                        }
                         IRegistryObject instance = (IRegistryObject)Activator.CreateInstance(type);
                         if (instance is PluginRegistryObject o)
                         {
                             o.Plugin = plugin;
+                            plugin.OnPostSetupContent += o.PostSetupContent;
                         }
 
                         Registry.registry[baseType].Add(instance);
@@ -87,7 +111,6 @@ namespace Edelweiss.Plugins
                     }
                 }
             }
-            return plugin;
         }
 
         public static void LoadPythonPlugins(string directory)

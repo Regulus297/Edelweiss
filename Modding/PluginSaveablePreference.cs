@@ -9,9 +9,6 @@ namespace Edelweiss.Plugins
     public abstract class PluginSaveablePreference : PluginRegistryObject
     {
         public JToken Value { get; set; }
-        public virtual string Name => GetType().Name;
-        public string FullName => $"{Plugin.ID}:{Name}";
-
         public static JToken AllPrefs { get; private set; }
 
 

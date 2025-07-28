@@ -37,6 +37,8 @@ namespace Edelweiss.RegistryTypes
 
         public U GetValue<U>() where U : class, IRegistryObject => GetValue(typeof(U)) as U;
 
+        public bool ContainsType(Type type) => instanceList.ContainsKey(type);
+
         /// <summary>
         /// Gets the ID of a particular instance
         /// </summary>
