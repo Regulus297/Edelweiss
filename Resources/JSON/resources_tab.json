@@ -1,0 +1,16 @@
+{
+    "type": "QSplitter",
+    "name": "Resources",
+    "horizontal": true,
+    "sizes": [5, 1],
+    "children": [
+        {
+            "type": "QPushButton",
+            "text": "Blahaj"
+        },
+        {
+            "type": "QPushButton",
+            "text": "More blahaj"
+        }
+    ]
+}

@@ -42,4 +42,4 @@ class StylesheetSetter(CommonPropertySetter):
         super().__init__("stylesheet")
 
     def set_property(self, widget, property_value):
-        widget.setStylesheet(property_value)
+        widget.setStyleSheet(property_value)

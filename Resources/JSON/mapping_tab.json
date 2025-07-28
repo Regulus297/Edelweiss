@@ -2,8 +2,11 @@
     "type": "QSplitter",
     "name": "Mapping",
     "horizontal": true,
-    "sizes": [1, 5],
+    "sizes": [5, 1],
     "children": [
+        {
+            "type": "ZoomableView"
+        },
         {
             "type": "QWidget",
             "id": "HUD",
@@ -32,9 +35,6 @@
                     }
                 ]
             }
-        },
-        {
-            "type": "ZoomableView"
         }
     ]
 }

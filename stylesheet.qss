@@ -71,3 +71,45 @@ QScrollBar::sub-page:vertical {
 QGraphicsView {
     border: none;
 }
+
+QToolBar {
+    border: none;
+    background-color: #111111;
+    outline: none;
+    padding: 5px;
+}
+
+QToolButton {
+    color: white;
+    background-color: #1f2329;
+}
+
+QComboBox {
+    background-color: #1f2329;
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    border: none;
+}
+
+QComboBox::down-arrow {
+    width: 10px;
+    height: 10px;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #1f2329;
+    selection-background-color: #6d9eed;
+    selection-color: white;
+    padding: 5px;
+    outline: 0;
+    color: white;
+}

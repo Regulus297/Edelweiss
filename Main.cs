@@ -53,6 +53,7 @@ public class Main
         // NetworkManager.SendPacket(Netcode.ADD_SHAPE, rect2);
 
         NetworkManager.SendPacket(Netcode.REGISTER_JSON_SCENE, PluginLoader.RequestJson("Edelweiss:mapping_tab"));
+        NetworkManager.SendPacket(Netcode.REGISTER_JSON_SCENE, PluginLoader.RequestJson("Edelweiss:resources_tab"));
     }
     public static void Update()
     {
