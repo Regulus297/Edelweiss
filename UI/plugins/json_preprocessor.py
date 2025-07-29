@@ -17,6 +17,8 @@ class JSONPreprocessor:
                 method_args = [eval(arg) for arg in method_args]
                 if method_name not in UtilJsonFunction.functions.keys():
                     print(f"Unrecognized function: {method_name} called as {data}")
+                    return data
+                print(method_args)
                 return UtilJsonFunction.functions[method_name](*method_args)
             return data
         elif type(data) == dict:

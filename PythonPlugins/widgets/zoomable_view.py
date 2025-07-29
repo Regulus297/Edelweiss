@@ -38,7 +38,8 @@ class ZoomableView(QGraphicsView):
 
         size = 4 / self.current_zoom
         size = max(size, 1)
-        size = min(size, 7)
+        size = min(size, 20)
+        self.pen_size = size
         pos_after = self.mapToScene(event.pos())
         delta = pos_after - pos_before
         self.centerOn(self.mapToScene(self.viewport().rect().center()) - delta)

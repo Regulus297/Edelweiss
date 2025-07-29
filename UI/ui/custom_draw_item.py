@@ -27,7 +27,7 @@ class CustomDrawItem(QGraphicsItem):
     def get_pen(self, shape):
         pen = QPen()
         pen.setColor(QColor(shape["color"]))
-        pen.setWidthF(shape["thickness"])
+        pen.setWidthF(float(shape["thickness"]))
         return pen
 
     def get_dimensions(self, x, y, width, height):
