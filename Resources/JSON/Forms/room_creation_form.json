@@ -1,37 +1,29 @@
 {
     "type": "QWidget",
     "id": "RoomCreationForm",
+    "onsubmit": "@netcode('BUTTON_PRESSED')",
     "windowTitle": "Create room",
     "layout": {
         "type": "QVBoxLayout",
         "children": [
             {
                 "type": "QLineEdit",
-                "trackedAs": "RoomCreation/Name",
                 "sizePolicyY": "Fixed",
-                "default": "a-01"
+                "default": "a-01",
+                "id": "name"
             },
             {
                 "type": "QLineEdit",
                 "dataType": "int",
                 "min": 0,
                 "max": 10,
-                "trackedAs": "RoomCreation/X",
-                "sizePolicyY": "Fixed"
+                "sizePolicyY": "Fixed",
+                "id": "x"
             },
             {
                 "type": "QPushButton",
                 "text": "Click me",
-                "sizePolicyY": "Expanding",
-                "onclick": "@netcode('BUTTON_PRESSED')",
-                "specialType": "submit",
-                "extraData": {
-                    "name": "@defer('@widget_property(\\'RoomCreation/Name\\', \\'text()\\')')",
-                    "x": {
-                        "type": "int",
-                        "value": "@defer('@widget_property(\\'RoomCreation/X\\', \\'text()\\')')"
-                    }
-                }
+                "specialType": "submit"
             }
         ]
     }

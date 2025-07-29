@@ -15,6 +15,7 @@ class JSONWidgetLoader:
             return QWidget(parent)
 
         widget: QWidget = JSONWidgetLoader.widget_creators[widget_type].create_widget(data, parent)
+        setattr(widget, "__json_data__", data)
         JSONWidgetLoader.set_common_widget_props(widget, data)
 
         if "layout" in data.keys():
