@@ -85,7 +85,7 @@ class MappingWindow(QMainWindow):
         # Resize box to fit text
         fm = self.tab_switcher.fontMetrics()
         text_width = fm.width(text)
-        self.tab_switcher.setFixedWidth(text_width + 40)
+        self.tab_switcher.setMinimumWidth(text_width + 40)
 
         # Notify backend
         PyNetworkManager.send_packet(Netcode.TAB_CHANGED, json.dumps({

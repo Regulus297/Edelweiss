@@ -21,6 +21,7 @@ namespace Edelweiss.Network
         public const long LIST_SELECTION_CHANGED = -0x2;
         public const long TAB_CHANGED = -0x3;
         public const long TOOL_BUTTON_PRESSED = -0x4;
+        public const long FORM_SUBMITTED = -0x5;
 
         // Dynamic Netcode generation
         internal static Dictionary<string, long> codes = [];

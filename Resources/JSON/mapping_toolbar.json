@@ -3,11 +3,7 @@
         {
             "type": "action",
             "name": "Create Room",
-            "onclick": -4,
-            "extraData": {
-                "thickness": "@defer('@pen_thickness(\\'Mapping/MainView\\')')",
-                "selected_list_item": "@defer('@widget_property(\\'Mapping/BlahajList\\', \\'currentItem().text()\\')')"
-            }
+            "onclick": -4
         },
         {
             "type": "menu",

@@ -2,7 +2,7 @@ from network import PacketReceiver, PyNetworkManager
 from plugins import plugin_loadable, JSONPreprocessor, load_dependencies, get_extra_data_safe
 from ui import MappingWindow, JSONWidgetLoader
 from Edelweiss.Network import Netcode
-from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QLineEdit, QComboBox
 import json
 
 
@@ -30,7 +30,9 @@ class OpenPopupReceiver(PacketReceiver):
                     data["extraData"] = {}
 
                 for child in widget.children():
-                    if isinstance(child, QLineEdit) and hasattr(child, "__json_data__") and child.objectName() != "":
+                    if not(hasattr(child, "__json_data__") and child.objectName() != ""):
+                        continue
+                    if isinstance(child, QLineEdit):
                         child_data = getattr(child, "__json_data__")
                         lineEditType = "str" if "dataType" not in child_data.keys() else child_data["dataType"]
 
@@ -42,6 +44,16 @@ class OpenPopupReceiver(PacketReceiver):
                             "type": lineEditType,
                             "value": JSONPreprocessor.preprocess(f"@defer('@widget_property(\\'{child_tracker}\\', \\'text()\\')')")
                         }
+                    elif isinstance(child, QComboBox):
+                        child_data = getattr(child, "__json_data__")
+                        child_tracker = f"form_{name}/{child.objectName()}"
+                        MappingWindow.instance.trackedWidgets[child_tracker] = child
+                        setattr(child, "__tracked_as__", child_tracker)
+                        data["extraData"][child.objectName()] = {
+                            "type": "str",
+                            "value": JSONPreprocessor.preprocess(f"@defer('@widget_property(\\'{child_tracker}\\', \\'currentText()\\')')")
+                        }
+
 
 
                 CommonVars.found_submit_button.clicked.connect(lambda: PyNetworkManager.send_packet(data["onsubmit"], json.dumps({

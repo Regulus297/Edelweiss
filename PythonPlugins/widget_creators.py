@@ -1,7 +1,7 @@
 from ui import WidgetCreator, JSONWidgetLoader
 from plugins import plugin_loadable, load_dependencies, get_extra_data_safe
 from network import PyNetworkManager
-from PyQt5.QtWidgets import QWidget, QSplitter, QPushButton, QLineEdit
+from PyQt5.QtWidgets import QWidget, QSplitter, QPushButton, QLineEdit, QComboBox
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 import json
@@ -112,9 +112,9 @@ class QLineEditWidgetCreator(WidgetCreator):
             if data["dataType"] == "int":
                 minimum = data["min"] if "min" in data.keys() else None
                 maximum = data["max"] if "max" in data.keys() else None
+                if default == "":
+                    lineEdit.setText("0")
                 if minimum is not None and maximum is not None:
-                    if default == "":
-                        lineEdit.setText("0")
 
                     lineEdit.setValidator(QIntValidator(minimum, maximum, lineEdit))
                     self.clamp_line_edit_int(lineEdit, minimum, maximum)
@@ -124,9 +124,9 @@ class QLineEditWidgetCreator(WidgetCreator):
             elif data["dataType"] == "float":
                 minimum = data["min"] if "min" in data.keys() else None
                 maximum = data["max"] if "max" in data.keys() else None
+                if default == "":
+                    lineEdit.setText("0.0")
                 if minimum is not None and maximum is not None:
-                    if default == "":
-                        lineEdit.setText("0")
 
                     lineEdit.setValidator(QDoubleValidator(minimum, maximum, lineEdit))
                     self.clamp_line_edit_float(lineEdit, minimum, maximum)
@@ -147,3 +147,14 @@ class QLineEditWidgetCreator(WidgetCreator):
             widget.setText(str(min(high, max(low, float(widget.text())))))
         except:
             return
+        
+
+@plugin_loadable
+class QComboBoxWidgetCreator(WidgetCreator):
+    def __init__(self):
+        super().__init__("QComboBox")
+
+    def create_widget(self, data, parent=None) -> QWidget:
+        combobox = QComboBox(parent)
+        combobox.addItems(data["items"])
+        return combobox
