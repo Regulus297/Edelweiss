@@ -13,7 +13,7 @@ class JSONPreprocessor:
             match = re.match(r"@(\w+)\((.*)\)", data)
             if match:
                 method_name = match.groups()[0]
-                method_args = match.groups()[1].split(",")
+                method_args = JSONPreprocessor.split_args(match.groups()[1])
                 method_args = [eval(arg) for arg in method_args]
                 if method_name not in UtilJsonFunction.functions.keys():
                     print(f"Unrecognized function: {method_name} called as {data}")
@@ -28,7 +28,31 @@ class JSONPreprocessor:
             return [JSONPreprocessor.preprocess(item) for item in data]
         return data
 
+    @staticmethod
+    def split_args(data: str):
+        current: str = ""
+        split = []
+        in_string: bool = False
 
+        i = 0
+        while i < len(data):
+            char = data[i]
+            if char == '\\':
+                current += char
+                i += 1
+                char = data[i]
+            elif char == '\'' or char == '\"':
+                in_string = not in_string
+            elif char == ',' and not in_string:
+                split.append(current)
+                current = ""
+                i += 1
+                continue
+            current += char
+            i += 1
+
+        split.append(current)
+        return split
 
     @staticmethod
     def loads(data: str):

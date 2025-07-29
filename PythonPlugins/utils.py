@@ -42,3 +42,22 @@ class PenWidthFunction(UtilJsonFunction):
             return 0
         
         return widget.pen_size
+
+
+@plugin_loadable
+class WidgetPropertyFunction(UtilJsonFunction):
+    def __init__(self):
+        super().__init__("widget_property")
+
+    def call(self, *args) -> object:
+        if len(args) != 2:
+            return
+        
+        widget = MappingWindow.instance.get_tracked_widget(args[0])
+        if widget is not None:
+            try:
+                return eval(f"widget.{args[1]}")
+            except Exception as e:
+                print("Error while getting widget property:")
+                print(e)
+                return 

@@ -24,7 +24,8 @@
                                     "items": ["Blahaj 1", "Blahaj 2", "Blahaj 3"],
                                     "sizePolicyX": "Expanding",
                                     "onCurrentItemChanged": -2,
-                                    "id": "blahajList"
+                                    "id": "blahajList",
+                                    "trackedAs": "Mapping/BlahajList"
                                 },
                                 {
                                     "type": "QWidget",
