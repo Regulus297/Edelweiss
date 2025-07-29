@@ -6,7 +6,7 @@ class PluginLoader:
     loaded_dependencies = {}
 
     @staticmethod
-    def load_python_plugin(filePath, exec_env=None):
+    def load_python_plugin(filePath, exec_env=None, only_load_dependencies=False):
         if exec_env is None:
             exec_env = {}
         with open(filePath, "r") as f:
@@ -39,10 +39,13 @@ class PluginLoader:
                     if not matchedPath:
                         PluginLoader.loaded_dependencies[depPath] = {}
                         env = {}
-                        PluginLoader.load_python_plugin(depPath, env)
+                        PluginLoader.load_python_plugin(depPath, env, True)
                         PluginLoader.loaded_dependencies[depPath].update(env)
                         matchedPath = depPath
                     exec_env.update(PluginLoader.loaded_dependencies[matchedPath])
+
+            if only_load_dependencies:
+                return
 
             for plugin in classes:
                 plugin()

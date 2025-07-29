@@ -24,6 +24,7 @@
                 "text": "Click me",
                 "sizePolicyY": "Expanding",
                 "onclick": "@netcode('BUTTON_PRESSED')",
+                "specialType": "submit",
                 "extraData": {
                     "name": "@defer('@widget_property(\\'RoomCreation/Name\\', \\'text()\\')')",
                     "x": {

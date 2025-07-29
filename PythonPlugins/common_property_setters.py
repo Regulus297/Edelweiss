@@ -1,5 +1,6 @@
 from ui import JSONWidgetLoader, CommonPropertySetter, MappingWindow
 from plugins import plugin_loadable, load_dependencies
+from PyQt5.QtWidgets import QPushButton
 
 
 @plugin_loadable
@@ -70,3 +71,14 @@ class WindowTitleSetter(CommonPropertySetter):
 
     def set_property(self, widget, property_value):
         widget.setWindowTitle(property_value)
+
+
+@load_dependencies("common_code.py")
+@plugin_loadable
+class SpecialTypeSetter(CommonPropertySetter):
+    def __init__(self):
+        super().__init__("specialType")
+
+    def set_property(self, widget, property_value):
+        if property_value == "submit" and isinstance(widget, QPushButton):
+            CommonVars.found_submit_button = widget
