@@ -13,7 +13,7 @@ namespace Edelweiss.Network.PacketReceivers
             if (!CustomTab.registeredTabs.TryGetValue(data.Value<string>("tab"), out CustomTab tab))
                 return;
 
-            tab.HandleToolbarClick(data.Value<string>("name"));
+            tab.HandleToolbarClick(data.Value<string>("name"), data.Value<JObject>("extraData"));
         }
     }
 }

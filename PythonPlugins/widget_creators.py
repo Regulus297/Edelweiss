@@ -1,5 +1,5 @@
 from ui import WidgetCreator, JSONWidgetLoader
-from plugins import plugin_loadable, load_dependencies
+from plugins import plugin_loadable, load_dependencies, get_extra_data_safe
 from network import PyNetworkManager
 from PyQt5.QtWidgets import QWidget, QSplitter, QPushButton
 from PyQt5.QtCore import Qt, QTimer
@@ -38,7 +38,8 @@ class QPushButtonWidgetCreator(WidgetCreator):
 
         if "onclick" in data.keys():
             widget.clicked.connect(lambda: PyNetworkManager.send_packet(data["onclick"], json.dumps({
-                "id": widget.objectName()
+                "id": widget.objectName(),
+                "extraData": get_extra_data_safe(data)
             })))
 
         return widget
@@ -77,7 +78,8 @@ class ResizingListWidgetCreator(WidgetCreator):
                     "prev": prev.text() if prev is not None else "",
                     "curr": curr.text(),
                     "prevRow": widget.row(prev) if prev is not None else -1,
-                    "currRow": widget.row(curr)
+                    "currRow": widget.row(curr),
+                    "extraData": get_extra_data_safe(data)
                 })
                 PyNetworkManager.send_packet(data["onCurrentItemChanged"], send_data)
 

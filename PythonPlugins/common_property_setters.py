@@ -51,4 +51,3 @@ class TrackedAsSetter(CommonPropertySetter):
 
     def set_property(self, widget, property_value):
         MappingWindow.instance.trackedWidgets[property_value] = widget
-        print(MappingWindow.instance.trackedWidgets)

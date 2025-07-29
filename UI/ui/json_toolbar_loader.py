@@ -5,6 +5,7 @@ from typing import Union
 from PyQt5.QtWidgets import QToolBar, QAction, QMenu, QWidgetAction, QToolButton
 
 from network import PyNetworkManager
+from plugins import get_extra_data_safe
 from .json_widget_loader import JSONWidgetLoader
 from .main_window import MappingWindow
 
@@ -55,5 +56,6 @@ class JSONToolbarLoader:
     def register_onclick(action, data):
         action.triggered.connect(lambda: PyNetworkManager.send_packet(data["onclick"], json.dumps({
             "tab": MappingWindow.instance.current_tab,
-            "name": getattr(action, "json_loader_name")
+            "name": getattr(action, "json_loader_name"),
+            "extraData": get_extra_data_safe(data)
         })))

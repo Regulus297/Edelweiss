@@ -42,11 +42,12 @@
             Called when the user switches away from this tab in the editor
             </summary>
         </member>
-        <member name="M:Edelweiss.Plugins.CustomTab.HandleToolbarClick(System.String)">
+        <member name="M:Edelweiss.Plugins.CustomTab.HandleToolbarClick(System.String,Newtonsoft.Json.Linq.JObject)">
             <summary>
             Called when a toolbar action belonging to this tab's toolbar is triggered
             </summary>
             <param name="actionName">The identifier for the action that was triggered</param>
+            <param name="extraData">Any additional data that was requested in the toolbar's JSON file</param>
         </member>
         <member name="T:Edelweiss.Plugins.LoadAfterAttribute">
             <summary>

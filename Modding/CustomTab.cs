@@ -72,7 +72,8 @@ namespace Edelweiss.Plugins
         /// Called when a toolbar action belonging to this tab's toolbar is triggered
         /// </summary>
         /// <param name="actionName">The identifier for the action that was triggered</param>
-        public virtual void HandleToolbarClick(string actionName)
+        /// <param name="extraData">Any additional data that was requested in the toolbar's JSON file</param>
+        public virtual void HandleToolbarClick(string actionName, JObject extraData)
         {
 
         }

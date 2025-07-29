@@ -3,7 +3,10 @@
         {
             "type": "action",
             "name": "Create Room",
-            "onclick": -4
+            "onclick": -4,
+            "extraData": {
+                "thickness": "@defer('@pen_thickness(\\'Mapping/MainView\\')')"
+            }
         },
         {
             "type": "menu",

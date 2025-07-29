@@ -13,8 +13,9 @@ namespace Edelweiss.Tabs
 
         public override string DisplayName => "Mapping";
 
-        public override void HandleToolbarClick(string actionName)
+        public override void HandleToolbarClick(string actionName, JObject extraData)
         {
+            Console.WriteLine(extraData.ToString());
             switch (actionName)
             {
                 case "Create Room":
