@@ -1,7 +1,7 @@
 import json
 import re
 
-from plugins.util_json_function import UtilJsonFunction
+from .util_json_function import UtilJsonFunction
 
 
 class JSONPreprocessor:

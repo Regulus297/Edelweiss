@@ -1,7 +1,5 @@
-from ui.json_widget_loader import JSONWidgetLoader, CommonPropertySetter
-from plugins.plugin_loadable import plugin_loadable
-from plugins.load_dependencies import load_dependencies
-from ui.main_window import MappingWindow
+from ui import JSONWidgetLoader, CommonPropertySetter, MappingWindow
+from plugins import plugin_loadable, load_dependencies
 
 
 @plugin_loadable

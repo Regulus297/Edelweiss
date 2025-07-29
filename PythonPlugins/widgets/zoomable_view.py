@@ -1,8 +1,7 @@
 from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QPainter, QMouseEvent
 from PyQt5.QtWidgets import QGraphicsView, QSizePolicy
-from plugins.plugin_loadable import plugin_loadable
-from plugins.load_dependencies import load_dependencies
+from plugins import load_dependencies
 
 
 @load_dependencies("base_graphics_scene.py")
@@ -21,6 +20,8 @@ class ZoomableView(QGraphicsView):
         self.max_zoom = 20
         self.current_zoom = 1.0
         self.setMouseTracking(True)
+
+        self.pen_size = 5
 
     def wheelEvent(self, event):
         zoom_in = event.angleDelta().y() > 0

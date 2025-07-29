@@ -1,11 +1,7 @@
-from network.packet_receiver import PacketReceiver
-from network.network_manager import PyNetworkManager
-from plugins.plugin_loadable import plugin_loadable
-from plugins.load_dependencies import load_dependencies
-from plugins.json_preprocessor import JSONPreprocessor
-from ui.main_window import MappingWindow
+from network import PacketReceiver
+from plugins import plugin_loadable, load_dependencies, JSONPreprocessor
+from ui import MappingWindow, CustomDrawItem
 from Edelweiss.Network import Netcode
-from ui.custom_draw_item import CustomDrawItem
 
 
 @load_dependencies("../widgets/zoomable_view.py")

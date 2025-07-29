@@ -6,11 +6,11 @@ if not os.path.exists(os.path.join(os.getcwd(), "Build/Edelweiss.dll")):
 
 from PyQt5.QtWidgets import QApplication
 
-from ui.main_window import MappingWindow
+from ui import MappingWindow
 
 
 
-from network.network_manager import PyNetworkManager
+from network import PyNetworkManager
 
 PyNetworkManager.initialize()
 

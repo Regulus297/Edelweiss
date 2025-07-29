@@ -1,7 +1,6 @@
-from ui.json_widget_loader import WidgetCreator, JSONWidgetLoader
-from plugins.plugin_loadable import plugin_loadable
-from plugins.load_dependencies import load_dependencies
-from network.network_manager import PyNetworkManager
+from ui import WidgetCreator, JSONWidgetLoader
+from plugins import plugin_loadable, load_dependencies
+from network import PyNetworkManager
 from PyQt5.QtWidgets import QWidget, QSplitter, QPushButton
 from PyQt5.QtCore import Qt, QTimer
 import json

@@ -1,5 +1,5 @@
-from ui.shape_renderer import ShapeRenderer
-from plugins.plugin_loadable import plugin_loadable
+from ui import ShapeRenderer
+from plugins import plugin_loadable
 from PyQt5.QtGui import QPainterPath, QPainter, QBrush, QColor
 from PyQt5.QtCore import Qt
 

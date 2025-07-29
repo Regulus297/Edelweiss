@@ -7,9 +7,9 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QGraphicsView, QGraphicsScene,
     QSplitter, QListWidget, QSizePolicy, QHBoxLayout, QLineEdit, QListWidgetItem, QTabWidget, QStackedWidget, \
     QSpacerItem, QToolBar, QMainWindow, QAction, QFrame, QComboBox, QMenu, QWidgetAction
 
-from network.network_manager import PyNetworkManager
+from network import PyNetworkManager
 from Edelweiss.Network import Netcode
-from plugins.json_preprocessor import JSONPreprocessor
+from plugins import JSONPreprocessor
 
 
 class MappingWindow(QMainWindow):

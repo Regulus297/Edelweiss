@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import QSizePolicy, QWidgetAction
-from ui.main_window import MappingWindow
+from ui import MappingWindow
 
 
 def get_size_policy(policy: str) -> QSizePolicy:

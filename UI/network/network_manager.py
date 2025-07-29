@@ -5,7 +5,7 @@ import os
 import clr_loader
 import pythonnet
 
-from plugins.plugin_loader import PluginLoader
+from plugins import PluginLoader
 
 pythonnet.load("coreclr")
 
@@ -20,7 +20,7 @@ clr.AddReference(os.path.join(build_path, "Newtonsoft.Json.dll"))
 
 clr.AddReference(os.path.join(build_path, "Edelweiss.dll"))
 from Edelweiss.Network import NetworkManager, Netcode, Packet
-from plugins.json_preprocessor import JSONPreprocessor
+from plugins import JSONPreprocessor
 
 
 from Edelweiss import Main

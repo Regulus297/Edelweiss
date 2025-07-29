@@ -1,4 +1,4 @@
-from ui.custom_draw_item import CustomDrawItem
+from ui import CustomDrawItem
 
 
 class ShapeRenderer:

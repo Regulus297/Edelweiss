@@ -1,5 +1,4 @@
-from plugins.plugin_loadable import plugin_loadable
-from plugins.util_json_function import UtilJsonFunction
+from plugins import plugin_loadable, UtilJsonFunction
 from Edelweiss.Network import Netcode
 
 

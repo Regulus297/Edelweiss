@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QSizePolicy
 
-from ui.main_window import MappingWindow
+from ui import MappingWindow
 
 
 class SceneWidget(QWidget):

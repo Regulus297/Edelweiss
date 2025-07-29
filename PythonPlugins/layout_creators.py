@@ -1,9 +1,6 @@
-from ui.json_widget_loader import LayoutCreator, JSONWidgetLoader
-from plugins.plugin_loadable import plugin_loadable
-from plugins.load_dependencies import load_dependencies
-from network.network_manager import PyNetworkManager
+from ui import LayoutCreator
+from plugins import plugin_loadable
 from PyQt5.QtWidgets import QLayout, QHBoxLayout, QVBoxLayout
-from PyQt5.QtCore import Qt, QTimer
 
 
 @plugin_loadable

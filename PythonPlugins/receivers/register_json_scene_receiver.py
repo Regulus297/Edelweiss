@@ -1,12 +1,7 @@
-from network.packet_receiver import PacketReceiver
-from network.network_manager import PyNetworkManager
-from plugins.plugin_loadable import plugin_loadable
-from plugins.json_preprocessor import JSONPreprocessor
-from ui.main_window import MappingWindow
-from ui.json_widget_loader import JSONWidgetLoader
+from network import PacketReceiver
+from plugins import plugin_loadable, JSONPreprocessor
+from ui import MappingWindow, JSONWidgetLoader
 from Edelweiss.Network import Netcode
-import json
-
 
 @plugin_loadable
 class RegisterJsonSceneReceiver(PacketReceiver):

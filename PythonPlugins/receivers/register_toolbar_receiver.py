@@ -1,11 +1,7 @@
-from network.packet_receiver import PacketReceiver
-from plugins.plugin_loadable import plugin_loadable
-from plugins.load_dependencies import load_dependencies
-from ui.main_window import MappingWindow
+from network import PacketReceiver
+from plugins import plugin_loadable, load_dependencies, JSONPreprocessor
+from ui import MappingWindow, JSONToolbarLoader
 from Edelweiss.Network import Netcode
-from ui.json_toolbar_loader import JSONToolbarLoader
-from plugins.json_preprocessor import JSONPreprocessor
-import json
 
 
 @load_dependencies("../common_code.py")

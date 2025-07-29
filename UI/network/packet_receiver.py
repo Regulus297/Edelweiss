@@ -1,4 +1,4 @@
-from network.network_manager import PyNetworkManager
+from network import PyNetworkManager
 
 
 

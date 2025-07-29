@@ -4,9 +4,9 @@ from typing import Union
 
 from PyQt5.QtWidgets import QToolBar, QAction, QMenu, QWidgetAction, QToolButton
 
-from network.network_manager import PyNetworkManager
-from ui.json_widget_loader import JSONWidgetLoader
-from ui.main_window import MappingWindow
+from network import PyNetworkManager
+from .json_widget_loader import JSONWidgetLoader
+from .main_window import MappingWindow
 
 
 class JSONToolbarLoader:

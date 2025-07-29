@@ -1,6 +1,5 @@
-from network.packet_receiver import PacketReceiver
-from network.network_manager import PyNetworkManager
-from plugins.plugin_loadable import plugin_loadable
+from network import PacketReceiver, PyNetworkManager
+from plugins import plugin_loadable
 from Edelweiss.Network import Netcode
 
 
