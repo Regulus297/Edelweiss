@@ -89,7 +89,7 @@ class ResizingListWidgetCreator(WidgetCreator):
     
 
 @plugin_loadable
-class QWidgetWidgetCreate(WidgetCreator):
+class QWidgetWidgetCreator(WidgetCreator):
     def __init__(self):
         super().__init__("QWidget")
 

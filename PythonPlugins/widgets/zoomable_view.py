@@ -42,18 +42,6 @@ class ZoomableView(QGraphicsView):
         delta = pos_after - pos_before
         self.centerOn(self.mapToScene(self.viewport().rect().center()) - delta)
 
-    def mouseMoveEvent(self, event):
-        super().mouseMoveEvent(event)
-
-
-    def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Control:
-            self.fineControlHeld = True
-
-    def keyReleaseEvent(self, event):
-        if event.key() == Qt.Key_Control:
-            self.fineControlHeld = False
-
     def initUI(self):
         self.setRenderHints(QPainter.Antialiasing | QPainter.HighQualityAntialiasing | QPainter.TextAntialiasing)
         self.setOptimizationFlags(QGraphicsView.DontClipPainter | QGraphicsView.DontSavePainterState)
