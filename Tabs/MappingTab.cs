@@ -15,16 +15,11 @@ namespace Edelweiss.Tabs
 
         public override void HandleToolbarClick(string actionName, JObject extraData)
         {
-            Console.WriteLine(extraData.ToString());
             switch (actionName)
             {
                 case "Create Room":
                     Console.WriteLine("User wants to create a room");
-                    NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()
-                    {
-                        {"widget", "Mapping/MainView"},
-                        {"item", PluginLoader.RequestJObject("Edelweiss:GraphicsItems/room")}
-                    });
+                    NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, PluginLoader.RequestJson("Edelweiss:Forms/room_creation_form"));
                     break;
                 case "File/New File":
                     Console.WriteLine("User wants to create a new file");

@@ -26,7 +26,7 @@ QPushButton {
     font-size: 15px;
 }
 
-MappingWindow {
+MappingWindow, #popup {
     background-color: #111111;
 }
 

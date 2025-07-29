@@ -2,7 +2,7 @@ import json
 from typing import List
 
 from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QCursor
+from PyQt5.QtGui import QCursor, QDoubleValidator, QIntValidator
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QGraphicsView, QGraphicsScene, QMenuBar, QPushButton, QApplication, \
     QSplitter, QListWidget, QSizePolicy, QHBoxLayout, QLineEdit, QListWidgetItem, QTabWidget, QStackedWidget, \
     QSpacerItem, QToolBar, QMainWindow, QAction, QFrame, QComboBox, QMenu, QWidgetAction
@@ -14,6 +14,7 @@ from plugins import JSONPreprocessor
 
 class MappingWindow(QMainWindow):
     instance = None
+    stylesheet = ""
 
     scene_widgets = {"QGraphicsView": QGraphicsView}
 
@@ -75,7 +76,8 @@ class MappingWindow(QMainWindow):
         self.tool_bar.addWidget(self.tab_switcher)
 
         with open("stylesheet.qss", "r") as f:
-            self.setStyleSheet(f.read())
+            MappingWindow.stylesheet = f.read()
+            self.setStyleSheet(MappingWindow.stylesheet)
 
         self.showMaximized()
 

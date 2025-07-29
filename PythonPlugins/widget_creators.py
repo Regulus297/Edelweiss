@@ -1,8 +1,9 @@
 from ui import WidgetCreator, JSONWidgetLoader
 from plugins import plugin_loadable, load_dependencies, get_extra_data_safe
 from network import PyNetworkManager
-from PyQt5.QtWidgets import QWidget, QSplitter, QPushButton
+from PyQt5.QtWidgets import QWidget, QSplitter, QPushButton, QLineEdit
 from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtGui import QIntValidator, QDoubleValidator
 import json
 
 
@@ -96,3 +97,53 @@ class QWidgetWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None) -> QWidget:
         return QWidget(parent)
+
+
+@plugin_loadable
+class QLineEditWidgetCreator(WidgetCreator):
+    def __init__(self):
+        super().__init__("QLineEdit")
+
+    def create_widget(self, data, parent=None) -> QWidget:
+        lineEdit = QLineEdit(parent)
+        default = data["default"] if "default" in data.keys() else ""
+        lineEdit.setText(str(default))
+        if "dataType" in data:
+            if data["dataType"] == "int":
+                minimum = data["min"] if "min" in data.keys() else None
+                maximum = data["max"] if "max" in data.keys() else None
+                if minimum is not None and maximum is not None:
+                    if default == "":
+                        lineEdit.setText("0")
+
+                    lineEdit.setValidator(QIntValidator(minimum, maximum, lineEdit))
+                    self.clamp_line_edit_int(lineEdit, minimum, maximum)
+                    lineEdit.focusOutEvent = lambda e: self.clamp_line_edit_int(lineEdit, minimum, maximum)
+                else:
+                    lineEdit.setValidator(QIntValidator(lineEdit))
+            elif data["dataType"] == "float":
+                minimum = data["min"] if "min" in data.keys() else None
+                maximum = data["max"] if "max" in data.keys() else None
+                if minimum is not None and maximum is not None:
+                    if default == "":
+                        lineEdit.setText("0")
+
+                    lineEdit.setValidator(QDoubleValidator(minimum, maximum, lineEdit))
+                    self.clamp_line_edit_float(lineEdit, minimum, maximum)
+                    lineEdit.focusOutEvent = lambda e: self.clamp_line_edit_float(lineEdit, minimum, maximum)
+                else:
+                    lineEdit.setValidator(QDoubleValidator(lineEdit))
+
+        return lineEdit
+    
+    def clamp_line_edit_int(self, widget, low, high):
+        try:
+            widget.setText(str(min(high, max(low, int(widget.text())))))
+        except:
+            return
+        
+    def clamp_line_edit_float(self, widget, low, high):
+        try:
+            widget.setText(str(min(high, max(low, float(widget.text())))))
+        except:
+            return

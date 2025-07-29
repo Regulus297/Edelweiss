@@ -51,3 +51,22 @@ class TrackedAsSetter(CommonPropertySetter):
 
     def set_property(self, widget, property_value):
         MappingWindow.instance.trackedWidgets[property_value] = widget
+        setattr(widget, "__tracked_as__", property_value)
+
+
+@plugin_loadable
+class GeometrySetter(CommonPropertySetter):
+    def __init__(self):
+        super().__init__("geometry")
+
+    def set_property(self, widget, property_value):
+        widget.setGeometry(*property_value)
+
+
+@plugin_loadable
+class WindowTitleSetter(CommonPropertySetter):
+    def __init__(self):
+        super().__init__("windowTitle")
+
+    def set_property(self, widget, property_value):
+        widget.setWindowTitle(property_value)
