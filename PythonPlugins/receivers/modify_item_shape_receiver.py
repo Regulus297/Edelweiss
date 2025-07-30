@@ -6,9 +6,9 @@ from Edelweiss.Network import Netcode
 
 @load_dependencies("../widgets/zoomable_view.py")
 @plugin_loadable
-class AddItemReceiver(PacketReceiver):
+class ModifyItemShapeReceiver(PacketReceiver):
     def __init__(self):
-        super().__init__(Netcode.ADD_ITEM)
+        super().__init__(Netcode.MODIFY_ITEM_SHAPE)
 
     def process_packet(self, packet):
         data = JSONPreprocessor.loads(packet.data)
@@ -16,7 +16,13 @@ class AddItemReceiver(PacketReceiver):
         if type(widget) != ZoomableView:
             print(f"Failed to add item as widget {type(widget)} is not a {ZoomableView}")
             return
+        
+        if data["item"] not in widget.trackedItems.keys():
+            print(f"No item found with name {data['item']}")
+            return
+        
 
-        print(data["item"]["name"])
-        widget.trackedItems[data["item"]["name"]] = data["item"]
-        widget.grScene.addItem(CustomDrawItem(data["item"]))
+
+        shape = widget.trackedItems[data["item"]]["shapes"][data["index"]]
+        for key, value in data["data"].items():
+            shape[key] = value

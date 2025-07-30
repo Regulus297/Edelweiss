@@ -25,6 +25,15 @@ namespace Edelweiss.Tabs
                     break;
                 case "File/New File":
                     Console.WriteLine("User wants to create a new file");
+                    NetworkManager.SendPacket(Netcode.MODIFY_ITEM_SHAPE, new JObject()
+                    {
+                        {"widget", "Mapping/MainView"},
+                        {"item", "a-01"},
+                        {"index", 1},
+                        {"data", new JObject() {
+                            {"tileData", "This changed!"}
+                        }}
+                    });
                     break;
                 case "File/Open Recent/Blahaj":
                     Console.WriteLine("User wants a blahaj");

@@ -13,6 +13,12 @@
             "y": 0,
             "width": 1.0,
             "height": 1.0
+        },
+        {
+            "type": "tiles",
+            "tileData": "Hello",
+            "color": "#888888",
+            "thickness": 1
         }
     ]
 }

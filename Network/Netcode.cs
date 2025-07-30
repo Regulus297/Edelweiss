@@ -11,7 +11,7 @@ namespace Edelweiss.Network
         public const long REGISTER_SCENE = 0x3;
         public const long REGISTER_JSON_SCENE = 0x4;
         public const long ADD_ITEM = 0x5;
-        public const long ADD_SHAPE = 0x6;
+        public const long MODIFY_ITEM_SHAPE = 0x6;
         public const long REGISTER_TOOLBAR = 0x7;
         public const long OPEN_POPUP_FORM = 0x8;
 

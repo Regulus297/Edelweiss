@@ -8,6 +8,7 @@ from plugins import load_dependencies
 class ZoomableView(QGraphicsView):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.trackedItems = {}
         self.grScene = BaseGraphicsScene(self)
 
         self.initUI()
