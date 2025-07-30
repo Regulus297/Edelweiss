@@ -128,3 +128,5 @@ class DeferredValue:
     def __invert__(self):
         return ~self._func()
     
+    def __iter__(self):
+        yield from self._func()

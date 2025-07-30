@@ -147,7 +147,6 @@ namespace Edelweiss.Plugins
             {
                 string key = $"{pluginID}:{file.Substring(0, file.Length - 5).Substring(jsonDirectory.Length + 1)}";
                 key = key.Replace(Path.DirectorySeparatorChar, '/');
-                Console.WriteLine(key);
                 jsonPaths[key] = file;
             }
         }

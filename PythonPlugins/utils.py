@@ -1,6 +1,7 @@
 from plugins import plugin_loadable, UtilJsonFunction, load_dependencies, JSONPreprocessor
 from ui import MappingWindow
 from Edelweiss.Network import Netcode
+from Edelweiss.Plugins import PluginVars
 from PyQt5.QtCore import Qt
 import sys
 
@@ -60,7 +61,6 @@ class WidgetPropertyFunction(UtilJsonFunction):
                 return eval(f"widget.{args[1]}")
             except Exception as e:
                 print("Error while getting widget property:")
-                print(e)
                 return 
             
 
@@ -125,6 +125,18 @@ class MinIntFunction(UtilJsonFunction):
 
     def call(self, *args) -> object:
         return sys.min_int
+    
+
+@plugin_loadable
+class GetVarFunction(UtilJsonFunction):
+    def __init__(self):
+        super().__init__("getVar")
+
+    def call(self, *args) -> object:
+        if len(args) != 1:
+            return ""
+        
+        return PluginVars.Get(args[0])
     
 
      

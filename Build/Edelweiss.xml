@@ -93,6 +93,13 @@
             <param name="name">The name of the netcode</param>
             <param name="positive">If true, the generated netcode will be positive.</param>
         </member>
+        <member name="M:Edelweiss.Plugins.Plugin.CreateVar(System.String,System.Func{System.Object})">
+            <summary>
+            Creates an environment variable with a given name
+            </summary>
+            <param name="name">The name of the variable</param>
+            <param name="getValue">The function to get the value of the variable</param>
+        </member>
         <member name="T:Edelweiss.Plugins.PluginPacketReceiver">
             <summary>
             The base class for a packet receiver
@@ -318,6 +325,17 @@
             <summary>
             A class that loads form JSON files into proper widget objects that can be loaded by Edelweiss
             </summary>
+        </member>
+        <member name="T:Edelweiss.Utils.TileLoader">
+            <summary>
+            The class responsible for loading tiles
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.TileLoader.LoadTileXML(System.String)">
+            <summary>
+            
+            </summary>
+            <returns></returns>
         </member>
     </members>
 </doc>

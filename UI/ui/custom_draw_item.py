@@ -14,8 +14,6 @@ class CustomDrawItem(QGraphicsItem):
         self.name = data["name"]
         self.setPos(QPoint(data["x"], data["y"]))
 
-
-
     def paint(self, painter, option, widget = ...):
         for shape in self.shapes:
             CustomDrawItem.shapes[shape["type"]].draw(painter, self, shape)

@@ -21,7 +21,6 @@ namespace Edelweiss.Network.PacketReceivers
             int height = extraData.Value<int>("height");
             string color = extraData.Value<string>("colour");
 
-            Console.WriteLine(packet.data);
 
             JObject room = PluginLoader.RequestJObject("Edelweiss:GraphicsItems/room");
             room["x"] = x * 8;

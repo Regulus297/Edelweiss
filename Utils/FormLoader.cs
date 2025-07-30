@@ -51,7 +51,7 @@ namespace Edelweiss.Utils
                 fields.Add(new FieldData()
                 {
                     name = item.Key,
-                    displayName = CamelCaseToText(item.Key),
+                    displayName = item.Key.CamelCaseToText(),
                     type = GetFieldType(item.Value),
                     value = item.Value
                 });
@@ -120,19 +120,7 @@ namespace Edelweiss.Utils
             return formWidget;
         }
 
-        private static string CamelCaseToText(string input)
-        {
-            string output = "";
-            foreach (char c in input)
-            {
-                if (char.IsUpper(c) && char.IsLower(output[^1]))
-                {
-                    output += " ";
-                }
-                output += c;
-            }
-            return char.ToUpper(output[0]) + output.Substring(1);
-        }
+        
 
         private static string GetFieldType(JToken value)
         {
