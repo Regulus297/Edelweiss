@@ -24,7 +24,7 @@ class JSONWidgetLoader:
                 print(f"Unsupported layout type: {layout_data['type']}")
                 return widget
 
-            layout: QLayout = JSONWidgetLoader.layout_creators[layout_data["type"]].create_layout(layout_data)
+            layout: QLayout = JSONWidgetLoader.layout_creators[layout_data["type"]].create_layout(layout_data, widget)
             widget.setLayout(layout)
             for child in layout_data["children"]:
                 layout.addWidget(JSONWidgetLoader.init_widget(child, widget))
@@ -49,7 +49,7 @@ class LayoutCreator:
     def __init__(self, name):
         JSONWidgetLoader.layout_creators[name] = self
 
-    def create_layout(self, data) -> QLayout:
+    def create_layout(self, data, parent) -> QLayout:
         ...
 
 class CommonPropertySetter:

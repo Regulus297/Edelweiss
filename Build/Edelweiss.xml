@@ -314,5 +314,10 @@
             The number of entries in the list
             </summary>
         </member>
+        <member name="T:Edelweiss.Utils.FormLoader">
+            <summary>
+            A class that loads form JSON files into proper widget objects that can be loaded by Edelweiss
+            </summary>
+        </member>
     </members>
 </doc>

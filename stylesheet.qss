@@ -20,10 +20,7 @@ QListView::item, QPushButton {
 }
 
 QPushButton {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    padding: 10px;
-    font-size: 15px;
+    border-radius: 5px;
 }
 
 MappingWindow, #popup {
@@ -144,4 +141,26 @@ QComboBox QAbstractItemView {
     outline: 0;
     color: white;
     font-size: 10px;
+}
+
+QCheckBox::indicator {
+    border: none;
+    outline: none;
+    background-color: #1f2329;
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+}
+
+
+QCheckBox::indicator:hover {
+    background-color: #888888;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #6d9eed;
+}
+
+QLabel {
+    color: white;
 }

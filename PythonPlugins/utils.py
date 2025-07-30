@@ -1,7 +1,8 @@
 from plugins import plugin_loadable, UtilJsonFunction, load_dependencies, JSONPreprocessor
 from ui import MappingWindow
 from Edelweiss.Network import Netcode
-import random
+from PyQt5.QtCore import Qt
+import sys
 
 
 @plugin_loadable
@@ -61,3 +62,72 @@ class WidgetPropertyFunction(UtilJsonFunction):
                 print("Error while getting widget property:")
                 print(e)
                 return 
+            
+
+@plugin_loadable
+class AlignmentFunction(UtilJsonFunction):
+    def __init__(self):
+        super().__init__("alignment")
+
+    def call(self, *args) -> object:
+        if len(args) != 1:
+            align = 0
+            for arg in args:
+                align |= self.call(arg)
+            return align
+        
+        if args[0] == "right":
+            return Qt.AlignRight
+        elif args[0] == "top":
+            return Qt.AlignTop
+        elif args[0] == "bottom":
+            return Qt.AlignBottom
+        elif args[0] == "center":
+            return Qt.AlignCenter
+        elif args[0] == "vCenter":
+            return Qt.AlignVCenter
+        elif args[0] == "hCenter":
+            return Qt.AlignHCenter
+        return Qt.AlignLeft
+    
+
+@plugin_loadable
+class MaxFloatFunction(UtilJsonFunction):
+    def __init__(self):
+        super().__init__("maxfloat")
+
+    def call(self, *args) -> object:
+        return sys.float_info.max
+    
+
+@plugin_loadable
+class MinFloatFunction(UtilJsonFunction):
+    def __init__(self):
+        super().__init__("minfloat")
+
+    def call(self, *args) -> object:
+        return sys.float_info.min
+    
+
+@plugin_loadable
+class MaxIntFunction(UtilJsonFunction):
+    def __init__(self):
+        super().__init__("maxint")
+
+    def call(self, *args) -> object:
+        return sys.maxint
+    
+
+@plugin_loadable
+class MinIntFunction(UtilJsonFunction):
+    def __init__(self):
+        super().__init__("minint")
+
+    def call(self, *args) -> object:
+        return sys.min_int
+    
+
+    
+    
+
+     

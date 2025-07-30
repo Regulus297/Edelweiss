@@ -1,6 +1,7 @@
 using System;
 using Edelweiss.Network;
 using Edelweiss.Plugins;
+using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Tabs
@@ -19,7 +20,8 @@ namespace Edelweiss.Tabs
             {
                 case "Create Room":
                     Console.WriteLine("User wants to create a room");
-                    NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, PluginLoader.RequestJson("Edelweiss:Forms/room_creation_form"));
+                    
+                    NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, FormLoader.LoadForm("Edelweiss:Forms/room_creation").ToString());
                     break;
                 case "File/New File":
                     Console.WriteLine("User wants to create a new file");

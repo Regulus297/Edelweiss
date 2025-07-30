@@ -2,7 +2,7 @@ from network import PacketReceiver, PyNetworkManager
 from plugins import plugin_loadable, JSONPreprocessor, load_dependencies, get_extra_data_safe
 from ui import MappingWindow, JSONWidgetLoader
 from Edelweiss.Network import Netcode
-from PyQt5.QtWidgets import QLineEdit, QComboBox
+from PyQt5.QtWidgets import QLineEdit, QComboBox, QCheckBox
 import json
 
 
@@ -11,6 +11,7 @@ import json
 class OpenPopupReceiver(PacketReceiver):
     def __init__(self):
         self.active_forms = {}
+        self.handled_widget_types = [QLineEdit, QComboBox, QCheckBox]
         super().__init__(Netcode.OPEN_POPUP_FORM)
 
     def process_packet(self, packet):
@@ -32,27 +33,30 @@ class OpenPopupReceiver(PacketReceiver):
                 for child in widget.children():
                     if not(hasattr(child, "__json_data__") and child.objectName() != ""):
                         continue
-                    if isinstance(child, QLineEdit):
-                        child_data = getattr(child, "__json_data__")
-                        lineEditType = "str" if "dataType" not in child_data.keys() else child_data["dataType"]
 
+                    if type(child) in self.handled_widget_types:
+                        child_data = getattr(child, "__json_data__")
                         child_tracker = f"form_{name}/{child.objectName()}"
                         MappingWindow.instance.trackedWidgets[child_tracker] = child
                         setattr(child, "__tracked_as__", child_tracker)
-                        
+
+                    if isinstance(child, QLineEdit):
+                        lineEditType = "str" if "dataType" not in child_data.keys() else child_data["dataType"]                        
                         data["extraData"][child.objectName()] = {
                             "type": lineEditType,
                             "value": JSONPreprocessor.preprocess(f"@defer('@widget_property(\\'{child_tracker}\\', \\'text()\\')')")
                         }
                     elif isinstance(child, QComboBox):
-                        child_data = getattr(child, "__json_data__")
-                        child_tracker = f"form_{name}/{child.objectName()}"
-                        MappingWindow.instance.trackedWidgets[child_tracker] = child
-                        setattr(child, "__tracked_as__", child_tracker)
                         data["extraData"][child.objectName()] = {
                             "type": "str",
                             "value": JSONPreprocessor.preprocess(f"@defer('@widget_property(\\'{child_tracker}\\', \\'currentText()\\')')")
                         }
+                    elif isinstance(child, QCheckBox):
+                        data["extraData"][child.objectName()] = {
+                            "type": "bool",
+                            "value": JSONPreprocessor.preprocess(f"@defer('@widget_property(\\'{child_tracker}\\', \\'isChecked()\\')')")
+                        }
+
 
 
 
