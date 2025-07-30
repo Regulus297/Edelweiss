@@ -21,7 +21,7 @@ class CustomDrawItem(QGraphicsItem):
             CustomDrawItem.shapes[shape["type"]].draw(painter, self, shape)
 
     def boundingRect(self):
-        return QRectF(self.x(), self.y(), self.width, self.height)
+        return QRectF(0, 0, self.width, self.height)
 
 
     def get_pen(self, shape):
@@ -39,8 +39,5 @@ class CustomDrawItem(QGraphicsItem):
             width = int(width * self.width)
         if type(height) == float:
             height = int(height * self.height)
-
-        x += self.x()
-        y += self.y()
 
         return x, y, width, height
