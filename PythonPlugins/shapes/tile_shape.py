@@ -1,25 +1,32 @@
 from ui import ShapeRenderer, PixmapLoader
 from plugins import plugin_loadable
 from network import SyncedVariables
-from PyQt5.QtGui import QPainterPath, QPainter, QBrush, QColor
+from PyQt5.QtGui import QPainterPath, QPainter, QBrush, QColor, QPixmap
 from PyQt5.QtCore import Qt
 
 
 @plugin_loadable
 class TileShape(ShapeRenderer):
-    def __init__(self):
-        super().__init__("tiles")
+    def __init__(self, parent=None, data=None):
+        super().__init__("tiles", parent, data)
+        self._cache = None
+        self._cache_dirty = True
 
-    def draw(self, painter, parent, data):
-        pen = parent.get_pen(data)
-        path = QPainterPath()
-        path.addRect(0, 0, 16, 16)
+    def draw(self, painter):
+        if self._cache is None or self._cache_dirty:
+            self._redraw_cache()
+        painter.drawPixmap(0, 0, self._cache)
 
-        self.tiles = data["tileData"]
-        self.width = data["width"]
-        self.height = data["height"]
+    def _redraw_cache(self):
 
-        painter.setPen(pen)
+        self.tiles = self.data["tileData"]
+        self.width = self.parent.width // 8
+        self.height = self.parent.height // 8
+
+        self._cache = QPixmap(self.width * 8, self.height * 8)
+        self._cache.fill(QColor(0, 0, 0, 0))
+        painter = QPainter(self._cache)
+
         tiles = SyncedVariables.variables["Edelweiss:ForegroundTiles"]
         keys = SyncedVariables.variables["Edelweiss:ForegroundTileKeys"]
         for i, tile in enumerate(self.tiles):
@@ -27,18 +34,13 @@ class TileShape(ShapeRenderer):
                 continue
             
             self.currentTile = tile
-            x, y = i % data["width"], i // data["width"]
+            x, y = i % self.width, i // self.width
             tileX, tileY = self.pickTile(x, y, tiles[tile]).split(", ")
             tileX = int(tileX)
             tileY = int(tileY)
             painter.drawPixmap(x * 8, y * 8, PixmapLoader.load_texture(keys[tile]), tileX * 8, tileY * 8, 8, 8)
-            
 
-            
-
-
-        painter.drawPath(path.simplified())
-        painter.setRenderHint(QPainter.SmoothPixmapTransform, False)
+        self._cache_dirty = False
 
     def pickTile(self, x, y, tileData):
         mask = self.generateMask(x, y, tileData)

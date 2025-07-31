@@ -6,10 +6,13 @@ from PyQt5.QtCore import Qt
 
 @plugin_loadable
 class RectangleShape(ShapeRenderer):
-    def __init__(self):
-        super().__init__("rectangle")
+    def __init__(self, parent=None, data=None):
+        super().__init__("rectangle", parent, data)
 
-    def draw(self, painter, parent, data):
+    def draw(self, painter):
+        parent = self.parent
+        data = self.data
+
         pen = parent.get_pen(data)
         path = QPainterPath()
         x, y, width, height = parent.get_dimensions(data["x"], data["y"], data["width"], data["height"])

@@ -11,8 +11,6 @@ class PixmapLoader:
         if key in PixmapLoader.loaded_textures:
             return PixmapLoader.loaded_textures[key]
 
-        print(key)
-
         textures = SyncedVariables.variables["Edelweiss:Textures"]
         if key in textures:
             PixmapLoader.loaded_textures[key] = QPixmap(textures[key])

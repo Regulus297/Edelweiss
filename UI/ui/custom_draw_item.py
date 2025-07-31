@@ -13,10 +13,13 @@ class CustomDrawItem(QGraphicsItem):
         self.height = data["height"]
         self.name = data["name"]
         self.setPos(QPoint(data["x"], data["y"]))
+        self.shapeRenderers = []
+        for shape in self.shapes:
+            self.shapeRenderers.append(type(CustomDrawItem.shapes[shape["type"]])(self, shape))
 
     def paint(self, painter, option, widget = ...):
-        for shape in self.shapes:
-            CustomDrawItem.shapes[shape["type"]].draw(painter, self, shape)
+        for shape in self.shapeRenderers:
+            shape.draw(painter)
 
     def boundingRect(self):
         return QRectF(0, 0, self.width, self.height)
