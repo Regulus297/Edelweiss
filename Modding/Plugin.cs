@@ -53,12 +53,5 @@ namespace Edelweiss.Plugins
         /// <param name="name">The name of the netcode</param>
         /// <param name="positive">If true, the generated netcode will be positive.</param>
         public long CreateNetcode(string name, bool positive) => Netcode.CreateNetcode($"{ID}:{name}", positive);
-
-        /// <summary>
-        /// Creates an environment variable with a given name
-        /// </summary>
-        /// <param name="name">The name of the variable</param>
-        /// <param name="getValue">The function to get the value of the variable</param>
-        public void CreateVar(string name, Func<object> getValue) => PluginVars.AddVar($"{ID}:{name}", getValue);
     }
 }

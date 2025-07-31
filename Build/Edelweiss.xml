@@ -93,13 +93,6 @@
             <param name="name">The name of the netcode</param>
             <param name="positive">If true, the generated netcode will be positive.</param>
         </member>
-        <member name="M:Edelweiss.Plugins.Plugin.CreateVar(System.String,System.Func{System.Object})">
-            <summary>
-            Creates an environment variable with a given name
-            </summary>
-            <param name="name">The name of the variable</param>
-            <param name="getValue">The function to get the value of the variable</param>
-        </member>
         <member name="T:Edelweiss.Plugins.PluginPacketReceiver">
             <summary>
             The base class for a packet receiver
