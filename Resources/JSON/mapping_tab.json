@@ -2,7 +2,7 @@
     "type": "QSplitter",
     "name": "Mapping",
     "horizontal": true,
-    "sizes": [5, 1],
+    "sizes": [9, 1],
     "children": [
         {
             "type": "ZoomableView",
@@ -21,11 +21,35 @@
                             "children": [
                                 {
                                     "type": "ResizingList",
-                                    "items": "@defer('@getVar(\\'Edelweiss:ForegroundTileNames\\')')",
+                                    "items": "@defer('@getVar(\\'Edelweiss:Tools\\')')",
                                     "sizePolicyX": "Expanding",
-                                    "onCurrentItemChanged": -2,
-                                    "id": "blahajList",
-                                    "trackedAs": "Mapping/BlahajList"
+                                    "onCurrentItemChanged": "@netcode('LIST_SELECTION_CHANGED')",
+                                    "id": "toolList",
+                                    "trackedAs": "Mapping/ToolList"
+                                },
+                                {
+                                    "type": "ResizingList",
+                                    "items": "@defer('@getVar(\\'Edelweiss:Modes\\')')",
+                                    "sizePolicyX": "Expanding",
+                                    "onCurrentItemChanged": "@netcode('LIST_SELECTION_CHANGED')",
+                                    "id": "modeList",
+                                    "trackedAs": "Mapping/ModeList"
+                                },
+                                {
+                                    "type": "ResizingList",
+                                    "items": "@defer('@getVar(\\'Edelweiss:Layers\\')')",
+                                    "sizePolicyX": "Expanding",
+                                    "onCurrentItemChanged": "@netcode('LIST_SELECTION_CHANGED')",
+                                    "id": "layerList",
+                                    "trackedAs": "Mapping/LayerList"
+                                },
+                                {
+                                    "type": "ResizingList",
+                                    "items": "@defer('@getVar(\\'Edelweiss:Materials\\')')",
+                                    "sizePolicyX": "Expanding",
+                                    "onCurrentItemChanged": "@netcode('LIST_SELECTION_CHANGED')",
+                                    "id": "materialList",
+                                    "trackedAs": "Mapping/MaterialList"
                                 },
                                 {
                                     "type": "QWidget",

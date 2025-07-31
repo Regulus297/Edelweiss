@@ -7,7 +7,7 @@ namespace Edelweiss.Utils
             string output = "";
             foreach (char c in input)
             {
-                if (char.IsUpper(c) && char.IsLower(output[^1]))
+                if (char.IsUpper(c) && (output == "" || char.IsLower(output[^1])))
                 {
                     output += " ";
                 }

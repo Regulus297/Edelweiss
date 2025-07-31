@@ -16,7 +16,6 @@ namespace Edelweiss.Utils
             foreach (string file in Directory.GetFiles(graphicsPath, "*.png", SearchOption.AllDirectories))
             {
                 string key = file.Substring(0, file.Length - 4).Substring(graphicsPath.Length + 1).Replace(Path.DirectorySeparatorChar, '/');
-                Console.WriteLine(key);
                 texturePaths[key] = file;
             }
 

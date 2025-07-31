@@ -1,3 +1,4 @@
+using Edelweiss.Mapping;
 using Edelweiss.Plugins;
 
 namespace Edelweiss.Tabs

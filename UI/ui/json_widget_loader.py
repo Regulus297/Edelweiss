@@ -45,6 +45,9 @@ class WidgetCreator:
     def create_widget(self, data, parent=None) -> QWidget:
         ...
 
+    def refresh_widget(self, widget):
+        ...
+
 class LayoutCreator:
     def __init__(self, name):
         JSONWidgetLoader.layout_creators[name] = self

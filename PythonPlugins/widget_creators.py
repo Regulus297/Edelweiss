@@ -89,6 +89,13 @@ class ResizingListWidgetCreator(WidgetCreator):
 
         return widget
     
+    def refresh_widget(self, widget):
+        widget.clear()
+        data = getattr(widget, "__json_data__")
+        if "items" in data.keys():
+            for item in data["items"]:
+                widget.addItem(item)
+    
 
 @plugin_loadable
 class QWidgetWidgetCreator(WidgetCreator):

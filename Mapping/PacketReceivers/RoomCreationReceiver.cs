@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
+using Edelweiss.Network;
 using Edelweiss.Plugins;
 using Newtonsoft.Json.Linq;
 
-namespace Edelweiss.Network.PacketReceivers
+namespace Edelweiss.Mapping.PacketReceivers
 {
     internal class RoomCreationReceiver : PluginPacketReceiver
     {

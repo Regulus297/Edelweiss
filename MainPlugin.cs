@@ -13,6 +13,7 @@ namespace Edelweiss
 {
     internal sealed class MainPlugin : Plugin
     {
+        internal static MainPlugin Instance { get; private set; }
         public override string ID => "Edelweiss";
         internal Dictionary<string, TileData> fgTiles;
         internal SyncedVariable fgTileNames = new("Edelweiss:ForegroundTileNames");
@@ -26,6 +27,7 @@ namespace Edelweiss
 
         public override void Load()
         {
+            Instance = this;
             NetcodeDynamic = CreateNetcode(nameof(NetcodeDynamic), false);
         }
 
