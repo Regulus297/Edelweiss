@@ -59,7 +59,7 @@ namespace Edelweiss.Utils
     public class TileData(string ID, string path, Dictionary<string, List<Point>> masks, string ignores = "")
     {
         public string ID = ID;
-        public string path = "Graphics/Atlases/Gameplay/tilesets/" + path;
+        public string path = "Gameplay/tilesets/" + path;
         public Dictionary<string, List<Point>> masks = masks;
         public string ignores = ignores;
         public string name = (path.StartsWith("bg") ? path.Substring(2) : path).CamelCaseToText();

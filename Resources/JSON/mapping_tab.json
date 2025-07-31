@@ -21,7 +21,7 @@
                             "children": [
                                 {
                                     "type": "ResizingList",
-                                    "items": "@defer('@getVar(\\'Edelweiss:ForegroundTiles\\')')",
+                                    "items": "@defer('@getVar(\\'Edelweiss:ForegroundTileNames\\')')",
                                     "sizePolicyX": "Expanding",
                                     "onCurrentItemChanged": -2,
                                     "id": "blahajList",

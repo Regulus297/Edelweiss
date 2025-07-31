@@ -18,7 +18,8 @@
             "type": "tiles",
             "tileData": "Hello",
             "color": "#888888",
-            "thickness": 1
+            "thickness": 1,
+            "width": 0
         }
     ]
 }
