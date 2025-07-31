@@ -1,7 +1,7 @@
 from plugins import plugin_loadable, UtilJsonFunction, load_dependencies, JSONPreprocessor
+from network import SyncedVariables
 from ui import MappingWindow
 from Edelweiss.Network import Netcode
-from Edelweiss.Plugins import PluginVars
 from PyQt5.QtCore import Qt
 import sys
 
@@ -136,7 +136,5 @@ class GetVarFunction(UtilJsonFunction):
         if len(args) != 1:
             return ""
         
-        return PluginVars.Get(args[0])
-    
-
+        return SyncedVariables.variables[args[0]]
      

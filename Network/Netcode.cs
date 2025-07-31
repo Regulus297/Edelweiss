@@ -14,6 +14,7 @@ namespace Edelweiss.Network
         public const long MODIFY_ITEM_SHAPE = 0x6;
         public const long REGISTER_TOOLBAR = 0x7;
         public const long OPEN_POPUP_FORM = 0x8;
+        public const long SYNC_VARIABLE = 0x9;
 
 
         // Received packets
