@@ -6,7 +6,8 @@
     "children": [
         {
             "type": "ZoomableView",
-            "trackedAs": "Mapping/MainView"
+            "trackedAs": "Mapping/MainView",
+            "onMouseMoved": "@netcode('Edelweiss:MouseMoved')"
         },
         {
             "type": "QWidget",

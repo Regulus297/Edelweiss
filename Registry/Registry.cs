@@ -14,8 +14,7 @@ namespace Edelweiss.RegistryTypes
         /// The whole registry
         /// </summary>
         public readonly static Dictionary<Type, RegistryList<IRegistryObject>> registry = [];
-
-        public static RegistryList<IRegistryObject> Prefs => registry[typeof(PluginSaveablePreference)];
+        public readonly static List<Type> allRegisteredTypes = [];
 
         /// <summary>
         /// Performs an action for all registered objects of a given type

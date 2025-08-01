@@ -27,7 +27,7 @@ class MappingWindow(QMainWindow):
 
         self.timer = QTimer()
         self.timer.timeout.connect(PyNetworkManager.update)
-        self.timer.start(16)
+        self.timer.start(1)
 
         self.initUI()
 

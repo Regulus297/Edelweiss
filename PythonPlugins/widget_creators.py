@@ -58,6 +58,15 @@ class ZoomableViewWidgetCreator(WidgetCreator):
         if "bgcolor" in data.keys():
             widget.grScene.backgroundColor = data["bgcolor"]
 
+        if "onMouseMoved" in data:
+            netcode, extraData = get_event_data(data["onMouseMoved"])
+            widget.onMouseMoved = lambda x, y: PyNetworkManager.send_packet(netcode, json.dumps({
+                "id": widget.objectName(),
+                "x": x,
+                "y": y,
+                "extraData": extraData
+            }))
+
         return widget
     
 

@@ -25,7 +25,15 @@ namespace Edelweiss.Mapping
         internal static SyncedVariable selectedMode = new("Edelweiss:SelectedMode", 0);
         internal static SyncedVariable selectedLayer = new("Edelweiss:SelectedLayer", 0);
         internal static SyncedVariable selectedMaterial = new("Edelweiss:SelectedMaterial", 0);
+
+        internal static long MouseMovedNetcode { get; private set; }
+
         internal static MappingTool selectedTool;
+
+        public override void Load()
+        {
+            MouseMovedNetcode = Plugin.CreateNetcode("MouseMoved", false);
+        }
 
         public override void PostSetupContent()
         {
@@ -34,6 +42,11 @@ namespace Edelweiss.Mapping
             layers.Value = new List<string>();
             materials.Value = new List<string>();
             base.PostSetupContent();
+            NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()
+            {
+                {"widget", "Mapping/MainView"},
+                {"item", PluginLoader.RequestJObject("Edelweiss:GraphicsItems/cursor_ghost")}
+            });
         }
 
         public override void HandleToolbarClick(string actionName, JObject extraData)
@@ -47,15 +60,6 @@ namespace Edelweiss.Mapping
                     break;
                 case "File/New File":
                     Console.WriteLine("User wants to create a new file");
-                    NetworkManager.SendPacket(Netcode.MODIFY_ITEM_SHAPE, new JObject()
-                    {
-                        {"widget", "Mapping/MainView"},
-                        {"item", "a-01"},
-                        {"index", 1},
-                        {"data", new JObject() {
-                            {"tileData", "This changed!"}
-                        }}
-                    });
                     break;
                 case "File/Open Recent/Blahaj":
                     Console.WriteLine("User wants a blahaj");

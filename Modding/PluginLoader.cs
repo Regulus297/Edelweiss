@@ -99,7 +99,7 @@ namespace Edelweiss.Plugins
                     {
                         if (type.CustomAttributes.Any(a => a.AttributeType == typeof(LoadAfterAttribute)))
                         {
-                            if (type.GetCustomAttribute<LoadAfterAttribute>().otherTypes.Any(t => !Registry.registry[baseType].ContainsType(t)))
+                            if (type.GetCustomAttribute<LoadAfterAttribute>().otherTypes.Any(t => !Registry.allRegisteredTypes.Contains(t)))
                             {
                                 failedLoading.Add(type);
                                 break;
@@ -113,6 +113,7 @@ namespace Edelweiss.Plugins
                         }
 
                         Registry.registry[baseType].Add(instance);
+                        Registry.allRegisteredTypes.Add(type);
                         instance.OnRegister();
                         break;
                     }

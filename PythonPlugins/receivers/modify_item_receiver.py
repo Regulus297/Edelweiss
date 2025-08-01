@@ -8,7 +8,7 @@ from Edelweiss.Network import Netcode
 @plugin_loadable
 class ModifyItemShapeReceiver(PacketReceiver):
     def __init__(self):
-        super().__init__(Netcode.MODIFY_ITEM_SHAPE)
+        super().__init__(Netcode.MODIFY_ITEM)
 
     def process_packet(self, packet):
         data = JSONPreprocessor.loads(packet.data)
@@ -21,10 +21,5 @@ class ModifyItemShapeReceiver(PacketReceiver):
             print(f"No item found with name {data['item']}")
             return
         
-
-        item = widget.trackedGraphicsItems[data["item"]]
-        shape = widget.trackedItems[data["item"]]["shapes"][data["index"]]
-        for key, value in data["data"].items():
-            shape[key] = value
-
-        item.update()
+        widget.trackedItems[data["item"]].update(data["data"])
+        widget.trackedGraphicsItems[data["item"]].refresh(data["data"])

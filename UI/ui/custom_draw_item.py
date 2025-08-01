@@ -8,6 +8,7 @@ class CustomDrawItem(QGraphicsItem):
 
     def __init__(self, data):
         super().__init__()
+        self.data = data
         self.shapes = data["shapes"]
         self.width = data["width"]
         self.height = data["height"]
@@ -42,3 +43,17 @@ class CustomDrawItem(QGraphicsItem):
             height = int(height * self.height)
 
         return x, y, width, height
+
+    def refresh(self, data):
+        self.data.update(data)
+        self.width = self.data["width"]
+        self.height = self.data["height"]
+        self.name = self.data["name"]
+        self.setPos(QPoint(self.data["x"], self.data["y"]))
+        self.update()
+
+    def itemChange(self, change, value):
+        if change == QGraphicsItem.ItemSelectedHasChanged:
+            print(self.isSelected())
+
+        return super().itemChange(change, value)

@@ -9,6 +9,7 @@ class ZoomableView(QGraphicsView):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.trackedItems = {}
+        self.trackedGraphicsItems = {}
         self.grScene = BaseGraphicsScene(self)
 
         self.initUI()
@@ -17,12 +18,18 @@ class ZoomableView(QGraphicsView):
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.setDragMode(QGraphicsView.ScrollHandDrag)
         self.scale_factor = 1.5
-        self.min_zoom = 0.2
-        self.max_zoom = 20
+        self.min_zoom = 0.1
+        self.max_zoom = 200
         self.current_zoom = 1.0
         self.setMouseTracking(True)
 
+        self.onMouseMoved = lambda x, y: None
+
         self.pen_size = 5
+
+    def mouseMoveEvent(self, event):
+        pos = self.mapToScene(event.pos())
+        self.onMouseMoved(pos.x(), pos.y())
 
     def wheelEvent(self, event):
         zoom_in = event.angleDelta().y() > 0

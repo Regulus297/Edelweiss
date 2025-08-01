@@ -1,0 +1,18 @@
+{
+    "x": 0,
+    "y": 0,
+    "width": 8,
+    "height": 8,
+    "name": "cursorGhost",
+    "shapes": [
+        {
+            "type": "rectangle",
+            "color": "#aaaaaa",
+            "thickness": "@defer('@pen_thickness(\\'Mapping/MainView\\')')",
+            "x": 0,
+            "y": 0,
+            "width": 8,
+            "height": 8
+        }
+    ]
+}

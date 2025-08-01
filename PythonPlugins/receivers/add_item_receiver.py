@@ -17,6 +17,7 @@ class AddItemReceiver(PacketReceiver):
             print(f"Failed to add item as widget {type(widget)} is not a {ZoomableView}")
             return
 
-        print(data["item"]["name"])
+        item = CustomDrawItem(data["item"])
         widget.trackedItems[data["item"]["name"]] = data["item"]
-        widget.grScene.addItem(CustomDrawItem(data["item"]))
+        widget.trackedGraphicsItems[data["item"]["name"]] = item
+        widget.grScene.addItem(item)

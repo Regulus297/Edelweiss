@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Edelweiss.Network;
 using Edelweiss.RegistryTypes;
@@ -34,6 +35,7 @@ namespace Edelweiss.Plugins
                 receivers[HandledCode] = [];
 
             receivers[HandledCode].Add(this);
+            Console.WriteLine($"{HandledCode} {Name}");
             PostLoad();
         }
 
