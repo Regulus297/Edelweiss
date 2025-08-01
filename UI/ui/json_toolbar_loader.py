@@ -8,6 +8,7 @@ from network import PyNetworkManager
 from plugins import get_extra_data_safe
 from .json_widget_loader import JSONWidgetLoader
 from .main_window import MappingWindow
+from plugins import get_event_data
 
 
 class JSONToolbarLoader:
@@ -54,8 +55,9 @@ class JSONToolbarLoader:
 
     @staticmethod
     def register_onclick(action, data):
-        action.triggered.connect(lambda: PyNetworkManager.send_packet(data["onclick"], json.dumps({
+        netcode, extraData = get_event_data(data["onclick"])
+        action.triggered.connect(lambda: PyNetworkManager.send_packet(netcode, json.dumps({
             "tab": MappingWindow.instance.current_tab,
             "name": getattr(action, "json_loader_name"),
-            "extraData": get_extra_data_safe(data)
+            "extraData": extraData
         })))

@@ -1,5 +1,5 @@
 from ui import WidgetCreator, JSONWidgetLoader
-from plugins import plugin_loadable, load_dependencies, get_extra_data_safe
+from plugins import plugin_loadable, load_dependencies, get_event_data
 from network import PyNetworkManager
 from PyQt5.QtWidgets import QWidget, QSplitter, QPushButton, QLineEdit, QComboBox, QCheckBox, QLabel
 from PyQt5.QtCore import Qt, QTimer
@@ -38,9 +38,10 @@ class QPushButtonWidgetCreator(WidgetCreator):
         widget = QPushButton(data["text"], parent)
 
         if "onclick" in data.keys():
-            widget.clicked.connect(lambda: PyNetworkManager.send_packet(data["onclick"], json.dumps({
+            netcode, extraData = get_event_data(data["onclick"])
+            widget.clicked.connect(lambda: PyNetworkManager.send_packet(netcode, json.dumps({
                 "id": widget.objectName(),
-                "extraData": get_extra_data_safe(data)
+                "extraData": extraData
             })))
 
         return widget
@@ -76,6 +77,7 @@ class ResizingListWidgetCreator(WidgetCreator):
             widget.setCurrentRow(int(data["currentRow"]))
         
         if "onCurrentItemChanged" in data.keys():
+            netcode, extraData = get_event_data(data["onCurrentItemChanged"])
             def send_packet(curr, prev):
                 send_data = json.dumps({
                     "id": widget.objectName(),
@@ -83,9 +85,9 @@ class ResizingListWidgetCreator(WidgetCreator):
                     "curr": curr.text() if curr is not None else "",
                     "prevRow": widget.row(prev) if prev is not None else -1,
                     "currRow": widget.row(curr) if curr is not None else -1,
-                    "extraData": get_extra_data_safe(data)
+                    "extraData": extraData
                 })
-                PyNetworkManager.send_packet(data["onCurrentItemChanged"], send_data)
+                PyNetworkManager.send_packet(netcode, send_data)
 
             widget.currentItemChanged.connect(send_packet)
 

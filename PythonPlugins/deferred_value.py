@@ -130,3 +130,6 @@ class DeferredValue:
     
     def __iter__(self):
         yield from self._func()
+
+    def __instancecheck__(self, x):
+        return isinstance(self._func(), x)

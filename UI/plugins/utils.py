@@ -16,3 +16,10 @@ def get_extra_data_safe(data):
         else:
             extra_data[key] = str(value)
     return extra_data
+
+
+def get_event_data(data):
+    if isinstance(data, int):
+        return data, {}
+
+    return data["netcode"], get_extra_data_safe(data)
