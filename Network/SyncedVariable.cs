@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Network
 {
-    public class SyncedVariable(string name)
+    public class SyncedVariable
     {
-        private string name = name;
+        private string name;
         private object value;
         public object Value
         {
@@ -22,6 +23,16 @@ namespace Edelweiss.Network
                     {"value", JToken.FromObject(value)}
                 });
             }
+        }
+
+        public SyncedVariable(string name, object defaultValue = null)
+        {
+            this.name = name;
+            NetworkManager.SendPacket(Netcode.SYNC_VARIABLE, new JObject()
+            {
+                {"name", name},
+                {"value", JToken.FromObject(defaultValue ?? "")}
+            });
         }
     }
 }

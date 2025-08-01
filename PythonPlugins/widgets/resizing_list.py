@@ -17,3 +17,6 @@ class ResizingList(QListWidget):
         width = self.sizeHintForColumn(0)
         self.setMinimumWidth(width + 60)
 
+    def clear(self):
+        super().clear()
+        self.setFixedHeight(0)

@@ -71,15 +71,18 @@ class ResizingListWidgetCreator(WidgetCreator):
         if "items" in data.keys():
             for item in data["items"]:
                 widget.addItem(item)
+
+        if "currentRow" in data.keys():
+            widget.setCurrentRow(int(data["currentRow"]))
         
         if "onCurrentItemChanged" in data.keys():
             def send_packet(curr, prev):
                 send_data = json.dumps({
                     "id": widget.objectName(),
                     "prev": prev.text() if prev is not None else "",
-                    "curr": curr.text(),
+                    "curr": curr.text() if curr is not None else "",
                     "prevRow": widget.row(prev) if prev is not None else -1,
-                    "currRow": widget.row(curr),
+                    "currRow": widget.row(curr) if curr is not None else -1,
                     "extraData": get_extra_data_safe(data)
                 })
                 PyNetworkManager.send_packet(data["onCurrentItemChanged"], send_data)
@@ -95,6 +98,9 @@ class ResizingListWidgetCreator(WidgetCreator):
         if "items" in data.keys():
             for item in data["items"]:
                 widget.addItem(item)
+
+        if "currentRow" in data.keys():
+            widget.setCurrentRow(int(data["currentRow"]))
     
 
 @plugin_loadable

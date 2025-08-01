@@ -22,6 +22,10 @@ namespace Edelweiss.Mapping
         internal static SyncedVariable modes = new("Edelweiss:Modes");
         internal static SyncedVariable layers = new("Edelweiss:Layers");
         internal static SyncedVariable materials = new("Edelweiss:Materials");
+        internal static SyncedVariable selectedMode = new("Edelweiss:SelectedMode", 0);
+        internal static SyncedVariable selectedLayer = new("Edelweiss:SelectedLayer", 0);
+        internal static SyncedVariable selectedMaterial = new("Edelweiss:SelectedMaterial", 0);
+        internal static MappingTool selectedTool;
 
         public override void PostSetupContent()
         {

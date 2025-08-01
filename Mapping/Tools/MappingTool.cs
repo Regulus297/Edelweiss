@@ -8,9 +8,9 @@ namespace Edelweiss.Mapping.Tools
     [BaseRegistryObject()]
     public abstract class MappingTool : PluginRegistryObject
     {
-        int selectedMaterial = 0;
-        int selectedLayer = 0;
-        int selectedMode = 0;
+        internal int selectedMaterial = 0;
+        internal int selectedLayer = 0;
+        internal int selectedMode = 0;
 
         public virtual string DisplayName => Name.Substring(0, Name.Length - 4).CamelCaseToText();
 
