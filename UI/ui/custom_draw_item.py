@@ -5,7 +5,7 @@ from PyQt5.QtGui import QPainterPath, QPen, QPainter, QColor, QBrush
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView, QGraphicsScene
 
 from network import PyNetworkManager
-from plugins import get_event_data
+from plugins import get_event_data, DefaultEncoder
 
 
 class CustomDrawItem(QGraphicsItem):
@@ -38,8 +38,9 @@ class CustomDrawItem(QGraphicsItem):
                 "y": y,
                 "name": self.name,
                 "type": "press",
-                "extraData": extraData
-            }))
+                "extraData": extraData,
+                "item": self.data
+            }, cls=DefaultEncoder))
 
         self.onMouseMoved = lambda x, y: None
         if "onMouseMoved" in data:
@@ -49,8 +50,9 @@ class CustomDrawItem(QGraphicsItem):
                 "y": y,
                 "name": self.name,
                 "type": "move",
-                "extraData": extraData
-            }))
+                "extraData": extraData,
+                "item": self.data
+            }, cls=DefaultEncoder))
 
         self.onMouseReleased = lambda x, y: None
         if "onMouseReleased" in data:
@@ -60,8 +62,9 @@ class CustomDrawItem(QGraphicsItem):
                 "y": y,
                 "name": self.name,
                 "type": "release",
-                "extraData": extraData
-            }))
+                "extraData": extraData,
+                "item": self.data
+            }, cls=DefaultEncoder))
 
         self.shapeRenderers = []
         for shape in self.shapes:

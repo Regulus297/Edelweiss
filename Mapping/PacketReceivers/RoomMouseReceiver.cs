@@ -15,17 +15,17 @@ namespace Edelweiss.Mapping.PacketReceivers
             JObject data = JObject.Parse(packet.data);
             float mouseX = data.Value<float>("x");
             float mouseY = data.Value<float>("y");
-            string name = data.Value<string>("name");
+            JObject room = (JObject) data["item"];
             switch (data.Value<string>("type"))
             {
                 case "press":
-                    MappingTab.selectedTool?.MouseDown(name, mouseX, mouseY);
+                    MappingTab.selectedTool?.MouseDown(room, mouseX, mouseY);
                     break;
                 case "move":
-                    MappingTab.selectedTool?.MouseDrag(name, mouseX, mouseY);
+                    MappingTab.selectedTool?.MouseDrag(room, mouseX, mouseY);
                     break;
                 case "release":
-                    MappingTab.selectedTool?.MouseRelease(name, mouseX, mouseY);
+                    MappingTab.selectedTool?.MouseRelease(room, mouseX, mouseY);
                     break;
             }
         }

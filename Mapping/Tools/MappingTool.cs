@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Edelweiss.Plugins;
 using Edelweiss.RegistryTypes;
 using Edelweiss.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Tools
 {
@@ -15,24 +16,24 @@ namespace Edelweiss.Mapping.Tools
         public virtual string DisplayName => Name.Substring(0, Name.Length - 4).CamelCaseToText();
 
         public virtual bool ClickingTriggersDrag => false;
-        internal void MouseDown(string room, float x, float y)
+        internal void MouseDown(JObject room, float x, float y)
         {
             if (ClickingTriggersDrag)
                 MouseDrag(room, x, y);
             MouseClick(room, x, y);
         }
 
-        public virtual void MouseClick(string room, float x, float y)
+        public virtual void MouseClick(JObject room, float x, float y)
         {
 
         }
 
-        public virtual void MouseDrag(string room, float x, float y)
+        public virtual void MouseDrag(JObject room, float x, float y)
         {
 
         }
 
-        public virtual void MouseRelease(string room, float x, float y)
+        public virtual void MouseRelease(JObject room, float x, float y)
         {
 
         }

@@ -11,15 +11,16 @@ class TileShape(ShapeRenderer):
         super().__init__("tiles", parent, data)
         self._cache = None
         self._cache_dirty = True
+        self._prev_data = ""
 
     def draw(self, painter):
-        if self._cache is None or self._cache_dirty:
+        if self._cache is None or self.data["tileData"] != self._prev_data:
             self._redraw_cache()
         painter.drawPixmap(0, 0, self._cache)
 
     def _redraw_cache(self):
-
         self.tiles = self.data["tileData"]
+        self._prev_data = self.tiles
         self.width = self.parent.width // 8
         self.height = self.parent.height // 8
 
