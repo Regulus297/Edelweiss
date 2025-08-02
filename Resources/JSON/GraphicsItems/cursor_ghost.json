@@ -4,6 +4,9 @@
     "width": 8,
     "height": 8,
     "name": "cursorGhost",
+    "zIndex": 99999999999999999,
+    "focusable": false,
+    "selectable": false,
     "shapes": [
         {
             "type": "rectangle",

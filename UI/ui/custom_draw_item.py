@@ -1,6 +1,11 @@
+import json
+
 from PyQt5.QtCore import QPoint, QRectF, Qt
 from PyQt5.QtGui import QPainterPath, QPen, QPainter, QColor, QBrush
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView, QGraphicsScene
+
+from network import PyNetworkManager
+from plugins import get_event_data
 
 
 class CustomDrawItem(QGraphicsItem):
@@ -14,6 +19,50 @@ class CustomDrawItem(QGraphicsItem):
         self.height = data["height"]
         self.name = data["name"]
         self.setPos(QPoint(data["x"], data["y"]))
+        if "zIndex" in data:
+            self.setZValue(data["zIndex"])
+
+        if "selectable" in data:
+            self.setFlag(QGraphicsItem.ItemIsSelectable, data["selectable"])
+
+        if "focusable" in data:
+            self.setFlag(QGraphicsItem.ItemIsFocusable, data["focusable"])
+            if not data["focusable"]:
+                self.setAcceptedMouseButtons(Qt.NoButton)
+
+        self.onMousePressed = lambda x, y: None
+        if "onMousePressed" in data:
+            netcode, extraData = get_event_data(data["onMousePressed"])
+            self.onMousePressed = lambda x, y: PyNetworkManager.send_packet(netcode, json.dumps({
+                "x": x,
+                "y": y,
+                "name": self.name,
+                "type": "press",
+                "extraData": extraData
+            }))
+
+        self.onMouseMoved = lambda x, y: None
+        if "onMouseMoved" in data:
+            netcode, extraData = get_event_data(data["onMouseMoved"])
+            self.onMouseMoved = lambda x, y: PyNetworkManager.send_packet(netcode, json.dumps({
+                "x": x,
+                "y": y,
+                "name": self.name,
+                "type": "move",
+                "extraData": extraData
+            }))
+
+        self.onMouseReleased = lambda x, y: None
+        if "onMouseReleased" in data:
+            netcode, extraData = get_event_data(data["onMouseReleased"])
+            self.onMouseReleased = lambda x, y: PyNetworkManager.send_packet(netcode, json.dumps({
+                "x": x,
+                "y": y,
+                "name": self.name,
+                "type": "release",
+                "extraData": extraData
+            }))
+
         self.shapeRenderers = []
         for shape in self.shapes:
             self.shapeRenderers.append(type(CustomDrawItem.shapes[shape["type"]])(self, shape))
@@ -52,8 +101,14 @@ class CustomDrawItem(QGraphicsItem):
         self.setPos(QPoint(self.data["x"], self.data["y"]))
         self.update()
 
-    def itemChange(self, change, value):
-        if change == QGraphicsItem.ItemSelectedHasChanged:
-            print(self.isSelected())
+    def mousePressEvent(self, event):
+        super().mousePressEvent(event)
+        self.onMousePressed(event.pos().x(), event.pos().y())
 
-        return super().itemChange(change, value)
+    def mouseMoveEvent(self, event):
+        super().mouseMoveEvent(event)
+        self.onMouseMoved(event.pos().x(), event.pos().y())
+
+    def mouseReleaseEvent(self, event):
+        super().mouseReleaseEvent(event)
+        self.onMouseReleased(event.pos().x(), event.pos().y())

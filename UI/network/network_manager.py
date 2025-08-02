@@ -48,7 +48,6 @@ class PyNetworkManager:
                     receiver.process_packet(packet)
 
             NetworkManager.DequeuePacket()
-            break
         Main.Update()
 
     @staticmethod

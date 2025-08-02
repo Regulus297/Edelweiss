@@ -4,6 +4,10 @@
     "width": 90,
     "height": 80,
     "name": "room",
+    "onMousePressed": "@netcode('Edelweiss:RoomMouse')",
+    "onMouseMoved": "@netcode('Edelweiss:RoomMouse')",
+    "onMouseReleased": "@netcode('Edelweiss:RoomMouse')",
+    "selectable": true,
     "shapes": [
         {
             "type": "rectangle",

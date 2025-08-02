@@ -35,7 +35,6 @@ namespace Edelweiss.Plugins
                 receivers[HandledCode] = [];
 
             receivers[HandledCode].Add(this);
-            Console.WriteLine($"{HandledCode} {Name}");
             PostLoad();
         }
 

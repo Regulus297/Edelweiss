@@ -28,6 +28,7 @@ class ZoomableView(QGraphicsView):
         self.pen_size = 5
 
     def mouseMoveEvent(self, event):
+        super().mouseMoveEvent(event)
         pos = self.mapToScene(event.pos())
         self.onMouseMoved(pos.x(), pos.y())
 

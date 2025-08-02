@@ -27,12 +27,16 @@ namespace Edelweiss.Mapping
         internal static SyncedVariable selectedMaterial = new("Edelweiss:SelectedMaterial", 0);
 
         internal static long MouseMovedNetcode { get; private set; }
+        internal static long RoomMouseNetcode { get; private set; }
+        internal static long SetTileNetcode { get; private set; }
 
         internal static MappingTool selectedTool;
 
         public override void Load()
         {
             MouseMovedNetcode = Plugin.CreateNetcode("MouseMoved", false);
+            RoomMouseNetcode = Plugin.CreateNetcode("RoomMouse", false);
+            SetTileNetcode = Plugin.CreateNetcode("SetTile", true);
         }
 
         public override void PostSetupContent()

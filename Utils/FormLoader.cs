@@ -97,7 +97,6 @@ namespace Edelweiss.Utils
                             continue;
                         widget.Add(item.Key, item.Value);
                     }
-                    Console.WriteLine(widget.ToString());
                 }
                 children.Add(label);
                 children.Add(widget);
