@@ -29,7 +29,7 @@ namespace Edelweiss.Mapping.Tools
             (int currentX, int currentY) = EdelweissUtils.ToTileCoordinate(x, y);
             int dirX = startRoomX < currentX ? 1 : -1;
             int dirY = startRoomY < currentY ? 1 : -1;
-            string tileData = room["shapes"][1]["tileData"].ToString();
+            string tileData = room["shapes"][2-selectedLayer]["tileData"].ToString();
             for (int loopX = 0; Math.Abs(loopX) <= Math.Abs(currentX - startRoomX); loopX += dirX)
             {
                 for (int loopY = 0; Math.Abs(loopY) <= Math.Abs(currentY - startRoomY); loopY += dirY)
@@ -43,7 +43,7 @@ namespace Edelweiss.Mapping.Tools
             {
                 {"widget", "Mapping/MainView"},
                 {"item", room["name"].ToString()},
-                {"index", 1},
+                {"index", 2-selectedLayer},
                 {"data", new JObject() {
                     {"tileData", tileData}
                 }}

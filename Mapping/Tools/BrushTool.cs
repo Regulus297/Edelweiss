@@ -14,13 +14,13 @@ namespace Edelweiss.Mapping.Tools
         {
             int tileX = (int)(x / 8);
             int tileY = (int)(y / 8);
-            string tileData = room["shapes"][1]["tileData"].ToString();
+            string tileData = room["shapes"][2-selectedLayer]["tileData"].ToString();
             SetTile(ref tileData, room, tileX, tileY);
             NetworkManager.SendPacket(Netcode.MODIFY_ITEM_SHAPE, new JObject()
             {
                 {"widget", "Mapping/MainView"},
                 {"item", room["name"].ToString()},
-                {"index", 1},
+                {"index", 2-selectedLayer},
                 {"data", new JObject() {
                     {"tileData", tileData}
                 }}

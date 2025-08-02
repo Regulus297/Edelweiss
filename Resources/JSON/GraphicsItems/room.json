@@ -20,10 +20,15 @@
         },
         {
             "type": "tiles",
-            "tileData": "Hello",
-            "color": "#888888",
-            "thickness": 1,
-            "width": 0
+            "tiles": "Edelweiss:BackgroundTiles",
+            "tileKeys": "Edelweiss:BackgroundTileKeys",
+            "tileData": "Hello"
+        },
+        {
+            "type": "tiles",
+            "tiles": "Edelweiss:ForegroundTiles",
+            "tileKeys": "Edelweiss:ForegroundTileKeys",
+            "tileData": "Hello"
         }
     ]
 }

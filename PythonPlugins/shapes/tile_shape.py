@@ -28,8 +28,8 @@ class TileShape(ShapeRenderer):
         self._cache.fill(QColor(0, 0, 0, 0))
         painter = QPainter(self._cache)
 
-        tiles = SyncedVariables.variables["Edelweiss:ForegroundTiles"]
-        keys = SyncedVariables.variables["Edelweiss:ForegroundTileKeys"]
+        tiles = SyncedVariables.variables[self.data["tiles"]]
+        keys = SyncedVariables.variables[self.data["tileKeys"]]
         for i, tile in enumerate(self.tiles):
             if tile not in tiles or tile == " ":
                 continue
