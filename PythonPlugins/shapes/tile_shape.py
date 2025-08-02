@@ -31,7 +31,7 @@ class TileShape(ShapeRenderer):
         tiles = SyncedVariables.variables["Edelweiss:ForegroundTiles"]
         keys = SyncedVariables.variables["Edelweiss:ForegroundTileKeys"]
         for i, tile in enumerate(self.tiles):
-            if tile not in tiles:
+            if tile not in tiles or tile == " ":
                 continue
             
             self.currentTile = tile

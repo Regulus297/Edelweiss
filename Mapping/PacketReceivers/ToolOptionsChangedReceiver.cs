@@ -35,8 +35,7 @@ namespace Edelweiss.Mapping.PacketReceivers
 
         private void ProcessToolChanged(JObject data)
         {
-            string current = data["curr"].ToString();
-            MappingTool t = (MappingTool)Registry.registry[typeof(MappingTool)].values.Find(t => ((MappingTool)t).DisplayName == current);
+            MappingTool t = (MappingTool)Registry.registry[typeof(MappingTool)].values.Find(t => ((MappingTool)t).FullName == data["currID"].ToString());
             MappingTab.selectedTool = t;
             if (t == null)
                 return;
@@ -44,6 +43,7 @@ namespace Edelweiss.Mapping.PacketReceivers
             MappingTab.layers.Value = t.Layers;
             MappingTab.modes.Value = t.Modes;
             MappingTab.materials.Value = t.Materials;
+            MappingTab.materialIDs.Value = t.MaterialIDs;
 
             MappingTab.selectedLayer.Value = t.selectedLayer;
             MappingTab.selectedMaterial.Value = t.selectedMaterial;
@@ -57,26 +57,26 @@ namespace Edelweiss.Mapping.PacketReceivers
 
         private void ProcessModeChanged(JObject data)
         {
-            if (MappingTab.selectedTool != null && data.Value<int>("currRow") >= 0)
+            if (MappingTab.selectedTool != null && data.Value<int?>("currID") != null)
             {
-                MappingTab.selectedTool.selectedMode = data.Value<int>("currRow");
+                MappingTab.selectedTool.selectedMode = data.Value<int>("currID");
             }
         }
 
         private void ProcessLayerChanged(JObject data)
         {
-            if (MappingTab.selectedTool != null && data.Value<int>("currRow") >= 0)
+            if (MappingTab.selectedTool != null && data.Value<int?>("currID") != null)
             {
-                MappingTab.selectedTool.selectedLayer = data.Value<int>("currRow");
+                MappingTab.selectedTool.selectedLayer = data.Value<int>("currID");
             }
 
         }
         
         private void ProcessMaterialChanged(JObject data)
         {
-            if (MappingTab.selectedTool != null && data.Value<int>("currRow") >= 0)
+            if (MappingTab.selectedTool != null && data.Value<string>("currID") != null)
             {
-                MappingTab.selectedTool.selectedMaterial = data.Value<int>("currRow");
+                MappingTab.selectedTool.selectedMaterial = data.Value<string>("currID");
             }
             
         }

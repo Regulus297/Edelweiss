@@ -18,6 +18,8 @@ namespace Edelweiss.Utils
         public static Dictionary<string, TileData> LoadTileXML(string file)
         {
             Dictionary<string, TileData> tiles = [];
+            tiles[" "] = new TileData(" ", "air", [], "");
+
             XmlDocument xmlDocument = new();
             xmlDocument.Load(file);
 

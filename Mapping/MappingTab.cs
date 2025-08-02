@@ -19,9 +19,11 @@ namespace Edelweiss.Mapping
         public override string DisplayName => "Mapping";
 
         internal static SyncedVariable tools = new("Edelweiss:Tools");
+        internal static SyncedVariable toolIDs = new("Edelweiss:ToolIDs");
         internal static SyncedVariable modes = new("Edelweiss:Modes");
         internal static SyncedVariable layers = new("Edelweiss:Layers");
         internal static SyncedVariable materials = new("Edelweiss:Materials");
+        internal static SyncedVariable materialIDs = new("Edelweiss:MaterialIDs");
         internal static SyncedVariable selectedMode = new("Edelweiss:SelectedMode", 0);
         internal static SyncedVariable selectedLayer = new("Edelweiss:SelectedLayer", 0);
         internal static SyncedVariable selectedMaterial = new("Edelweiss:SelectedMaterial", 0);
@@ -42,9 +44,11 @@ namespace Edelweiss.Mapping
         public override void PostSetupContent()
         {
             tools.Value = Registry.registry[typeof(MappingTool)].values.Select(t => ((MappingTool)t).DisplayName).ToList();
+            toolIDs.Value = Registry.registry[typeof(MappingTool)].values.Select(t => ((MappingTool)t).FullName).ToList();
             modes.Value = new List<string>();
             layers.Value = new List<string>();
             materials.Value = new List<string>();
+            materialIDs.Value = new List<string>();
             base.PostSetupContent();
             NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()
             {

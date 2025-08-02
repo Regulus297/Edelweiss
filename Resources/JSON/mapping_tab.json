@@ -23,6 +23,7 @@
                                 {
                                     "type": "ResizingList",
                                     "items": "@defer('@getVar(\\'Edelweiss:Tools\\')')",
+                                    "keys": "@defer('@getVar(\\'Edelweiss:ToolIDs\\')')",
                                     "sizePolicyX": "Expanding",
                                     "onCurrentItemChanged": "@netcode('LIST_SELECTION_CHANGED')",
                                     "id": "toolList",
@@ -49,6 +50,7 @@
                                 {
                                     "type": "ResizingList",
                                     "items": "@defer('@getVar(\\'Edelweiss:Materials\\')')",
+                                    "keys": "@defer('@getVar(\\'Edelweiss:MaterialIDs\\')')",
                                     "sizePolicyX": "Expanding",
                                     "onCurrentItemChanged": "@netcode('LIST_SELECTION_CHANGED')",
                                     "currentRow": "@defer('@getVar(\\'Edelweiss:SelectedMaterial\\')')",

@@ -1,5 +1,6 @@
 from PyQt5.QtWidgets import QSizePolicy, QWidgetAction
 from ui import MappingWindow
+from plugins import load_dependencies
 
 
 class CommonVars:
@@ -20,3 +21,12 @@ def clear_main_toolbar(toolbar):
             continue
         toolbar.removeAction(action)
     toolbar.addSeparator()
+
+
+# Here we have the first time anyone used __new__ in recorded history
+@load_dependencies("deferred_value.py")
+class value:
+    def __new__(self, val):
+        if isinstance(val, DeferredValue):
+            return val._func()
+        return val

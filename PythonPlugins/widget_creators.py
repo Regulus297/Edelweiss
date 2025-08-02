@@ -70,7 +70,7 @@ class ZoomableViewWidgetCreator(WidgetCreator):
         return widget
     
 
-@load_dependencies("widgets/resizing_list.py")
+@load_dependencies("widgets/resizing_list.py", "common_code.py")
 @plugin_loadable
 class ResizingListWidgetCreator(WidgetCreator):
     def __init__(self):
@@ -79,11 +79,13 @@ class ResizingListWidgetCreator(WidgetCreator):
     def create_widget(self, data, parent=None) -> QWidget:
         widget = ResizingList(parent)
         if "items" in data.keys():
-            for item in data["items"]:
-                widget.addItem(item)
+            keys = data["keys"] if "keys" in data else range(len(data["items"]))
+
+            for key, item in zip(keys, data["items"]):
+                widget.addKeyValuePair(key, item)
 
         if "currentRow" in data.keys():
-            widget.setCurrentRow(int(data["currentRow"]))
+            widget.setCurrentRow(value(data["currentRow"]))
         
         if "onCurrentItemChanged" in data.keys():
             netcode, extraData = get_event_data(data["onCurrentItemChanged"])
@@ -92,8 +94,8 @@ class ResizingListWidgetCreator(WidgetCreator):
                     "id": widget.objectName(),
                     "prev": prev.text() if prev is not None else "",
                     "curr": curr.text() if curr is not None else "",
-                    "prevRow": widget.row(prev) if prev is not None else -1,
-                    "currRow": widget.row(curr) if curr is not None else -1,
+                    "prevID": widget.keys[widget.row(prev)] if prev is not None else None,
+                    "currID": widget.keys[widget.row(curr)] if curr is not None else None,
                     "extraData": extraData
                 })
                 PyNetworkManager.send_packet(netcode, send_data)
@@ -107,11 +109,13 @@ class ResizingListWidgetCreator(WidgetCreator):
         widget.clear()
         data = getattr(widget, "__json_data__")
         if "items" in data.keys():
-            for item in data["items"]:
-                widget.addItem(item)
+            keys = data["keys"] if "keys" in data else range(len(data["items"]))
+
+            for key, item in zip(keys, data["items"]):
+                widget.addKeyValuePair(key, item)
 
         if "currentRow" in data.keys():
-            widget.setCurrentRow(int(data["currentRow"]))
+            widget.setCurrentRow(value(data["currentRow"]))
     
 
 @plugin_loadable

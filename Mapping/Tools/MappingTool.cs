@@ -9,7 +9,7 @@ namespace Edelweiss.Mapping.Tools
     [BaseRegistryObject()]
     public abstract class MappingTool : PluginRegistryObject
     {
-        internal int selectedMaterial = 0;
+        internal string selectedMaterial = "";
         internal int selectedLayer = 0;
         internal int selectedMode = 0;
 
@@ -39,6 +39,7 @@ namespace Edelweiss.Mapping.Tools
         }
 
         public virtual List<string> Materials => [];
+        public virtual List<string> MaterialIDs => [];
         public virtual List<string> Layers => [];
         public virtual List<string> Modes => [];
     }
