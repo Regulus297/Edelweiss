@@ -38,6 +38,18 @@ namespace Edelweiss.Mapping.Tools
 
         }
 
+        /// <summary>
+        /// Defines special behaviour for the cursor ghost when the current tool is selected.
+        /// Returns false by default
+        /// </summary>
+        /// <param name="mouseX">The x-coordinate of the mouse in scene coordinates</param>
+        /// <param name="mouseY">The y-coordinate of the mouse in scene coordinates</param>
+        /// <returns>False if default update logic should be used, true to suppress default logic</returns>
+        public virtual bool UpdateCursorGhost(float mouseX, float mouseY)
+        {
+            return false;
+        }
+
         public virtual List<string> Materials => [];
         public virtual List<string> MaterialIDs => [];
         public virtual List<string> Layers => [];

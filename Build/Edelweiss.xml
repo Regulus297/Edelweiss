@@ -4,6 +4,15 @@
         <name>Edelweiss</name>
     </assembly>
     <members>
+        <member name="M:Edelweiss.Mapping.Tools.MappingTool.UpdateCursorGhost(System.Single,System.Single)">
+            <summary>
+            Defines special behaviour for the cursor ghost when the current tool is selected.
+            Returns false by default
+            </summary>
+            <param name="mouseX">The x-coordinate of the mouse in scene coordinates</param>
+            <param name="mouseY">The y-coordinate of the mouse in scene coordinates</param>
+            <returns>False if default update logic should be used, true to suppress default logic</returns>
+        </member>
         <member name="T:Edelweiss.Plugins.CustomTab">
             <summary>
             Registers a custom UI tab, like the mapping tab.

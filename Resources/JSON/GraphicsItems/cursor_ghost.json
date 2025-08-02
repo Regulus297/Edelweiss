@@ -9,11 +9,10 @@
     "selectable": false,
     "shapes": [
         {
-            "type": "rectangle",
+            "type": "tileGhost",
             "color": "#aaaaaa",
             "thickness": "@defer('@pen_thickness(\\'Mapping/MainView\\')')",
-            "x": 0,
-            "y": 0,
+            "coords": ["0,0"],
             "width": 8,
             "height": 8
         }

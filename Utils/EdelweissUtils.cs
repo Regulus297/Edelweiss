@@ -15,5 +15,13 @@ namespace Edelweiss.Utils
             }
             return char.ToUpper(output[0]) + output.Substring(1);
         }
+
+        public static (int, int) ToTileCoordinate(float mouseX, float mouseY) {
+            int x = (int)(mouseX / 8);
+            int y = (int)(mouseY / 8);
+            x -= (mouseX < 0) ? 1 : 0;
+            y -= (mouseY < 0) ? 1 : 0;
+            return (x, y);
+        }
     }
 }
