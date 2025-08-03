@@ -28,18 +28,17 @@ class TileShape(ShapeRenderer):
         self._cache.fill(QColor(0, 0, 0, 0))
         painter = QPainter(self._cache)
 
-        tiles = SyncedVariables.variables[self.data["tiles"]]
-        keys = SyncedVariables.variables[self.data["tileKeys"]]
+        tileData = SyncedVariables.variables[self.data["tiles"]]
         for i, tile in enumerate(self.tiles):
-            if tile not in tiles or tile == " ":
+            if tile not in tileData or tile == " ":
                 continue
             
             self.currentTile = tile
             x, y = i % self.width, i // self.width
-            tileX, tileY = self.pickTile(x, y, tiles[tile]).split(", ")
+            tileX, tileY = self.pickTile(x, y, tileData[tile]["masks"]).split(", ")
             tileX = int(tileX)
             tileY = int(tileY)
-            painter.drawPixmap(x * 8, y * 8, PixmapLoader.load_texture(keys[tile]), tileX * 8, tileY * 8, 8, 8)
+            painter.drawPixmap(x * 8, y * 8, PixmapLoader.load_texture(tileData[tile]["path"]), tileX * 8, tileY * 8, 8, 8)
 
         self._cache_dirty = False
 

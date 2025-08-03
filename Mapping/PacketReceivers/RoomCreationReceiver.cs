@@ -29,13 +29,13 @@ namespace Edelweiss.Mapping.PacketReceivers
             room["y"] = y * 8;
             room["width"] = width * 8;
             room["height"] = height * 8;
-            room["shapes"][0]["color"] = GetColor(color);
+            room["shapes"][2]["color"] = GetColor(color);
+            room["shapes"][0]["tileData"] = string.Concat(Enumerable.Repeat(" ", width * height));
+            room["shapes"][0]["width"] = width;
+            room["shapes"][0]["height"] = height;
             room["shapes"][1]["tileData"] = string.Concat(Enumerable.Repeat(" ", width * height));
             room["shapes"][1]["width"] = width;
             room["shapes"][1]["height"] = height;
-            room["shapes"][2]["tileData"] = string.Concat(Enumerable.Repeat(" ", width * height));
-            room["shapes"][2]["width"] = width;
-            room["shapes"][2]["height"] = height;
             room["name"] = extraData.Value<string>("name");
 
             NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()

@@ -8,6 +8,7 @@ using Edelweiss.Plugins;
 using Edelweiss.Preferences;
 using Edelweiss.RegistryTypes;
 using Edelweiss.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss
 {
@@ -17,12 +18,8 @@ namespace Edelweiss
         public override string ID => "Edelweiss";
         internal Dictionary<string, TileData> fgTiles;
         internal Dictionary<string, TileData> bgTiles;
-        internal SyncedVariable fgTileNames = new("Edelweiss:ForegroundTileNames");
-        internal SyncedVariable fgTileMasks = new("Edelweiss:ForegroundTiles");
-        internal SyncedVariable fgTileKeys = new("Edelweiss:ForegroundTileKeys");
-        internal SyncedVariable bgTileNames = new("Edelweiss:BackgroundTileNames");
-        internal SyncedVariable bgTileMasks = new("Edelweiss:BackgroundTiles");
-        internal SyncedVariable bgTileKeys = new("Edelweiss:BackgroundTileKeys");
+        internal SyncedVariable fgTileData = new("Edelweiss:ForegroundTiles");
+        internal SyncedVariable bgTileData = new("Edelweiss:BackgroundTiles");
         internal static SyncedVariable textures = new("Edelweiss:Textures");
 
         internal static string CelesteDirectory => Registry.registry[typeof(PluginSaveablePreference)].GetValue<CelesteDirectoryPref>().Value.ToString();
@@ -53,35 +50,13 @@ namespace Edelweiss
         private void LoadForegroundTiles()
         {
             fgTiles = TileLoader.LoadTileXML(Path.Join(CelesteDirectory, "Content", "Graphics", "ForegroundTiles.xml"));
-            fgTileNames.Value = fgTiles.Select(t => t.Value.name).ToList();
-
-            Dictionary<string, Dictionary<string, List<Point>>> masks = [];
-            Dictionary<string, string> keys = [];
-            foreach (var tile in fgTiles)
-            {
-                masks[tile.Key] = tile.Value.masks;
-                keys[tile.Key] = tile.Value.path;
-            }
-
-            fgTileMasks.Value = masks;
-            fgTileKeys.Value = keys;
+            fgTileData.Value = fgTiles;
         }
 
         private void LoadBackgroundTiles()
         {
             bgTiles = TileLoader.LoadTileXML(Path.Join(CelesteDirectory, "Content", "Graphics", "BackgroundTiles.xml"));
-            bgTileNames.Value = bgTiles.Select(t => t.Value.name).ToList();
-
-            Dictionary<string, Dictionary<string, List<Point>>> masks = [];
-            Dictionary<string, string> keys = [];
-            foreach (var tile in bgTiles)
-            {
-                masks[tile.Key] = tile.Value.masks;
-                keys[tile.Key] = tile.Value.path;
-            }
-
-            bgTileMasks.Value = masks;
-            bgTileKeys.Value = keys;
+            bgTileData.Value = bgTiles;
         }
     }
 }
