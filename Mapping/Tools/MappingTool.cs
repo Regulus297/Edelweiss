@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using Edelweiss.Plugins;
+using Edelweiss.Preferences;
 using Edelweiss.RegistryTypes;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
@@ -12,10 +14,20 @@ namespace Edelweiss.Mapping.Tools
         internal string selectedMaterial = "";
         internal int selectedLayer = 0;
         internal int selectedMode = 0;
-
         public virtual string DisplayName => Name.Substring(0, Name.Length - 4).CamelCaseToText();
 
         public virtual bool ClickingTriggersDrag => false;
+        public override void PostSetupContent()
+        {
+            if (FavouriteMaterialsPref.Favourites.ContainsKey(FullName))
+            {
+                LoadFavourites(FavouriteMaterialsPref.Favourites.Value<JObject>(FullName));
+            }
+            else
+            {
+                FavouriteMaterialsPref.Favourites.Add(FullName, new JObject());
+            }
+        }
         internal void MouseDown(JObject room, float x, float y)
         {
             if (ClickingTriggersDrag)
@@ -38,6 +50,26 @@ namespace Edelweiss.Mapping.Tools
 
         }
 
+        public virtual void OnFavourited(string material)
+        {
+            
+        }
+
+        public virtual void LoadFavourites(JObject data)
+        {
+            
+        }
+
+        public virtual JToken SaveFavourites()
+        {
+            return new JObject();
+        }
+
+        public virtual Dictionary<string, string> GetMaterials()
+        {
+            return [];
+        }
+
         /// <summary>
         /// Defines special behaviour for the cursor ghost when the current tool is selected.
         /// Returns false by default
@@ -50,8 +82,8 @@ namespace Edelweiss.Mapping.Tools
             return false;
         }
 
-        public virtual List<string> Materials => [];
-        public virtual List<string> MaterialIDs => [];
+        public List<string> Materials => GetMaterials().Values.ToList();
+        public List<string> MaterialIDs => GetMaterials().Keys.ToList();
         public virtual List<string> Layers => [];
         public virtual List<string> Modes => [];
     }

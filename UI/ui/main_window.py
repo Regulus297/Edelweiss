@@ -99,3 +99,7 @@ class MappingWindow(QMainWindow):
     @property
     def current_tab(self):
         return self.tabs[self.stack.currentIndex()]
+
+    def closeEvent(self, a0):
+        PyNetworkManager.exit()
+        super().closeEvent(a0)

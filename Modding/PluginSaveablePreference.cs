@@ -39,6 +39,11 @@ namespace Edelweiss.Plugins
 
         }
 
+        public virtual void PrepForSave()
+        {
+            
+        }
+
         
         internal static void LoadPrefs()
         {
@@ -58,6 +63,7 @@ namespace Edelweiss.Plugins
                 JObject obj = JObject.Parse("{}");
                 Registry.ForAll<PluginSaveablePreference>(pref =>
                 {
+                    pref.PrepForSave();
                     obj.Add(pref.FullName, pref.Value);
                 });
                 writer.WriteLine(obj.ToString());

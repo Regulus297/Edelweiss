@@ -53,6 +53,7 @@
                                     "keys": "@defer('@getVar(\\'Edelweiss:MaterialIDs\\')')",
                                     "sizePolicyX": "Expanding",
                                     "onCurrentItemChanged": "@netcode('LIST_SELECTION_CHANGED')",
+                                    "onItemDoubleClicked": "@netcode('Edelweiss:MaterialFavourited')",
                                     "currentRow": "@defer('@getVar(\\'Edelweiss:SelectedMaterial\\')')",
                                     "id": "materialList",
                                     "trackedAs": "Mapping/MaterialList"

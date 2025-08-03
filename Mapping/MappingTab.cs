@@ -30,7 +30,7 @@ namespace Edelweiss.Mapping
 
         internal static long MouseMovedNetcode { get; private set; }
         internal static long RoomMouseNetcode { get; private set; }
-        internal static long SetTileNetcode { get; private set; }
+        internal static long MaterialFavouritedNetcode { get; private set; }
 
         internal static MappingTool selectedTool;
 
@@ -38,7 +38,7 @@ namespace Edelweiss.Mapping
         {
             MouseMovedNetcode = Plugin.CreateNetcode("MouseMoved", false);
             RoomMouseNetcode = Plugin.CreateNetcode("RoomMouse", false);
-            SetTileNetcode = Plugin.CreateNetcode("SetTile", true);
+            MaterialFavouritedNetcode = Plugin.CreateNetcode("MaterialFavourited", false);
         }
 
         public override void PostSetupContent()

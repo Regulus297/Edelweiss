@@ -102,6 +102,15 @@ class ResizingListWidgetCreator(WidgetCreator):
 
             widget.currentItemChanged.connect(send_packet)
 
+        if "onItemDoubleClicked" in data:
+            netcode1, extraData1 = get_event_data(data["onItemDoubleClicked"])
+            widget.itemDoubleClicked.connect(lambda material: PyNetworkManager.send_packet(netcode1, json.dumps({
+                "id": widget.objectName(),
+                "item": material.text(),
+                "itemID": widget.keys[widget.row(material)],
+                "extraData": extraData1
+            })))
+
 
         return widget
     
