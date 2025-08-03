@@ -35,7 +35,7 @@ namespace Edelweiss.Mapping.Tools
                 for (int loopY = 0; Math.Abs(loopY) <= Math.Abs(currentY - startRoomY); loopY += dirY)
                 {
                     if (selectedMode == 1 && !(loopX == 0 || loopY == 0 || Math.Abs(loopX) == Math.Abs(currentX - startRoomX) || Math.Abs(loopY) == Math.Abs(currentY - startRoomY)))
-                            continue;
+                        continue;
                     SetTile(ref tileData, room, loopX + startRoomX, loopY + startRoomY);
                 }
             }

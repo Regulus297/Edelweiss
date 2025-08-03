@@ -69,6 +69,7 @@ namespace Edelweiss.Mapping.PacketReceivers
             {
                 MappingTab.selectedTool.selectedLayer = data.Value<int>("currID");
                 MappingTab.materials.Value = MappingTab.selectedTool.Materials;
+                MappingTab.materialIDs.Value = MappingTab.selectedTool.MaterialIDs;
                 NetworkManager.SendPacket(Netcode.REFRESH_WIDGETS, new JObject()
                 {
                     {"widgets", JToken.FromObject(new List<string>() {"Mapping/MaterialList"})}

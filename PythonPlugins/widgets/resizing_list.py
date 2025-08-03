@@ -24,6 +24,7 @@ class ResizingList(QListWidget):
 
     def clear(self):
         super().clear()
+        self.keys.clear()
         self.setFixedHeight(0)
 
     def setCurrentRow(self, row):
