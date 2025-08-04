@@ -11,8 +11,8 @@ from plugins import get_event_data, DefaultEncoder
 class CustomDrawItem(QGraphicsItem):
     shapes = {}
 
-    def __init__(self, data):
-        super().__init__()
+    def __init__(self, data, parent=None):
+        super().__init__(parent)
         self.data = data
         self.shapes = data["shapes"]
         self.width = data["width"]

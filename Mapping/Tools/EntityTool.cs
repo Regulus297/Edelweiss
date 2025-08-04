@@ -26,6 +26,32 @@ namespace Edelweiss.Mapping.Tools
             return cachedMaterials;
         }
 
+        public override void MouseClick(JObject room, float x, float y)
+        {
+            (int tileX, int tileY) = EdelweissUtils.ToTileCoordinate(x, y);
+            JObject item = new()
+            {
+                {"name", selectedMaterial},
+                {"x", 8 * tileX},
+                {"y", 8 * tileY},
+                {"width", 8},
+                {"height", 8}
+            };
+
+            EntityData found = CelesteModLoader.entities[selectedMaterial];
+            JArray shapes = new();
+            found.Draw(shapes, RoomData.Default, Entity.Default);
+
+            item["shapes"] = shapes;
+
+            NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()
+            {
+                {"widget", "Mapping/MainView"},
+                {"parent", room.Value<string>("name")},
+                {"item", item}
+            });
+        }
+
         public override void OnSelect()
         {
             NetworkManager.SendPacket(Netcode.MODIFY_ITEM_SHAPE, new JObject()

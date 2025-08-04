@@ -16,8 +16,15 @@ class AddItemReceiver(PacketReceiver):
         if type(widget) != ZoomableView:
             print(f"Failed to add item as widget {type(widget)} is not a {ZoomableView}")
             return
+        
+        parent = None
+        # if "parent" in data and data["parent"] in widget.trackedItems:
+        #     parent = widget.trackedGraphicsItems[data["parent"]]
 
-        item = CustomDrawItem(data["item"])
-        widget.trackedItems[data["item"]["name"]] = data["item"]
-        widget.trackedGraphicsItems[data["item"]["name"]] = item
+        item = CustomDrawItem(data["item"], parent)
+
+        identifier = ((parent.data["name"] + "/") if parent is not None else "") + data["item"]["name"]
+
+        widget.trackedItems[identifier] = data["item"]
+        widget.trackedGraphicsItems[identifier] = item
         widget.grScene.addItem(item)

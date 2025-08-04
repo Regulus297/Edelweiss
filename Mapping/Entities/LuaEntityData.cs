@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MoonSharp.Interpreter;
@@ -23,6 +24,25 @@ namespace Edelweiss.Mapping.Entities
             return script.Call(textureMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).String;
         }
 
+        public override List<Sprite> Sprite(RoomData room, Entity entity)
+        {
+            DynValue spriteMethod = entityTable.Get("sprite");
+            if (spriteMethod.IsNil())
+                return base.Sprite(room, entity);
+            DynValue sprite = script.Call(spriteMethod, room.ToLuaTable(script), entity.ToLuaTable(script));
+            if (sprite.Table.Get("texture").IsNil())
+            {
+                List<Sprite> output = [];
+                // It's a list
+                foreach (var table in sprite.Table.Values)
+                    output.Add(new Sprite(table.Table));
+                return output;
+            }
+            // It's one sprite
+            return [new Sprite(sprite.Table)];
+        }
+        
+
         public override List<float> Justification(RoomData room, Entity entity)
         {
             DynValue justificationMethod = entityTable.Get("justification");
@@ -34,7 +54,7 @@ namespace Edelweiss.Mapping.Entities
             {
                 return justificationMethod.Table.Values.Select(v => (float)v.Number).ToList();
             }
-            return script.Call(justificationMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Table.Values.Select(v => (float)v.Number).ToList();;
+            return script.Call(justificationMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Table.Values.Select(v => (float)v.Number).ToList(); ;
         }
     }
 }
