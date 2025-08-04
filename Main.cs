@@ -18,6 +18,7 @@ public class Main
         Netcode.Initialize();
         PluginSaveablePreference.LoadPrefs();
         PluginLoader.LoadPlugins();
+        CelesteModLoader.LoadMods();
     }
     public static void Update()
     {

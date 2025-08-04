@@ -72,6 +72,8 @@ class CustomDrawItem(QGraphicsItem):
 
     def paint(self, painter, option, widget = ...):
         for shape in self.shapeRenderers:
+            if "visible" in shape.data and not shape.data["visible"]:
+                continue
             shape.draw(painter)
 
     def boundingRect(self):

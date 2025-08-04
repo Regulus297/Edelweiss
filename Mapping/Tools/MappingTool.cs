@@ -65,6 +65,16 @@ namespace Edelweiss.Mapping.Tools
             return new JObject();
         }
 
+        public virtual void OnSelect()
+        {
+            
+        }
+
+        public virtual void OnDeselect()
+        {
+            
+        }
+
         public virtual Dictionary<string, string> GetMaterials()
         {
             return [];

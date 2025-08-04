@@ -36,7 +36,9 @@ namespace Edelweiss.Mapping.PacketReceivers
         private void ProcessToolChanged(JObject data)
         {
             MappingTool t = (MappingTool)Registry.registry[typeof(MappingTool)].values.Find(t => ((MappingTool)t).FullName == data["currID"].ToString());
+            MappingTab.selectedTool?.OnDeselect();
             MappingTab.selectedTool = t;
+            t.OnSelect();
             if (t == null)
                 return;
 

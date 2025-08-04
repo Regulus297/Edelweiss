@@ -82,3 +82,11 @@ class SpecialTypeSetter(CommonPropertySetter):
     def set_property(self, widget, property_value):
         if property_value == "submit" and isinstance(widget, QPushButton):
             CommonVars.found_submit_button = widget
+
+@plugin_loadable
+class MaxHeightSetter(CommonPropertySetter):
+    def __init__(self):
+        super().__init__("maxHeight")
+
+    def set_property(self, widget, property_value):
+        widget.setMaximumHeight(property_value)

@@ -78,11 +78,13 @@ class ResizingListWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None) -> QWidget:
         widget = ResizingList(parent)
+        widget.setUpdatesEnabled(False)
         if "items" in data.keys():
             keys = data["keys"] if "keys" in data else range(len(data["items"]))
 
             for key, item in zip(keys, data["items"]):
                 widget.addKeyValuePair(key, item)
+        widget.setUpdatesEnabled(True)
 
         if "currentRow" in data.keys():
             widget.setCurrentRow(value(data["currentRow"]))
@@ -117,11 +119,13 @@ class ResizingListWidgetCreator(WidgetCreator):
     def refresh_widget(self, widget):
         widget.clear()
         data = getattr(widget, "__json_data__")
+        # widget.setUpdatesEnabled(False)
         if "items" in data.keys():
-            keys = data["keys"] if "keys" in data else range(len(data["items"]))
+            keys = data["keys"] if "keys" in data else list(range(len(data["items"])))
 
-            for key, item in zip(keys, data["items"]):
-                widget.addKeyValuePair(key, item)
+            widget.keys = value(keys)
+            widget.addItems(value(data["items"]))
+        # widget.setUpdatesEnabled(True)
 
         if "currentRow" in data.keys():
             widget.setCurrentRow(value(data["currentRow"]))

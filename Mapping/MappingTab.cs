@@ -66,15 +66,11 @@ namespace Edelweiss.Mapping
             switch (actionName)
             {
                 case "Create Room":
-                    Console.WriteLine("User wants to create a room");
-
                     NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, FormLoader.LoadForm("Edelweiss:Forms/room_creation").ToString());
                     break;
                 case "File/New File":
-                    Console.WriteLine("User wants to create a new file");
                     break;
                 case "File/Open Recent/Blahaj":
-                    Console.WriteLine("User wants a blahaj");
                     break;
             }
         }
