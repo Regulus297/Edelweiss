@@ -9,6 +9,7 @@ namespace Edelweiss.Utils
         public static Dictionary<string, string> texturePaths = [];
         public static bool LoadTextures(string graphicsPath)
         {
+            MainPlugin.Instance.Logger.Log($"Loading textures from {graphicsPath}");
             graphicsPath = Path.Join(graphicsPath, "Graphics", "Atlases");
             if (!Directory.Exists(graphicsPath))
                 return false;

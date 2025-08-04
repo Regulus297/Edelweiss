@@ -80,6 +80,11 @@
             The ID of the plugin. Every plugin needs to have a unique identifier.
             </summary>
         </member>
+        <member name="F:Edelweiss.Plugins.Plugin.Logger">
+            <summary>
+            The logger instance associated with this plugin
+            </summary>
+        </member>
         <member name="M:Edelweiss.Plugins.Plugin.OnRegister">
             <summary>
             

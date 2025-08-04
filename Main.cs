@@ -26,5 +26,6 @@ public class Main
     public static void Exit()
     {
         PluginSaveablePreference.SavePrefs();
+        Logger.Close();
     }
 }

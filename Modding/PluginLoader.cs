@@ -68,6 +68,7 @@ namespace Edelweiss.Plugins
                     plugin = (Plugin)Activator.CreateInstance(type);
                     Registry.registry[typeof(Plugin)].Add(plugin);
                     plugin.OnRegister();
+                    plugin.Logger.Log($"Loading plugin {plugin.ID}");
                 }
             }
             
@@ -83,7 +84,7 @@ namespace Edelweiss.Plugins
             // If any classes still failed to load, log it
             foreach (Type type in failed)
             {
-                Console.WriteLine($"Failed to load {type} from {plugin.ID}");
+                plugin.Logger.Warn($"Failed to load {type} from {plugin.ID}");
             }
             return plugin;
         }

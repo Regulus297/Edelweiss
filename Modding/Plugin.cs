@@ -18,10 +18,16 @@ namespace Edelweiss.Plugins
         internal event Action OnPostSetupContent;
 
         /// <summary>
+        /// The logger instance associated with this plugin
+        /// </summary>
+        public Logger Logger;
+
+        /// <summary>
         /// 
         /// </summary>
         public void OnRegister()
         {
+            Logger = new(this);
             Load();
         }
 
