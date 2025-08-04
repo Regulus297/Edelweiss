@@ -62,6 +62,12 @@
                                     "type": "QWidget",
                                     "sizePolicyX": "Expanding",
                                     "sizePolicyY": "Expanding"
+                                },
+                                {
+                                    "type": "QLineEdit",
+                                    "id": "materialSearch",
+                                    "trackedAs": "Mapping/MaterialSearch",
+                                    "onTextChanged": "@netcode('Edelweiss:MaterialSearched')"
                                 }
                             ]
                         }

@@ -171,6 +171,14 @@ class QLineEditWidgetCreator(WidgetCreator):
                 else:
                     lineEdit.setValidator(QDoubleValidator(lineEdit))
 
+        if "onTextChanged" in data:
+            netcode, extraData = get_event_data(data["onTextChanged"])
+            lineEdit.textChanged.connect(lambda text: PyNetworkManager.send_packet(netcode, json.dumps({
+                "id": lineEdit.objectName(),
+                "text": text,
+                "extraData": extraData
+            })))
+
         return lineEdit
     
     def clamp_line_edit_int(self, widget, low, high):

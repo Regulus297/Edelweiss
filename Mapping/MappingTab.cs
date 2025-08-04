@@ -28,9 +28,12 @@ namespace Edelweiss.Mapping
         internal static SyncedVariable selectedLayer = new("Edelweiss:SelectedLayer", 0);
         internal static SyncedVariable selectedMaterial = new("Edelweiss:SelectedMaterial", 0);
 
+        internal static string searchTerm = "";
+
         internal static long MouseMovedNetcode { get; private set; }
         internal static long RoomMouseNetcode { get; private set; }
         internal static long MaterialFavouritedNetcode { get; private set; }
+        internal static long MaterialSearchedNetcode { get; private set; }
 
         internal static MappingTool selectedTool;
 
@@ -39,6 +42,7 @@ namespace Edelweiss.Mapping
             MouseMovedNetcode = Plugin.CreateNetcode("MouseMoved", false);
             RoomMouseNetcode = Plugin.CreateNetcode("RoomMouse", false);
             MaterialFavouritedNetcode = Plugin.CreateNetcode("MaterialFavourited", false);
+            MaterialSearchedNetcode = Plugin.CreateNetcode("MaterialSearched", false);
         }
 
         public override void PostSetupContent()
