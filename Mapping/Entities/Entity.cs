@@ -14,6 +14,15 @@ namespace Edelweiss.Mapping.Entities
         public string _id = id;
         public string _type = "entity";
         public List<Point> nodes = nodes.ToList();
+        public Dictionary<string, object> data = [];
+
+        public static Entity DefaultFromData(EntityData entityData)
+        {
+            return new("", "")
+            {
+                data = entityData.GetPlacementData()
+            };
+        }
 
         public Table ToLuaTable(Script script)
         {
@@ -21,12 +30,23 @@ namespace Edelweiss.Mapping.Entities
             table["_name"] = _name;
             table["_id"] = _id;
             table["_type"] = _type;
+
+            // TODO: update this to actually reflect the entity's position
+            table["x"] = 0;
+            table["y"] = 0;
+            table["width"] = 0;
+            table["height"] = 0;
+
             Table nodesTable = new Table(script);
             foreach (Point p in nodes)
             {
                 nodesTable.Append(DynValue.NewTable(script, DynValue.NewNumber(p.X), DynValue.NewNumber(p.Y)));
             }
             table["nodes"] = nodesTable;
+            foreach (var d in data)
+            {
+                table[d.Key] = DynValue.FromObject(script, d.Value);
+            }
             return table;
         }
     }

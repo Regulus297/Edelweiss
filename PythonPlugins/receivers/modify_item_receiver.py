@@ -21,5 +21,18 @@ class ModifyItemShapeReceiver(PacketReceiver):
             print(f"No item found with name {data['item']}")
             return
         
-        widget.trackedItems[data["item"]].update(data["data"])
-        widget.trackedGraphicsItems[data["item"]].refresh(data["data"])
+        item = widget.trackedItems[data["item"]]
+        gItem = widget.trackedGraphicsItems[data["item"]]
+        if "action" not in data or data["action"] == "modify":
+            widget.trackedItems[data["item"]].update(data["data"])
+            widget.trackedGraphicsItems[data["item"]].refresh(data["data"])
+        elif data["action"] == "remove":
+            indices = [data["index"]] if isinstance(data["index"], int) else data["index"]
+            for index in reversed(sorted(indices)):
+                del item["shapes"][index]
+                del gItem.shapeRenderers[index]
+                gItem.refresh({})
+        elif data["action"] == "add":
+            for shape in data["shapes"]:
+                gItem.addShape(shape)
+            gItem.refresh({})

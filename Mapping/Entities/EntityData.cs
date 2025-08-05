@@ -23,6 +23,11 @@ namespace Edelweiss.Mapping.Entities
                 shapes.Add(sprite.ToJObject());
         }
 
+        public virtual Dictionary<string, object> GetPlacementData()
+        {
+            return [];
+        }
+
         public virtual List<float> Justification(RoomData room, Entity entity)
         {
             return [0.5f, 0.5f];

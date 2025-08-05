@@ -5,56 +5,103 @@ using MoonSharp.Interpreter;
 
 namespace Edelweiss.Mapping.Entities
 {
-    public class LuaEntityData(Script script, Table entityTable) : EntityData
+    public class LuaEntityData(string name, Table placement, Script script, Table entityTable) : EntityData
     {
         Script script = script;
         Table entityTable = entityTable;
-        public override string Name => (string)entityTable["name"];
+        Table placement = placement;
+        string name = name;
+        public override string Name => name;
         public override string Texture(RoomData room, Entity entity)
         {
-            DynValue textureMethod = entityTable.Get("texture");
-            if (textureMethod.IsNil())
+            try
             {
+                DynValue textureMethod = entityTable.Get("texture");
+                if (textureMethod.IsNil())
+                {
+                    return "";
+                }
+                if (textureMethod.Type == DataType.String)
+                {
+                    return textureMethod.String;
+                }
+                return script.Call(textureMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).String;
+            }
+            catch (Exception e)
+            {
+                MainPlugin.Instance.Logger.Error($"Error while getting texture for entity {Name}: \n {e}");
                 return "";
             }
-            if (textureMethod.Type == DataType.String)
-            {
-                return textureMethod.String;
-            }
-            return script.Call(textureMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).String;
         }
 
         public override List<Sprite> Sprite(RoomData room, Entity entity)
         {
-            DynValue spriteMethod = entityTable.Get("sprite");
-            if (spriteMethod.IsNil())
-                return base.Sprite(room, entity);
-            DynValue sprite = script.Call(spriteMethod, room.ToLuaTable(script), entity.ToLuaTable(script));
-            if (sprite.Table.Get("texture").IsNil())
+            try
             {
-                List<Sprite> output = [];
-                // It's a list
-                foreach (var table in sprite.Table.Values)
-                    output.Add(new Sprite(table.Table));
-                return output;
+                DynValue spriteMethod = entityTable.Get("sprite");
+                if (spriteMethod.IsNil())
+                    return base.Sprite(room, entity);
+                DynValue sprite = script.Call(spriteMethod, room.ToLuaTable(script), entity.ToLuaTable(script));
+                if (sprite.Table.Get("texture").IsNil())
+                {
+                    List<Sprite> output = [];
+                    // It's a list
+                    foreach (var table in sprite.Table.Values)
+                        output.Add(new Sprite(table.Table));
+                    return output;
+                }
+                // It's one sprite
+                return [new Sprite(sprite.Table)];
             }
-            // It's one sprite
-            return [new Sprite(sprite.Table)];
+            catch (Exception e)
+            {
+                MainPlugin.Instance.Logger.Error($"Error while getting sprite for entity {Name}: \n {e}");
+                return [];
+            }
         }
-        
+
 
         public override List<float> Justification(RoomData room, Entity entity)
         {
-            DynValue justificationMethod = entityTable.Get("justification");
-            if (justificationMethod.IsNil())
+            try
             {
+                DynValue justificationMethod = entityTable.Get("justification");
+                if (justificationMethod.IsNil())
+                {
+                    return [0.5f, 0.5f];
+                }
+                if (justificationMethod.Type == DataType.Table)
+                {
+                    return justificationMethod.Table.Values.Select(v => (float)v.Number).ToList();
+                }
+                return script.Call(justificationMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Table.Values.Select(v => (float)v.Number).ToList(); ;
+            }
+            catch (Exception e)
+            {
+                MainPlugin.Instance.Logger.Error($"Error while getting justification for entity {Name}: \n {e}");
                 return [0.5f, 0.5f];
             }
-            if (justificationMethod.Type == DataType.Table)
+        }
+
+        public override Dictionary<string, object> GetPlacementData()
+        {
+            try
             {
-                return justificationMethod.Table.Values.Select(v => (float)v.Number).ToList();
+                Dictionary<string, object> data = [];
+                Table dataTable = placement.Get("data").Table;
+                if (dataTable == null)
+                    return [];
+                foreach (var value in dataTable.Keys)
+                {
+                    data[value.String] = dataTable.Get(value).ToObject();
+                }
+                return data;
             }
-            return script.Call(justificationMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Table.Values.Select(v => (float)v.Number).ToList(); ;
+            catch (Exception e)
+            {
+                MainPlugin.Instance.Logger.Error($"Error while getting placement data for entity {Name}: \n {e}");
+                return [];
+            }
         }
     }
 }

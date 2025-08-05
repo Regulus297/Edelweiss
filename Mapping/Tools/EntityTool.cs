@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Edelweiss.Mapping.Entities;
 using Edelweiss.Network;
 using Edelweiss.Plugins;
@@ -13,6 +14,7 @@ namespace Edelweiss.Mapping.Tools
     {
         Dictionary<string, string> cachedMaterials = null;
         private string lastSelectedMaterial = "";
+        private int cursorGhostItems = 0;
         public override Dictionary<string, string> GetMaterials()
         {
             if (cachedMaterials == null)
@@ -40,7 +42,7 @@ namespace Edelweiss.Mapping.Tools
 
             EntityData found = CelesteModLoader.entities[selectedMaterial];
             JArray shapes = new();
-            found.Draw(shapes, RoomData.Default, Entity.Default);
+            found.Draw(shapes, RoomData.Default, Entity.DefaultFromData(found));
 
             item["shapes"] = shapes;
 
@@ -63,16 +65,6 @@ namespace Edelweiss.Mapping.Tools
                     {"visible", false}
                 }}
             });
-
-            NetworkManager.SendPacket(Netcode.MODIFY_ITEM_SHAPE, new JObject()
-            {
-                {"widget", "Mapping/MainView"},
-                {"item", "cursorGhost"},
-                {"index", 1},
-                {"data", new JObject() {
-                    {"visible", true}
-                }}
-            });
         }
 
         public override void OnDeselect()
@@ -87,15 +79,15 @@ namespace Edelweiss.Mapping.Tools
                 }}
             });
 
-            NetworkManager.SendPacket(Netcode.MODIFY_ITEM_SHAPE, new JObject()
+            NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
             {
                 {"widget", "Mapping/MainView"},
                 {"item", "cursorGhost"},
-                {"index", 1},
-                {"data", new JObject() {
-                    {"visible", false}
-                }}
+                {"action", "remove"},
+                {"index", JToken.FromObject(Enumerable.Range(1, cursorGhostItems))}
             });
+            cursorGhostItems = 0;
+            lastSelectedMaterial = "";
         }
 
         public override bool UpdateCursorGhost(float mouseX, float mouseY)
@@ -103,15 +95,26 @@ namespace Edelweiss.Mapping.Tools
             if (lastSelectedMaterial != selectedMaterial)
             {
                 EntityData found = CelesteModLoader.entities[selectedMaterial];
-                NetworkManager.SendPacket(Netcode.MODIFY_ITEM_SHAPE, new JObject()
+                NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
+                {
+                    {"widget", "Mapping/MainView"},
+                    {"item", "cursorGhost"},
+                    {"action", "remove"},
+                    {"index", JToken.FromObject(Enumerable.Range(1, cursorGhostItems))}
+                });
+
+                JArray shapes = new();
+                found.Draw(shapes, RoomData.Default, Entity.DefaultFromData(found));
+                foreach (var shape in shapes)
+                    shape["opacity"] = 0.5f;
+                cursorGhostItems = shapes.Count;
+                NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
                 {
                     {"widget", "Mapping/MainView"},
                     {"item", "cursorGhost"},
                     {"index", 1},
-                    {"data", new JObject() {
-                        {"path", "Gameplay/" + found.Texture(RoomData.Default, Entity.Default)},
-                        {"justification", JToken.FromObject(found.Justification(RoomData.Default, Entity.Default))}
-                    }}
+                    {"action", "add"},
+                    { "shapes", shapes}
                 });
                 lastSelectedMaterial = selectedMaterial;
             }

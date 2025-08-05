@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Edelweiss.Loenn;
 using MoonSharp.Interpreter;
@@ -49,6 +50,13 @@ namespace Edelweiss.Mapping.Entities
             sprite["rotation"] = rotation;
 
             sprite["depth"] = depth;
+
+            sprite["setPosition"] = (Func<double, double, Table>)((x, y) =>
+            {
+                // self["x"] = x;
+                // self["y"] = y;
+                return new Table(script);
+            });
 
             return sprite;
         }

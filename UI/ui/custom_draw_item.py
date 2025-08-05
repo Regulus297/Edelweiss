@@ -76,6 +76,10 @@ class CustomDrawItem(QGraphicsItem):
                 continue
             shape.draw(painter)
 
+    def addShape(self, shape):
+        self.shapes.append(shape)
+        self.shapeRenderers.append(type(CustomDrawItem.shapes[shape["type"]])(self, shape))
+
     def boundingRect(self):
         return QRectF(0, 0, self.width, self.height)
 

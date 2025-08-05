@@ -58,9 +58,7 @@ namespace Edelweiss.Utils
                     Table table = LoadLua(entityFile, File.ReadAllText(entityFile), out Script script);
                     if (table != null)
                     {
-                        LuaEntityData entityData = new(script, table);
-                        MainPlugin.Instance.Logger.Debug($"Loaded entity: {entityData.Name}");
-                        entities[entityData.Name] = entityData;
+                        CreateEntities(entityFile, table, script);
                     }
                 }
             }
@@ -82,14 +80,7 @@ namespace Edelweiss.Utils
                                 Table table = LoadLua(entry.FullName, streamReader.ReadToEnd(), out Script script);
                                 if (table != null)
                                 {
-                                    LuaEntityData entityData = new(script, table);
-                                    if (entityData.Name == null)
-                                    {
-                                        MainPlugin.Instance.Logger.Warn($"Entity at {modPath}/{entry.FullName} has no name!");
-                                        continue;
-                                    }
-                                    MainPlugin.Instance.Logger.Debug($"Loaded entity: {entityData.Name}");
-                                    entities[entityData.Name] = entityData;
+                                    CreateEntities(entry.FullName, table, script);
                                 }
                             }
                         }
@@ -117,6 +108,35 @@ namespace Edelweiss.Utils
             }
             script = tempScript;
             return null;
+        }
+
+        public static void CreateEntities(string fileName, Table table, Script script)
+        {
+            try
+            {
+                DynValue placementValue = table.Get("placements");
+                if (placementValue.Type != DataType.Table)
+                    return;
+
+                List<Table> placements = [placementValue.Table];
+                if (placementValue.Table.Get("name").IsNil())
+                {
+                    // It's a list of tables
+                    placements.Clear();
+                    foreach (DynValue v in placementValue.Table.Values)
+                        placements.Add(v.Table);
+                }
+
+                foreach (Table placement in placements)
+                {
+                    LuaEntityData entityData = new(table.Get("name").String + placement.Get("name").String, placement, script, table);
+                    entities[entityData.Name] = entityData;
+                }
+            }
+            catch (Exception e)
+            {
+                MainPlugin.Instance.Logger.Error($"Failed loading entity {fileName} with error: \n {LuaErrorEncoder.GetString(LuaErrorEncoder.GetBytes(e.ToString()))}");
+            }
         }
     }
 }
