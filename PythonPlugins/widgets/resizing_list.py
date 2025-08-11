@@ -1,5 +1,5 @@
-from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtWidgets import QListWidget
+from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtWidgets import QListWidget, QAbstractScrollArea, QSizePolicy, QAbstractItemView
 
 
 class ResizingList(QListWidget):
@@ -8,7 +8,13 @@ class ResizingList(QListWidget):
         self.itemInserted = itemInserted
         self.keys = []
         self.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        self.setContentsMargins(0, 0, 0, 0)
         self.setSelectionMode(QListWidget.SingleSelection)
+        self.setUniformItemSizes(True)
+        self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.setVerticalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        self.resize()
         self.max_height = 0
 
     def addKeyValuePair(self, key, value):
@@ -17,19 +23,26 @@ class ResizingList(QListWidget):
     
     def addItem(self, aitem):
         super().addItem(aitem)
-        totalHeight = 27 * self.count() + 11
-        self.setFixedHeight(self.clampedHeight(totalHeight))
-
-        width = self.sizeHintForColumn(0)
-        self.setMinimumWidth(width + 60)
+        QTimer.singleShot(0, self.resize)
 
     def addItems(self, items):
         super().addItems(items)
-        totalHeight = 27 * self.count() + 11
-        self.setFixedHeight(self.clampedHeight(totalHeight))
+        QTimer.singleShot(0, self.resize)
+
+    def resize(self):
+        if self.sizePolicy().verticalPolicy() == QSizePolicy.Fixed:
+            if self.count() == 0:
+                self.hide()
+                self.setFixedHeight(0)
+                return
+            else:
+                self.show()
+
+            totalHeight = self.sizeHintForRow(0) * self.count() + (self.frameWidth() * 2)
+            self.setFixedHeight(self.clampedHeight(totalHeight))
 
         width = self.sizeHintForColumn(0)
-        self.setMinimumWidth(width + 60)
+        self.setMinimumWidth(width)
 
 
     def setMaximumHeight(self, height):
@@ -41,7 +54,7 @@ class ResizingList(QListWidget):
     def clear(self):
         super().clear()
         self.keys.clear()
-        self.setFixedHeight(0)
+        self.resize() 
 
     def setCurrentRow(self, row):
         index = 0

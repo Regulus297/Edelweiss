@@ -1,6 +1,6 @@
 from ui import JSONWidgetLoader, CommonPropertySetter, MappingWindow
 from plugins import plugin_loadable, load_dependencies
-from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QPushButton, QApplication
 
 
 @plugin_loadable
@@ -39,7 +39,7 @@ class SizePolicyYSetter(CommonPropertySetter):
 @plugin_loadable
 class StylesheetSetter(CommonPropertySetter):
     def __init__(self):
-        super().__init__("stylesheet")
+        super().__init__("style")
 
     def set_property(self, widget, property_value):
         widget.setStyleSheet(property_value)
@@ -89,4 +89,30 @@ class MaxHeightSetter(CommonPropertySetter):
         super().__init__("maxHeight")
 
     def set_property(self, widget, property_value):
+        if isinstance(property_value, float):
+            property_value = int(property_value * MappingWindow.instance.height())
         widget.setMaximumHeight(property_value)
+
+
+@load_dependencies("common_code.py")
+@plugin_loadable
+class AlignmentSetter(CommonPropertySetter):
+    def __init__(self):
+        super().__init__("alignment")
+
+    def set_property(self, widget, property_value):
+        item = get_layout_item(widget)
+        if item is not None:
+            item.setAlignment(value(property_value))
+
+    def set_layout_property(self, layout, property_value):
+        layout.setAlignment(value(property_value))
+
+
+@plugin_loadable
+class ContentsMarginsSetter(CommonPropertySetter):
+    def __init__(self):
+        super().__init__("contentsMargins")
+
+    def set_layout_property(self, layout, property_value):
+        layout.setContentsMargins(*property_value)

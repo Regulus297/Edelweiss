@@ -30,3 +30,20 @@ class value:
         if isinstance(val, DeferredValue):
             return val._func()
         return val
+    
+
+def get_layout_item(widget):
+    parent = widget.parentWidget()
+    if parent is None:
+        return None
+    
+    layout = parent.layout()
+    if layout is None:
+        return None
+    
+    index = layout.indexOf(widget)
+    if index == -1:
+        return None
+    
+    return layout.itemAt(index)
+

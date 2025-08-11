@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QLayout, QSplitter, QPushButton, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QLayout, QSplitter, QPushButton, QSizePolicy, QListWidget
 
 
 class JSONWidgetLoader:
@@ -24,18 +24,37 @@ class JSONWidgetLoader:
                 print(f"Unsupported layout type: {layout_data['type']}")
                 return widget
 
-            layout: QLayout = JSONWidgetLoader.layout_creators[layout_data["type"]].create_layout(layout_data, widget)
-            widget.setLayout(layout)
-            for child in layout_data["children"]:
-                layout.addWidget(JSONWidgetLoader.init_widget(child, widget))
+            JSONWidgetLoader.init_layout(layout_data, widget)
 
         return widget
+
+    @staticmethod
+    def init_layout(data, parent=None):
+        layout: QLayout = JSONWidgetLoader.layout_creators[data["type"]].create_layout(data, parent)
+        parent.setLayout(layout)
+        JSONWidgetLoader.set_common_layout_props(layout, data)
+        for child in data["children"]:
+            if "isLayout" in child and child["isLayout"]:
+                layout.addItem(JSONWidgetLoader.init_layout(child, parent))
+            else:
+                layout.addWidget(JSONWidgetLoader.init_widget(child, parent))
+            if "alignment" in child:
+                layout.itemAt(layout.count() - 1).setAlignment(child["alignment"])
+
+
+        return layout
 
     @staticmethod
     def set_common_widget_props(widget: QWidget, data: dict):
         for key, value in data.items():
             if key in JSONWidgetLoader.common_property_setters.keys():
                 JSONWidgetLoader.common_property_setters[key].set_property(widget, value)
+
+    @staticmethod
+    def set_common_layout_props(layout: QLayout, data: dict):
+        for key, value in data.items():
+            if key in JSONWidgetLoader.common_property_setters.keys():
+                JSONWidgetLoader.common_property_setters[key].set_layout_property(layout, value)
 
 
 class WidgetCreator:
@@ -60,4 +79,7 @@ class CommonPropertySetter:
         JSONWidgetLoader.common_property_setters[prop] = self
 
     def set_property(self, widget, property_value):
+        ...
+
+    def set_layout_property(self, layout, property_value):
         ...

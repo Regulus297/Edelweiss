@@ -1,6 +1,7 @@
 from ui import LayoutCreator, JSONWidgetLoader
 from plugins import plugin_loadable
-from PyQt5.QtWidgets import QLayout, QHBoxLayout, QVBoxLayout, QGridLayout
+from PyQt5.QtWidgets import QLayout, QHBoxLayout, QVBoxLayout, QGridLayout, QStackedLayout
+from PyQt5.QtCore import QTimer
 
 
 @plugin_loadable
@@ -42,3 +43,16 @@ class QGridLayoutLayoutCreator(LayoutCreator):
 
         return layout
 
+
+@plugin_loadable
+class QStackedLayoutCreator(LayoutCreator):
+    def __init__(self):
+        super().__init__("QStackedLayout")
+    
+    def create_layout(self, data, parent) -> QLayout:
+        layout = QStackedLayout()
+        if "stackingMode" in data:
+            layout.setStackingMode(QStackedLayout.StackingMode.StackAll if data["stackingMode"] == "all" else QStackedLayout.StackingMode.StackOne)
+        if "currentIndex" in data:
+            layout.setCurrentIndex(data["currentIndex"])
+        return layout
