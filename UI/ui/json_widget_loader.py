@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QLayout, QSplitter, QPushButton, QSizePolicy, QListWidget
+from PyQt5.QtWidgets import QWidget, QLayout, QSplitter, QPushButton, QSizePolicy, QListWidget, QSpacerItem
 
 
 class JSONWidgetLoader:
@@ -36,6 +36,8 @@ class JSONWidgetLoader:
         for child in data["children"]:
             if "isLayout" in child and child["isLayout"]:
                 layout.addItem(JSONWidgetLoader.init_layout(child, parent))
+            elif "isSpacer" in child and child["isSpacer"]:
+                layout.addItem(QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Expanding))
             else:
                 layout.addWidget(JSONWidgetLoader.init_widget(child, parent))
             if "alignment" in child:

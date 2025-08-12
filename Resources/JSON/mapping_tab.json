@@ -79,6 +79,25 @@
                                     }
                                 ]
                             }
+                        },
+                        {
+                            "isSpacer": true
+                        },
+                        {
+                            "isLayout": true,
+                            "alignment": "@alignment('right')",
+                            "type": "QHBoxLayout",
+                            "children": [
+                                {
+                                    "alignment": "@alignment('right')",
+                                    "type": "ResizingList",
+                                    "items": "@defer('@getVar(\\'Edelweiss:Rooms\\')')",
+                                    "id": "roomList",
+                                    "trackedAs": "Mapping/RoomList",
+                                    "sizePolicyY": "Expanding",
+                                    "sizePolicyX": "Fixed"
+                                }
+                            ]
                         }
                     ]
                 }

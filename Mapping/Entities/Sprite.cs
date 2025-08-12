@@ -8,13 +8,13 @@ namespace Edelweiss.Mapping.Entities
 {
     public class Sprite(string texture, int x, int y, float justificationX, float justificationY, float scaleX, float scaleY, float renderOffsetX, float renderOffsetY, float rotation, int depth) : ILuaConvertible
     {
-        string texture = texture;
-        int x = x, y = y;
-        float justificationX = justificationX, justificationY = justificationY;
-        float scaleX = scaleX, scaleY = scaleY;
-        float renderOffsetX = renderOffsetX, renderOffsetY = renderOffsetY;
-        float rotation = rotation;
-        int depth = depth;
+        internal string texture = texture;
+        internal int x = x, y = y;
+        internal float justificationX = justificationX, justificationY = justificationY;
+        internal float scaleX = scaleX, scaleY = scaleY;
+        internal float renderOffsetX = renderOffsetX, renderOffsetY = renderOffsetY;
+        internal float rotation = rotation;
+        internal int depth = depth;
 
         public Sprite(string texture) : this(texture, 0, 0, 0.5f, 0.5f, 1, 1, 0, 0, 0, 0) {
 

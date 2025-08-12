@@ -19,18 +19,16 @@ namespace Edelweiss.Mapping.Tools
             var tiles = selectedLayer == 0 ? MainPlugin.Instance.fgTiles : MainPlugin.Instance.bgTiles;
             foreach (string material in list)
             {
-                if (MappingTab.searchTerm != "" && !tiles[material].name.ToLower().Contains(MappingTab.searchTerm))
-                    continue;
-                materials[material] = "★ " + tiles[material].name;
+                if (IsSearched(tiles[material].name))
+                    materials[material] = "★ " + tiles[material].name;
             }
 
             foreach (var pair in tiles)
             {
-                if ((selectedLayer == 0 ? favouriteFG : favouriteBG).Contains(pair.Key))
+                if (list.Contains(pair.Key))
                     continue;
-                if (MappingTab.searchTerm != "" && !pair.Value.name.ToLower().Contains(MappingTab.searchTerm))
-                    continue;
-                materials[pair.Key] = pair.Value.name;
+                if (IsSearched(pair.Value.name))
+                    materials[pair.Key] = pair.Value.name;
             }
             return materials;
         }

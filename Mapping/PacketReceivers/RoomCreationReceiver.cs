@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Edelweiss.Mapping.Entities;
 using Edelweiss.Network;
 using Edelweiss.Plugins;
 using Newtonsoft.Json.Linq;
@@ -37,6 +39,9 @@ namespace Edelweiss.Mapping.PacketReceivers
             room["shapes"][1]["width"] = width;
             room["shapes"][1]["height"] = height;
             room["name"] = extraData.Value<string>("name");
+
+            MappingTab.map.rooms.Add(new RoomData(extraData));
+            MappingTab.rooms.Value = MappingTab.map.rooms.Select(r => r.name);
 
             NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()
             {

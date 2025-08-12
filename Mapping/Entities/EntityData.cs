@@ -14,7 +14,10 @@ namespace Edelweiss.Mapping.Entities
 
         public virtual List<Sprite> Sprite(RoomData room, Entity entity)
         {
-            return [new(Texture(room, entity))];
+            return [new(Texture(room, entity)) {
+                justificationX = Justification(room, entity)[0],
+                justificationY = Justification(room, entity)[1]
+            }];
         }
 
         public virtual void Draw(JArray shapes, RoomData room, Entity entity)

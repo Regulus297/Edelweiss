@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Edelweiss.Plugins;
@@ -15,6 +16,8 @@ namespace Edelweiss.Mapping.Tools
         internal int selectedLayer = 0;
         internal int selectedMode = 0;
         public virtual string DisplayName => Name.Substring(0, Name.Length - 4).CamelCaseToText();
+
+        protected bool IsSearched(string material) => MappingTab.searchTerm == "" || material.Contains(MappingTab.searchTerm, StringComparison.CurrentCultureIgnoreCase);
 
         public virtual bool ClickingTriggersDrag => false;
         public override void PostSetupContent()

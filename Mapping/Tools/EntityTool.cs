@@ -13,19 +13,55 @@ namespace Edelweiss.Mapping.Tools
     internal class EntityTool : MappingTool
     {
         Dictionary<string, string> cachedMaterials = null;
+        List<string> favourites = [];
+        internal string previousSearchTerm = "";
+        internal bool recache = false;
         private string lastSelectedMaterial = "";
         private int cursorGhostItems = 0;
         public override Dictionary<string, string> GetMaterials()
         {
-            if (cachedMaterials == null)
+            if (cachedMaterials == null || previousSearchTerm != MappingTab.searchTerm || recache)
             {
+                previousSearchTerm = MappingTab.searchTerm;
+                recache = false;
                 cachedMaterials = [];
+                foreach (string material in favourites)
+                {
+                    if (IsSearched(CelesteModLoader.entities[material].Name))
+                        cachedMaterials[material] = "★ " + CelesteModLoader.entities[material].Name;
+                }
                 foreach (var entity in CelesteModLoader.entities)
                 {
-                    cachedMaterials[entity.Key] = entity.Value.Name;
+                    if (favourites.Contains(entity.Key))
+                        continue;
+                        
+                    if (IsSearched(entity.Value.Name))
+                        cachedMaterials[entity.Key] = entity.Value.Name;
                 }
             }
             return cachedMaterials;
+        }
+
+        public override void OnFavourited(string material)
+        {
+            favourites.Add(material);
+            recache = true;
+        }
+
+        public override JToken SaveFavourites()
+        {
+            return new JObject() {
+                {"entities", new JArray(favourites.ToArray())}
+            };
+        }
+
+        public override void LoadFavourites(JObject data)
+        {
+            JArray entities = data.Value<JArray>("entities");
+            if (entities != null)
+            {
+                favourites = entities.Select(t => t.ToString()).ToList();
+            }
         }
 
         public override void MouseClick(JObject room, float x, float y)

@@ -44,17 +44,12 @@ namespace Edelweiss.Mapping.PacketReceivers
 
             MappingTab.layers.Value = t.Layers;
             MappingTab.modes.Value = t.Modes;
-            MappingTab.materials.Value = t.Materials;
             MappingTab.materialIDs.Value = t.MaterialIDs;
+            MappingTab.materials.Value = t.Materials;
 
             MappingTab.selectedLayer.Value = t.selectedLayer;
             MappingTab.selectedMaterial.Value = t.selectedMaterial;
             MappingTab.selectedMode.Value = t.selectedMode;
-
-            NetworkManager.SendPacket(Netcode.REFRESH_WIDGETS, new JObject()
-            {
-                {"widgets", JToken.FromObject(new List<string>() {"Mapping/ModeList", "Mapping/LayerList", "Mapping/MaterialList"})}
-            });
         }
 
         private void ProcessModeChanged(JObject data)
@@ -70,12 +65,8 @@ namespace Edelweiss.Mapping.PacketReceivers
             if (MappingTab.selectedTool != null && data.Value<int?>("currID") != null)
             {
                 MappingTab.selectedTool.selectedLayer = data.Value<int>("currID");
-                MappingTab.materials.Value = MappingTab.selectedTool.Materials;
                 MappingTab.materialIDs.Value = MappingTab.selectedTool.MaterialIDs;
-                NetworkManager.SendPacket(Netcode.REFRESH_WIDGETS, new JObject()
-                {
-                    {"widgets", JToken.FromObject(new List<string>() {"Mapping/MaterialList"})}
-                });
+                MappingTab.materials.Value = MappingTab.selectedTool.Materials;
             }
 
         }

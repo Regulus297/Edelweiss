@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edelweiss.Mapping.Entities;
 using Edelweiss.Mapping.Tools;
 using Edelweiss.Network;
 using Edelweiss.Plugins;
@@ -18,15 +19,16 @@ namespace Edelweiss.Mapping
 
         public override string DisplayName => "Mapping";
 
-        internal static SyncedVariable tools = new("Edelweiss:Tools");
-        internal static SyncedVariable toolIDs = new("Edelweiss:ToolIDs");
-        internal static SyncedVariable modes = new("Edelweiss:Modes");
-        internal static SyncedVariable layers = new("Edelweiss:Layers");
-        internal static SyncedVariable materials = new("Edelweiss:Materials");
-        internal static SyncedVariable materialIDs = new("Edelweiss:MaterialIDs");
+        internal static SyncedVariable tools = new("Edelweiss:Tools", null, "Mapping/ToolList");
+        internal static SyncedVariable toolIDs = new("Edelweiss:ToolIDs", null);
+        internal static SyncedVariable modes = new("Edelweiss:Modes", null, "Mapping/ModeList");
+        internal static SyncedVariable layers = new("Edelweiss:Layers", null, "Mapping/LayerList");
+        internal static SyncedVariable materials = new("Edelweiss:Materials", null, "Mapping/MaterialList");
+        internal static SyncedVariable materialIDs = new("Edelweiss:MaterialIDs", null);
         internal static SyncedVariable selectedMode = new("Edelweiss:SelectedMode", 0);
         internal static SyncedVariable selectedLayer = new("Edelweiss:SelectedLayer", 0);
         internal static SyncedVariable selectedMaterial = new("Edelweiss:SelectedMaterial", 0);
+        internal static SyncedVariable rooms = new("Edelweiss:Rooms", null, "Mapping/RoomList");
 
         internal static string searchTerm = "";
 
@@ -36,6 +38,8 @@ namespace Edelweiss.Mapping
         internal static long MaterialSearchedNetcode { get; private set; }
 
         internal static MappingTool selectedTool;
+
+        internal static MapData map = null;
 
         public override void Load()
         {
@@ -53,6 +57,8 @@ namespace Edelweiss.Mapping
             layers.Value = new List<string>();
             materials.Value = new List<string>();
             materialIDs.Value = new List<string>();
+            rooms.Value = new List<string>();
+            map = new();
             base.PostSetupContent();
             NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()
             {

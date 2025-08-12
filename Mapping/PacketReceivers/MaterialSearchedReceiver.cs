@@ -14,12 +14,8 @@ namespace Edelweiss.Mapping.PacketReceivers
         {
             JObject data = JObject.Parse(packet.data);
             MappingTab.searchTerm = data.Value<string>("text").ToLower();
-            MappingTab.materials.Value = MappingTab.selectedTool.Materials;
             MappingTab.materialIDs.Value = MappingTab.selectedTool.MaterialIDs;
-            NetworkManager.SendPacket(Netcode.REFRESH_WIDGETS, new JObject()
-            {
-                {"widgets", JToken.FromObject(new List<string>() {"Mapping/MaterialList"})}
-            });
+            MappingTab.materials.Value = MappingTab.selectedTool.Materials;
         }
     }
 }
