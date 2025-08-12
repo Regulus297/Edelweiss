@@ -58,12 +58,36 @@ namespace Edelweiss.Utils
         }
     }
 
+    /// <summary>
+    /// Contains data for a tile
+    /// </summary>
+    /// <param name="ID">The ID of the tile</param>
+    /// <param name="path">The path to the texture of the tile relative to Gameplay/tilesets/</param>
+    /// <param name="masks">The patterns of the tile</param>
+    /// <param name="ignores">Which tiles, if any, that the tile ignores</param>
     public class TileData(string ID, string path, Dictionary<string, List<Point>> masks, string ignores = "")
     {
+        /// <summary>
+        /// The ID of the tile
+        /// </summary>
         public string ID { get; set; } = ID;
+        /// <summary>
+        /// The path to the texture of the tile
+        /// </summary>
         public string path { get; set; } = "Gameplay/tilesets/" + path;
+
+        /// <summary>
+        /// The patterns of the tile
+        /// </summary>
         public Dictionary<string, List<Point>> masks { get; set; } = masks;
+        /// <summary>
+        /// Which tiles, if any, that the tile ignores
+        /// </summary>
         public string ignores { get; set; } = ignores;
+
+        /// <summary>
+        /// The display name of the tile
+        /// </summary>
         public string name { get; set; } = (path.StartsWith("bg") ? path.Substring(2) : path).CamelCaseToText();
     }
 }

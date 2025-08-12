@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 namespace Edelweiss.Mapping.PacketReceivers
 {
     [LoadAfter(typeof(MappingTab))]
-    public class MaterialSearchedReceiver : PluginPacketReceiver
+    internal class MaterialSearchedReceiver : PluginPacketReceiver
     {
         public override long HandledCode => MappingTab.MaterialSearchedNetcode;
 

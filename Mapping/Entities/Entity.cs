@@ -7,15 +7,40 @@ using MoonSharp.Interpreter;
 
 namespace Edelweiss.Mapping.Entities
 {
-    public class Entity(string name, string id, params Point[] nodes): ILuaConvertible
+    /// <summary>
+    /// Class containing data for an entity placed in the map.
+    /// </summary>
+    public class Entity(string name, string id, params Point[] nodes) : ILuaConvertible
     {
-        public static Entity Default = new("", "");
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string _name = name;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string _id = id;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string _type = "entity";
+
+        /// <summary>
+        /// The positions of the nodes the entity has
+        /// </summary>
         public List<Point> nodes = nodes.ToList();
+
+        /// <summary>
+        /// The placement data for the entity;
+        /// </summary>
         public Dictionary<string, object> data = [];
 
+        /// <summary>
+        /// Creates a default entity with the placement data from the given entity data
+        /// </summary>
         public static Entity DefaultFromData(EntityData entityData)
         {
             return new("", "")
@@ -24,6 +49,9 @@ namespace Edelweiss.Mapping.Entities
             };
         }
 
+        /// <summary>
+        /// Converts the entity to a Lua table compatible with Loenn
+        /// </summary>
         public Table ToLuaTable(Script script)
         {
             Table table = new(script);

@@ -11,8 +11,14 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss;
 
+/// <summary>
+/// 
+/// </summary>
 public class Main
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static void Initialize()
     {
         Netcode.Initialize();
@@ -20,13 +26,19 @@ public class Main
         PluginLoader.LoadPlugins();
         CelesteModLoader.LoadMods();
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
     public static void Update()
     {
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public static void Exit()
     {
         PluginSaveablePreference.SavePrefs();
-        Logger.Close();
     }
 }

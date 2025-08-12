@@ -9,17 +9,32 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Tools
 {
+    /// <summary>
+    /// The base class for any tools used in mapping
+    /// </summary>
     [BaseRegistryObject()]
     public abstract class MappingTool : PluginRegistryObject
     {
         internal string selectedMaterial = "";
         internal int selectedLayer = 0;
         internal int selectedMode = 0;
-        public virtual string DisplayName => Name.Substring(0, Name.Length - 4).CamelCaseToText();
 
+        /// <summary>
+        /// The display name of the tool. Defaults to the class name minus the "Tool" suffix if present 
+        /// </summary>
+        public virtual string DisplayName => Name.EndsWith("Tool")? Name.Substring(0, Name.Length - 4).CamelCaseToText(): Name.CamelCaseToText();
+
+        /// <summary>
+        /// Returns true if the input material matches the current search term
+        /// </summary>
         protected bool IsSearched(string material) => MappingTab.searchTerm == "" || material.Contains(MappingTab.searchTerm, StringComparison.CurrentCultureIgnoreCase);
 
+        /// <summary>
+        /// If true, clicking will also trigger <see cref="MouseDrag"/> as well as <see cref="MouseClick"/>  
+        /// </summary>
         public virtual bool ClickingTriggersDrag => false;
+
+        /// <inheritdoc/>
         public override void PostSetupContent()
         {
             if (FavouriteMaterialsPref.Favourites.ContainsKey(FullName))
@@ -38,46 +53,86 @@ namespace Edelweiss.Mapping.Tools
             MouseClick(room, x, y);
         }
 
+        /// <summary>
+        /// Called when the mouse is clicked while this tool is selected
+        /// </summary>
+        /// <param name="room">The current selected room. Null if no room is selected</param>
+        /// <param name="x">The x-coordinate of the mouse</param>
+        /// <param name="y">The y-coordinate of the mouse</param>
         public virtual void MouseClick(JObject room, float x, float y)
         {
 
         }
 
+
+        /// <summary>
+        /// Called when the mouse is dragged while this tool is selected
+        /// </summary>
+        /// <param name="room">The current selected room. Null if no room is selected</param>
+        /// <param name="x">The x-coordinate of the mouse</param>
+        /// <param name="y">The y-coordinate of the mouse</param>
         public virtual void MouseDrag(JObject room, float x, float y)
         {
 
         }
 
+        /// <summary>
+        /// Called when the mouse is released while this tool is selected
+        /// </summary>
+        /// <param name="room">The current selected room. Null if no room is selected</param>
+        /// <param name="x">The x-coordinate of the mouse</param>
+        /// <param name="y">The y-coordinate of the mouse</param>
         public virtual void MouseRelease(JObject room, float x, float y)
         {
 
         }
 
+        /// <summary>
+        /// Called when a particular material is favourited by the user
+        /// </summary>
+        /// <param name="material">The ID of the favourited material</param>
         public virtual void OnFavourited(string material)
         {
-            
+
         }
 
+        /// <summary>
+        /// Loads the favourites from the saved preference
+        /// </summary>
+        /// <param name="data">The favourites for this particular tool</param>
         public virtual void LoadFavourites(JObject data)
         {
-            
+
         }
 
+        /// <summary>
+        /// Saves the favourited materials as a JToken
+        /// </summary>
         public virtual JToken SaveFavourites()
         {
             return new JObject();
         }
 
+        /// <summary>
+        /// Called when the tool is selected
+        /// </summary>
         public virtual void OnSelect()
         {
-            
+
         }
 
+        /// <summary>
+        /// Called when the tool is deselected
+        /// </summary>
         public virtual void OnDeselect()
         {
-            
+
         }
 
+        /// <summary>
+        /// Gets the materials that the tool should display.
+        /// </summary>
+        /// <returns>A dictionary of the material IDs to the display names</returns>
         public virtual Dictionary<string, string> GetMaterials()
         {
             return [];
@@ -95,9 +150,24 @@ namespace Edelweiss.Mapping.Tools
             return false;
         }
 
+        /// <summary>
+        /// The material names of the tool
+        /// </summary>
         public List<string> Materials => GetMaterials().Values.ToList();
+
+        /// <summary>
+        /// The material IDs of the tool
+        /// </summary>
         public List<string> MaterialIDs => GetMaterials().Keys.ToList();
+
+        /// <summary>
+        /// The layers the tool can operate on. Usually affects which materials are available
+        /// </summary>
         public virtual List<string> Layers => [];
+
+        /// <summary>
+        /// The modes the tool can have.
+        /// </summary>
         public virtual List<string> Modes => [];
     }
 }

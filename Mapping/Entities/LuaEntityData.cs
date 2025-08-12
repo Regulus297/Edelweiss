@@ -5,13 +5,24 @@ using MoonSharp.Interpreter;
 
 namespace Edelweiss.Mapping.Entities
 {
+    /// <summary>
+    /// The class containing entity data for a Loenn entity
+    /// </summary>
+    /// <param name="name">The name of the entity</param>
+    /// <param name="placement">The placement table that this entity is for</param>
+    /// <param name="script">The script the table belongs to</param>
+    /// <param name="entityTable">The table containing all entity data</param>
     public class LuaEntityData(string name, Table placement, Script script, Table entityTable) : EntityData
     {
         Script script = script;
         Table entityTable = entityTable;
         Table placement = placement;
         string name = name;
+
+        /// <inheritdoc/>
         public override string Name => name;
+
+        /// <inheritdoc/>
         public override string Texture(RoomData room, Entity entity)
         {
             try
@@ -34,6 +45,7 @@ namespace Edelweiss.Mapping.Entities
             }
         }
 
+        /// <inheritdoc/>
         public override List<Sprite> Sprite(RoomData room, Entity entity)
         {
             try
@@ -61,6 +73,7 @@ namespace Edelweiss.Mapping.Entities
         }
 
 
+        /// <inheritdoc/>
         public override List<float> Justification(RoomData room, Entity entity)
         {
             try
@@ -83,6 +96,7 @@ namespace Edelweiss.Mapping.Entities
             }
         }
 
+        /// <inheritdoc/>
         public override Dictionary<string, object> GetPlacementData()
         {
             try

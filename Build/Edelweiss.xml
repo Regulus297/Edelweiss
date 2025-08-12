@@ -4,6 +4,417 @@
         <name>Edelweiss</name>
     </assembly>
     <members>
+        <member name="T:Edelweiss.Loenn.ILuaConvertible">
+            <summary>
+            Makes a class convertible into a Loenn-compatible Lua table.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Loenn.ILuaConvertible.ToLuaTable(MoonSharp.Interpreter.Script)">
+            <summary>
+            Converts the class into a Lua table.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Loenn.LoennModule">
+            <summary>
+            Base class for a custom implementation of a Loenn module.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Loenn.LoennModule.Load">
+            <inheritdoc/>
+        </member>
+        <member name="P:Edelweiss.Loenn.LoennModule.ModuleName">
+            <summary>
+            The name of the Loenn module this replaces.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Loenn.LoennModule.GenerateTable(MoonSharp.Interpreter.Script)">
+            <summary>
+            Generates the table for the module
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Main">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Main.Initialize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Main.Update">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Main.Exit">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.Entity">
+            <summary>
+            Class containing data for an entity placed in the map.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.#ctor(System.String,System.String,System.Drawing.Point[])">
+            <summary>
+            Class containing data for an entity placed in the map.
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.Entity._name">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.Entity._id">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.Entity._type">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.Entity.nodes">
+            <summary>
+            The positions of the nodes the entity has
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.Entity.data">
+            <summary>
+            The placement data for the entity;
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.DefaultFromData(Edelweiss.Mapping.Entities.EntityData)">
+            <summary>
+            Creates a default entity with the placement data from the given entity data
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.ToLuaTable(MoonSharp.Interpreter.Script)">
+            <summary>
+            Converts the entity to a Lua table compatible with Loenn
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.EntityData">
+            <summary>
+            Base class for entity data
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.EntityData.Name">
+            <summary>
+            The name of the entity
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Texture(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            The texture key of the entity, relative to Gameplay/
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Sprite(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            Gets the sprites for the entity. Defaults to returning a sprite with the texture key returned by <see cref="M:Edelweiss.Mapping.Entities.EntityData.Texture(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)"/>.
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Draw(Newtonsoft.Json.Linq.JArray,Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            Draws the entity to the shapes array.
+            Defaults to drawing the sprites returned by <seealso cref="M:Edelweiss.Mapping.Entities.EntityData.Sprite(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)"/> onto the array.
+            </summary>
+            <param name="shapes">The list of shapes this entity will be made up of</param>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.GetPlacementData">
+            <summary>
+            Gets the fields of the entity from the placement
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Justification(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            A list of two floats ranging from 0 to 1. Determines the position of the sprite relative to the entity's position.
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.LuaEntityData">
+            <summary>
+            The class containing entity data for a Loenn entity
+            </summary>
+            <param name="name">The name of the entity</param>
+            <param name="placement">The placement table that this entity is for</param>
+            <param name="script">The script the table belongs to</param>
+            <param name="entityTable">The table containing all entity data</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.#ctor(System.String,MoonSharp.Interpreter.Table,MoonSharp.Interpreter.Script,MoonSharp.Interpreter.Table)">
+            <summary>
+            The class containing entity data for a Loenn entity
+            </summary>
+            <param name="name">The name of the entity</param>
+            <param name="placement">The placement table that this entity is for</param>
+            <param name="script">The script the table belongs to</param>
+            <param name="entityTable">The table containing all entity data</param>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.LuaEntityData.Name">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Texture(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Sprite(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Justification(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.GetPlacementData">
+            <inheritdoc/>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.MapData">
+            <summary>
+            Class containing map data
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapData.rooms">
+            <summary>
+            The rooms that the map contains
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.RoomData">
+            <summary>
+            Class containing room data for the backend
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.RoomData.#ctor(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Class containing room data for the backend
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.Default">
+            <summary>
+            The default room data
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.name">
+            <summary>
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.x">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.y">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.width">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.height">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.musicLayer1">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.musicLayer2">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.musicLayer3">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.musicLayer4">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.musicProgress">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.ambienceProgress">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.dark">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.space">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.underwater">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.whisper">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.disableDownTransition">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.music">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.ambience">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.windPattern">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.color">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.RoomData.ToLuaTable(MoonSharp.Interpreter.Script)">
+            <summary>
+            Converts the room to a Lua table compatible with Loenn.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.Sprite">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Sprite.#ctor(System.String,System.Int32,System.Int32,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Int32)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Sprite.#ctor(System.String)">
+            <summary>
+            Creates a sprite with the given texture key
+            </summary>
+            <param name="texture">The texture of the sprite relative to Gameplay/</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Sprite.#ctor(MoonSharp.Interpreter.Table)">
+            <summary>
+            Creates a sprite from the given Lua table
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Sprite.ToLuaTable(MoonSharp.Interpreter.Script)">
+            <summary>
+            Converts the sprite to a Lua table that is compatible with Loenn
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Sprite.ToJObject">
+            <summary>
+            Converts the sprite to a shape JObject that can be drawn by the frontend
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Tools.MappingTool">
+            <summary>
+            The base class for any tools used in mapping
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Tools.MappingTool.DisplayName">
+            <summary>
+            The display name of the tool. Defaults to the class name minus the "Tool" suffix if present 
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.MappingTool.IsSearched(System.String)">
+            <summary>
+            Returns true if the input material matches the current search term
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Tools.MappingTool.ClickingTriggersDrag">
+            <summary>
+            If true, clicking will also trigger <see cref="M:Edelweiss.Mapping.Tools.MappingTool.MouseDrag(Newtonsoft.Json.Linq.JObject,System.Single,System.Single)"/> as well as <see cref="M:Edelweiss.Mapping.Tools.MappingTool.MouseClick(Newtonsoft.Json.Linq.JObject,System.Single,System.Single)"/>  
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.MappingTool.PostSetupContent">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.MappingTool.MouseClick(Newtonsoft.Json.Linq.JObject,System.Single,System.Single)">
+            <summary>
+            Called when the mouse is clicked while this tool is selected
+            </summary>
+            <param name="room">The current selected room. Null if no room is selected</param>
+            <param name="x">The x-coordinate of the mouse</param>
+            <param name="y">The y-coordinate of the mouse</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.MappingTool.MouseDrag(Newtonsoft.Json.Linq.JObject,System.Single,System.Single)">
+            <summary>
+            Called when the mouse is dragged while this tool is selected
+            </summary>
+            <param name="room">The current selected room. Null if no room is selected</param>
+            <param name="x">The x-coordinate of the mouse</param>
+            <param name="y">The y-coordinate of the mouse</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.MappingTool.MouseRelease(Newtonsoft.Json.Linq.JObject,System.Single,System.Single)">
+            <summary>
+            Called when the mouse is released while this tool is selected
+            </summary>
+            <param name="room">The current selected room. Null if no room is selected</param>
+            <param name="x">The x-coordinate of the mouse</param>
+            <param name="y">The y-coordinate of the mouse</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.MappingTool.OnFavourited(System.String)">
+            <summary>
+            Called when a particular material is favourited by the user
+            </summary>
+            <param name="material">The ID of the favourited material</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.MappingTool.LoadFavourites(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Loads the favourites from the saved preference
+            </summary>
+            <param name="data">The favourites for this particular tool</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.MappingTool.SaveFavourites">
+            <summary>
+            Saves the favourited materials as a JToken
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.MappingTool.OnSelect">
+            <summary>
+            Called when the tool is selected
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.MappingTool.OnDeselect">
+            <summary>
+            Called when the tool is deselected
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.MappingTool.GetMaterials">
+            <summary>
+            Gets the materials that the tool should display.
+            </summary>
+            <returns>A dictionary of the material IDs to the display names</returns>
+        </member>
         <member name="M:Edelweiss.Mapping.Tools.MappingTool.UpdateCursorGhost(System.Single,System.Single)">
             <summary>
             Defines special behaviour for the cursor ghost when the current tool is selected.
@@ -12,6 +423,64 @@
             <param name="mouseX">The x-coordinate of the mouse in scene coordinates</param>
             <param name="mouseY">The y-coordinate of the mouse in scene coordinates</param>
             <returns>False if default update logic should be used, true to suppress default logic</returns>
+        </member>
+        <member name="P:Edelweiss.Mapping.Tools.MappingTool.Materials">
+            <summary>
+            The material names of the tool
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Tools.MappingTool.MaterialIDs">
+            <summary>
+            The material IDs of the tool
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Tools.MappingTool.Layers">
+            <summary>
+            The layers the tool can operate on. Usually affects which materials are available
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Tools.MappingTool.Modes">
+            <summary>
+            The modes the tool can have.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Tools.TileTool">
+            <summary>
+            A base class for any tool that places tiles
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Tools.TileTool.Layers">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.TileTool.GetMaterials">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.TileTool.OnFavourited(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.TileTool.LoadFavourites(Newtonsoft.Json.Linq.JObject)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.TileTool.SaveFavourites">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.TileTool.SetTile(System.String@,Newtonsoft.Json.Linq.JObject,System.Int32,System.Int32)">
+            <summary>
+            Sets a tile at the given coordinates to the current selected material.
+            </summary>
+            <param name="tileData">The tiles that room currently contains</param>
+            <param name="room">The room</param>
+            <param name="x">The x-coordinate of the tile</param>
+            <param name="y">The y-coordinate of the tile</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.TileTool.TileInBounds(Newtonsoft.Json.Linq.JObject,System.Int32,System.Int32)">
+            <summary>
+            Checks if a given tile is in bounds of a room
+            </summary>
+            <param name="room">The room</param>
+            <param name="x">The x-coordinate of the tile</param>
+            <param name="y">The y-coordinate of the tile</param>
+            <returns>True if the tile is in bounds, false otherwise</returns>
         </member>
         <member name="T:Edelweiss.Plugins.CustomTab">
             <summary>
@@ -69,6 +538,38 @@
             Classes marked with this attribute will require that the specified types be loaded before they can be loaded
             </summary>
             <param name="otherTypes">The types to load before this type</param>
+        </member>
+        <member name="T:Edelweiss.Plugins.Logger">
+            <summary>
+            A class that logs messages
+            </summary>
+            <param name="plugin">The plugin this logger belongs to</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.#ctor(Edelweiss.Plugins.Plugin)">
+            <summary>
+            A class that logs messages
+            </summary>
+            <param name="plugin">The plugin this logger belongs to</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Log(System.Object)">
+            <summary>
+            Logs a message
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Debug(System.Object)">
+            <summary>
+            Logs a message for debugging
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Warn(System.Object)">
+            <summary>
+            Logs a warning
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Error(System.Object)">
+            <summary>
+            Logs an error
+            </summary>
         </member>
         <member name="T:Edelweiss.Plugins.Plugin">
             <summary>
@@ -195,6 +696,118 @@
             Called if the preference was not found in the saved preferences.
             </summary>
         </member>
+        <member name="M:Edelweiss.Plugins.PluginSaveablePreference.PrepForSave">
+            <summary>
+            Called before the preference is saved, to perform tasks necessary to save correctly
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Network.Netcode">
+            <summary>
+            The class that registers and handles netcodes 
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.NONE">
+            <summary>
+            The default netcode
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.REGISTER_PYTHON_PLUGINS">
+            <summary>
+            Registers python plugins. <br/>
+            Parameters: <br/>
+            - files: a list of string containing the paths of the python files to register
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.REGISTER_TAB">
+            <summary>
+            Registers a custom tab. <br/>
+            Parameters: <br/>
+            - name: the display name of the tab <br/>
+            - internalName: the ID of the tab <br/>
+            - json: the JSON representation of the tab
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.ADD_ITEM">
+            <summary>
+            Adds an item to a ZoomableView. <br/>
+            Paramters: <br/>
+            - widget: the tracker for the ZoomableView to add the item to <br/>
+            - item: the JSON representation of the item <br/>
+            - parent (optional): the name of the parent item of this item. Must be in the same ZoomableView
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.MODIFY_ITEM_SHAPE">
+            <summary>
+            Modifies the shape data of a particular shape of an item. <br/>
+            Parameters: <br/>
+            - widget: the tracker for the ZoomableView the item is in <br/>
+            - item: the name of the item the shape is in <br/>
+            - index: the index of the shape in the item's shapes array <br/>
+            - data: the modified data the shape should have
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.MODIFY_ITEM">
+            <summary>
+            Modifies the item data of a particular item. <br/>
+            Parameters: <br/>
+            - widget: the tracker for the ZoomableView the item is in <br/>
+            - item: the name of the item <br/>
+            - data: the modified data the item should have
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.REGISTER_TOOLBAR">
+            <summary>
+            Changes the toolbar to the desired JSON representation. <br/>
+            No parameters, only the JSON representation of the toolbar should be sent.
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.OPEN_POPUP_FORM">
+            <summary>
+            Opens a popup widget with the passed JSON representation and treats it as a form. <br/>
+            No parameters, only the JSON representation of the widget should be sent. <br/>
+            Form JSON files must be loaded with <see cref="M:Edelweiss.Utils.FormLoader.LoadForm(System.String)"/> before being sent
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.SYNC_VARIABLE">
+            <summary>
+            Syncs a variable of a given name and value with the frontend. <br/>
+            Parameters: <br/>
+            - name: the name of the variable <br/>
+            - value: the value of the variable
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.REFRESH_WIDGETS">
+            <summary>
+            Refreshes widgets with the given trackers <br/>
+            Parameters: <br/>
+            - widgets: the list of widget trackers that should be refreshed.
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.BUTTON_PRESSED">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.LIST_SELECTION_CHANGED">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.TAB_CHANGED">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.TOOL_BUTTON_PRESSED">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.FORM_SUBMITTED">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:Edelweiss.Network.Netcode.Get(System.String)">
             <summary>
             Gets the netcode of a certain name
@@ -253,6 +866,24 @@
             The data the packet contains
             </summary>
         </member>
+        <member name="T:Edelweiss.Network.SyncedVariable">
+            <summary>
+            A variable that is synced between backend and frontend automatically whenever its value is set
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Network.SyncedVariable.Value">
+            <summary>
+            The value of the variable. Converted to a JObject when synced to the frontend.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Network.SyncedVariable.#ctor(System.String,System.Object,System.String[])">
+            <summary>
+            Instantiates a synced variable
+            </summary>
+            <param name="name">The name of the synced variable</param>
+            <param name="defaultValue">The default value of the variable</param>
+            <param name="syncedWidgets">The widgets that should refresh when this variable is set</param>
+        </member>
         <member name="T:Edelweiss.RegistryTypes.IRegistryObject">
             <summary>
             An interface that all types to be stored in the registry must implement
@@ -276,6 +907,11 @@
         <member name="F:Edelweiss.RegistryTypes.Registry.registry">
             <summary>
             The whole registry
+            </summary>
+        </member>
+        <member name="F:Edelweiss.RegistryTypes.Registry.allRegisteredTypes">
+            <summary>
+            The list of all types that have been added to the registry, regardless of type
             </summary>
         </member>
         <member name="M:Edelweiss.RegistryTypes.Registry.ForAll``1(System.Action{``0})">
@@ -328,10 +964,45 @@
             The number of entries in the list
             </summary>
         </member>
+        <member name="T:Edelweiss.Utils.CelesteModLoader">
+            <summary>
+            The class responsible for loading Celeste mods
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Utils.CelesteModLoader.texturePaths">
+            <summary>
+            The loaded texture keys to the absolute paths to the texture
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Utils.EdelweissUtils">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.CamelCaseToText(System.String)">
+            <summary>
+            Converts a camel case or pascal case string into a display name in title case
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.ToTileCoordinate(System.Single,System.Single)">
+            <summary>
+            Converts mouse coordinates into tile coordinates
+            </summary>
+            <param name="mouseX">The x-coordinate of the mouse</param>
+            <param name="mouseY">The y-coordinate of the mouse</param>
+            <returns>The tile coordinates</returns>
+        </member>
         <member name="T:Edelweiss.Utils.FormLoader">
             <summary>
             A class that loads form JSON files into proper widget objects that can be loaded by Edelweiss
             </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.FormLoader.LoadForm(System.String)">
+            <summary>
+            Converts a JSON form file into a widget object that can be sent to the frontend
+            </summary>
+            <param name="key">The resource key of the JSON file</param>
+            <returns></returns>
         </member>
         <member name="T:Edelweiss.Utils.TileLoader">
             <summary>
@@ -343,6 +1014,49 @@
             
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:Edelweiss.Utils.TileData">
+            <summary>
+            Contains data for a tile
+            </summary>
+            <param name="ID">The ID of the tile</param>
+            <param name="path">The path to the texture of the tile relative to Gameplay/tilesets/</param>
+            <param name="masks">The patterns of the tile</param>
+            <param name="ignores">Which tiles, if any, that the tile ignores</param>
+        </member>
+        <member name="M:Edelweiss.Utils.TileData.#ctor(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.Drawing.Point}},System.String)">
+            <summary>
+            Contains data for a tile
+            </summary>
+            <param name="ID">The ID of the tile</param>
+            <param name="path">The path to the texture of the tile relative to Gameplay/tilesets/</param>
+            <param name="masks">The patterns of the tile</param>
+            <param name="ignores">Which tiles, if any, that the tile ignores</param>
+        </member>
+        <member name="P:Edelweiss.Utils.TileData.ID">
+            <summary>
+            The ID of the tile
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.TileData.path">
+            <summary>
+            The path to the texture of the tile
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.TileData.masks">
+            <summary>
+            The patterns of the tile
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.TileData.ignores">
+            <summary>
+            Which tiles, if any, that the tile ignores
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.TileData.name">
+            <summary>
+            The display name of the tile
+            </summary>
         </member>
     </members>
 </doc>

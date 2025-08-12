@@ -14,6 +14,10 @@ namespace Edelweiss.RegistryTypes
         /// The whole registry
         /// </summary>
         public readonly static Dictionary<Type, RegistryList<IRegistryObject>> registry = [];
+
+        /// <summary>
+        /// The list of all types that have been added to the registry, regardless of type
+        /// </summary>
         public readonly static List<Type> allRegisteredTypes = [];
 
         /// <summary>

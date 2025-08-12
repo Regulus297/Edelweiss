@@ -6,7 +6,7 @@ from Edelweiss.Network import Netcode
 @plugin_loadable
 class RegisterJsonSceneReceiver(PacketReceiver):
     def __init__(self):
-        super().__init__(Netcode.REGISTER_JSON_SCENE)
+        super().__init__(Netcode.REGISTER_TAB)
 
     def process_packet(self, packet):
         data = JSONPreprocessor.loads(packet.data)

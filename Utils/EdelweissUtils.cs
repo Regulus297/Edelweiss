@@ -1,7 +1,13 @@
 namespace Edelweiss.Utils
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class EdelweissUtils
     {
+        /// <summary>
+        /// Converts a camel case or pascal case string into a display name in title case
+        /// </summary>
         public static string CamelCaseToText(this string input)
         {
             string output = "";
@@ -16,7 +22,14 @@ namespace Edelweiss.Utils
             return char.ToUpper(output[0]) + output.Substring(1);
         }
 
-        public static (int, int) ToTileCoordinate(float mouseX, float mouseY) {
+        /// <summary>
+        /// Converts mouse coordinates into tile coordinates
+        /// </summary>
+        /// <param name="mouseX">The x-coordinate of the mouse</param>
+        /// <param name="mouseY">The y-coordinate of the mouse</param>
+        /// <returns>The tile coordinates</returns>
+        public static (int, int) ToTileCoordinate(float mouseX, float mouseY)
+        {
             int x = (int)(mouseX / 8);
             int y = (int)(mouseY / 8);
             x -= (mouseX < 0) ? 1 : 0;

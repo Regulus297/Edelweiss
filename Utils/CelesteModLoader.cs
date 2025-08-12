@@ -10,6 +10,9 @@ using MoonSharp.Interpreter;
 
 namespace Edelweiss.Utils
 {
+    /// <summary>
+    /// The class responsible for loading Celeste mods
+    /// </summary>
     public static class CelesteModLoader
     {
         private static readonly Encoding LuaErrorEncoder = Encoding.GetEncoding(
@@ -17,9 +20,13 @@ namespace Edelweiss.Utils
             new EncoderReplacementFallback(string.Empty),
             new DecoderExceptionFallback()
         );
+
+        /// <summary>
+        /// The loaded texture keys to the absolute paths to the texture
+        /// </summary>
         public static Dictionary<string, string> texturePaths = [];
         internal static Dictionary<string, EntityData> entities = [];
-        public static bool LoadTextures(string graphicsPath)
+        internal static bool LoadTextures(string graphicsPath)
         {
             MainPlugin.Instance.Logger.Log($"Loading textures from {graphicsPath}");
             graphicsPath = Path.Join(graphicsPath, "Graphics", "Atlases");
@@ -35,7 +42,7 @@ namespace Edelweiss.Utils
             return true;
         }
 
-        public static void LoadMods()
+        internal static void LoadMods()
         {
             foreach (string path in Directory.GetDirectories(Path.Join(MainPlugin.CelesteDirectory, "Mods")))
             {
@@ -47,7 +54,7 @@ namespace Edelweiss.Utils
             }
         }
 
-        public static void LoadDirectory(string modPath)
+        internal static void LoadDirectory(string modPath)
         {
             MainPlugin.Instance.Logger.Log($"Loading mod from folder {modPath}");
             string loennEntityPath = Path.Join(modPath, "Loenn", "entities");
@@ -64,7 +71,7 @@ namespace Edelweiss.Utils
             }
         }
 
-        public static void LoadZip(string modPath)
+        internal static void LoadZip(string modPath)
         {
             MainPlugin.Instance.Logger.Log($"Loading mod from .zip {modPath}");
             using (ZipArchive zip = ZipFile.OpenRead(modPath))
@@ -89,7 +96,7 @@ namespace Edelweiss.Utils
             }
         }
 
-        public static Table LoadLua(string fileName, string lua, out Script script)
+        internal static Table LoadLua(string fileName, string lua, out Script script)
         {
             Script tempScript = new();
             try
@@ -110,7 +117,7 @@ namespace Edelweiss.Utils
             return null;
         }
 
-        public static void CreateEntities(string fileName, Table table, Script script)
+        internal static void CreateEntities(string fileName, Table table, Script script)
         {
             try
             {

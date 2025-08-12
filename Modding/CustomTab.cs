@@ -34,7 +34,7 @@ namespace Edelweiss.Plugins
         /// <inheritdoc/>
         public override void PostSetupContent()
         {
-            NetworkManager.SendPacket(Netcode.REGISTER_JSON_SCENE, new JObject()
+            NetworkManager.SendPacket(Netcode.REGISTER_TAB, new JObject()
             {
                 {"name", DisplayName},
                 {"internalName", FullName},

@@ -21,6 +21,12 @@ namespace Edelweiss.Utils
             internal JObject extraData;
         }
         static Dictionary<string, JObject> formCache = [];
+
+        /// <summary>
+        /// Converts a JSON form file into a widget object that can be sent to the frontend
+        /// </summary>
+        /// <param name="key">The resource key of the JSON file</param>
+        /// <returns></returns>
         public static JObject LoadForm(string key)
         {
             if (formCache.TryGetValue(key, out JObject cached))

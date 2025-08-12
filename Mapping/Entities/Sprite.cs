@@ -6,6 +6,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Sprite(string texture, int x, int y, float justificationX, float justificationY, float scaleX, float scaleY, float renderOffsetX, float renderOffsetY, float rotation, int depth) : ILuaConvertible
     {
         internal string texture = texture;
@@ -16,19 +19,30 @@ namespace Edelweiss.Mapping.Entities
         internal float rotation = rotation;
         internal int depth = depth;
 
-        public Sprite(string texture) : this(texture, 0, 0, 0.5f, 0.5f, 1, 1, 0, 0, 0, 0) {
+        /// <summary>
+        /// Creates a sprite with the given texture key
+        /// </summary>
+        /// <param name="texture">The texture of the sprite relative to Gameplay/</param>
+        public Sprite(string texture) : this(texture, 0, 0, 0.5f, 0.5f, 1, 1, 0, 0, 0, 0)
+        {
 
         }
 
-        public Sprite(Table table): this(table.Get("texture").String, (int) table.Get("x").Number, (int) table.Get("y").Number,
-                                        (float)table.Get("justificationX").Number, (float) table.Get("justificationY").Number,
-                                        (float)table.Get("scaleX").Number, (float)table.Get("scaleY").Number, 
+        /// <summary>
+        /// Creates a sprite from the given Lua table
+        /// </summary>
+        public Sprite(Table table) : this(table.Get("texture").String, (int)table.Get("x").Number, (int)table.Get("y").Number,
+                                        (float)table.Get("justificationX").Number, (float)table.Get("justificationY").Number,
+                                        (float)table.Get("scaleX").Number, (float)table.Get("scaleY").Number,
                                         (float)table.Get("renderOffsetX").Number, (float)table.Get("renderOffsetY").Number,
                                         (float)table.Get("rotation").Number, (int)table.Get("depth").Number)
         {
-            
+
         }
 
+        /// <summary>
+        /// Converts the sprite to a Lua table that is compatible with Loenn
+        /// </summary>
         public Table ToLuaTable(Script script)
         {
             Table sprite = new(script);
@@ -61,6 +75,9 @@ namespace Edelweiss.Mapping.Entities
             return sprite;
         }
 
+        /// <summary>
+        /// Converts the sprite to a shape JObject that can be drawn by the frontend
+        /// </summary>
         public JObject ToJObject()
         {
             return new JObject()

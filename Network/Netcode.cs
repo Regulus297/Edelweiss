@@ -1,29 +1,117 @@
 using System.Collections.Generic;
 using System.Reflection;
+using Edelweiss.Utils;
 
 namespace Edelweiss.Network
 {
+    /// <summary>
+    /// The class that registers and handles netcodes 
+    /// </summary>
     public static class Netcode
     {
+        /// <summary>
+        /// The default netcode
+        /// </summary>
         public const long NONE = 0x0;
-        public const long QUIT = 0x1;
-        public const long REGISTER_PYTHON_PLUGINS = 0x2;
-        public const long REGISTER_SCENE = 0x3;
-        public const long REGISTER_JSON_SCENE = 0x4;
-        public const long ADD_ITEM = 0x5;
-        public const long MODIFY_ITEM_SHAPE = 0x6;
-        public const long MODIFY_ITEM = 0x7;
-        public const long REGISTER_TOOLBAR = 0x8;
-        public const long OPEN_POPUP_FORM = 0x9;
-        public const long SYNC_VARIABLE = 0xa;
-        public const long REFRESH_WIDGETS = 0xb;
+
+        /// <summary>
+        /// Registers python plugins. <br/>
+        /// Parameters: <br/>
+        /// - files: a list of string containing the paths of the python files to register
+        /// </summary>
+        public const long REGISTER_PYTHON_PLUGINS = 0x1;
+
+        /// <summary>
+        /// Registers a custom tab. <br/>
+        /// Parameters: <br/>
+        /// - name: the display name of the tab <br/>
+        /// - internalName: the ID of the tab <br/>
+        /// - json: the JSON representation of the tab
+        /// </summary>
+        public const long REGISTER_TAB = 0x2;
+
+        /// <summary>
+        /// Adds an item to a ZoomableView. <br/>
+        /// Paramters: <br/>
+        /// - widget: the tracker for the ZoomableView to add the item to <br/>
+        /// - item: the JSON representation of the item <br/>
+        /// - parent (optional): the name of the parent item of this item. Must be in the same ZoomableView
+        /// </summary>
+        public const long ADD_ITEM = 0x3;
+
+        /// <summary>
+        /// Modifies the shape data of a particular shape of an item. <br/>
+        /// Parameters: <br/>
+        /// - widget: the tracker for the ZoomableView the item is in <br/>
+        /// - item: the name of the item the shape is in <br/>
+        /// - index: the index of the shape in the item's shapes array <br/>
+        /// - data: the modified data the shape should have
+        /// </summary>
+        public const long MODIFY_ITEM_SHAPE = 0x4;
+
+        /// <summary>
+        /// Modifies the item data of a particular item. <br/>
+        /// Parameters: <br/>
+        /// - widget: the tracker for the ZoomableView the item is in <br/>
+        /// - item: the name of the item <br/>
+        /// - data: the modified data the item should have
+        /// </summary>
+        public const long MODIFY_ITEM = 0x5;
+
+        /// <summary>
+        /// Changes the toolbar to the desired JSON representation. <br/>
+        /// No parameters, only the JSON representation of the toolbar should be sent.
+        /// </summary>
+        public const long REGISTER_TOOLBAR = 0x6;
+
+        /// <summary>
+        /// Opens a popup widget with the passed JSON representation and treats it as a form. <br/>
+        /// No parameters, only the JSON representation of the widget should be sent. <br/>
+        /// Form JSON files must be loaded with <see cref="FormLoader.LoadForm(string)"/> before being sent
+        /// </summary>
+        public const long OPEN_POPUP_FORM = 0x7;
+
+        /// <summary>
+        /// Syncs a variable of a given name and value with the frontend. <br/>
+        /// Parameters: <br/>
+        /// - name: the name of the variable <br/>
+        /// - value: the value of the variable
+        /// </summary>
+        public const long SYNC_VARIABLE = 0x8;
+
+        /// <summary>
+        /// Refreshes widgets with the given trackers <br/>
+        /// Parameters: <br/>
+        /// - widgets: the list of widget trackers that should be refreshed.
+        /// </summary>
+        public const long REFRESH_WIDGETS = 0x9;
 
 
         // Received packets
+
+        /// <summary>
+        /// 
+        /// </summary>
         public const long BUTTON_PRESSED = -0x1;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public const long LIST_SELECTION_CHANGED = -0x2;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public const long TAB_CHANGED = -0x3;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public const long TOOL_BUTTON_PRESSED = -0x4;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public const long FORM_SUBMITTED = -0x5;
 
         // Dynamic Netcode generation

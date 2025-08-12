@@ -39,9 +39,12 @@ namespace Edelweiss.Plugins
 
         }
 
+        /// <summary>
+        /// Called before the preference is saved, to perform tasks necessary to save correctly
+        /// </summary>
         public virtual void PrepForSave()
         {
-            
+
         }
 
         
