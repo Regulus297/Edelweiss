@@ -13,11 +13,11 @@ namespace Edelweiss.Plugins
 
         static Logger()
         {
-            File.Open("log.txt", FileMode.Create);
+            File.Open("log.txt", FileMode.Create).Close();
         }
         private void Write(string type, object message)
         {
-            using StreamWriter logWriter = new("log.txt");
+            using StreamWriter logWriter = new("log.txt", true);
             logWriter.WriteLine($"({DateTime.Now}) [{plugin.ID}] [{type}] {message}");
         }
 
