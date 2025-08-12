@@ -147,15 +147,17 @@
             The class containing entity data for a Loenn entity
             </summary>
             <param name="name">The name of the entity</param>
+            <param name="placementName">The name of the placement</param>
             <param name="placement">The placement table that this entity is for</param>
             <param name="script">The script the table belongs to</param>
             <param name="entityTable">The table containing all entity data</param>
         </member>
-        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.#ctor(System.String,MoonSharp.Interpreter.Table,MoonSharp.Interpreter.Script,MoonSharp.Interpreter.Table)">
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.#ctor(System.String,System.String,MoonSharp.Interpreter.Table,MoonSharp.Interpreter.Script,MoonSharp.Interpreter.Table)">
             <summary>
             The class containing entity data for a Loenn entity
             </summary>
             <param name="name">The name of the entity</param>
+            <param name="placementName">The name of the placement</param>
             <param name="placement">The placement table that this entity is for</param>
             <param name="script">The script the table belongs to</param>
             <param name="entityTable">The table containing all entity data</param>

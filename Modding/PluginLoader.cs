@@ -156,27 +156,34 @@ namespace Edelweiss.Plugins
             }
         }
 
-        public static void LoadLangFiles(string directory, string pluginID)
+        public static void LoadLangFiles(string directory, string pluginID, bool celesteMod = false)
         {
-            string langDirectory = Path.Join(directory, "Resources", "Localization");
+            string langDirectory = celesteMod? directory: Path.Join(directory, "Resources", "Localization");
             if (!Directory.Exists(langDirectory))
                 return;
 
             foreach (string file in Directory.GetFiles(langDirectory, "*.lang", SearchOption.AllDirectories))
             {
-                string key = file.Substring(0, file.Length - 5).Substring(langDirectory.Length + 1);
-                key = key.Replace(Path.DirectorySeparatorChar, '/');
-                localization[key] = [];
-                string line;
-                using (StreamReader reader = new(file))
-                {
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        if (line.StartsWith("#") || !line.Contains("="))
-                            continue;
+                using Stream fileContent = File.OpenRead(file);
+                LoadLangFile(fileContent, file.Substring(langDirectory.Length + 1), pluginID);
+            }
+        }
 
-                        localization[key][pluginID + "." + line.Split("=", StringSplitOptions.TrimEntries)[0]] = line.Split("=", StringSplitOptions.TrimEntries)[1];
-                    }
+        internal static void LoadLangFile(Stream fileContent, string file, string pluginID)
+        {
+            string key = file.Substring(0, file.Length - 5);
+            if(!localization.ContainsKey(key))
+                localization[key] = [];
+
+            string line;
+            using (StreamReader reader = new(fileContent))
+            {
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line.StartsWith("#") || !line.Contains("="))
+                        continue;
+
+                    localization[key][pluginID + "." + line.Split("=", StringSplitOptions.TrimEntries)[0]] = line.Split("=", StringSplitOptions.TrimEntries)[1];
                 }
             }
         }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edelweiss.Utils;
 using MoonSharp.Interpreter;
 
 namespace Edelweiss.Mapping.Entities
@@ -9,18 +10,20 @@ namespace Edelweiss.Mapping.Entities
     /// The class containing entity data for a Loenn entity
     /// </summary>
     /// <param name="name">The name of the entity</param>
+    /// <param name="placementName">The name of the placement</param>
     /// <param name="placement">The placement table that this entity is for</param>
     /// <param name="script">The script the table belongs to</param>
     /// <param name="entityTable">The table containing all entity data</param>
-    public class LuaEntityData(string name, Table placement, Script script, Table entityTable) : EntityData
+    public class LuaEntityData(string name, string placementName, Table placement, Script script, Table entityTable) : EntityData
     {
         Script script = script;
         Table entityTable = entityTable;
         Table placement = placement;
         string name = name;
+        string placementName = placementName;
 
         /// <inheritdoc/>
-        public override string Name => name;
+        public override string Name => Language.GetTextOrDefault($"Loenn.entities.{name}.placements.name.{placementName}") ?? placementName;
 
         /// <inheritdoc/>
         public override string Texture(RoomData room, Entity entity)

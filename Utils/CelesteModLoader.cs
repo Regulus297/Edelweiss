@@ -58,6 +58,12 @@ namespace Edelweiss.Utils
         {
             MainPlugin.Instance.Logger.Log($"Loading mod from folder {modPath}");
             string loennEntityPath = Path.Join(modPath, "Loenn", "entities");
+            string loennLangPath = Path.Join(modPath, "Loenn", "lang");
+
+            if (Directory.Exists(loennLangPath))
+            {
+                PluginLoader.LoadLangFiles(loennLangPath, "Loenn", true);
+            }
             if (Directory.Exists(loennEntityPath))
             {
                 foreach (string entityFile in Directory.GetFiles(loennEntityPath, "*.lua", SearchOption.AllDirectories))
@@ -76,10 +82,20 @@ namespace Edelweiss.Utils
             MainPlugin.Instance.Logger.Log($"Loading mod from .zip {modPath}");
             using (ZipArchive zip = ZipFile.OpenRead(modPath))
             {
+                foreach (ZipArchiveEntry langEntry in zip.Entries)
+                {
+                    if (langEntry.FullName.StartsWith("Loenn/lang") && langEntry.FullName.EndsWith(".lang"))
+                    {
+                        using (var stream = langEntry.Open())
+                        {
+                            PluginLoader.LoadLangFile(stream, langEntry.Name, "Loenn");
+                        }
+                    }
+                }
                 foreach (ZipArchiveEntry entry in zip.Entries)
                 {
                     if (entry.FullName.StartsWith("Loenn/entities") && entry.FullName.EndsWith(".lua"))
-                    {
+                    {   
                         using (var stream = entry.Open())
                         {
                             using (var streamReader = new StreamReader(stream))
@@ -136,7 +152,7 @@ namespace Edelweiss.Utils
 
                 foreach (Table placement in placements)
                 {
-                    LuaEntityData entityData = new(table.Get("name").String + placement.Get("name").String, placement, script, table);
+                    LuaEntityData entityData = new(table.Get("name").String, placement.Get("name").String, placement, script, table);
                     entities[entityData.Name] = entityData;
                 }
             }

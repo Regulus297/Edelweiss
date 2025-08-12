@@ -21,7 +21,7 @@ namespace Edelweiss.Preferences
 
         public override void SetDefaultValue()
         {
-            Value = "en_GB";
+            Value = "en_gb";
         }
     }
 }
