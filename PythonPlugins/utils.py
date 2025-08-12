@@ -2,6 +2,7 @@ from plugins import plugin_loadable, UtilJsonFunction, load_dependencies, JSONPr
 from network import SyncedVariables
 from ui import MappingWindow
 from Edelweiss.Network import Netcode
+from Edelweiss.Plugins import PluginLoader
 from PyQt5.QtCore import Qt
 import sys
 
@@ -137,4 +138,18 @@ class GetVarFunction(UtilJsonFunction):
             return ""
         
         return SyncedVariables.variables[args[0]]
-     
+
+@plugin_loadable
+class GetTextFunction(UtilJsonFunction):
+    def __init__(self):
+        super().__init__("getText")
+
+    def call(self, *args) -> object:
+        if len(args) != 1:
+            return ""
+        
+        language = SyncedVariables.variables["Language"]
+        var = PluginLoader.localization[language]
+        if args[0] in var:
+            return var[args[0]]
+        return args[0]

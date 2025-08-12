@@ -14,7 +14,7 @@ namespace Edelweiss.Plugins
         /// <summary>
         /// The value of the preference
         /// </summary>
-        public JToken Value { get; set; }
+        public virtual JToken Value { get; set; }
 
         /// <summary>
         /// The loaded JSON object containing all currently loaded preferences

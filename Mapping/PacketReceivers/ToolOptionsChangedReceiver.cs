@@ -42,8 +42,8 @@ namespace Edelweiss.Mapping.PacketReceivers
             if (t == null)
                 return;
 
-            MappingTab.layers.Value = t.Layers;
-            MappingTab.modes.Value = t.Modes;
+            MappingTab.layers.Value = t.LayerNames;
+            MappingTab.modes.Value = t.ModeNames;
             MappingTab.materialIDs.Value = t.MaterialIDs;
             MappingTab.materials.Value = t.Materials;
 

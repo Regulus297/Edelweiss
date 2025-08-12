@@ -36,7 +36,7 @@ namespace Edelweiss.Plugins
         {
             NetworkManager.SendPacket(Netcode.REGISTER_TAB, new JObject()
             {
-                {"name", DisplayName},
+                {"name", Plugin.GetLocalization($"Tabs.{Name}")},
                 {"internalName", FullName},
                 {"json", PluginLoader.RequestJson(LayoutJSON)}
             });

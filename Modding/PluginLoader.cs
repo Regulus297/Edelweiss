@@ -11,13 +11,15 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Plugins
 {
-    internal static class PluginLoader
+    public static class PluginLoader
     {
         public static Dictionary<string, string> jsonPaths = [];
         public static Dictionary<string, string> jsonCache = [];
+        public static Dictionary<string, Dictionary<string, string>> localization = [];
 
         public static void LoadPlugins()
         {
+            LoadLangFiles(Directory.GetCurrentDirectory(), "Edelweiss");
             LoadPythonPlugins(Directory.GetCurrentDirectory());
             LoadAssembly(Assembly.GetExecutingAssembly());
             LoadJsonFiles(Directory.GetCurrentDirectory(), "Edelweiss");
@@ -34,6 +36,7 @@ namespace Edelweiss.Plugins
                 {
                     Assembly assembly = Assembly.LoadFile(modFilePath);
                     Plugin plugin = LoadAssembly(assembly);
+                    LoadLangFiles(Directory.GetCurrentDirectory(), plugin.ID);
                     LoadPythonPlugins(directory);
                     LoadJsonFiles(directory, plugin.ID);
                 }
@@ -150,6 +153,31 @@ namespace Edelweiss.Plugins
                 string key = $"{pluginID}:{file.Substring(0, file.Length - 5).Substring(jsonDirectory.Length + 1)}";
                 key = key.Replace(Path.DirectorySeparatorChar, '/');
                 jsonPaths[key] = file;
+            }
+        }
+
+        public static void LoadLangFiles(string directory, string pluginID)
+        {
+            string langDirectory = Path.Join(directory, "Resources", "Localization");
+            if (!Directory.Exists(langDirectory))
+                return;
+
+            foreach (string file in Directory.GetFiles(langDirectory, "*.lang", SearchOption.AllDirectories))
+            {
+                string key = file.Substring(0, file.Length - 5).Substring(langDirectory.Length + 1);
+                key = key.Replace(Path.DirectorySeparatorChar, '/');
+                localization[key] = [];
+                string line;
+                using (StreamReader reader = new(file))
+                {
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (line.StartsWith("#") || !line.Contains("="))
+                            continue;
+
+                        localization[key][pluginID + "." + line.Split("=", StringSplitOptions.TrimEntries)[0]] = line.Split("=", StringSplitOptions.TrimEntries)[1];
+                    }
+                }
             }
         }
 

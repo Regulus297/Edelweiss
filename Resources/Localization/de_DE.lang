@@ -1,0 +1,37 @@
+# Yall i tried my best here but translation is hard ok
+
+Tabs.MappingTab = Kartografie (???)
+Tabs.ResourcesTab = Ressourcen
+
+Tools.BrushTool = Pinsel
+Tools.RectTool = Rechteck
+Tools.EntityTool = Entity?
+
+Foreground = Vordergrund
+Background = Hintergrund
+Fill = Einfüllen
+Line = Streichen
+
+Mapping.CreateRoom = Zimmer? kreieren
+
+RoomCreationForm.Name = Zimmer kreieren
+RoomCreationForm.Submit = Kreieren
+RoomCreationForm.Fields.name = Namen
+RoomCreationForm.Fields.width = Breite
+RoomCreationForm.Fields.height = Höhe
+RoomCreationForm.Fields.cameraOffsetX = Kameraverschiebung X
+RoomCreationForm.Fields.cameraOffsetY = Kameraverschiebung Y
+RoomCreationForm.Fields.windPattern = Windmuster
+RoomCreationForm.Fields.colour = Farbe
+RoomCreationForm.Fields.underwater = Unterwasser
+RoomCreationForm.Fields.disableDownTransition = Abwärtsübergang sperren
+RoomCreationForm.Fields.whisper = Flüstern
+RoomCreationForm.Fields.dark = Dunkel
+RoomCreationForm.Fields.musicLayer1 = Musikebene 1
+RoomCreationForm.Fields.musicLayer2 = Musikebene 2
+RoomCreationForm.Fields.musicLayer3 = Musikebene 3
+RoomCreationForm.Fields.musicLayer4 = Musikebene 4
+RoomCreationForm.Fields.music = Musik
+RoomCreationForm.Fields.musicProgress = Musikfortschritt
+RoomCreationForm.Fields.ambience = Ambiente
+RoomCreationForm.Fields.ambienceProgress = Ambientenfortschritt

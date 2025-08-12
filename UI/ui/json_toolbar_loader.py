@@ -19,22 +19,22 @@ class JSONToolbarLoader:
             action = None
             if item["type"] == "action":
                 action = QAction(toolbar)
-                action.setText(item["name"])
+                action.setText(str(item["name"]))
 
-                action_name = item["name"]
+                action_id = str(item["id"])
                 if hasattr(toolbar, "json_loader_name"):
-                    action_name = getattr(toolbar, "json_loader_name") + "/" + action_name
-                setattr(action, "json_loader_name", action_name)
+                    action_id = getattr(toolbar, "json_loader_name") + "/" + action_id
+                setattr(action, "json_loader_name", action_id)
 
                 if "onclick" in item.keys():
                     JSONToolbarLoader.register_onclick(action, item)
 
             elif item["type"] == "menu":
                 menu = QMenu(toolbar)
-                action_name = item["name"]
+                action_id = item["id"]
                 if hasattr(toolbar, "json_loader_name"):
-                    action_name = getattr(toolbar, "json_loader_name") + "/" + action_name
-                setattr(menu, "json_loader_name", action_name)
+                    action_id = getattr(toolbar, "json_loader_name") + "/" + action_id
+                setattr(menu, "json_loader_name", action_id)
                 JSONToolbarLoader.init_toolbar(menu, item)
 
                 action = QAction(toolbar)

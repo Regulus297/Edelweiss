@@ -1,0 +1,16 @@
+Tabs.MappingTab = Mapping
+Tabs.ResourcesTab = Resources
+
+Tools.BrushTool = Brush
+Tools.RectTool = Rectangle
+Tools.EntityTool = Entity
+
+Foreground = Foreground
+Background = Background
+Fill = Fill
+Line = Line
+
+Mapping.CreateRoom = Create Room
+
+RoomCreationForm.Name = Create room
+RoomCreationForm.Submit = Create

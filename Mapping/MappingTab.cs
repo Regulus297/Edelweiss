@@ -71,12 +71,8 @@ namespace Edelweiss.Mapping
         {
             switch (actionName)
             {
-                case "Create Room":
+                case "createRoom":
                     NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, FormLoader.LoadForm("Edelweiss:Forms/room_creation").ToString());
-                    break;
-                case "File/New File":
-                    break;
-                case "File/Open Recent/Blahaj":
                     break;
             }
         }

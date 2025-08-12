@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Edelweiss.Network;
+using Edelweiss.Preferences;
 using Edelweiss.RegistryTypes;
+using Edelweiss.Utils;
 
 namespace Edelweiss.Plugins
 {
@@ -16,7 +18,6 @@ namespace Edelweiss.Plugins
         /// </summary>
         public virtual string ID => GetType().Name;
         internal event Action OnPostSetupContent;
-
         /// <summary>
         /// The logger instance associated with this plugin
         /// </summary>
@@ -59,5 +60,11 @@ namespace Edelweiss.Plugins
         /// <param name="name">The name of the netcode</param>
         /// <param name="positive">If true, the generated netcode will be positive.</param>
         public long CreateNetcode(string name, bool positive) => Netcode.CreateNetcode($"{ID}:{name}", positive);
+
+        public string GetLocalizationKey(string suffix) => $"{ID}.{suffix}";
+        public string GetLocalization(string key)
+        {
+            return Language.GetText(GetLocalizationKey(key));
+        }
     }
 }

@@ -2,30 +2,9 @@
     "items": [
         {
             "type": "action",
-            "name": "Create Room",
+            "name": "@getText('Edelweiss.Mapping.CreateRoom')",
+            "id": "createRoom",
             "onclick": -4
-        },
-        {
-            "type": "menu",
-            "name": "File",
-            "items": [
-                {
-                    "type": "action",
-                    "name": "New File",
-                    "onclick": -4
-                },
-                {
-                    "type": "menu",
-                    "name": "Open Recent",
-                    "items": [
-                        {
-                            "type": "action",
-                            "name": "Blahaj",
-                            "onclick": -4
-                        }
-                    ]
-                }
-            ]
         }
     ]
 }

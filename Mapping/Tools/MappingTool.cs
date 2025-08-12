@@ -20,9 +20,9 @@ namespace Edelweiss.Mapping.Tools
         internal int selectedMode = 0;
 
         /// <summary>
-        /// The display name of the tool. Defaults to the class name minus the "Tool" suffix if present 
+        /// The display name of the tool.
         /// </summary>
-        public virtual string DisplayName => Name.EndsWith("Tool")? Name.Substring(0, Name.Length - 4).CamelCaseToText(): Name.CamelCaseToText();
+        public string DisplayName => Plugin.GetLocalization($"Tools.{Name}");
 
         /// <summary>
         /// Returns true if the input material matches the current search term
@@ -165,9 +165,13 @@ namespace Edelweiss.Mapping.Tools
         /// </summary>
         public virtual List<string> Layers => [];
 
+        internal List<string> LayerNames => Layers.Select(Plugin.GetLocalization).ToList();
+
         /// <summary>
         /// The modes the tool can have.
         /// </summary>
         public virtual List<string> Modes => [];
+
+        internal List<string> ModeNames => Modes.Select(Plugin.GetLocalization).ToList();
     }
 }

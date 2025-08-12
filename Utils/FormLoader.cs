@@ -35,8 +35,10 @@ namespace Edelweiss.Utils
             JObject formData = PluginLoader.RequestJObject(key);
             JObject formWidget = new();
 
+            string plugin = key.Split(":")[0];
+
             string formID = formData.Value<string>("formID");
-            string formTitle = formData.Value<string>("formTitle");
+            string formTitle = Language.GetTextOrDefault($"{plugin}.{formID}.Name") ?? formID.CamelCaseToText();
             formWidget.Add("id", formID);
             formWidget.Add("windowTitle", formTitle);
             formWidget.Add("type", "QWidget");
@@ -57,7 +59,7 @@ namespace Edelweiss.Utils
                 fields.Add(new FieldData()
                 {
                     name = item.Key,
-                    displayName = item.Key.CamelCaseToText(),
+                    displayName = Language.GetTextOrDefault($"{plugin}.{formID}.Fields.{item.Key}") ?? item.Key.CamelCaseToText(),
                     type = GetFieldType(item.Value),
                     value = item.Value
                 });
@@ -73,8 +75,7 @@ namespace Edelweiss.Utils
             }
 
             int totalCols = 4;
-            int totalRows = 0;
-
+            int totalRows;
             if (formData.Value<JToken>("fieldLayout") != null)
             {
                 AssignSpecificGridLayout(fields, formData.Value<JToken>("fieldLayout"), out totalCols, out totalRows);
@@ -111,7 +112,7 @@ namespace Edelweiss.Utils
             JObject submitButton = new()
             {
                 {"type", "QPushButton"},
-                {"text", formData.Value<string>("submitText") ?? "Submit"},
+                {"text", Language.GetTextOrDefault($"{plugin}.{formID}.Submit") ?? "Submit"},
                 {"specialType", "submit"},
                 {"row", totalRows},
                 {"col", 0},

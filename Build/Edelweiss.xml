@@ -342,7 +342,7 @@
         </member>
         <member name="P:Edelweiss.Mapping.Tools.MappingTool.DisplayName">
             <summary>
-            The display name of the tool. Defaults to the class name minus the "Tool" suffix if present 
+            The display name of the tool.
             </summary>
         </member>
         <member name="M:Edelweiss.Mapping.Tools.MappingTool.IsSearched(System.String)">
