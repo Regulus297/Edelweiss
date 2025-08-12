@@ -39,7 +39,7 @@ class PluginLoader:
                     if not matchedPath:
                         PluginLoader.loaded_dependencies[depPath] = {}
                         env = {}
-                        PluginLoader.load_python_plugin(depPath, env, True)
+                        PluginLoader.load_python_plugin(depPath, env, not getattr(member, "__load_types__", False))
                         PluginLoader.loaded_dependencies[depPath].update(env)
                         matchedPath = depPath
                     exec_env.update(PluginLoader.loaded_dependencies[matchedPath])

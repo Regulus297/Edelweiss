@@ -42,6 +42,12 @@
         ["ambience", "ambienceProgress"]
     ],
     "fieldInfo": {
+        "name": {
+            "validator": {
+                "type": "unique",
+                "array": "@defer('@getVar(\\'Edelweiss:Rooms\\')')"
+            }
+        },
         "musicProgress": {
             "min": 0.0,
             "max": "@maxfloat()"

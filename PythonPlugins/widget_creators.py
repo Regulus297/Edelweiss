@@ -119,13 +119,11 @@ class ResizingListWidgetCreator(WidgetCreator):
     def refresh_widget(self, widget):
         widget.clear()
         data = getattr(widget, "__json_data__")
-        # widget.setUpdatesEnabled(False)
         if "items" in data.keys():
             keys = data["keys"] if "keys" in data else list(range(len(data["items"])))
 
             widget.keys = value(keys)
             widget.addItems(value(data["items"]))
-        # widget.setUpdatesEnabled(True)
 
         if "currentRow" in data.keys():
             widget.setCurrentRow(value(data["currentRow"]))
@@ -140,6 +138,7 @@ class QWidgetWidgetCreator(WidgetCreator):
         return QWidget(parent)
 
 
+@load_dependencies("validators.py", load_types = True)
 @plugin_loadable
 class QLineEditWidgetCreator(WidgetCreator):
     def __init__(self):
@@ -174,6 +173,11 @@ class QLineEditWidgetCreator(WidgetCreator):
                     lineEdit.editingFinished.connect(lambda: self.clamp_line_edit_float(lineEdit, minimum, maximum, decimals))
                 else:
                     lineEdit.setValidator(QDoubleValidator(lineEdit))
+
+        if "validator" in data:
+            validator = Validator.init_validator(data["validator"])
+            lineEdit.editingFinished.connect(lambda: validator.editingFinished(lineEdit))
+            lineEdit.__custom_validator__ = validator
 
         if "onTextChanged" in data:
             netcode, extraData = get_event_data(data["onTextChanged"])

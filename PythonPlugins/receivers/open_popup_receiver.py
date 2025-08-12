@@ -19,11 +19,25 @@ class OpenPopupReceiver(PacketReceiver):
         widget = JSONWidgetLoader.init_widget(data)
         self.active_forms[widget.objectName()] = widget
 
+        validators = {}
+
 
         if CommonVars.found_submit_button is None:
             print(f"Form {widget.objectName()} does not have a submit button")
         else:
-            CommonVars.found_submit_button.clicked.connect(lambda: widget.close())
+            
+            def submit(data, name):
+                for validator, w in validators.items():
+                    if not validator.valid(w):
+                        return
+                    
+                PyNetworkManager.send_packet(data["onsubmit"], json.dumps({
+                    "id": name,
+                    "extraData": get_extra_data_safe(data)
+                }))
+                widget.close()
+                
+
             if "onsubmit" in data.keys():
                 name = widget.objectName()
 
@@ -41,7 +55,9 @@ class OpenPopupReceiver(PacketReceiver):
                         setattr(child, "__tracked_as__", child_tracker)
 
                     if isinstance(child, QLineEdit):
-                        lineEditType = "str" if "dataType" not in child_data.keys() else child_data["dataType"]                        
+                        lineEditType = "str" if "dataType" not in child_data.keys() else child_data["dataType"]     
+                        if hasattr(child, "__custom_validator__"):
+                            validators[getattr(child, "__custom_validator__")] = child
                         data["extraData"][child.objectName()] = {
                             "type": lineEditType,
                             "value": JSONPreprocessor.preprocess(f"@defer('@widget_property(\\'{child_tracker}\\', \\'text()\\')')")
@@ -60,10 +76,7 @@ class OpenPopupReceiver(PacketReceiver):
 
 
 
-                CommonVars.found_submit_button.clicked.connect(lambda: PyNetworkManager.send_packet(data["onsubmit"], json.dumps({
-                    "id": name,
-                    "extraData": get_extra_data_safe(data)
-                })))    
+                CommonVars.found_submit_button.clicked.connect(lambda: submit(data, name))    
         CommonVars.found_submit_button = None
 
         widget.setObjectName("popup")
