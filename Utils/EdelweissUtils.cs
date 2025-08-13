@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Edelweiss.Utils
 {
     /// <summary>
@@ -35,6 +38,17 @@ namespace Edelweiss.Utils
             x -= (mouseX < 0) ? 1 : 0;
             y -= (mouseY < 0) ? 1 : 0;
             return (x, y);
+        }
+
+        /// <summary>
+        /// If the item is present in the list, it is removed. If it is not present, it is added
+        /// </summary>
+        public static void Toggle<T>(this List<T> list, T item)
+        {
+            if (list.Contains(item))
+                list.Remove(item);
+            else
+                list.Add(item);
         }
     }
 }

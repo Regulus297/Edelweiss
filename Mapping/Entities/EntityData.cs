@@ -33,13 +33,15 @@ namespace Edelweiss.Mapping.Entities
         {
             return [new(Texture(room, entity)) {
                 justificationX = Justification(room, entity)[0],
-                justificationY = Justification(room, entity)[1]
+                justificationY = Justification(room, entity)[1],
+                x = entity.x,
+                y = entity.y
             }];
         }
 
         /// <summary>
         /// Draws the entity to the shapes array.
-        /// Defaults to drawing the sprites returned by <seealso cref="Sprite"/> onto the array.
+        /// Defaults to drawing the sprites returned by <see cref="Sprite"/> onto the array.
         /// </summary>
         /// <param name="shapes">The list of shapes this entity will be made up of</param>
         /// <param name="room">The room the entity is in</param>

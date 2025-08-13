@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edelweiss.Preferences;
+using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Tools
@@ -41,15 +42,7 @@ namespace Edelweiss.Mapping.Tools
         /// <inheritdoc/>
         public override void OnFavourited(string material)
         {
-            var list = selectedLayer == 0 ? favouriteFG : favouriteBG;
-            if (list.Contains(material))
-            {
-                list.Remove(material);
-            }
-            else
-            {
-                list.Add(material);
-            }
+            (selectedLayer == 0 ? favouriteFG : favouriteBG).Toggle(material);
         }
 
         /// <inheritdoc/>

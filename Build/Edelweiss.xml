@@ -129,7 +129,7 @@
         <member name="M:Edelweiss.Mapping.Entities.EntityData.Draw(Newtonsoft.Json.Linq.JArray,Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
             <summary>
             Draws the entity to the shapes array.
-            Defaults to drawing the sprites returned by <seealso cref="M:Edelweiss.Mapping.Entities.EntityData.Sprite(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)"/> onto the array.
+            Defaults to drawing the sprites returned by <see cref="M:Edelweiss.Mapping.Entities.EntityData.Sprite(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)"/> onto the array.
             </summary>
             <param name="shapes">The list of shapes this entity will be made up of</param>
             <param name="room">The room the entity is in</param>
@@ -989,6 +989,21 @@
             The loaded texture keys to the absolute paths to the texture
             </summary>
         </member>
+        <member name="T:Edelweiss.Utils.TextureData">
+            <summary>
+            Contains data for a texture
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Utils.TextureData.width">
+            <summary>
+            The width of the texture in pixels
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Utils.TextureData.height">
+            <summary>
+            The height of the texture in pixels
+            </summary>
+        </member>
         <member name="T:Edelweiss.Utils.EdelweissUtils">
             <summary>
             
@@ -1006,6 +1021,11 @@
             <param name="mouseX">The x-coordinate of the mouse</param>
             <param name="mouseY">The y-coordinate of the mouse</param>
             <returns>The tile coordinates</returns>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Toggle``1(System.Collections.Generic.List{``0},``0)">
+            <summary>
+            If the item is present in the list, it is removed. If it is not present, it is added
+            </summary>
         </member>
         <member name="T:Edelweiss.Utils.FormLoader">
             <summary>

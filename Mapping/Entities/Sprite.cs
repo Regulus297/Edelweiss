@@ -20,6 +20,8 @@ namespace Edelweiss.Mapping.Entities
         internal float rotation = rotation;
         internal int depth = depth;
 
+        internal int sourceX = -1, sourceY = -1, sourceWidth = -1, sourceHeight = -1;
+
         /// <summary>
         /// Creates a sprite with the given texture key
         /// </summary>
@@ -38,7 +40,10 @@ namespace Edelweiss.Mapping.Entities
                                         (float)table.Get("renderOffsetX").Number, (float)table.Get("renderOffsetY").Number,
                                         (float)table.Get("rotation").Number, (int)table.Get("depth").Number)
         {
-
+            sourceX = (int)table.Get("sourceX").Number;
+            sourceY = (int)table.Get("sourceY").Number;
+            sourceWidth = (int)table.Get("sourceWidth").Number;
+            sourceHeight = (int)table.Get("sourceHeight").Number;
         }
 
         /// <summary>
@@ -52,6 +57,11 @@ namespace Edelweiss.Mapping.Entities
 
             sprite["x"] = x;
             sprite["y"] = y;
+
+            sprite["sourceX"] = sourceX;
+            sprite["sourceY"] = sourceY;
+            sprite["sourceWidth"] = sourceWidth;
+            sprite["sourceHeight"] = sourceHeight;
 
             sprite["justificationX"] = justificationX;
             sprite["justificationY"] = justificationY;
@@ -68,9 +78,28 @@ namespace Edelweiss.Mapping.Entities
 
             sprite["setPosition"] = (Func<double, double, Table>)((x, y) =>
             {
-                // self["x"] = x;
-                // self["y"] = y;
-                return new Table(script);
+                sprite["x"] = x;
+                sprite["y"] = y;
+                return sprite;
+            });
+
+            sprite["setColor"] = (Func<string, Table>)((color) =>
+            {
+                return sprite;
+            });
+
+            sprite["setScale"] = (Func<double, double, Table>)((x, y) =>
+            {
+                sprite["scaleX"] = scaleX;
+                sprite["scaleY"] = scaleY;
+                return sprite;
+            });
+
+            sprite["addPosition"] = (Func<double, double, Table>)((x, y) =>
+            {
+                sprite["x"] = (double)sprite["x"] + x;
+                sprite["y"] = (double)sprite["y"] + y;
+                return sprite;
             });
 
             sprite["draw"] = (Action)Draw;
@@ -97,6 +126,10 @@ namespace Edelweiss.Mapping.Entities
                 {"x", x - SpriteDestination.offsetX},
                 {"y", y - SpriteDestination.offsetY},
                 {"justification", JToken.FromObject(new List<float>() {justificationX, justificationY})},
+                {"sourceX", sourceX},
+                {"sourceY", sourceY},
+                {"sourceWidth", sourceWidth},
+                {"sourceHeight", sourceHeight}
             };
         }
     }

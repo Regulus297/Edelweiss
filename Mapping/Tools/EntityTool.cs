@@ -44,7 +44,7 @@ namespace Edelweiss.Mapping.Tools
 
         public override void OnFavourited(string material)
         {
-            favourites.Add(material);
+            favourites.Toggle(material);
             recache = true;
         }
 

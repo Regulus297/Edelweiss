@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
@@ -25,6 +26,9 @@ namespace Edelweiss.Utils
         /// The loaded texture keys to the absolute paths to the texture
         /// </summary>
         public static Dictionary<string, string> texturePaths = [];
+        internal static Dictionary<string, TextureData> textureDataCache = [];
+
+
         internal static Dictionary<string, EntityData> entities = [];
         internal static bool LoadTexturesFromDirectory(string graphicsPath)
         {
@@ -171,5 +175,73 @@ namespace Edelweiss.Utils
                 MainPlugin.Instance.Logger.Error($"Failed loading entity {fileName} with error: \n {LuaErrorEncoder.GetString(LuaErrorEncoder.GetBytes(e.ToString()))}");
             }
         }
+
+        public static TextureData GetTextureData(string key)
+        {
+            if (textureDataCache.TryGetValue(key, out var data))
+                return data;
+
+            string path = texturePaths[key];
+            if (path.Contains(char.ConvertFromUtf32(0)))
+            {
+                string zip = path.Split(char.ConvertFromUtf32(0))[0];
+                string entry = path.Split(char.ConvertFromUtf32(0))[1];
+                using (ZipArchive zipArchive = ZipFile.OpenRead(zip))
+                {
+                    ZipArchiveEntry zipEntry = zipArchive.GetEntry(entry);
+                    Size size = GetImageSize(zipEntry.Open());
+                    textureDataCache[key] = new()
+                    {
+                        width = size.Width,
+                        height = size.Height
+                    };
+                }
+            }
+            else
+            {
+                using (Stream stream = File.OpenRead(path))
+                {
+                    Size size = GetImageSize(stream);
+                    textureDataCache[key] = new()
+                    {
+                        width = size.Width,
+                        height = size.Height
+                    };
+                }
+            }
+
+            return textureDataCache[key];
+        }
+
+        public static Size GetImageSize(Stream stream)
+        {
+            BinaryReader br = new BinaryReader(stream);
+            br.ReadBytes(16);
+            byte[] widthArray = new byte[sizeof(int)];
+            for (int i = 0; i < widthArray.Length; i++)
+                widthArray[widthArray.Length - 1 - i ] = br.ReadByte();
+            int width = BitConverter.ToInt32(widthArray, 0);
+            byte[] heightArray = new byte[sizeof(int)];
+            for (int i = 0; i < heightArray.Length; i++)
+                heightArray[heightArray.Length - 1 - i] = br.ReadByte();
+            int height = BitConverter.ToInt32(heightArray, 0);
+            return new Size(width, height);
+        }
+    }
+
+    /// <summary>
+    /// Contains data for a texture
+    /// </summary>
+    public class TextureData
+    {
+        /// <summary>
+        /// The width of the texture in pixels
+        /// </summary>
+        public int width;
+
+        /// <summary>
+        /// The height of the texture in pixels
+        /// </summary>
+        public int height;
     }
 }
