@@ -13,6 +13,7 @@ namespace Edelweiss.Loenn
     public abstract class LoennModule : PluginRegistryObject
     {
         internal static Dictionary<string, Func<Script, Table>> createdModules = [];
+        internal static Dictionary<string, Func<Script, Table>> globalModules = [];
 
         internal static DynValue RequireModule(Script script, string module)
         {
@@ -25,6 +26,11 @@ namespace Edelweiss.Loenn
         /// <inheritdoc/>
         public sealed override void Load()
         {
+            if (Global)
+            {
+                globalModules[ModuleName] = GenerateTable;
+                return;
+            }
             createdModules[ModuleName] = GenerateTable;
         }
 
@@ -32,6 +38,11 @@ namespace Edelweiss.Loenn
         /// The name of the Loenn module this replaces.
         /// </summary>
         public abstract string ModuleName { get; }
+
+        /// <summary>
+        /// If false, the module is used using require(). If false, the module is accessible automatically
+        /// </summary>
+        public virtual bool Global => false;
 
         /// <summary>
         /// Generates the table for the module

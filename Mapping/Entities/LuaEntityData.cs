@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities
 {
@@ -72,6 +73,26 @@ namespace Edelweiss.Mapping.Entities
             {
                 MainPlugin.Instance.Logger.Error($"Error while getting sprite for entity {Name}: \n {e}");
                 return [];
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void Draw(JArray shapes, RoomData room, Entity entity)
+        {
+            try
+            {
+                DynValue drawMethod = entityTable.Get("draw");
+                if (drawMethod.IsNil())
+                    base.Draw(shapes, room, entity);
+                else
+                {
+                    using var dest = new SpriteDestination(shapes, entity.x, entity.y);
+                    script.Call(drawMethod, room.ToLuaTable(script), entity.ToLuaTable(script), new Table(script));
+                }
+            }
+            catch (Exception e)
+            {
+                MainPlugin.Instance.Logger.Error($"Error while drawing entity {Name}: \n {e}");
             }
         }
 

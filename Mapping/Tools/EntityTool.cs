@@ -76,9 +76,18 @@ namespace Edelweiss.Mapping.Tools
                 {"height", 8}
             };
 
+            RoomData backendRoom = MappingTab.map.rooms.FirstOrDefault(r => r.name == room.Value<string>("name"));
             EntityData found = CelesteModLoader.entities[selectedMaterial];
+            Entity created = Entity.DefaultFromData(found);
+            created._name = found.Name;
+            created.x = 8 * tileX;
+            created.y = 8 * tileY;
+
+
+            backendRoom?.entities.Add(created);
+
             JArray shapes = new();
-            found.Draw(shapes, RoomData.Default, Entity.DefaultFromData(found));
+            found.Draw(shapes, backendRoom ?? RoomData.Default, created);
 
             item["shapes"] = shapes;
 

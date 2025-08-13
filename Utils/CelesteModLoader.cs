@@ -118,6 +118,10 @@ namespace Edelweiss.Utils
             try
             {
                 tempScript.Globals["require"] = (Func<string, DynValue>)(module => LoennModule.RequireModule(tempScript, module));
+                foreach (var pair in LoennModule.globalModules)
+                {
+                    tempScript.Globals[pair.Key] = pair.Value(tempScript);
+                }
                 script = tempScript;
                 return script.DoString(lua).Table;
             }

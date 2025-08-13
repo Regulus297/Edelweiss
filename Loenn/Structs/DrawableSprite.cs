@@ -14,7 +14,11 @@ namespace Edelweiss.Loenn.Structs
 
             table["fromTexture"] = (Func<string, Table, DynValue>)((texture, data) =>
             {
-                return DynValue.NewTable(new Sprite(texture).ToLuaTable(script));
+                return DynValue.NewTable(new Sprite(texture)
+                {
+                    x = (int)data.Get("x").Number,
+                    y = (int)data.Get("y").Number
+                }.ToLuaTable(script));
             });
 
             return table;

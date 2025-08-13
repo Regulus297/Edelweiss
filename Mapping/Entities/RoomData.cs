@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Edelweiss.Loenn;
 using MoonSharp.Interpreter;
@@ -143,6 +145,11 @@ namespace Edelweiss.Mapping.Entities
         public string color = data.Value<string>("color");
 
         /// <summary>
+        /// 
+        /// </summary>
+        public List<Entity> entities = [];
+
+        /// <summary>
         /// Converts the room to a Lua table compatible with Loenn.
         /// </summary>
         public Table ToLuaTable(Script script)
@@ -150,6 +157,11 @@ namespace Edelweiss.Mapping.Entities
             Table table = new(script);
             foreach (FieldInfo field in typeof(RoomData).GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
+                if (field.Name == "entities")
+                {
+                    table[field.Name] = entities.Select(e => e.ToLuaTable(script)).ToArray();
+                    continue;
+                }
                 table[field.Name] = field.GetValue(this);
             }
             return table;

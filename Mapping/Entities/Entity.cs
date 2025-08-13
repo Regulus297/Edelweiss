@@ -37,13 +37,15 @@ namespace Edelweiss.Mapping.Entities
         /// The placement data for the entity;
         /// </summary>
         public Dictionary<string, object> data = [];
+        
+        public int x = 0, y = 0, width = 0, height = 0;
 
         /// <summary>
         /// Creates a default entity with the placement data from the given entity data
         /// </summary>
         public static Entity DefaultFromData(EntityData entityData)
         {
-            return new("", "")
+            return new(entityData.Name, "")
             {
                 data = entityData.GetPlacementData()
             };
@@ -59,11 +61,10 @@ namespace Edelweiss.Mapping.Entities
             table["_id"] = _id;
             table["_type"] = _type;
 
-            // TODO: update this to actually reflect the entity's position
-            table["x"] = 0;
-            table["y"] = 0;
-            table["width"] = 0;
-            table["height"] = 0;
+            table["x"] = x;
+            table["y"] = y;
+            table["width"] = width;
+            table["height"] = height;
 
             Table nodesTable = new Table(script);
             foreach (Point p in nodes)

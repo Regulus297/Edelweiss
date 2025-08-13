@@ -46,8 +46,9 @@ namespace Edelweiss.Mapping.Entities
         /// <param name="entity">The entity instance</param>
         public virtual void Draw(JArray shapes, RoomData room, Entity entity)
         {
+            using var dest = new SpriteDestination(shapes, entity.x, entity.y);
             foreach (var sprite in Sprite(room, entity))
-                shapes.Add(sprite.ToJObject());
+                sprite.Draw();
         }
 
         /// <summary>

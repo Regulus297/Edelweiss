@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Edelweiss.Loenn;
+using Edelweiss.Plugins;
 using MoonSharp.Interpreter;
 using Newtonsoft.Json.Linq;
 
@@ -72,7 +73,16 @@ namespace Edelweiss.Mapping.Entities
                 return new Table(script);
             });
 
+            sprite["draw"] = (Action)Draw;
+
             return sprite;
+        }
+
+        internal void Draw() {
+            if (SpriteDestination.destination != null)
+            {
+                SpriteDestination.destination.Add(ToJObject());
+            }
         }
 
         /// <summary>
@@ -84,10 +94,27 @@ namespace Edelweiss.Mapping.Entities
             {
                 {"type", "pixmap"},
                 {"path", "Gameplay/" + texture},
-                {"x", 0},
-                {"y", 0},
+                {"x", x - SpriteDestination.offsetX},
+                {"y", y - SpriteDestination.offsetY},
                 {"justification", JToken.FromObject(new List<float>() {justificationX, justificationY})},
             };
+        }
+    }
+
+    public class SpriteDestination : IDisposable
+    {
+        public static JArray destination = null;
+        public static int offsetX = 0;
+        public static int offsetY = 0;
+        public SpriteDestination(JArray shapes, int offsetX, int offsetY)
+        {
+            destination = shapes;
+            SpriteDestination.offsetX = offsetX;
+            SpriteDestination.offsetY = offsetY;
+        }
+        public void Dispose()
+        {
+            destination = null;
         }
     }
 }

@@ -27,6 +27,11 @@
             The name of the Loenn module this replaces.
             </summary>
         </member>
+        <member name="P:Edelweiss.Loenn.LoennModule.Global">
+            <summary>
+            If false, the module is used using require(). If false, the module is accessible automatically
+            </summary>
+        </member>
         <member name="M:Edelweiss.Loenn.LoennModule.GenerateTable(MoonSharp.Interpreter.Script)">
             <summary>
             Generates the table for the module
@@ -171,6 +176,9 @@
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Sprite(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
             <inheritdoc/>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Draw(Newtonsoft.Json.Linq.JArray,Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Justification(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
             <inheritdoc/>
         </member>
@@ -297,6 +305,11 @@
             </summary>
         </member>
         <member name="F:Edelweiss.Mapping.Entities.RoomData.color">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.entities">
             <summary>
             
             </summary>
