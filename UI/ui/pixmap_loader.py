@@ -1,3 +1,5 @@
+import zipfile
+
 from PyQt5.QtGui import QPixmap
 
 from network import SyncedVariables
@@ -13,6 +15,15 @@ class PixmapLoader:
 
         textures = SyncedVariables.variables["Edelweiss:Textures"]
         if key in textures:
-            PixmapLoader.loaded_textures[key] = QPixmap(textures[key])
+            path = textures[key]
+            if chr(0) in path:
+                zip_path, name = path.split(chr(0))
+                with zipfile.ZipFile(zip_path) as mod:
+                    pixmap = QPixmap()
+                    pixmap.loadFromData(mod.read(name))
+                    PixmapLoader.loaded_textures[key] = pixmap
+                    return pixmap
+
+            PixmapLoader.loaded_textures[key] = QPixmap(path)
             return PixmapLoader.loaded_textures[key]
         return None

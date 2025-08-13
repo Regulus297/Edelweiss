@@ -40,7 +40,7 @@ namespace Edelweiss
 
 
 
-            if (!CelesteModLoader.LoadTextures(Path.Join(CelesteDirectory, "graphics-dump")))
+            if (!CelesteModLoader.LoadTexturesFromDirectory(Path.Join(CelesteDirectory, "graphics-dump")))
             {
                 Console.WriteLine("Failed to load textures: please place graphics dump inside celeste directory");
             }

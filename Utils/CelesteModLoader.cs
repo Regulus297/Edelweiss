@@ -26,7 +26,7 @@ namespace Edelweiss.Utils
         /// </summary>
         public static Dictionary<string, string> texturePaths = [];
         internal static Dictionary<string, EntityData> entities = [];
-        internal static bool LoadTextures(string graphicsPath)
+        internal static bool LoadTexturesFromDirectory(string graphicsPath)
         {
             MainPlugin.Instance.Logger.Log($"Loading textures from {graphicsPath}");
             graphicsPath = Path.Join(graphicsPath, "Graphics", "Atlases");
@@ -52,6 +52,7 @@ namespace Edelweiss.Utils
             {
                 LoadZip(path);
             }
+            MainPlugin.textures.Value = texturePaths;
         }
 
         internal static void LoadDirectory(string modPath)
@@ -91,11 +92,16 @@ namespace Edelweiss.Utils
                             PluginLoader.LoadLangFile(stream, langEntry.Name, "Loenn");
                         }
                     }
+                    if (langEntry.FullName.StartsWith("Graphics/Atlases") && langEntry.FullName.EndsWith(".png"))
+                    {
+                        string key = langEntry.FullName.Substring(0, langEntry.FullName.Length - 4).Substring("Graphics/Atlases".Length + 1);
+                        texturePaths[key] = $"{modPath}{char.ConvertFromUtf32(0)}{langEntry.FullName}";
+                    }
                 }
                 foreach (ZipArchiveEntry entry in zip.Entries)
                 {
                     if (entry.FullName.StartsWith("Loenn/entities") && entry.FullName.EndsWith(".lua"))
-                    {   
+                    {
                         using (var stream = entry.Open())
                         {
                             using (var streamReader = new StreamReader(stream))
