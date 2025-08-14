@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Edelweiss.Loenn;
 using Edelweiss.Plugins;
 using MoonSharp.Interpreter;
@@ -21,6 +22,8 @@ namespace Edelweiss.Mapping.Entities
         internal int depth = depth;
 
         internal int sourceX = -1, sourceY = -1, sourceWidth = -1, sourceHeight = -1;
+
+        internal string color = "#ffffff";
 
         /// <summary>
         /// Creates a sprite with the given texture key
@@ -44,6 +47,25 @@ namespace Edelweiss.Mapping.Entities
             sourceY = (int)table.Get("sourceY").Number;
             sourceWidth = (int)table.Get("sourceWidth").Number;
             sourceHeight = (int)table.Get("sourceHeight").Number;
+            DynValue color = table.Get("color");
+            if (color.Type == DataType.Table)
+            {
+                int r = (int)(color.Table.Get(1).Number * 255);
+                int g = (int)(color.Table.Get(2).Number * 255);
+                int b = (int)(color.Table.Get(3).Number * 255);
+
+                int a = 255;
+                if (color.Table.Length == 5)
+                {
+                    a = (int)(color.Table.Get(4).Number * 255);
+                }
+
+                string hex = $"#{a:X2}{r:X2}{g:X2}{b:X2}";
+
+                this.color = hex;
+            }
+            else if (color.Type == DataType.String)
+                this.color = color.String;
         }
 
         /// <summary>
@@ -76,6 +98,8 @@ namespace Edelweiss.Mapping.Entities
 
             sprite["depth"] = depth;
 
+            sprite["color"] = color;
+
             sprite["setPosition"] = (Func<double, double, Table>)((x, y) =>
             {
                 sprite["x"] = x;
@@ -83,15 +107,16 @@ namespace Edelweiss.Mapping.Entities
                 return sprite;
             });
 
-            sprite["setColor"] = (Func<string, Table>)((color) =>
+            sprite["setColor"] = (Func<DynValue, Table>)((color) =>
             {
+                sprite["color"] = color;
                 return sprite;
             });
 
             sprite["setScale"] = (Func<double, double, Table>)((x, y) =>
             {
-                sprite["scaleX"] = scaleX;
-                sprite["scaleY"] = scaleY;
+                sprite["scaleX"] = x;
+                sprite["scaleY"] = y;
                 return sprite;
             });
 
@@ -102,7 +127,17 @@ namespace Edelweiss.Mapping.Entities
                 return sprite;
             });
 
-            sprite["draw"] = (Action)Draw;
+            sprite["setJustification"] = (Func<double, double, Table>)((x, y) =>
+            {
+                sprite["justificationX"] = x;
+                sprite["justificationY"] = y;
+                return sprite;
+            });
+
+            sprite["draw"] = () =>
+            {
+                new Sprite(sprite).Draw();
+            };
 
             return sprite;
         }
@@ -129,7 +164,11 @@ namespace Edelweiss.Mapping.Entities
                 {"sourceX", sourceX},
                 {"sourceY", sourceY},
                 {"sourceWidth", sourceWidth},
-                {"sourceHeight", sourceHeight}
+                {"sourceHeight", sourceHeight},
+                {"rotation", rotation * 180/MathF.PI},
+                {"scaleX", scaleX},
+                {"scaleY", scaleY},
+                {"color", color}
             };
         }
     }
