@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using MoonSharp.Interpreter;
 
 namespace Edelweiss.Utils
 {
@@ -49,6 +50,48 @@ namespace Edelweiss.Utils
                 list.Remove(item);
             else
                 list.Add(item);
+        }
+
+        /// <summary>
+        /// Converts a DynValue into a hex color string in ARGB format
+        /// </summary>
+        public static string Color(this DynValue color)
+        {
+            if (color.Type == DataType.Table)
+            {
+                int r = (int)(color.Table.Get(1).Number * 255);
+                int g = (int)(color.Table.Get(2).Number * 255);
+                int b = (int)(color.Table.Get(3).Number * 255);
+
+                int a = 255;
+                if (color.Table.Length == 5)
+                {
+                    a = (int)(color.Table.Get(4).Number * 255);
+                }
+
+                string hex = $"#{a:X2}{r:X2}{g:X2}{b:X2}";
+
+                return hex;
+            }
+            else if (color.Type == DataType.String)
+                return color.String;
+            return "#ffffff";
+        }
+
+        /// <summary>
+        /// Returns true if the inputted array of arguments matches the desired signature
+        /// </summary>
+        public static bool MatchesSignature(this DynValue[] args, params DataType[] signature)
+        {
+            if (args.Length != signature.Length)
+                return false;
+
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i].Type != signature[i])
+                    return false;
+            }
+            return true;
         }
     }
 }

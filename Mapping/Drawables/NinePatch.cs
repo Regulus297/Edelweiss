@@ -1,0 +1,241 @@
+using System;
+using System.Collections.Generic;
+using Edelweiss.Loenn;
+using Edelweiss.Utils;
+using MoonSharp.Interpreter;
+
+namespace Edelweiss.Mapping.Drawables
+{
+    public class NinePatch() : Drawable, ILuaConvertible
+    {
+        public string texture = "";
+        public string mode = "";
+        public string borderMode = "", fillMode = "";
+        public int x = 0, y = 0;
+        public int width = 0, height = 0;
+        public int tileSize = 0, tileWidth = 0, tileHeight = 0;
+        public int borderLeft = 0, borderRight = 0, borderTop = 0, borderBottom = 0;
+
+        public NinePatch(Table table) : this()
+        {
+            texture = table.Get("texture").String;
+            mode = table.Get("mode").String;
+            borderMode = table.Get("borderMode").String;
+            fillMode = table.Get("fillMode").String;
+            x = (int)table.Get("drawX").Number;
+            y = (int)table.Get("drawY").Number;
+            width = (int)table.Get("drawWidth").Number;
+            height = (int)table.Get("drawHeight").Number;
+            tileSize = (int)table.Get("tileSize").Number;
+            tileWidth = (int)table.Get("tileWidth").Number;
+            tileHeight = (int)table.Get("tileHeight").Number;
+            borderLeft = (int)table.Get("borderLeft").Number;
+            borderRight = (int)table.Get("borderRight").Number;
+            borderTop = (int)table.Get("borderTop").Number;
+            borderBottom = (int)table.Get("borderBottom").Number;
+
+        }
+
+        public override void Draw()
+        {
+            foreach (Sprite sprite in GetSprites())
+            {
+                sprite.x += x;
+                sprite.y += y;
+                sprite.Draw();
+            }
+        }
+
+        internal List<Sprite> GetSprites()
+        {
+
+            TextureData data = CelesteModLoader.GetTextureData("Gameplay/" + texture);
+            List<Sprite> sprites = [];
+
+            // Corners
+            if (width > 0 && height > 0 && borderLeft > 0 && borderTop > 0)
+            {
+                sprites.Add(new(texture)
+                {
+                    sourceX = 0,
+                    sourceY = 0,
+                    sourceWidth = borderLeft,
+                    sourceHeight = borderTop,
+                    justificationX = 0,
+                    justificationY = 0
+                });
+            }
+            if (width > 0 && height > 0 && borderRight > 0 && borderTop > 0)
+            {
+                sprites.Add(new(texture)
+                {
+                    x = (int)width - borderRight,
+                    sourceX = -borderRight,
+                    sourceY = 0,
+                    sourceWidth = borderRight,
+                    sourceHeight = borderTop,
+                    justificationX = 0,
+                    justificationY = 0
+                });
+            }
+            if (width > 0 && height > 0 && borderLeft > 0 && borderBottom > 0)
+            {
+                sprites.Add(new(texture)
+                {
+                    y = (int)height - borderBottom,
+                    sourceX = 0,
+                    sourceY = -borderBottom,
+                    sourceWidth = borderLeft,
+                    sourceHeight = borderBottom,
+                    justificationX = 0,
+                    justificationY = 0
+                });
+            }
+            if (width > 0 && height > 0 && borderRight > 0 && borderBottom > 0)
+            {
+                sprites.Add(new(texture)
+                {
+                    x = (int)width - borderRight,
+                    y = (int)height - borderBottom,
+                    sourceX = -borderRight,
+                    sourceY = -borderBottom,
+                    sourceWidth = borderLeft,
+                    sourceHeight = borderBottom,
+                    justificationX = 0,
+                    justificationY = 0
+                });
+            }
+
+            // Horizontal edges
+            for (int x = borderLeft; x < width - borderRight; x += tileWidth)
+            {
+                int sourceX = (x - borderLeft) % (data.width - (borderLeft + borderRight));
+                sourceX += borderLeft;
+                if (borderTop > 0)
+                {
+                    sprites.Add(new Sprite(texture)
+                    {
+                        x = x,
+                        y = 0,
+                        sourceX = sourceX,
+                        sourceY = 0,
+                        sourceWidth = tileWidth,
+                        sourceHeight = borderTop,
+                        justificationX = 0,
+                        justificationY = 0
+                    });
+                }
+                if (borderBottom > 0)
+                {
+                    sprites.Add(new Sprite(texture)
+                    {
+                        x = x,
+                        y = (int)height - borderBottom,
+                        sourceX = sourceX,
+                        sourceY = -borderBottom,
+                        sourceWidth = tileWidth,
+                        sourceHeight = borderBottom,
+                        justificationX = 0,
+                        justificationY = 0
+                    });
+                }
+            }
+
+            // Vertical edges
+            for (int y = borderTop; y < height - borderTop; y += tileHeight)
+            {
+                int sourceY = (y - borderTop) % (data.width - (borderTop + borderBottom));
+                sourceY += borderTop;
+                if (borderLeft > 0)
+                {
+                    sprites.Add(new Sprite(texture)
+                    {
+                        x = 0,
+                        y = y,
+                        sourceX = 0,
+                        sourceY = sourceY,
+                        sourceWidth = borderLeft,
+                        sourceHeight = tileHeight,
+                        justificationX = 0,
+                        justificationY = 0
+                    });
+                }
+                if (borderRight > 0)
+                {
+                    sprites.Add(new Sprite(texture)
+                    {
+                        x = width - borderRight,
+                        y = y,
+                        sourceX = -borderRight,
+                        sourceY = sourceY,
+                        sourceWidth = borderRight,
+                        sourceHeight = tileHeight,
+                        justificationX = 0,
+                        justificationY = 0
+                    });
+                }
+            }
+
+            // Fill
+            for (int x = borderLeft; x < width - borderRight; x += tileWidth)
+            {
+                for (int y = borderTop; y < height - borderTop; y += tileHeight)
+                {
+                    int sourceY = (y - borderTop) % (data.width - (borderTop + borderBottom));
+                    sourceY += borderTop;
+                    int sourceX = (x - borderLeft) % (data.width - (borderLeft + borderRight));
+                    sourceX += borderLeft;
+                    sprites.Add(new Sprite(texture)
+                    {
+                        x = x,
+                        y = y,
+                        sourceX = sourceX,
+                        sourceY = sourceY,
+                        sourceWidth = tileWidth,
+                        sourceHeight = tileHeight,
+                        justificationX = 0,
+                        justificationY = 0
+                    });
+                }
+            }
+
+            return sprites;
+        }
+
+        public Table ToLuaTable(Script script)
+        {
+            Table ninePatch = new(script);
+
+            ninePatch["_type"] = Name;
+            ninePatch["texture"] = texture;
+            ninePatch["mode"] = mode;
+            ninePatch["borderMode"] = borderMode;
+            ninePatch["fillMode"] = fillMode;
+            ninePatch["drawX"] = x;
+            ninePatch["drawY"] = y;
+            ninePatch["drawWidth"] = width;
+            ninePatch["drawHeight"] = height;
+            ninePatch["tileSize"] = tileSize;
+            ninePatch["tileWidth"] = tileWidth;
+            ninePatch["tileHeight"] = tileHeight;
+            ninePatch["borderLeft"] = borderLeft;
+            ninePatch["borderRight"] = borderRight;
+            ninePatch["borderTop"] = borderTop;
+            ninePatch["borderBottom"] = borderBottom;
+
+            ninePatch["getDrawableSprite"] = () =>
+            {
+                Table spriteTable = new(script);
+                foreach (Sprite sprite in GetSprites())
+                {
+                    sprite.x += x;
+                    sprite.y += y;
+                    spriteTable.Append(DynValue.NewTable(sprite.ToLuaTable(script)));
+                }
+                return spriteTable;
+            };
+
+            return ninePatch;
+        }
+    }
+}

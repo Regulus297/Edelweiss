@@ -57,6 +57,45 @@
             
             </summary>
         </member>
+        <member name="T:Edelweiss.Mapping.Drawables.Sprite">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Sprite.#ctor(System.String,System.Int32,System.Int32,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Int32)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Sprite.#ctor(System.String)">
+            <summary>
+            Creates a sprite with the given texture key
+            </summary>
+            <param name="texture">The texture of the sprite relative to Gameplay/</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Sprite.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Sprite.#ctor(MoonSharp.Interpreter.Table)">
+            <summary>
+            Creates a sprite from the given Lua table
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Sprite.ToLuaTable(MoonSharp.Interpreter.Script)">
+            <summary>
+            Converts the sprite to a Lua table that is compatible with Loenn
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Sprite.Draw">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Sprite.ToJObject">
+            <summary>
+            Converts the sprite to a shape JObject that can be drawn by the frontend
+            </summary>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.Entity">
             <summary>
             Class containing data for an entity placed in the map.
@@ -317,37 +356,6 @@
         <member name="M:Edelweiss.Mapping.Entities.RoomData.ToLuaTable(MoonSharp.Interpreter.Script)">
             <summary>
             Converts the room to a Lua table compatible with Loenn.
-            </summary>
-        </member>
-        <member name="T:Edelweiss.Mapping.Entities.Sprite">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Edelweiss.Mapping.Entities.Sprite.#ctor(System.String,System.Int32,System.Int32,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Single,System.Int32)">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="M:Edelweiss.Mapping.Entities.Sprite.#ctor(System.String)">
-            <summary>
-            Creates a sprite with the given texture key
-            </summary>
-            <param name="texture">The texture of the sprite relative to Gameplay/</param>
-        </member>
-        <member name="M:Edelweiss.Mapping.Entities.Sprite.#ctor(MoonSharp.Interpreter.Table)">
-            <summary>
-            Creates a sprite from the given Lua table
-            </summary>
-        </member>
-        <member name="M:Edelweiss.Mapping.Entities.Sprite.ToLuaTable(MoonSharp.Interpreter.Script)">
-            <summary>
-            Converts the sprite to a Lua table that is compatible with Loenn
-            </summary>
-        </member>
-        <member name="M:Edelweiss.Mapping.Entities.Sprite.ToJObject">
-            <summary>
-            Converts the sprite to a shape JObject that can be drawn by the frontend
             </summary>
         </member>
         <member name="T:Edelweiss.Mapping.Tools.MappingTool">
@@ -1004,6 +1012,11 @@
             The height of the texture in pixels
             </summary>
         </member>
+        <member name="M:Edelweiss.Utils.TextureData.ToLuaTable(MoonSharp.Interpreter.Script)">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Edelweiss.Utils.EdelweissUtils">
             <summary>
             
@@ -1025,6 +1038,16 @@
         <member name="M:Edelweiss.Utils.EdelweissUtils.Toggle``1(System.Collections.Generic.List{``0},``0)">
             <summary>
             If the item is present in the list, it is removed. If it is not present, it is added
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Color(MoonSharp.Interpreter.DynValue)">
+            <summary>
+            Converts a DynValue into a hex color string in ARGB format
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.MatchesSignature(MoonSharp.Interpreter.DynValue[],MoonSharp.Interpreter.DataType[])">
+            <summary>
+            Returns true if the inputted array of arguments matches the desired signature
             </summary>
         </member>
         <member name="T:Edelweiss.Utils.FormLoader">

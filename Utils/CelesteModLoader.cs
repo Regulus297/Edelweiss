@@ -232,7 +232,7 @@ namespace Edelweiss.Utils
     /// <summary>
     /// Contains data for a texture
     /// </summary>
-    public class TextureData
+    public class TextureData : ILuaConvertible
     {
         /// <summary>
         /// The width of the texture in pixels
@@ -243,5 +243,16 @@ namespace Edelweiss.Utils
         /// The height of the texture in pixels
         /// </summary>
         public int height;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Table ToLuaTable(Script script)
+        {
+            Table table = new(script);
+            table["width"] = width;
+            table["height"] = height;
+            return table;
+        }
     }
 }

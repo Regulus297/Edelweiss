@@ -2,16 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Edelweiss.Loenn;
+using Edelweiss.Mapping.Drawables;
 using Edelweiss.Plugins;
+using Edelweiss.Utils;
 using MoonSharp.Interpreter;
 using Newtonsoft.Json.Linq;
 
-namespace Edelweiss.Mapping.Entities
+namespace Edelweiss.Mapping.Drawables
 {
     /// <summary>
     /// 
     /// </summary>
-    public class Sprite(string texture, int x, int y, float justificationX, float justificationY, float scaleX, float scaleY, float renderOffsetX, float renderOffsetY, float rotation, int depth) : ILuaConvertible
+    public class Sprite(string texture, int x, int y, float justificationX, float justificationY, float scaleX, float scaleY, float renderOffsetX, float renderOffsetY, float rotation, int depth) : Drawable, ILuaConvertible
     {
         internal string texture = texture;
         internal int x = x, y = y;
@@ -35,6 +37,14 @@ namespace Edelweiss.Mapping.Entities
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        public Sprite() : this("")
+        {
+
+        }
+
+        /// <summary>
         /// Creates a sprite from the given Lua table
         /// </summary>
         public Sprite(Table table) : this(table.Get("texture").String, (int)table.Get("x").Number, (int)table.Get("y").Number,
@@ -47,25 +57,17 @@ namespace Edelweiss.Mapping.Entities
             sourceY = (int)table.Get("sourceY").Number;
             sourceWidth = (int)table.Get("sourceWidth").Number;
             sourceHeight = (int)table.Get("sourceHeight").Number;
-            DynValue color = table.Get("color");
-            if (color.Type == DataType.Table)
+            color = table.Get("color").Color();
+            if (table.Get("offsetX").IsNotNil())
             {
-                int r = (int)(color.Table.Get(1).Number * 255);
-                int g = (int)(color.Table.Get(2).Number * 255);
-                int b = (int)(color.Table.Get(3).Number * 255);
-
-                int a = 255;
-                if (color.Table.Length == 5)
-                {
-                    a = (int)(color.Table.Get(4).Number * 255);
-                }
-
-                string hex = $"#{a:X2}{r:X2}{g:X2}{b:X2}";
-
-                this.color = hex;
+                justificationX = 0;
+                x += (int)table.Get("offsetX").Number;
             }
-            else if (color.Type == DataType.String)
-                this.color = color.String;
+            if (table.Get("offsetY").IsNotNil())
+            {
+                justificationY = 0;
+                y += (int)table.Get("offsetY").Number;
+            }
         }
 
         /// <summary>
@@ -99,6 +101,8 @@ namespace Edelweiss.Mapping.Entities
             sprite["depth"] = depth;
 
             sprite["color"] = color;
+
+            sprite["_type"] = Name;
 
             sprite["setPosition"] = (Func<double, double, Table>)((x, y) =>
             {
@@ -134,15 +138,40 @@ namespace Edelweiss.Mapping.Entities
                 return sprite;
             });
 
+            sprite["useRelativeQuad"] = (Func<double, double, double, double, Table>)((x, y, width, height) =>
+            {
+                sprite["sourceX"] = x;
+                sprite["sourceY"] = y;
+                sprite["offsetX"] = 0;
+                sprite["offsetY"] = 0;
+                sprite["sourceWidth"] = width;
+                sprite["sourceHeight"] = height;
+                return sprite;
+            });
+
             sprite["draw"] = () =>
             {
                 new Sprite(sprite).Draw();
             };
 
+            Table mt = new(script);
+            mt["__index"] = (Func<Table, string, DynValue>)((t, key) =>
+            {
+                if (key == "meta")
+                {
+                    return DynValue.NewTable(CelesteModLoader.GetTextureData("Gameplay/" + t["texture"].ToString()).ToLuaTable(script));
+                }
+                return DynValue.Nil;
+            });
+
+            sprite.MetaTable = mt;
+
             return sprite;
         }
 
-        internal void Draw() {
+        /// <inheritdoc/>
+        public override void Draw()
+        {
             if (SpriteDestination.destination != null)
             {
                 SpriteDestination.destination.Add(ToJObject());

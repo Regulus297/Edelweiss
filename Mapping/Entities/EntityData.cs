@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Edelweiss.Mapping.Drawables;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities
@@ -29,9 +30,9 @@ namespace Edelweiss.Mapping.Entities
         /// </summary>
         /// <param name="room">The room the entity is in</param>
         /// <param name="entity">The entity instance</param>
-        public virtual List<Sprite> Sprite(RoomData room, Entity entity)
+        public virtual List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            return [new(Texture(room, entity)) {
+            return [new Sprite(Texture(room, entity)) {
                 justificationX = Justification(room, entity)[0],
                 justificationY = Justification(room, entity)[1],
                 x = entity.x,
@@ -51,6 +52,32 @@ namespace Edelweiss.Mapping.Entities
             using var dest = new SpriteDestination(shapes, entity.x, entity.y);
             foreach (var sprite in Sprite(room, entity))
                 sprite.Draw();
+        }
+
+        public virtual Rectangle Rectangle(RoomData room, Entity entity)
+        {
+            bool hasDimensions = entity.width != 0 && entity.height != 0;
+            return new Rectangle()
+            {
+                x = entity.x - (hasDimensions ? 0 : 2),
+                y = entity.y - (hasDimensions ? 0 : 2),
+                width = hasDimensions ? entity.width : 4,
+                height = hasDimensions ? entity.height : 4,
+                color = FillColor(room, entity),
+                borderColor = BorderColor(room, entity)
+            };
+        }
+
+        public virtual string Color(RoomData room, Entity entity) {
+            return "#ffffff";
+        }
+
+        public virtual string FillColor(RoomData room, Entity entity) {
+            return Color(room, entity);
+        }
+
+        public virtual string BorderColor(RoomData room, Entity entity) {
+            return Color(room, entity);
         }
 
         /// <summary>

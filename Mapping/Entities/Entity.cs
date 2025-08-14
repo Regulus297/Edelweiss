@@ -45,10 +45,18 @@ namespace Edelweiss.Mapping.Entities
         /// </summary>
         public static Entity DefaultFromData(EntityData entityData)
         {
-            return new(entityData.Name, "")
+            Entity created = new(entityData.Name, "")
             {
                 data = entityData.GetPlacementData()
             };
+
+            if (created.data.TryGetValue("width", out object width))
+                created.width = (int)(double)width;
+
+            if (created.data.TryGetValue("height", out object height))
+                created.height = (int)(double)height;
+
+            return created;
         }
 
         /// <summary>

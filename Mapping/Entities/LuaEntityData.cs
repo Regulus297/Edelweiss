@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edelweiss.Mapping.Drawables;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
 using Newtonsoft.Json.Linq;
@@ -50,7 +51,7 @@ namespace Edelweiss.Mapping.Entities
         }
 
         /// <inheritdoc/>
-        public override List<Sprite> Sprite(RoomData room, Entity entity)
+        public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
             try
             {
@@ -60,14 +61,14 @@ namespace Edelweiss.Mapping.Entities
                 DynValue sprite = script.Call(spriteMethod, room.ToLuaTable(script), entity.ToLuaTable(script));
                 if (sprite.Table.Get("texture").IsNil())
                 {
-                    List<Sprite> output = [];
+                    List<Drawable> output = [];
                     // It's a list
                     foreach (var table in sprite.Table.Values)
-                        output.Add(new Sprite(table.Table));
+                        output.Add(Drawable.FromTable(table.Table));
                     return output;
                 }
                 // It's one sprite
-                return [new Sprite(sprite.Table)];
+                return [Drawable.FromTable(sprite.Table)];
             }
             catch (Exception e)
             {
@@ -83,7 +84,15 @@ namespace Edelweiss.Mapping.Entities
             {
                 DynValue drawMethod = entityTable.Get("draw");
                 if (drawMethod.IsNil())
+                {
+                    if (entityTable.Get("texture").IsNil() && entityTable.Get("sprite").IsNil())
+                    {
+                        using var dest = new SpriteDestination(shapes, entity.x, entity.y);
+                        Rectangle(room, entity).Draw();
+                        return;
+                    }
                     base.Draw(shapes, room, entity);
+                }
                 else
                 {
                     using var dest = new SpriteDestination(shapes, entity.x, entity.y);
@@ -117,6 +126,63 @@ namespace Edelweiss.Mapping.Entities
             {
                 MainPlugin.Instance.Logger.Error($"Error while getting justification for entity {Name}: \n {e}");
                 return [0.5f, 0.5f];
+            }
+        }
+
+        public override string Color(RoomData room, Entity entity)
+        {
+            try
+            {
+                DynValue colorMethod = entityTable.Get("color");
+                if (colorMethod.IsNil())
+                    return base.Color(room, entity);
+                    
+                if (colorMethod.Type == DataType.Table)
+                    return colorMethod.Color();
+                return script.Call(colorMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Color();
+            }
+            catch (Exception e)
+            {
+                MainPlugin.Instance.Logger.Error($"Error while getting colour for entity {Name}: \n {e}");
+                return base.Color(room, entity);
+            }
+        }
+
+        public override string FillColor(RoomData room, Entity entity)
+        {
+            try
+            {
+                DynValue colorMethod = entityTable.Get("fillColor");
+                if (colorMethod.IsNil())
+                    return base.FillColor(room, entity);
+
+                if (colorMethod.Type == DataType.Table)
+                    return colorMethod.Color();
+                return script.Call(colorMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Color();
+            }
+            catch (Exception e)
+            {
+                MainPlugin.Instance.Logger.Error($"Error while getting fill colour for entity {Name}: \n {e}");
+                return base.FillColor(room, entity);
+            }
+        }
+
+        public override string BorderColor(RoomData room, Entity entity)
+        {
+            try
+            {
+                DynValue colorMethod = entityTable.Get("borderColor");
+                if (colorMethod.IsNil())
+                    return base.BorderColor(room, entity);
+
+                if (colorMethod.Type == DataType.Table)
+                    return colorMethod.Color();
+                return script.Call(colorMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Color();
+            }
+            catch (Exception e)
+            {
+                MainPlugin.Instance.Logger.Error($"Error while getting border colour for entity {Name}: \n {e}");
+                return base.FillColor(room, entity);
             }
         }
 

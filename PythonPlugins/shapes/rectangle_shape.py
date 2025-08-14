@@ -20,8 +20,8 @@ class RectangleShape(ShapeRenderer):
 
         brush = Qt.NoBrush
         if "fill" in data.keys():
-            brush = QBrush()
-            brush.setColor(QColor(data["fill"]))
+            path.setFillRule(Qt.WindingFill)
+            brush = QBrush(QColor(data["fill"]))
         
         painter.setBrush(brush)
         painter.setPen(pen)
