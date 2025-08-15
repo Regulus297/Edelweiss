@@ -28,8 +28,7 @@ namespace Edelweiss.Loenn
         {
             if (Global)
             {
-                globalModules[ModuleName] = GenerateTable;
-                return;
+                globalModules[TableName == "" ? ModuleName : TableName] = GenerateTable;
             }
             createdModules[ModuleName] = GenerateTable;
         }
@@ -40,7 +39,13 @@ namespace Edelweiss.Loenn
         public abstract string ModuleName { get; }
 
         /// <summary>
-        /// If false, the module is used using require(). If false, the module is accessible automatically
+        /// The name of the table this module defines. If the module is global and this is overridden, 
+        /// this will be the name of the global instead of the module name.
+        /// </summary>
+        public virtual string TableName => "";
+
+        /// <summary>
+        /// If false, the module is used using require(). If true, the module is accessible as a global
         /// </summary>
         public virtual bool Global => false;
 

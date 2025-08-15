@@ -27,9 +27,15 @@
             The name of the Loenn module this replaces.
             </summary>
         </member>
+        <member name="P:Edelweiss.Loenn.LoennModule.TableName">
+            <summary>
+            The name of the table this module defines. If the module is global and this is overridden, 
+            this will be the name of the global instead of the module name.
+            </summary>
+        </member>
         <member name="P:Edelweiss.Loenn.LoennModule.Global">
             <summary>
-            If false, the module is used using require(). If false, the module is accessible automatically
+            If false, the module is used using require(). If true, the module is accessible as a global
             </summary>
         </member>
         <member name="M:Edelweiss.Loenn.LoennModule.GenerateTable(MoonSharp.Interpreter.Script)">

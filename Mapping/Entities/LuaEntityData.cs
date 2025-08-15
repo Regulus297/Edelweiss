@@ -59,7 +59,7 @@ namespace Edelweiss.Mapping.Entities
                 if (spriteMethod.IsNil())
                     return base.Sprite(room, entity);
                 DynValue sprite = script.Call(spriteMethod, room.ToLuaTable(script), entity.ToLuaTable(script));
-                if (sprite.Table.Get("texture").IsNil())
+                if (sprite.Table.Get("_type").IsNil())
                 {
                     List<Drawable> output = [];
                     // It's a list

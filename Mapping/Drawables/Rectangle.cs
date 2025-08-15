@@ -61,7 +61,7 @@ namespace Edelweiss.Mapping.Drawables
 
             rectangle["getDrawableSprite"] = () =>
             {
-                return rectangle;
+                return new Table(script, DynValue.NewTable(rectangle));
             };
 
             return rectangle;

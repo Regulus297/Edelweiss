@@ -17,8 +17,8 @@ namespace Edelweiss.Loenn.Structs
             {
                 return DynValue.NewTable(new Sprite(texture)
                 {
-                    x = (int)data.Get("x").Number,
-                    y = (int)data.Get("y").Number
+                    x = (int)(data?.Get("x").Number ?? 0),
+                    y = (int)(data?.Get("y").Number ?? 0)
                 }.ToLuaTable(script));
             });
 
