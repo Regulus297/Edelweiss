@@ -43,7 +43,7 @@ namespace Edelweiss.Mapping.Entities
         /// <summary>
         /// The default room data
         /// </summary>
-        public static RoomData Default = new(JObject.Parse(DefaultJSON));
+        public static readonly RoomData Default = new(JObject.Parse(DefaultJSON));
 
         /// <summary>
         /// </summary>

@@ -18,12 +18,13 @@ class AddItemReceiver(PacketReceiver):
             return
         
         parent = None
-        # if "parent" in data and data["parent"] in widget.trackedItems:
-        #     parent = widget.trackedGraphicsItems[data["parent"]]
+        if "parent" in data and data["parent"] in widget.trackedItems:
+            parent = widget.trackedGraphicsItems[data["parent"]]
 
         item = CustomDrawItem(data["item"], parent)
 
-        identifier = ((parent.data["name"] + "/") if parent is not None else "") + data["item"]["name"]
+        identifier = ((getattr(parent, "identifier", "") + "/") if parent is not None else "") + data["item"]["name"]
+        item.identifier = identifier
 
         widget.trackedItems[identifier] = data["item"]
         widget.trackedGraphicsItems[identifier] = item

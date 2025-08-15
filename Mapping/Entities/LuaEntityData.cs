@@ -174,6 +174,42 @@ namespace Edelweiss.Mapping.Entities
             }
         }
 
+        public override List<int> NodeLimits(RoomData room, Entity entity)
+        {
+            try
+            {
+                DynValue nodeLimitsMethod = entityTable.Get("nodeLimits");
+                if (nodeLimitsMethod.IsNil())
+                    return base.NodeLimits(room, entity);
+
+                Table nodeLimits = nodeLimitsMethod.Type == DataType.Table ? nodeLimitsMethod.Table : script.Call(nodeLimitsMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Table;
+                return [(int)(double)nodeLimits[1], (int)(double)nodeLimits[2]];
+            }
+            catch (Exception e)
+            {
+                MainPlugin.Instance.Logger.Error($"Error while getting node limits for entity {Name}: \n {e.Formatted()}");
+                return base.NodeLimits(room, entity);
+            }
+        }
+
+        public override string NodeLineRenderType(Entity entity)
+        {
+            try
+            {
+                DynValue method = entityTable.Get("nodeLineRenderType");
+                if (method.IsNil())
+                    return base.NodeLineRenderType(entity);
+
+                DynValue result = method.Type == DataType.Function ? script.Call(method, entity.ToLuaTable(script)) : method;
+                return result == DynValue.False ? "none" : result.String;
+            }
+            catch (Exception e)
+            {
+                MainPlugin.Instance.Logger.Error($"Error while getting node line render type for entity {Name}: \n {e.Formatted()}");
+                return base.NodeLineRenderType(entity);
+            }
+        }
+
         /// <inheritdoc/>
         public override Dictionary<string, object> GetPlacementData()
         {

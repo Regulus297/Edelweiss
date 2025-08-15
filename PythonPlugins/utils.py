@@ -153,3 +153,54 @@ class GetTextFunction(UtilJsonFunction):
         if args[0] in var:
             return var[args[0]]
         return args[0]
+    
+@load_dependencies("widgets/zoomable_view.py")
+@plugin_loadable
+class ItemXFunction(UtilJsonFunction):
+    def __init__(self):
+        super().__init__("itemX")
+
+    def call(self, *args) -> object:
+        if len(args) < 2:
+            return 0
+        
+        widget = MappingWindow.instance.get_tracked_widget(args[0])
+        if not isinstance(widget, ZoomableView):
+            return 0
+        
+        if args[1] not in widget.trackedGraphicsItems:
+            return 0
+        
+        item = widget.trackedGraphicsItems[args[1]]
+        point = item.scenePos()
+
+        if len(args) == 3 and args[2] in widget.trackedGraphicsItems:
+            point = widget.trackedGraphicsItems[args[2]].mapFromScene(point)
+
+        return int(point.x())
+
+
+@load_dependencies("widgets/zoomable_view.py")
+@plugin_loadable
+class ItemYFunction(UtilJsonFunction):
+    def __init__(self):
+        super().__init__("itemY")
+
+    def call(self, *args) -> object:
+        if len(args) < 2:
+            return 0
+        
+        widget = MappingWindow.instance.get_tracked_widget(args[0])
+        if not isinstance(widget, ZoomableView):
+            return 0
+        
+        if args[1] not in widget.trackedGraphicsItems:
+            return 0
+        
+        item = widget.trackedGraphicsItems[args[1]]
+        point = item.scenePos()
+
+        if len(args) == 3 and args[2] in widget.trackedGraphicsItems:
+            point = widget.trackedGraphicsItems[args[2]].mapFromScene(point)
+
+        return int(point.y())

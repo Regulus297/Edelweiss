@@ -66,37 +66,18 @@ namespace Edelweiss.Mapping.Tools
 
         public override void MouseClick(JObject room, float x, float y)
         {
-            (int tileX, int tileY) = EdelweissUtils.ToTileCoordinate(x, y);
-            JObject item = new()
-            {
-                {"name", selectedMaterial},
-                {"x", 8 * tileX},
-                {"y", 8 * tileY},
-                {"width", 8},
-                {"height", 8}
-            };
 
             RoomData backendRoom = MappingTab.map.rooms.FirstOrDefault(r => r.name == room.Value<string>("name"));
             EntityData found = CelesteModLoader.entities[selectedMaterial];
-            Entity created = Entity.DefaultFromData(found);
+            (int tileX, int tileY) = EdelweissUtils.ToTileCoordinate(x, y);
+            Entity created = Entity.DefaultFromData(found, backendRoom);
             created._name = found.Name;
+            created._id = backendRoom.entities.Count().ToString();
             created.x = 8 * tileX;
             created.y = 8 * tileY;
 
-
             backendRoom?.entities.Add(created);
-
-            JArray shapes = new();
-            found.Draw(shapes, backendRoom ?? RoomData.Default, created);
-
-            item["shapes"] = shapes;
-
-            NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()
-            {
-                {"widget", "Mapping/MainView"},
-                {"parent", room.Value<string>("name")},
-                {"item", item}
-            });
+            created.Draw();
         }
 
         public override void OnSelect()
@@ -144,23 +125,31 @@ namespace Edelweiss.Mapping.Tools
                 {
                     {"widget", "Mapping/MainView"},
                     {"item", "cursorGhost"},
-                    {"action", "remove"},
-                    {"index", JToken.FromObject(Enumerable.Range(1, cursorGhostItems))}
+                    {"action", "clear"}
                 });
 
-                JArray shapes = new();
-                found.Draw(shapes, RoomData.Default, Entity.DefaultFromData(found));
-                foreach (var shape in shapes)
-                    shape["opacity"] = 0.5f;
-                cursorGhostItems = shapes.Count;
                 NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
                 {
                     {"widget", "Mapping/MainView"},
                     {"item", "cursorGhost"},
-                    {"index", 1},
-                    {"action", "add"},
-                    { "shapes", shapes}
+                    {"data", new JObject() {
+                        {"shapes", new JArray() {
+                            new JObject() {
+                                {"type", "tileGhost"},
+                                {"color", "#aaaaaa"},
+                                {"thickness", "@defer('@pen_thickness(\\'Mapping/MainView\\')')"},
+                                {"width", 8},
+                                {"height", 8},
+                                {"coords", new JArray() {
+                                    "0,0"
+                                }},
+                                { "visible", false}
+                            }
+                        }}
+                    }}
                 });
+
+                Entity.DefaultFromData(found, RoomData.Default).Draw(0.5f, "cursorGhost", 1);
                 lastSelectedMaterial = selectedMaterial;
             }
             return false;

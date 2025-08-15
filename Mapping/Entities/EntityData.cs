@@ -68,16 +68,29 @@ namespace Edelweiss.Mapping.Entities
             };
         }
 
-        public virtual string Color(RoomData room, Entity entity) {
+        public virtual string Color(RoomData room, Entity entity)
+        {
             return "#ffffff";
         }
 
-        public virtual string FillColor(RoomData room, Entity entity) {
+        public virtual string FillColor(RoomData room, Entity entity)
+        {
             return Color(room, entity);
         }
 
-        public virtual string BorderColor(RoomData room, Entity entity) {
+        public virtual string BorderColor(RoomData room, Entity entity)
+        {
             return Color(room, entity);
+        }
+
+        public virtual List<int> NodeLimits(RoomData room, Entity entity)
+        {
+            return [0, 0];
+        }
+
+        public virtual string NodeLineRenderType(Entity entity)
+        {
+            return "none";
         }
 
         /// <summary>

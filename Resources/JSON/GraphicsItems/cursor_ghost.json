@@ -5,6 +5,7 @@
     "height": 8,
     "name": "cursorGhost",
     "zIndex": 99999999999999999,
+    "opacity": 0.5,
     "focusable": false,
     "selectable": false,
     "shapes": [

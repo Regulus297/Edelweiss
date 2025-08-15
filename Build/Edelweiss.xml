@@ -137,7 +137,7 @@
             The placement data for the entity;
             </summary>
         </member>
-        <member name="M:Edelweiss.Mapping.Entities.Entity.DefaultFromData(Edelweiss.Mapping.Entities.EntityData)">
+        <member name="M:Edelweiss.Mapping.Entities.Entity.DefaultFromData(Edelweiss.Mapping.Entities.EntityData,Edelweiss.Mapping.Entities.RoomData)">
             <summary>
             Creates a default entity with the placement data from the given entity data
             </summary>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using MoonSharp.Interpreter;
 
@@ -101,6 +102,11 @@ namespace Edelweiss.Utils
                 return e.ToString();
 
             return $"{s.DecoratedMessage}: \n {s}";
+        }
+
+        public static float Distance(this Point point, Point other)
+        {
+            return MathF.Sqrt((point.X - other.X) * (point.X - other.X) + (point.Y - other.Y) * (point.Y - other.Y));
         }
     }
 }

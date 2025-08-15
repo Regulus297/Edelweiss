@@ -25,7 +25,7 @@ class ModifyItemShapeReceiver(PacketReceiver):
         gItem = widget.trackedGraphicsItems[data["item"]]
         if "action" not in data or data["action"] == "modify":
             widget.trackedItems[data["item"]].update(data["data"])
-            widget.trackedGraphicsItems[data["item"]].refresh(data["data"])
+            widget.trackedGraphicsItems[data["item"]].refresh(data["data"], "shapes" in data["data"])
         elif data["action"] == "remove":
             indices = [data["index"]] if isinstance(data["index"], int) else data["index"]
             for index in reversed(sorted(indices)):
@@ -36,3 +36,7 @@ class ModifyItemShapeReceiver(PacketReceiver):
             for shape in data["shapes"]:
                 gItem.addShape(shape)
             gItem.refresh({})
+        elif data["action"] == "clear":
+            for child in gItem.childItems():
+                gItem.scene().removeItem(child)
+                del child

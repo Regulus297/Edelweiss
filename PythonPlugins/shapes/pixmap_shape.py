@@ -30,8 +30,6 @@ class PixmapShape(ShapeRenderer):
         pixmap = PixmapLoader.load_texture(self.data["path"])
         if pixmap is None:
             return
-        
-        painter.setOpacity(1 if "opacity" not in self.data else float(self.data["opacity"]))
 
         if "color" in self.data and self.data["color"].upper() != "#FFFFFFFF" and self.data["color"].upper() != "#FFFFFF":
             pixmap = self.tint(pixmap, QColor(self.data["color"]))

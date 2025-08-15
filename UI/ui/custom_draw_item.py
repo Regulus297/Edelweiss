@@ -71,6 +71,8 @@ class CustomDrawItem(QGraphicsItem):
             self.shapeRenderers.append(type(CustomDrawItem.shapes[shape["type"]])(self, shape))
 
     def paint(self, painter, option, widget = ...):
+        if "opacity" in self.data:
+            painter.setOpacity(float(self.data["opacity"]))
         for shape in self.shapeRenderers:
             if "visible" in shape.data and not shape.data["visible"]:
                 continue
@@ -102,12 +104,19 @@ class CustomDrawItem(QGraphicsItem):
 
         return x, y, width, height
 
-    def refresh(self, data):
+    def refresh(self, data, update_shapes=False):
         self.data.update(data)
         self.width = self.data["width"]
         self.height = self.data["height"]
         self.name = self.data["name"]
         self.setPos(QPoint(self.data["x"], self.data["y"]))
+
+        if update_shapes:
+            self.shapes.clear()
+            self.shapeRenderers.clear()
+            for shape in data["shapes"]:
+                self.addShape(shape)
+
         self.update()
 
     def mousePressEvent(self, event):
