@@ -12,8 +12,9 @@ namespace Edelweiss.Mapping.Drawables
         public int width = 0, height = 0;
         public string color = "#ffffff";
         public string borderColor = "#ffffff";
+        public string mode = "bordered";
 
-        public Rectangle(Table table): this()
+        public Rectangle(Table table) : this()
         {
             x = (int)table.Get("x").Number;
             y = (int)table.Get("y").Number;
@@ -21,6 +22,7 @@ namespace Edelweiss.Mapping.Drawables
             height = (int)table.Get("height").Number;
             color = table.Get("color").Color();
             borderColor = table.Get("secondaryColor").Color();
+            mode = table.Get("mode").String;
         }
 
         public override void Draw()
@@ -51,6 +53,7 @@ namespace Edelweiss.Mapping.Drawables
             rectangle["height"] = height;
             rectangle["color"] = color;
             rectangle["secondaryColor"] = borderColor;
+            rectangle["mode"] = mode;
             rectangle["_type"] = Name;
 
             rectangle["setColor"] = (Func<DynValue, Table>)((color) =>
@@ -61,7 +64,7 @@ namespace Edelweiss.Mapping.Drawables
 
             rectangle["getDrawableSprite"] = () =>
             {
-                return new Table(script, DynValue.NewTable(rectangle));
+                return (string)rectangle["mode"] == "fill" ? rectangle : new Table(script, DynValue.NewTable(rectangle));
             };
 
             return rectangle;

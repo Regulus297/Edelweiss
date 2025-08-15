@@ -181,6 +181,9 @@ namespace Edelweiss.Utils
             if (textureDataCache.TryGetValue(key, out var data))
                 return data;
 
+            if (!texturePaths.ContainsKey(key))
+                return null;
+
             string path = texturePaths[key];
             if (path.Contains(char.ConvertFromUtf32(0)))
             {

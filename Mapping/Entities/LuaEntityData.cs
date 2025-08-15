@@ -30,51 +30,35 @@ namespace Edelweiss.Mapping.Entities
         /// <inheritdoc/>
         public override string Texture(RoomData room, Entity entity)
         {
-            try
+            DynValue textureMethod = entityTable.Get("texture");
+            if (textureMethod.IsNil())
             {
-                DynValue textureMethod = entityTable.Get("texture");
-                if (textureMethod.IsNil())
-                {
-                    return "";
-                }
-                if (textureMethod.Type == DataType.String)
-                {
-                    return textureMethod.String;
-                }
-                return script.Call(textureMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).String;
-            }
-            catch (Exception e)
-            {
-                MainPlugin.Instance.Logger.Error($"Error while getting texture for entity {Name}: \n {e}");
                 return "";
             }
+            if (textureMethod.Type == DataType.String)
+            {
+                return textureMethod.String;
+            }
+            return script.Call(textureMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).String;
         }
 
         /// <inheritdoc/>
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            try
+            DynValue spriteMethod = entityTable.Get("sprite");
+            if (spriteMethod.IsNil())
+                return base.Sprite(room, entity);
+            DynValue sprite = script.Call(spriteMethod, room.ToLuaTable(script), entity.ToLuaTable(script));
+            if (sprite.Table.Get("_type").IsNil())
             {
-                DynValue spriteMethod = entityTable.Get("sprite");
-                if (spriteMethod.IsNil())
-                    return base.Sprite(room, entity);
-                DynValue sprite = script.Call(spriteMethod, room.ToLuaTable(script), entity.ToLuaTable(script));
-                if (sprite.Table.Get("_type").IsNil())
-                {
-                    List<Drawable> output = [];
-                    // It's a list
-                    foreach (var table in sprite.Table.Values)
-                        output.Add(Drawable.FromTable(table.Table));
-                    return output;
-                }
-                // It's one sprite
-                return [Drawable.FromTable(sprite.Table)];
+                List<Drawable> output = [];
+                // It's a list
+                foreach (var table in sprite.Table.Values)
+                    output.Add(Drawable.FromTable(table.Table));
+                return output;
             }
-            catch (Exception e)
-            {
-                MainPlugin.Instance.Logger.Error($"Error while getting sprite for entity {Name}: \n {e}");
-                return [];
-            }
+            // It's one sprite
+            return [Drawable.FromTable(sprite.Table)];
         }
 
         /// <inheritdoc/>
@@ -101,7 +85,11 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while drawing entity {Name}: \n {e}");
+                MainPlugin.Instance.Logger.Error($"Error while drawing entity {Name}: \n {e.Formatted()}");
+
+                // If everything fails, draw the rectangle
+                using var dest = new SpriteDestination(shapes, entity.x, entity.y);
+                Rectangle(room, entity).Draw();
             }
         }
 
@@ -124,7 +112,7 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while getting justification for entity {Name}: \n {e}");
+                MainPlugin.Instance.Logger.Error($"Error while getting justification for entity {Name}: \n {e.Formatted()}");
                 return [0.5f, 0.5f];
             }
         }
@@ -143,7 +131,7 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while getting colour for entity {Name}: \n {e}");
+                MainPlugin.Instance.Logger.Error($"Error while getting colour for entity {Name}: \n {e.Formatted()}");
                 return base.Color(room, entity);
             }
         }
@@ -162,7 +150,7 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while getting fill colour for entity {Name}: \n {e}");
+                MainPlugin.Instance.Logger.Error($"Error while getting fill colour for entity {Name}: \n {e.Formatted()}");
                 return base.FillColor(room, entity);
             }
         }
@@ -181,7 +169,7 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while getting border colour for entity {Name}: \n {e}");
+                MainPlugin.Instance.Logger.Error($"Error while getting border colour for entity {Name}: \n {e.Formatted()}");
                 return base.FillColor(room, entity);
             }
         }
@@ -203,7 +191,7 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while getting placement data for entity {Name}: \n {e}");
+                MainPlugin.Instance.Logger.Error($"Error while getting placement data for entity {Name}: \n {e.Formatted()}");
                 return [];
             }
         }

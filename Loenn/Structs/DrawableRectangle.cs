@@ -9,59 +9,36 @@ namespace Edelweiss.Loenn.Structs
     {
         public override string ModuleName => "structs.drawable_rectangle";
 
+        public override bool Global => true;
+        public override string TableName => "drawableRectangle";
+
         public override Table GenerateTable(Script script)
         {
             Table table = new(script);
 
-            table["fromRectangle"] = (Func<CallbackArguments, DynValue>)(cargs =>
+            table["fromRectangle"] = (Func<string, DynValue, DynValue, DynValue, DynValue, DynValue, DynValue, DynValue>)((mode, ix, iy, w, h, col, col2) =>
             {
-                DynValue[] args = cargs.GetArray();
                 int x, y, width, height;
                 string color, borderColor;
-                string mode = args[0].String;
-                if (args.MatchesSignature(DataType.String, DataType.Table, DataType.Table))
+                if (ix.Type == DataType.Table)
                 {
-                    // mode, dimensions, colour
-                    x = (int)args[1].Table.Get("x").Number;
-                    y = (int)args[1].Table.Get("y").Number;
-                    width = (int)args[1].Table.Get("width").Number;
-                    height = (int)args[1].Table.Get("height").Number;
-                    color = mode == "line" ? "#00000000" : args[2].Color();
-                    borderColor = mode == "fill" ? "#00000000" : color;
-                }
-                else if (args.MatchesSignature(DataType.String, DataType.Table, DataType.Table, DataType.Table))
-                {
-                    // mode, dimensions, colour, secondary colour
-                    x = (int)args[1].Table.Get("x").Number;
-                    y = (int)args[1].Table.Get("y").Number;
-                    width = (int)args[1].Table.Get("width").Number;
-                    height = (int)args[1].Table.Get("height").Number;
-                    color = mode == "line" ? "#00000000" : args[2].Color();
-                    borderColor = mode == "fill" ? "#00000000" : args[3].Color();
-                }
-                else if (args.MatchesSignature(DataType.String, DataType.Number, DataType.Number, DataType.Number, DataType.Number, DataType.Table))
-                {
-                    // mode, x, y, width, height, colour
-                    x = (int)args[1].Number;
-                    y = (int)args[2].Number;
-                    width = (int)args[3].Number;
-                    height = (int)args[4].Number;
-                    color = mode == "line" ? "#00000000" : args[5].Color();
-                    borderColor = mode == "fill" ? "#00000000" : color;
-                }
-                else if (args.MatchesSignature(DataType.String, DataType.Number, DataType.Number, DataType.Number, DataType.Number, DataType.Table, DataType.Table))
-                {
-                    // mode, x, y, width, height, colour, secondary color
-                    x = (int)args[1].Number;
-                    y = (int)args[2].Number;
-                    width = (int)args[3].Number;
-                    height = (int)args[4].Number;
-                    color = mode == "line" ? "#00000000" : args[5].Color();
-                    borderColor = mode == "fill" ? "#00000000" : args[6].Color();
+                    // mode, dimensions, colour, [secondary colour]
+                    x = (int)ix.Table.Get("x").Number;
+                    y = (int)ix.Table.Get("y").Number;
+                    width = (int)ix.Table.Get("width").Number;
+                    height = (int)ix.Table.Get("height").Number;
+                    color = mode == "line" ? "#00000000" : iy.Color();
+                    borderColor = mode == "fill" ? "#00000000" : w.IsNil() ? color : w.Color();
                 }
                 else
                 {
-                    return DynValue.NewTable(new Rectangle().ToLuaTable(script));
+                    // mode, x, y, width, height, colour, [secondary colour]
+                    x = (int)ix.Number;
+                    y = (int)iy.Number;
+                    width = (int)w.Number;
+                    height = (int)h.Number;
+                    color = mode == "line" ? "#00000000" : col.Color();
+                    borderColor = mode == "fill" ? "#00000000" : col2.IsNil() ? color : col2.Color();
                 }
                 return DynValue.NewTable(new Rectangle()
                 {
@@ -70,7 +47,8 @@ namespace Edelweiss.Loenn.Structs
                     width = width,
                     height = height,
                     color = color,
-                    borderColor = borderColor
+                    borderColor = borderColor,
+                    mode = mode
                 }.ToLuaTable(script));
             });
 

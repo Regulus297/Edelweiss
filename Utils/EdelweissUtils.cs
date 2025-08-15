@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MoonSharp.Interpreter;
@@ -74,7 +75,7 @@ namespace Edelweiss.Utils
                 return hex;
             }
             else if (color.Type == DataType.String)
-                return color.String;
+                return color.String.StartsWith("#") ? color.String : "#" + color.String;
             return "#ffffff";
         }
 
@@ -92,6 +93,14 @@ namespace Edelweiss.Utils
                     return false;
             }
             return true;
+        }
+
+        public static string Formatted(this Exception e)
+        {
+            if (e is not ScriptRuntimeException s)
+                return e.ToString();
+
+            return $"{s.DecoratedMessage}: \n {s}";
         }
     }
 }
