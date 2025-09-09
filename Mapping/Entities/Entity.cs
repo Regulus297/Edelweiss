@@ -41,6 +41,9 @@ namespace Edelweiss.Mapping.Entities
         /// </summary>
         public Dictionary<string, object> data = [];
 
+        /// <summary>
+        /// 
+        /// </summary>
         public int x = 0, y = 0, width = 0, height = 0;
         EntityData entityData;
         RoomData entityRoom;
@@ -100,6 +103,12 @@ namespace Edelweiss.Mapping.Entities
             return table;
         }
 
+        /// <summary>
+        /// Draws the entity to the frontend
+        /// </summary>
+        /// <param name="opacity"></param>
+        /// <param name="entityObject">The ID of the entity object in the viewport if the entity should be drawn to an existing object. Null if not.</param>
+        /// <param name="entityIndex"></param>
         public void Draw(float opacity = 1, string entityObject = null, int entityIndex = 0)
         {
             JObject item = new()
@@ -116,8 +125,7 @@ namespace Edelweiss.Mapping.Entities
             entityData.Draw(shapes, entityRoom ?? RoomData.Default, this);
 
             item["shapes"] = shapes;
-            string entityName = _id;
-
+            string entityName;
             if (entityObject == null)
             {
                 NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()
@@ -185,7 +193,6 @@ namespace Edelweiss.Mapping.Entities
                         {"color", "#ffffff"},
                         {"thickness", LoveModule.PEN_THICKNESS}
                     });
-                    
                 }
 
 

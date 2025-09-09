@@ -15,10 +15,12 @@ namespace Edelweiss.Plugins
         {
             File.Open("log.txt", FileMode.Create).Close();
         }
-        private void Write(string type, object message)
+        private void Write(string type, object message) => Write(plugin.ID, type, message);
+
+        private static void Write(string id, string type, object message)
         {
             using StreamWriter logWriter = new("log.txt", true);
-            logWriter.WriteLine($"({DateTime.Now}) [{plugin.ID}] [{type}] {message}");
+            logWriter.WriteLine($"({DateTime.Now}) [{id}] [{type}] {message}");
         }
 
         /// <summary>
@@ -41,5 +43,21 @@ namespace Edelweiss.Plugins
         /// </summary>
         public void Error(object message) => Write("Error", message);
 
+        /// <summary>
+        /// Logs a message with a given ID
+        /// </summary>
+        public static void Log(string id, object message) => Write(id, "Log", message);
+        /// <summary>
+        /// Logs a message for debugging with a given ID
+        /// </summary>
+        public static void Debug(string id, object message) => Write(id, "Debug", message);
+        /// <summary>
+        /// Logs a warning with a given ID
+        /// </summary>
+        public static void Warn(string id, object message) => Write(id, "Warn", message);
+        /// <summary>
+        /// Logs an error with a given ID
+        /// </summary>
+        public static void Error(string id, object message) => Write(id, "Error", message);
     }
 }

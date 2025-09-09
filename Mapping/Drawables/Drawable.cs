@@ -7,17 +7,31 @@ using MoonSharp.Interpreter;
 
 namespace Edelweiss.Mapping.Drawables
 {
+    /// <summary>
+    /// The base type for any object that can be drawn to the frontend.
+    /// All inheriting objects must define a parameterless constructor and a constructor accepting a table.
+    /// </summary>
     [BaseRegistryObject()]
     public abstract class Drawable : PluginRegistryObject
     {
         private static Dictionary<string, Type> drawables = [];
+        /// <summary>
+        /// Draws the object to the current SpriteDestination.
+        /// </summary>
         public abstract void Draw();
 
+
+        /// <inheritdoc/>
         public sealed override void Load()
         {
             drawables[Name] = GetType();
         }
 
+        /// <summary>
+        /// Creates a Drawable from a given Lua table depending on the _type defined in the table.
+        /// </summary>
+        /// <exception cref="KeyNotFoundException">Thrown if the _type in the table is not a defined Drawable.</exception>
+        /// <exception cref="MissingMethodException">Thrown if the found Drawable type does not have a constructor accepting a table.</exception>
         public static Drawable FromTable(Table table)
         {
             string type = table.Get("_type").String;

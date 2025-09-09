@@ -9,12 +9,12 @@ namespace Edelweiss.Plugins
     /// The base class for a packet receiver
     /// </summary>
     [BaseRegistryObject()]
-    public abstract class PluginPacketReceiver : PluginRegistryObject
+    public abstract class PacketReceiver : PluginRegistryObject
     {
         /// <summary>
         /// All packet receivers, organized by the packet code that they handle.
         /// </summary>
-        public static readonly Dictionary<long, List<PluginPacketReceiver>> receivers = [];
+        public static readonly Dictionary<long, List<PacketReceiver>> receivers = [];
 
         /// <summary>
         /// The specific <see cref="Netcode"/> that this receiver handles. 

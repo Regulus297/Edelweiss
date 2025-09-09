@@ -11,13 +11,19 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Plugins
 {
+    /// <summary>
+    /// Handles all plugin-related code.
+    /// </summary>
     public static class PluginLoader
     {
-        public static Dictionary<string, string> jsonPaths = [];
-        public static Dictionary<string, string> jsonCache = [];
+        private static Dictionary<string, string> jsonPaths = [];
+        private static Dictionary<string, string> jsonCache = [];
+        /// <summary>
+        /// Dictionary containing language keys to localization dictionary.
+        /// </summary>
         public static Dictionary<string, Dictionary<string, string>> localization = [];
 
-        public static void LoadPlugins()
+        internal static void LoadPlugins()
         {
             LoadLangFiles(Directory.GetCurrentDirectory(), "Edelweiss");
             LoadPythonPlugins(Directory.GetCurrentDirectory());
@@ -60,6 +66,11 @@ namespace Edelweiss.Plugins
             return true;
         }
 
+        /// <summary>
+        /// Loads all the types from an assembly.
+        /// </summary>
+        /// <param name="assembly"></param>
+        /// <returns>The plugin that the assembly defines</returns>
         public static Plugin LoadAssembly(Assembly assembly)
         {
             LoadBaseRegistryObjects(assembly);
@@ -74,7 +85,7 @@ namespace Edelweiss.Plugins
                     plugin.Logger.Log($"Loading plugin {plugin.ID}");
                 }
             }
-            
+
             LoadTypes(plugin, assembly.GetTypes(), out var failed);
             int failedCount = 0;
             while (failed.Count > 0 && failedCount != failed.Count)
@@ -125,6 +136,9 @@ namespace Edelweiss.Plugins
             }
         }
 
+        /// <summary>
+        /// Finds all the python plugins from a given directory and registers them with the frontend.
+        /// </summary>
         public static void LoadPythonPlugins(string directory)
         {
             string pluginDirectory = Path.Join(directory, "PythonPlugins");
@@ -142,6 +156,11 @@ namespace Edelweiss.Plugins
             NetworkManager.SendPacket(Netcode.REGISTER_PYTHON_PLUGINS, obj);
         }
 
+        /// <summary>
+        /// Loads all the JSON files from a given directory.
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="pluginID">The prefix that will be added to the key</param>
         public static void LoadJsonFiles(string directory, string pluginID)
         {
             string jsonDirectory = Path.Join(directory, "Resources", "JSON");
@@ -156,9 +175,15 @@ namespace Edelweiss.Plugins
             }
         }
 
+        /// <summary>
+        /// Loads the language files from a given directory.
+        /// </summary>
+        /// <param name="directory">The directory to load from</param>
+        /// <param name="pluginID">The prefix that will be added to the file key</param>
+        /// <param name="celesteMod">True if the directory is a Celeste mod, false if it is an Edelweiss plugin</param>
         public static void LoadLangFiles(string directory, string pluginID, bool celesteMod = false)
         {
-            string langDirectory = celesteMod? directory: Path.Join(directory, "Resources", "Localization");
+            string langDirectory = celesteMod ? directory : Path.Join(directory, "Resources", "Localization");
             if (!Directory.Exists(langDirectory))
                 return;
 
@@ -172,7 +197,7 @@ namespace Edelweiss.Plugins
         internal static void LoadLangFile(Stream fileContent, string file, string pluginID)
         {
             string key = file.Substring(0, file.Length - 5);
-            if(!localization.ContainsKey(key))
+            if (!localization.ContainsKey(key))
                 localization[key] = [];
 
             string line;
@@ -188,6 +213,10 @@ namespace Edelweiss.Plugins
             }
         }
 
+        /// <summary>
+        /// Returns the JSON content for the given key.
+        /// </summary>
+        /// <returns>An empty JSON object as a string if the key does not exist.</returns>
         public static string RequestJson(string key)
         {
             if (!jsonPaths.TryGetValue(key, out string jsonPath))
@@ -204,11 +233,17 @@ namespace Edelweiss.Plugins
             }
         }
 
+        /// <summary>
+        /// Requests the JSON for a given key and parses it.
+        /// </summary>
         public static JObject RequestJObject(string key)
         {
             return JObject.Parse(RequestJson(key));
         }
 
+        /// <summary>
+        /// Loads the base registry types for a given assembly.
+        /// </summary>
         public static void LoadBaseRegistryObjects(Assembly assembly)
         {
             foreach (Type type in assembly.GetTypes())

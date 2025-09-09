@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.PacketReceivers
 {
-    internal class ToolOptionsChangedReceiver : PluginPacketReceiver
+    internal class ToolOptionsChangedReceiver : PacketReceiver
     {
         public override long HandledCode => Netcode.LIST_SELECTION_CHANGED;
 

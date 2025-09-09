@@ -6,14 +6,39 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Drawables
 {
+    /// <summary>
+    /// A class that represents a drawable rectangle.
+    /// </summary>
     public class Rectangle() : Drawable, ILuaConvertible
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public int x = 0, y = 0;
+        /// <summary>
+        /// 
+        /// </summary>
         public int width = 0, height = 0;
+
+        /// <summary>
+        /// The fill color for the rectangle
+        /// </summary>
         public string color = "#ffffff";
+
+        /// <summary>
+        /// The border color for the rectangle
+        /// </summary>
         public string borderColor = "#ffffff";
+
+        /// <summary>
+        /// Can be bordered, fill, or line.
+        /// Defaults to bordered.
+        /// </summary>
         public string mode = "bordered";
 
+        /// <summary>
+        /// Creates a rectangle from the given Lua table.
+        /// </summary>
         public Rectangle(Table table) : this()
         {
             x = (int)table.Get("x").Number;
@@ -25,6 +50,9 @@ namespace Edelweiss.Mapping.Drawables
             mode = table.Get("mode").String;
         }
 
+        /// <summary>
+        /// Draws the rectangle to the current SpriteDestination
+        /// </summary>
         public override void Draw()
         {
             if (SpriteDestination.destination == null)
@@ -43,6 +71,9 @@ namespace Edelweiss.Mapping.Drawables
             });
         }
 
+        /// <summary>
+        /// Converts the Rectangle to a Lua table.
+        /// </summary>
         public Table ToLuaTable(Script script)
         {
             Table rectangle = new(script);

@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Network.PacketReceivers
 {
-    internal class ToolButtonPressedReceiver : PluginPacketReceiver
+    internal class ToolButtonPressedReceiver : PacketReceiver
     {
         public override long HandledCode => Netcode.TOOL_BUTTON_PRESSED;
 

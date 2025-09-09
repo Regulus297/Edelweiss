@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Plugins;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
 using Newtonsoft.Json.Linq;
@@ -85,7 +86,7 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while drawing entity {Name}: \n {e.Formatted()}");
+                Logger.Error("LuaEntity", $"Error while drawing entity {Name}: \n {e.Formatted()}");
 
                 // If everything fails, draw the rectangle
                 using var dest = new SpriteDestination(shapes, entity.x, entity.y);
@@ -112,11 +113,12 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while getting justification for entity {Name}: \n {e.Formatted()}");
+                Logger.Error("LuaEntity", $"Error while getting justification for entity {Name}: \n {e.Formatted()}");
                 return [0.5f, 0.5f];
             }
         }
 
+        /// <inheritdoc/>
         public override string Color(RoomData room, Entity entity)
         {
             try
@@ -124,18 +126,19 @@ namespace Edelweiss.Mapping.Entities
                 DynValue colorMethod = entityTable.Get("color");
                 if (colorMethod.IsNil())
                     return base.Color(room, entity);
-                    
+
                 if (colorMethod.Type == DataType.Table)
                     return colorMethod.Color();
                 return script.Call(colorMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Color();
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while getting colour for entity {Name}: \n {e.Formatted()}");
+                Logger.Error("LuaEntity", $"Error while getting colour for entity {Name}: \n {e.Formatted()}");
                 return base.Color(room, entity);
             }
         }
 
+        /// <inheritdoc/>
         public override string FillColor(RoomData room, Entity entity)
         {
             try
@@ -150,11 +153,12 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while getting fill colour for entity {Name}: \n {e.Formatted()}");
+                Logger.Error("LuaEntity", $"Error while getting fill colour for entity {Name}: \n {e.Formatted()}");
                 return base.FillColor(room, entity);
             }
         }
 
+        /// <inheritdoc/>
         public override string BorderColor(RoomData room, Entity entity)
         {
             try
@@ -169,11 +173,12 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while getting border colour for entity {Name}: \n {e.Formatted()}");
+                Logger.Error("LuaEntity", $"Error while getting border colour for entity {Name}: \n {e.Formatted()}");
                 return base.FillColor(room, entity);
             }
         }
 
+        /// <inheritdoc/>
         public override List<int> NodeLimits(RoomData room, Entity entity)
         {
             try
@@ -187,11 +192,12 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while getting node limits for entity {Name}: \n {e.Formatted()}");
+                Logger.Error("LuaEntity", $"Error while getting node limits for entity {Name}: \n {e.Formatted()}");
                 return base.NodeLimits(room, entity);
             }
         }
 
+        /// <inheritdoc/>
         public override string NodeLineRenderType(Entity entity)
         {
             try
@@ -205,7 +211,7 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while getting node line render type for entity {Name}: \n {e.Formatted()}");
+                Logger.Error("LuaEntity", $"Error while getting node line render type for entity {Name}: \n {e.Formatted()}");
                 return base.NodeLineRenderType(entity);
             }
         }
@@ -227,7 +233,7 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Error while getting placement data for entity {Name}: \n {e.Formatted()}");
+                Logger.Error("LuaEntity", $"Error while getting placement data for entity {Name}: \n {e.Formatted()}");
                 return [];
             }
         }

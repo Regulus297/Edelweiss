@@ -60,8 +60,15 @@ namespace Edelweiss.Plugins
         /// <param name="name">The name of the netcode</param>
         /// <param name="positive">If true, the generated netcode will be positive.</param>
         public long CreateNetcode(string name, bool positive) => Netcode.CreateNetcode($"{ID}:{name}", positive);
+        
+        /// <summary>
+        /// Prefixes the plugin's ID to the given key.
+        /// </summary>
+        public string GetLocalizationKey(string key) => $"{ID}.{key}";
 
-        public string GetLocalizationKey(string suffix) => $"{ID}.{suffix}";
+        /// <summary>
+        /// Prefixes the plugin's ID to the given key and attempts to get the localization for it.
+        /// </summary>
         public string GetLocalization(string key)
         {
             return Language.GetText(GetLocalizationKey(key));

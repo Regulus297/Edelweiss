@@ -63,6 +63,188 @@
             
             </summary>
         </member>
+        <member name="T:Edelweiss.Mapping.Drawables.Drawable">
+            <summary>
+            The base type for any object that can be drawn to the frontend.
+            All inheriting objects must define a parameterless constructor and a constructor accepting a table.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Drawable.Draw">
+            <summary>
+            Draws the object to the current SpriteDestination.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Drawable.Load">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Drawable.FromTable(MoonSharp.Interpreter.Table)">
+            <summary>
+            Creates a Drawable from a given Lua table depending on the _type defined in the table.
+            </summary>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">Thrown if the _type in the table is not a defined Drawable.</exception>
+            <exception cref="T:System.MissingMethodException">Thrown if the found Drawable type does not have a constructor accepting a table.</exception>
+        </member>
+        <member name="T:Edelweiss.Mapping.Drawables.NinePatch">
+            <summary>
+            A drawable object that draws tileable textures
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.NinePatch.#ctor">
+            <summary>
+            A drawable object that draws tileable textures
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.texture">
+            <summary>
+            The texture key of the NinePatch
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.mode">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.borderMode">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.fillMode">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.x">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.y">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.width">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.height">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.tileSize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.tileWidth">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.tileHeight">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.borderLeft">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.borderRight">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.borderTop">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.borderBottom">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.NinePatch.#ctor(MoonSharp.Interpreter.Table)">
+            <summary>
+            Creates a NinePatch from the given Lua table
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.NinePatch.Draw">
+            <summary>
+            Draws the NinePatch to the current SpriteDestination.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.NinePatch.ToLuaTable(MoonSharp.Interpreter.Script)">
+            <summary>
+            Converts the NinePatch to a Lua table.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Drawables.Rectangle">
+            <summary>
+            A class that represents a drawable rectangle.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Rectangle.#ctor">
+            <summary>
+            A class that represents a drawable rectangle.
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.x">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.y">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.width">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.height">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.color">
+            <summary>
+            The fill color for the rectangle
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.borderColor">
+            <summary>
+            The border color for the rectangle
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.mode">
+            <summary>
+            Can be bordered, fill, or line.
+            Defaults to bordered.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Rectangle.#ctor(MoonSharp.Interpreter.Table)">
+            <summary>
+            Creates a rectangle from the given Lua table.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Rectangle.Draw">
+            <summary>
+            Draws the rectangle to the current SpriteDestination
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Rectangle.ToLuaTable(MoonSharp.Interpreter.Script)">
+            <summary>
+            Converts the Rectangle to a Lua table.
+            </summary>
+        </member>
         <member name="T:Edelweiss.Mapping.Drawables.Sprite">
             <summary>
             
@@ -102,6 +284,39 @@
             Converts the sprite to a shape JObject that can be drawn by the frontend
             </summary>
         </member>
+        <member name="T:Edelweiss.Mapping.Drawables.SpriteDestination">
+            <summary>
+            A disposable object to draw sprites to a particular JArray.
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.SpriteDestination.destination">
+            <summary>
+            The array to which sprites are drawn
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.SpriteDestination.offsetX">
+            <summary>
+            The horizontal offset for the sprites
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.SpriteDestination.offsetY">
+            <summary>
+            The vertical offset for the sprites
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.SpriteDestination.#ctor(Newtonsoft.Json.Linq.JArray,System.Int32,System.Int32)">
+            <summary>
+            Creates a SpriteDestination for the given JArray and offsets
+            </summary>
+            <param name="shapes">The array to which sprites are drawn</param>
+            <param name="offsetX">The horizontal offset for the sprites</param>
+            <param name="offsetY">The vertical offset for the sprites</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.SpriteDestination.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.Entity">
             <summary>
             Class containing data for an entity placed in the map.
@@ -137,6 +352,26 @@
             The placement data for the entity;
             </summary>
         </member>
+        <member name="F:Edelweiss.Mapping.Entities.Entity.x">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.Entity.y">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.Entity.width">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.Entity.height">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.Entity.DefaultFromData(Edelweiss.Mapping.Entities.EntityData,Edelweiss.Mapping.Entities.RoomData)">
             <summary>
             Creates a default entity with the placement data from the given entity data
@@ -146,6 +381,14 @@
             <summary>
             Converts the entity to a Lua table compatible with Loenn
             </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.Draw(System.Single,System.String,System.Int32)">
+            <summary>
+            Draws the entity to the frontend
+            </summary>
+            <param name="opacity"></param>
+            <param name="entityObject">The ID of the entity object in the viewport if the entity should be drawn to an existing object. Null if not.</param>
+            <param name="entityIndex"></param>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.EntityData">
             <summary>
@@ -178,6 +421,60 @@
             </summary>
             <param name="shapes">The list of shapes this entity will be made up of</param>
             <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Rectangle(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            Returns the rectangle that contains the entity.
+            Defaults to returning a rectangle with the width and height of the entity.
+            If these are zero, returns a 4px * 4px rectangle centered on the entity's position.
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Color(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            Returns the hex representation of the color of the entity.
+            Defaults to white.
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.FillColor(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            Returns the hex representation for the fill color of the entity.
+            Defaults to returning <see cref="M:Edelweiss.Mapping.Entities.EntityData.Color(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)"/> if defined.
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.BorderColor(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            Returns the hex representation for the border color of the entity.
+            Defaults to returning <see cref="M:Edelweiss.Mapping.Entities.EntityData.Color(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)"/> if defined.
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.NodeLimits(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            The minimum and maximum number of nodes an entity can have.
+            A maximum of -1 means the entity does not have an upper limit.
+            Defaults to [0, 0]
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.NodeLineRenderType(Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            Determines how nodes are connected to the main entity. <br/>
+            none: nodes are not connected to the main entity. <br/>
+            line: nodes are connected to the previous node <br/>
+            fan: all nodes are connected directly to the main entity <br/>
+            circle: nodes draw a circle around the main entity. <br/>
+            In Edelweiss, circle supports multiple nodes, not just one. Each will draw a circle around the entity. <br/>
+            Defaults to none.
+            </summary>
             <param name="entity">The entity instance</param>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.EntityData.GetPlacementData">
@@ -225,6 +522,21 @@
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Justification(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Color(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.FillColor(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.BorderColor(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.NodeLimits(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.NodeLineRenderType(Edelweiss.Mapping.Entities.Entity)">
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.GetPlacementData">
@@ -600,6 +912,26 @@
             Logs an error
             </summary>
         </member>
+        <member name="M:Edelweiss.Plugins.Logger.Log(System.String,System.Object)">
+            <summary>
+            Logs a message with a given ID
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Debug(System.String,System.Object)">
+            <summary>
+            Logs a message for debugging with a given ID
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Warn(System.String,System.Object)">
+            <summary>
+            Logs a warning with a given ID
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Error(System.String,System.Object)">
+            <summary>
+            Logs an error with a given ID
+            </summary>
+        </member>
         <member name="T:Edelweiss.Plugins.Plugin">
             <summary>
             The basic plugin class
@@ -637,32 +969,95 @@
             <param name="name">The name of the netcode</param>
             <param name="positive">If true, the generated netcode will be positive.</param>
         </member>
-        <member name="T:Edelweiss.Plugins.PluginPacketReceiver">
+        <member name="M:Edelweiss.Plugins.Plugin.GetLocalizationKey(System.String)">
+            <summary>
+            Prefixes the plugin's ID to the given key.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.GetLocalization(System.String)">
+            <summary>
+            Prefixes the plugin's ID to the given key and attempts to get the localization for it.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.PluginLoader">
+            <summary>
+            Handles all plugin-related code.
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.PluginLoader.localization">
+            <summary>
+            Dictionary containing language keys to localization dictionary.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.LoadAssembly(System.Reflection.Assembly)">
+            <summary>
+            Loads all the types from an assembly.
+            </summary>
+            <param name="assembly"></param>
+            <returns>The plugin that the assembly defines</returns>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.LoadPythonPlugins(System.String)">
+            <summary>
+            Finds all the python plugins from a given directory and registers them with the frontend.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.LoadJsonFiles(System.String,System.String)">
+            <summary>
+            Loads all the JSON files from a given directory.
+            </summary>
+            <param name="directory"></param>
+            <param name="pluginID">The prefix that will be added to the key</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.LoadLangFiles(System.String,System.String,System.Boolean)">
+            <summary>
+            Loads the language files from a given directory.
+            </summary>
+            <param name="directory">The directory to load from</param>
+            <param name="pluginID">The prefix that will be added to the file key</param>
+            <param name="celesteMod">True if the directory is a Celeste mod, false if it is an Edelweiss plugin</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.RequestJson(System.String)">
+            <summary>
+            Returns the JSON content for the given key.
+            </summary>
+            <returns>An empty JSON object as a string if the key does not exist.</returns>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.RequestJObject(System.String)">
+            <summary>
+            Requests the JSON for a given key and parses it.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.LoadBaseRegistryObjects(System.Reflection.Assembly)">
+            <summary>
+            Loads the base registry types for a given assembly.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.PacketReceiver">
             <summary>
             The base class for a packet receiver
             </summary>
         </member>
-        <member name="F:Edelweiss.Plugins.PluginPacketReceiver.receivers">
+        <member name="F:Edelweiss.Plugins.PacketReceiver.receivers">
             <summary>
             All packet receivers, organized by the packet code that they handle.
             </summary>
         </member>
-        <member name="P:Edelweiss.Plugins.PluginPacketReceiver.HandledCode">
+        <member name="P:Edelweiss.Plugins.PacketReceiver.HandledCode">
             <summary>
             The specific <see cref="T:Edelweiss.Network.Netcode"/> that this receiver handles. 
-            Whenever the backend receives a packet with this code, this class's <see cref="M:Edelweiss.Plugins.PluginPacketReceiver.ProcessPacket(Edelweiss.Network.Packet)"/> method will be called on that packet.
+            Whenever the backend receives a packet with this code, this class's <see cref="M:Edelweiss.Plugins.PacketReceiver.ProcessPacket(Edelweiss.Network.Packet)"/> method will be called on that packet.
             </summary>
         </member>
-        <member name="M:Edelweiss.Plugins.PluginPacketReceiver.ProcessPacket(Edelweiss.Network.Packet)">
+        <member name="M:Edelweiss.Plugins.PacketReceiver.ProcessPacket(Edelweiss.Network.Packet)">
             <summary>
-            Called whenever the backend receives a packet with this receiver's <see cref="P:Edelweiss.Plugins.PluginPacketReceiver.HandledCode"/>
+            Called whenever the backend receives a packet with this receiver's <see cref="P:Edelweiss.Plugins.PacketReceiver.HandledCode"/>
             </summary>
             <param name="packet">The received packet</param>
         </member>
-        <member name="M:Edelweiss.Plugins.PluginPacketReceiver.Load">
+        <member name="M:Edelweiss.Plugins.PacketReceiver.Load">
             <inheritdoc/>
         </member>
-        <member name="M:Edelweiss.Plugins.PluginPacketReceiver.PostLoad">
+        <member name="M:Edelweiss.Plugins.PacketReceiver.PostLoad">
             <summary>
             Called after this class is loaded.
             </summary>
@@ -1003,6 +1398,17 @@
             The loaded texture keys to the absolute paths to the texture
             </summary>
         </member>
+        <member name="M:Edelweiss.Utils.CelesteModLoader.GetTextureData(System.String)">
+            <summary>
+            Returns the data for the texture for a given key
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.CelesteModLoader.GetImageSize(System.IO.Stream)">
+            <summary>
+            Returns the dimensions of an image.
+            </summary>
+            <param name="stream">The image stream</param>
+        </member>
         <member name="T:Edelweiss.Utils.TextureData">
             <summary>
             Contains data for a texture
@@ -1056,6 +1462,16 @@
             Returns true if the inputted array of arguments matches the desired signature
             </summary>
         </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Formatted(System.Exception)">
+            <summary>
+            If the exception is a ScriptRuntimeException, formats it appropriately so it displays Lua line numbers.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Distance(System.Drawing.Point,System.Drawing.Point)">
+            <summary>
+            Returns the Pythagorean distance between two points.
+            </summary>
+        </member>
         <member name="T:Edelweiss.Utils.FormLoader">
             <summary>
             A class that loads form JSON files into proper widget objects that can be loaded by Edelweiss
@@ -1067,6 +1483,33 @@
             </summary>
             <param name="key">The resource key of the JSON file</param>
             <returns></returns>
+        </member>
+        <member name="T:Edelweiss.Utils.Language">
+            <summary>
+            Handles all localization-related code
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.Language.CurrentLanguage">
+            <summary>
+            The currently selected language key.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.Language.GetText(System.String)">
+            <summary>
+            Returns the localization for a given key
+            </summary>
+            <returns>The localization if it exists, the key itself if it doesn't</returns>
+        </member>
+        <member name="M:Edelweiss.Utils.Language.GetTextOrDefault(System.String,System.String)">
+            <summary>
+            Returns the localization for a given key and the default value if it doesn't exist.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.Language.TryGetText(System.String,System.String@)">
+            <summary>
+            Attempts to get the localization for a given key.
+            </summary>
+            <returns>Whether or not the localization exists.</returns>
         </member>
         <member name="T:Edelweiss.Utils.TileLoader">
             <summary>

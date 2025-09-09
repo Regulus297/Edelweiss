@@ -32,7 +32,7 @@ namespace Edelweiss.Utils
         internal static Dictionary<string, EntityData> entities = [];
         internal static bool LoadTexturesFromDirectory(string graphicsPath)
         {
-            MainPlugin.Instance.Logger.Log($"Loading textures from {graphicsPath}");
+            Logger.Log(nameof(CelesteModLoader), $"Loading textures from {graphicsPath}");
             graphicsPath = Path.Join(graphicsPath, "Graphics", "Atlases");
             if (!Directory.Exists(graphicsPath))
                 return false;
@@ -61,7 +61,7 @@ namespace Edelweiss.Utils
 
         internal static void LoadDirectory(string modPath)
         {
-            MainPlugin.Instance.Logger.Log($"Loading mod from folder {modPath}");
+            Logger.Log(nameof(CelesteModLoader), $"Loading mod from folder {modPath}");
             string loennEntityPath = Path.Join(modPath, "Loenn", "entities");
             string loennLangPath = Path.Join(modPath, "Loenn", "lang");
 
@@ -84,7 +84,7 @@ namespace Edelweiss.Utils
 
         internal static void LoadZip(string modPath)
         {
-            MainPlugin.Instance.Logger.Log($"Loading mod from .zip {modPath}");
+            Logger.Log(nameof(CelesteModLoader), $"Loading mod from .zip {modPath}");
             using (ZipArchive zip = ZipFile.OpenRead(modPath))
             {
                 foreach (ZipArchiveEntry langEntry in zip.Entries)
@@ -137,11 +137,11 @@ namespace Edelweiss.Utils
             }
             catch (ScriptRuntimeException e)
             {
-                MainPlugin.Instance.Logger.Error($"Failed loading entity {fileName} with error: \n {e.Message}");
+                Logger.Error(nameof(CelesteModLoader), $"Failed loading entity {fileName} with error: \n {e.Message}");
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Failed loading entity {fileName} with error: \n {LuaErrorEncoder.GetString(LuaErrorEncoder.GetBytes(e.ToString()))}");
+                Logger.Error(nameof(CelesteModLoader), $"Failed loading entity {fileName} with error: \n {LuaErrorEncoder.GetString(LuaErrorEncoder.GetBytes(e.ToString()))}");
             }
             script = tempScript;
             return null;
@@ -172,10 +172,13 @@ namespace Edelweiss.Utils
             }
             catch (Exception e)
             {
-                MainPlugin.Instance.Logger.Error($"Failed loading entity {fileName} with error: \n {LuaErrorEncoder.GetString(LuaErrorEncoder.GetBytes(e.ToString()))}");
+                Logger.Error(nameof(CelesteModLoader), $"Failed loading entity {fileName} with error: \n {LuaErrorEncoder.GetString(LuaErrorEncoder.GetBytes(e.ToString()))}");
             }
         }
 
+        /// <summary>
+        /// Returns the data for the texture for a given key
+        /// </summary>
         public static TextureData GetTextureData(string key)
         {
             if (textureDataCache.TryGetValue(key, out var data))
@@ -216,13 +219,17 @@ namespace Edelweiss.Utils
             return textureDataCache[key];
         }
 
+        /// <summary>
+        /// Returns the dimensions of an image.
+        /// </summary>
+        /// <param name="stream">The image stream</param>
         public static Size GetImageSize(Stream stream)
         {
             BinaryReader br = new BinaryReader(stream);
             br.ReadBytes(16);
             byte[] widthArray = new byte[sizeof(int)];
             for (int i = 0; i < widthArray.Length; i++)
-                widthArray[widthArray.Length - 1 - i ] = br.ReadByte();
+                widthArray[widthArray.Length - 1 - i] = br.ReadByte();
             int width = BitConverter.ToInt32(widthArray, 0);
             byte[] heightArray = new byte[sizeof(int)];
             for (int i = 0; i < heightArray.Length; i++)

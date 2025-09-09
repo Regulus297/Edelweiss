@@ -202,17 +202,40 @@ namespace Edelweiss.Mapping.Drawables
         }
     }
 
+    /// <summary>
+    /// A disposable object to draw sprites to a particular JArray.
+    /// </summary>
     public class SpriteDestination : IDisposable
     {
+        /// <summary>
+        /// The array to which sprites are drawn
+        /// </summary>
         public static JArray destination = null;
+        /// <summary>
+        /// The horizontal offset for the sprites
+        /// </summary>
         public static int offsetX = 0;
+        /// <summary>
+        /// The vertical offset for the sprites
+        /// </summary>
         public static int offsetY = 0;
+
+        /// <summary>
+        /// Creates a SpriteDestination for the given JArray and offsets
+        /// </summary>
+        /// <param name="shapes">The array to which sprites are drawn</param>
+        /// <param name="offsetX">The horizontal offset for the sprites</param>
+        /// <param name="offsetY">The vertical offset for the sprites</param>
         public SpriteDestination(JArray shapes, int offsetX, int offsetY)
         {
             destination = shapes;
             SpriteDestination.offsetX = offsetX;
             SpriteDestination.offsetY = offsetY;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void Dispose()
         {
             destination = null;

@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 namespace Edelweiss.Mapping.PacketReceivers
 {
     [LoadAfter(typeof(MappingTab))]
-    internal class RoomMouseReceiver : PluginPacketReceiver
+    internal class RoomMouseReceiver : PacketReceiver
     {
         public override long HandledCode => MappingTab.RoomMouseNetcode;
 

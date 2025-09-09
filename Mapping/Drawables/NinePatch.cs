@@ -6,16 +6,48 @@ using MoonSharp.Interpreter;
 
 namespace Edelweiss.Mapping.Drawables
 {
+    /// <summary>
+    /// A drawable object that draws tileable textures
+    /// </summary>
     public class NinePatch() : Drawable, ILuaConvertible
     {
+        /// <summary>
+        /// The texture key of the NinePatch
+        /// </summary>
         public string texture = "";
+
+        /// <summary>
+        /// 
+        /// </summary>
         public string mode = "";
+        /// <summary>
+        /// 
+        /// </summary>
         public string borderMode = "", fillMode = "";
+
+        /// <summary>
+        /// 
+        /// </summary>
         public int x = 0, y = 0;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public int width = 0, height = 0;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public int tileSize = 0, tileWidth = 0, tileHeight = 0;
+
+        /// <summary>
+        /// 
+        /// </summary>
         public int borderLeft = 0, borderRight = 0, borderTop = 0, borderBottom = 0;
 
+        /// <summary>
+        /// Creates a NinePatch from the given Lua table
+        /// </summary>
         public NinePatch(Table table) : this()
         {
             texture = table.Get("texture").String;
@@ -36,6 +68,9 @@ namespace Edelweiss.Mapping.Drawables
 
         }
 
+        /// <summary>
+        /// Draws the NinePatch to the current SpriteDestination.
+        /// </summary>
         public override void Draw()
         {
             foreach (Sprite sprite in GetSprites())
@@ -202,6 +237,9 @@ namespace Edelweiss.Mapping.Drawables
             return sprites;
         }
 
+        /// <summary>
+        /// Converts the NinePatch to a Lua table.
+        /// </summary>
         public Table ToLuaTable(Script script)
         {
             Table ninePatch = new(script);

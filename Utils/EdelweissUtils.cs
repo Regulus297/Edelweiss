@@ -96,6 +96,9 @@ namespace Edelweiss.Utils
             return true;
         }
 
+        /// <summary>
+        /// If the exception is a ScriptRuntimeException, formats it appropriately so it displays Lua line numbers.
+        /// </summary>
         public static string Formatted(this Exception e)
         {
             if (e is not ScriptRuntimeException s)
@@ -104,6 +107,9 @@ namespace Edelweiss.Utils
             return $"{s.DecoratedMessage}: \n {s}";
         }
 
+        /// <summary>
+        /// Returns the Pythagorean distance between two points.
+        /// </summary>
         public static float Distance(this Point point, Point other)
         {
             return MathF.Sqrt((point.X - other.X) * (point.X - other.X) + (point.Y - other.Y) * (point.Y - other.Y));

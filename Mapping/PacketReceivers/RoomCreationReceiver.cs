@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.PacketReceivers
 {
-    internal class RoomCreationReceiver : PluginPacketReceiver
+    internal class RoomCreationReceiver : PacketReceiver
     {
         public override long HandledCode => Netcode.FORM_SUBMITTED;
 

@@ -54,6 +54,13 @@ namespace Edelweiss.Mapping.Entities
                 sprite.Draw();
         }
 
+        /// <summary>
+        /// Returns the rectangle that contains the entity.
+        /// Defaults to returning a rectangle with the width and height of the entity.
+        /// If these are zero, returns a 4px * 4px rectangle centered on the entity's position.
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
         public virtual Rectangle Rectangle(RoomData room, Entity entity)
         {
             bool hasDimensions = entity.width != 0 && entity.height != 0;
@@ -68,26 +75,62 @@ namespace Edelweiss.Mapping.Entities
             };
         }
 
+        /// <summary>
+        /// Returns the hex representation of the color of the entity.
+        /// Defaults to white.
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
         public virtual string Color(RoomData room, Entity entity)
         {
             return "#ffffff";
         }
 
+        /// <summary>
+        /// Returns the hex representation for the fill color of the entity.
+        /// Defaults to returning <see cref="Color"/> if defined.
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
         public virtual string FillColor(RoomData room, Entity entity)
         {
             return Color(room, entity);
         }
 
+
+        /// <summary>
+        /// Returns the hex representation for the border color of the entity.
+        /// Defaults to returning <see cref="Color"/> if defined.
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
         public virtual string BorderColor(RoomData room, Entity entity)
         {
             return Color(room, entity);
         }
 
+        /// <summary>
+        /// The minimum and maximum number of nodes an entity can have.
+        /// A maximum of -1 means the entity does not have an upper limit.
+        /// Defaults to [0, 0]
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
         public virtual List<int> NodeLimits(RoomData room, Entity entity)
         {
             return [0, 0];
         }
 
+        /// <summary>
+        /// Determines how nodes are connected to the main entity. <br/>
+        /// none: nodes are not connected to the main entity. <br/>
+        /// line: nodes are connected to the previous node <br/>
+        /// fan: all nodes are connected directly to the main entity <br/>
+        /// circle: nodes draw a circle around the main entity. <br/>
+        /// In Edelweiss, circle supports multiple nodes, not just one. Each will draw a circle around the entity. <br/>
+        /// Defaults to none.
+        /// </summary>
+        /// <param name="entity">The entity instance</param>
         public virtual string NodeLineRenderType(Entity entity)
         {
             return "none";
