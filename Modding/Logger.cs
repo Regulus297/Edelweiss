@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Edelweiss.Plugins
 {
@@ -10,6 +12,7 @@ namespace Edelweiss.Plugins
     public class Logger(Plugin plugin)
     {
         Plugin plugin = plugin;
+        static ReaderWriterLockSlim readWriteLock = new ReaderWriterLockSlim();
 
         static Logger()
         {
@@ -19,8 +22,22 @@ namespace Edelweiss.Plugins
 
         private static void Write(string id, string type, object message)
         {
-            using StreamWriter logWriter = new("log.txt", true);
-            logWriter.WriteLine($"({DateTime.Now}) [{id}] [{type}] {message}");
+            WriteThreadSafe($"({DateTime.Now}) [{id}] [{type}] {message}");
+        }
+
+        private static void WriteThreadSafe(string text)
+        {
+            readWriteLock.EnterWriteLock();
+            try
+            {
+                using StreamWriter logWriter = new("log.txt", true);
+                logWriter.WriteLine(text);
+                logWriter.Close();
+            }
+            finally
+            {
+                readWriteLock.ExitWriteLock();
+            }
         }
 
         /// <summary>

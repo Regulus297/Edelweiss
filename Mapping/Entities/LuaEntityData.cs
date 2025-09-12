@@ -149,6 +149,8 @@ namespace Edelweiss.Mapping.Entities
 
                 if (colorMethod.Type == DataType.Table)
                     return colorMethod.Color();
+                if (colorMethod.Type == DataType.String)
+                    return colorMethod.String;
                 return script.Call(colorMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Color();
             }
             catch (Exception e)
@@ -169,6 +171,8 @@ namespace Edelweiss.Mapping.Entities
 
                 if (colorMethod.Type == DataType.Table)
                     return colorMethod.Color();
+                if (colorMethod.Type == DataType.String)
+                    return colorMethod.String;
                 return script.Call(colorMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Color();
             }
             catch (Exception e)

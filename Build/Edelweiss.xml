@@ -84,6 +84,14 @@
             <exception cref="T:System.Collections.Generic.KeyNotFoundException">Thrown if the _type in the table is not a defined Drawable.</exception>
             <exception cref="T:System.MissingMethodException">Thrown if the found Drawable type does not have a constructor accepting a table.</exception>
         </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Line.Draw">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Line.ToLuaTable(MoonSharp.Interpreter.Script)">
+            <summary>
+            Converts the line to a Lua table
+            </summary>
+        </member>
         <member name="T:Edelweiss.Mapping.Drawables.NinePatch">
             <summary>
             A drawable object that draws tileable textures

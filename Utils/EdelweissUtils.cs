@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using Edelweiss.Plugins;
 using MoonSharp.Interpreter;
 
 namespace Edelweiss.Utils
@@ -113,6 +115,75 @@ namespace Edelweiss.Utils
         public static float Distance(this Point point, Point other)
         {
             return MathF.Sqrt((point.X - other.X) * (point.X - other.X) + (point.Y - other.Y) * (point.Y - other.Y));
+        }
+
+        public static object MakeTuple(out Type tupleType, params object[] items)
+        {
+            int length = items.Length;
+            if (length > 7)
+            {
+                object innerTuple = MakeTuple(out Type innerType, items.ToList().Slice(7, length - 7).ToArray());
+                tupleType = typeof(ValueTuple<,,,,,,,>);
+                tupleType.MakeGenericType(items[0].GetType(), items[1].GetType(), items[2].GetType(), items[3].GetType(), items[4].GetType(), items[5].GetType(), items[6].GetType(), innerType);
+                return Activator.CreateInstance(tupleType, items[0], items[1], items[2], items[3], items[4], items[5], items[6], innerTuple);
+            }
+            tupleType = Type.GetType($"System.ValueTuple`{length}");
+            tupleType = tupleType.MakeGenericType(items.Select(i => i.GetType()).ToArray());
+            return Activator.CreateInstance(tupleType, items);
+        }
+
+        public static object Unpack(this Table table)
+        {
+            List<object> items = [];
+            foreach (DynValue value in table.Values)
+            {
+                if (value.Value() != null)
+                    items.Add(value.Value());
+            }
+            return MakeTuple(out Type _, items.ToArray());
+        }
+
+        public static object CastTuple<T, U>(object tuple)
+        {
+            if (tuple is not ITuple t)
+                return null;
+
+            object[] items = new object[t.Length];
+            for (int i = 0; i < t.Length; i++)
+            {
+                if (t[i].GetType() == typeof(T))
+                {
+                    items[i] = Convert.ChangeType(t[i], typeof(U));
+                }
+            }
+            return MakeTuple(out Type _, items);
+        }
+
+        public static object Value(this DynValue value)
+        {
+            return value.Type switch
+            {
+                DataType.Boolean => value.Boolean,
+                DataType.Number => value.Number,
+                DataType.Table => value.Table,
+                DataType.String => value.String,
+                _ => null
+            };
+        }
+
+        /// <summary>
+        /// Gets the value of the given key from a table, casting it to the desired type and returning the default value if the key is not in the table.
+        /// </summary>
+        public static T Get<T>(this Table table, string key, T defaultValue = default)
+        {
+            try
+            {
+                return (T)table.Get(key)?.Value() ?? defaultValue;
+            }
+            catch (InvalidCastException)
+            {
+                return defaultValue;
+            }
         }
     }
 }

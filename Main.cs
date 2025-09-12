@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Edelweiss.Network;
@@ -21,10 +22,13 @@ public class Main
     /// </summary>
     public static void Initialize()
     {
+        var watch = Stopwatch.StartNew();
         Netcode.Initialize();
         PluginSaveablePreference.LoadPrefs();
         PluginLoader.LoadPlugins();
         CelesteModLoader.LoadMods();
+        watch.Stop();
+        Logger.Log("Edelweiss", $"Finished loading plugins and mods in {watch.ElapsedMilliseconds} ms.");
     }
 
     /// <summary>

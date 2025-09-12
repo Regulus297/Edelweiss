@@ -220,6 +220,8 @@ namespace Edelweiss.Mapping.Drawables
         /// </summary>
         public static int offsetY = 0;
 
+        int myOffsetX, myOffsetY;
+
         /// <summary>
         /// Creates a SpriteDestination for the given JArray and offsets
         /// </summary>
@@ -229,8 +231,10 @@ namespace Edelweiss.Mapping.Drawables
         public SpriteDestination(JArray shapes, int offsetX, int offsetY)
         {
             destination = shapes;
-            SpriteDestination.offsetX = offsetX;
-            SpriteDestination.offsetY = offsetY;
+            SpriteDestination.offsetX += offsetX;
+            SpriteDestination.offsetY += offsetY;
+            myOffsetX = offsetX;
+            myOffsetY = offsetY;
         }
 
         /// <summary>
@@ -239,6 +243,8 @@ namespace Edelweiss.Mapping.Drawables
         public void Dispose()
         {
             destination = null;
+            offsetX -= myOffsetX;
+            offsetY -= myOffsetY;
         }
     }
 }

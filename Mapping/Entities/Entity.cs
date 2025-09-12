@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Edelweiss.Loenn;
+using Edelweiss.Mapping.Drawables;
 using Edelweiss.Network;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
@@ -93,7 +94,10 @@ namespace Edelweiss.Mapping.Entities
             Table nodesTable = new Table(script);
             foreach (Point p in nodes)
             {
-                nodesTable.Append(DynValue.NewTable(script, DynValue.NewNumber(p.X), DynValue.NewNumber(p.Y)));
+                Table nodeTable = new Table(script);
+                nodeTable["x"] = p.X;
+                nodeTable["y"] = p.Y;
+                nodesTable.Append(DynValue.NewTable(nodeTable));
             }
             table["nodes"] = nodesTable;
             foreach (var d in data)
@@ -135,7 +139,6 @@ namespace Edelweiss.Mapping.Entities
                     {"item", item}
                 });
                 entityObject = $"{entityRoom.name}/{_id}";
-                entityName = _id;
             }
             else
             {
@@ -147,7 +150,6 @@ namespace Edelweiss.Mapping.Entities
                     {"action", "add"},
                     {"shapes", shapes}
                 });
-                entityName = entityObject;
             }
 
             int i = 0;
@@ -164,8 +166,8 @@ namespace Edelweiss.Mapping.Entities
                         {"type", "line"},
                         {"x1", 0},
                         {"y1", 0},
-                        {"x2", $"@defer('@itemX(\\'Mapping/MainView\\', \\'{entityObject}\\', \\'{entityObject}/{entityName}_node{i}\\')')"},
-                        {"y2", $"@defer('@itemY(\\'Mapping/MainView\\', \\'{entityObject}\\', \\'{entityObject}/{entityName}_node{i}\\')')"},
+                        {"x2", point.X},
+                        {"y2", point.Y},
                         {"color", "#ffffff"},
                         {"thickness", LoveModule.PEN_THICKNESS}
                     });
@@ -177,8 +179,8 @@ namespace Edelweiss.Mapping.Entities
                         {"type", "line"},
                         {"x1", 0},
                         {"y1", 0},
-                        {"x2", $"@defer('@itemX(\\'Mapping/MainView\\', \\'{previous}\\', \\'{entityObject}/{entityName}_node{i}\\')')"},
-                        {"y2", $"@defer('@itemY(\\'Mapping/MainView\\', \\'{previous}\\', \\'{entityObject}/{entityName}_node{i}\\')')"},
+                        {"x2", point.X},
+                        {"y2", point.Y},
                         {"color", "#ffffff"},
                         {"thickness", LoveModule.PEN_THICKNESS}
                     });
@@ -188,41 +190,26 @@ namespace Edelweiss.Mapping.Entities
                     nodeShapes.Add(new JObject() {
                         {"type", "circle"},
                         {"radius", point.Distance(new Point(0, 0))},
-                        { "x", $"@defer('@itemX(\\'Mapping/MainView\\', \\'{entityObject}\\', \\'{entityObject}/{entityName}_node{i}\\')')"},
-                        {"y", $"@defer('@itemY(\\'Mapping/MainView\\', \\'{entityObject}\\', \\'{entityObject}/{entityName}_node{i}\\')')"},
+                        {"x", point.X},
+                        {"y", point.Y},
                         {"color", "#ffffff"},
                         {"thickness", LoveModule.PEN_THICKNESS}
                     });
                 }
-
-
-                JObject node = new()
-                {
-                    {"x", point.X},
-                    {"y", point.Y},
-                    {"width", 8},
-                    {"height", 8},
-                    { "name", $"{entityName}_node{i}"},
-                    { "shapes", nodeShapes },
-                    {"opacity", opacity}
-                };
                 i++;
 
-                int prevX = x;
-                int prevY = y;
-                x = point.X;
-                y = point.Y;
 
-                entityData.Draw(nodeShapes, entityRoom, this);
+                using (new SpriteDestination(null, -point.X, -point.Y))
+                {
+                    entityData.Draw(nodeShapes, entityRoom, this);
+                }
 
-                x = prevX;
-                y = prevY;
-
-                NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()
+                NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
                 {
                     {"widget", "Mapping/MainView"},
-                    {"item", node},
-                    {"parent", entityObject}
+                    {"item", entityObject},
+                    {"action", "add"},
+                    {"shapes", nodeShapes}
                 });
             }
         }

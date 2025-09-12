@@ -62,6 +62,7 @@ namespace Edelweiss.Utils
         internal static void LoadDirectory(string modPath)
         {
             Logger.Log(nameof(CelesteModLoader), $"Loading mod from folder {modPath}");
+            LoadTexturesFromDirectory(modPath);
             string loennEntityPath = Path.Join(modPath, "Loenn", "entities");
             string loennLangPath = Path.Join(modPath, "Loenn", "lang");
 
