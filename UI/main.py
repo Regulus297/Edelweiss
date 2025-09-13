@@ -2,7 +2,7 @@ import os.path
 import sys
 
 if not os.path.exists(os.path.join(os.getcwd(), "Build/Edelweiss.dll")):
-    os.chdir("../") 
+    os.chdir("../")
 
 
 from PyQt5.QtWidgets import QApplication

@@ -13,33 +13,32 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Diagnostics\**\*.cs"/>
+    <Compile Include="Diagnostics\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MonoMod" Version="22.7.31.1" />
+    <PackageReference Include="MonoMod.RuntimeDetour" Version="25.3.0" />
     <PackageReference Include="MoonSharp" Version="2.0.0">
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3">
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Edelweiss.csproj" Private="false"/>
+    <ProjectReference Include="Edelweiss.csproj" Private="false" />
     
   </ItemGroup>
   <Target Name="CreateOutputPath" BeforeTargets="BeforeBuild">
-    <MakeDir Directories="$(PublishDir)"/>
+    <MakeDir Directories="$(PublishDir)" />
   </Target>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />
   </Target>
   <Target Name="RestoreDotnetTools" AfterTargets="Publish">
-    <ZipPlugin SourceDir="$(PublishDir)" ZipPath="$(PublishDir)..\$(AssemblyName).zip"/>
+    <ZipPlugin SourceDir="$(PublishDir)" ZipPath="$(PublishDir)..\$(AssemblyName).zip" />
   </Target>
 
-   <UsingTask 
-      TaskName="ZipPlugin" 
-      TaskFactory="RoslynCodeTaskFactory"
-      AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+   <UsingTask TaskName="ZipPlugin" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <SourceDir ParameterType="System.String" Required="true" />
       <ZipPath ParameterType="System.String" Required="true" />

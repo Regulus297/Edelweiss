@@ -21,13 +21,18 @@ namespace Edelweiss.Plugins
     {
         private static Dictionary<string, PluginFileData> jsonPaths = [];
         private static Dictionary<string, string> jsonCache = [];
+
+        private static List<string> blacklist = [];
+
         /// <summary>
         /// Dictionary containing language keys to localization dictionary.
         /// </summary>
         public static Dictionary<string, Dictionary<string, string>> localization = [];
+        
 
         internal static void LoadPlugins()
         {
+            LoadBlacklist();
             LoadLangFiles(Directory.GetCurrentDirectory(), "Edelweiss");
             LoadPythonPlugins(Directory.GetCurrentDirectory());
             LoadAssembly(Assembly.GetExecutingAssembly());
@@ -54,7 +59,7 @@ namespace Edelweiss.Plugins
                     Plugin plugin = LoadAssembly(assembly);
                     if (plugin == null)
                     {
-                        Logger.Error("Edelweiss", $"Assembly {modFilePath} does not define a Plugin class, skipping loading");
+                        // Logger.Error("Edelweiss", $"Assembly {modFilePath} does not define a Plugin class, skipping loading");
                         continue;
                     }
 
@@ -65,6 +70,13 @@ namespace Edelweiss.Plugins
             }
 
             Registry.ForAll<Plugin>(plugin => plugin.PostLoad());
+        }
+
+        internal static void LoadBlacklist()
+        {
+            if (!File.Exists("blacklist.txt"))
+                File.Open("blacklist.txt", FileMode.CreateNew);
+            blacklist = File.ReadAllLines("blacklist.txt").Select(t => t.Trim()).ToList();
         }
 
         private static bool ValidateModDirectory(PluginAsset modDirectory, out string modFilePath)
@@ -96,6 +108,8 @@ namespace Edelweiss.Plugins
                 if (!type.IsAbstract && type.IsAssignableTo(typeof(Plugin)))
                 {
                     plugin = (Plugin)Activator.CreateInstance(type);
+                    if (blacklist.Contains(plugin.ID))
+                        return null;
                     Registry.registry[typeof(Plugin)].Add(plugin);
                     plugin.OnRegister();
                     plugin.Logger.Log($"Loading plugin {plugin.ID}");
@@ -272,9 +286,19 @@ namespace Edelweiss.Plugins
         }
     }
 
+    /// <summary>
+    /// Contains the plugin asset for any given file and the path relative to the plugin asset
+    /// </summary>
     public struct PluginFileData(string filePath, PluginAsset asset)
     {
+        /// <summary>
+        /// The path of the file relative to the plugin asset
+        /// </summary>
         public string filePath = filePath;
+
+        /// <summary>
+        /// The plugin asset that contains the file
+        /// </summary>
         public PluginAsset asset = asset;
     }
 }

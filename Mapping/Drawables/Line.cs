@@ -6,6 +6,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Drawables
 {
+    /// <summary>
+    /// A class that represents a drawable line
+    /// </summary>
     public class Line() : Drawable, ILuaConvertible
     {
         internal int x1, x2, y1, y2;
@@ -21,6 +24,9 @@ namespace Edelweiss.Mapping.Drawables
         internal float offsetX, offsetY;
         internal float magnitudeOffset;
 
+        /// <summary>
+        /// Creates a line from a given Lua table
+        /// </summary>
         public Line(Table table) : this()
         {
             Points = table.Get("points").Table;

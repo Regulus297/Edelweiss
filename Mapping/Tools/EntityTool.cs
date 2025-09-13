@@ -18,6 +18,15 @@ namespace Edelweiss.Mapping.Tools
         internal bool recache = false;
         private string lastSelectedMaterial = "";
         private int cursorGhostItems = 0;
+
+        public override void Load()
+        {
+            CelesteModLoader.PostLoadMods += () =>
+            {
+                recache = true;
+            };
+        }
+
         public override Dictionary<string, string> GetMaterials()
         {
             if (cachedMaterials == null || previousSearchTerm != MappingTab.searchTerm || recache)
@@ -36,7 +45,7 @@ namespace Edelweiss.Mapping.Tools
                 {
                     if (favourites.Contains(entity.Key))
                         continue;
-                        
+
                     if (IsSearched(entity.Value.Name))
                         cachedMaterials[entity.Key] = entity.Value.Name;
                 }

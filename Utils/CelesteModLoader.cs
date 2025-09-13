@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using System.Threading.Tasks;
 using Edelweiss.Loenn;
 using Edelweiss.Mapping.Entities;
 using Edelweiss.Plugins;
@@ -27,9 +29,14 @@ namespace Edelweiss.Utils
         /// </summary>
         public static Dictionary<string, string> texturePaths = [];
         internal static Dictionary<string, TextureData> textureDataCache = [];
+        
+        /// <summary>
+        /// Called after all mods are loaded on the background thread
+        /// </summary>
+        public static event Action PostLoadMods;
 
 
-        internal static Dictionary<string, EntityData> entities = [];
+        internal static ConcurrentDictionary<string, EntityData> entities = [];
         internal static bool LoadTexturesFromDirectory(PluginAsset path)
         {
             string graphicsPath = Path.Join("Graphics", "Atlases");
@@ -38,11 +45,10 @@ namespace Edelweiss.Utils
 
             Logger.Log(nameof(CelesteModLoader), $"Loading textures from {path}");
 
-
             foreach (string file in path.GetFiles(graphicsPath, "*.png", SearchOption.AllDirectories))
             {
                 string key = file.Substring(0, file.Length - 4).Substring(graphicsPath.Length + 1).Replace(Path.DirectorySeparatorChar, '/');
-                texturePaths[key] = path.IsZipFile ? path.PluginArchive.Name() + char.ConvertFromUtf32(0) + file : Path.Join(path.AssetPath, file);
+                texturePaths[key] = path.IsZipFile ? path.PluginArchive.Path() + char.ConvertFromUtf32(0) + file : Path.Join(path.AssetPath, file);
             }
 
             return true;
@@ -55,6 +61,7 @@ namespace Edelweiss.Utils
                 LoadMod(path);
             }
             MainPlugin.textures.Value = texturePaths;
+            PostLoadMods?.Invoke();
         }
 
         internal static void LoadMod(PluginAsset modPath)

@@ -13,24 +13,37 @@ namespace Edelweiss.Plugins
     {
         Plugin plugin = plugin;
         static ReaderWriterLockSlim readWriteLock = new ReaderWriterLockSlim();
+        string filePath = null;
 
         static Logger()
         {
             File.Open("log.txt", FileMode.Create).Close();
         }
-        private void Write(string type, object message) => Write(plugin.ID, type, message);
 
-        private static void Write(string id, string type, object message)
+        /// <summary>
+        /// Creates a Logger object that writes to a specific file
+        /// </summary>
+        /// <param name="plugin">The plugin this logger belongs to</param>
+        /// <param name="filePath">The file that the logger writes to</param>
+        public Logger(Plugin plugin, string filePath) : this(plugin)
         {
-            WriteThreadSafe($"({DateTime.Now}) [{id}] [{type}] {message}");
+            this.filePath = filePath;
+            File.Open(filePath, FileMode.Create).Close();
         }
 
-        private static void WriteThreadSafe(string text)
+        private void Write(string type, object message) => Write(plugin.ID, type, message, filePath);
+
+        private static void Write(string id, string type, object message, string filePath = null)
+        {
+            WriteThreadSafe($"({DateTime.Now}) [{id}] [{type}] {message}", filePath);
+        }
+
+        private static void WriteThreadSafe(string text, string filePath = null)
         {
             readWriteLock.EnterWriteLock();
             try
             {
-                using StreamWriter logWriter = new("log.txt", true);
+                using StreamWriter logWriter = new(filePath ?? "log.txt", true);
                 logWriter.WriteLine(text);
                 logWriter.Close();
             }
@@ -39,6 +52,16 @@ namespace Edelweiss.Plugins
                 readWriteLock.ExitWriteLock();
             }
         }
+
+        /// <summary>
+        /// Outputs an empty line in the log
+        /// </summary>
+        public static void Break(string filePath = null) => WriteThreadSafe("", filePath);
+
+        /// <summary>
+        /// Outputs an empty line in the log
+        /// </summary>
+        public void Break() => Break(filePath);
 
         /// <summary>
         /// Logs a message

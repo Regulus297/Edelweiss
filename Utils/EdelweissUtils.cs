@@ -120,6 +120,9 @@ namespace Edelweiss.Utils
             return MathF.Sqrt((point.X - other.X) * (point.X - other.X) + (point.Y - other.Y) * (point.Y - other.Y));
         }
 
+        /// <summary>
+        /// Converts a list of objects into a ValueTuple and outputs the type
+        /// </summary>
         public static object MakeTuple(out Type tupleType, params object[] items)
         {
             int length = items.Length;
@@ -135,6 +138,9 @@ namespace Edelweiss.Utils
             return Activator.CreateInstance(tupleType, items);
         }
 
+        /// <summary>
+        /// Returns all members of a table in tuple form
+        /// </summary>
         public static object Unpack(this Table table)
         {
             List<object> items = [];
@@ -146,6 +152,11 @@ namespace Edelweiss.Utils
             return MakeTuple(out Type _, items.ToArray());
         }
 
+        /// <summary>
+        /// For every member of the input tuple with the type T, converts it to type U in the output tuple
+        /// </summary>
+        /// <typeparam name="T">The source type</typeparam>
+        /// <typeparam name="U">The target type</typeparam>
         public static object CastTuple<T, U>(object tuple)
         {
             if (tuple is not ITuple t)
@@ -162,6 +173,11 @@ namespace Edelweiss.Utils
             return MakeTuple(out Type _, items);
         }
 
+        /// <summary>
+        /// Gets the value of a DynValue if it is a value type (bool, number, table or string) otherwise null
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static object Value(this DynValue value)
         {
             return value.Type switch
@@ -174,6 +190,9 @@ namespace Edelweiss.Utils
             };
         }
 
+        /// <summary>
+        /// Gets all the directories and zip files in a directory, in that order and converts them to plugin assets
+        /// </summary>
         public static List<PluginAsset> GetPluginAssetsFromDirectory(string directory)
         {
             List<PluginAsset> assets = [];
@@ -201,12 +220,18 @@ namespace Edelweiss.Utils
             }
         }
 
+        /// <summary>
+        /// Exposes the private stream of a given zip archive
+        /// </summary>
         public static FileStream Stream(this ZipArchive zipArchive)
         {
             var field = typeof(ZipArchive).GetField("_archiveStream", BindingFlags.NonPublic | BindingFlags.Instance);
             return (FileStream)field?.GetValue(zipArchive);
         }
 
-        public static string Name(this ZipArchive zipArchive) => zipArchive.Stream().Name;
+        /// <summary>
+        /// Returns the path to a given zip archive
+        /// </summary>
+        public static string Path(this ZipArchive zipArchive) => zipArchive.Stream().Name;
     }
 }

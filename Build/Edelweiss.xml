@@ -84,6 +84,21 @@
             <exception cref="T:System.Collections.Generic.KeyNotFoundException">Thrown if the _type in the table is not a defined Drawable.</exception>
             <exception cref="T:System.MissingMethodException">Thrown if the found Drawable type does not have a constructor accepting a table.</exception>
         </member>
+        <member name="T:Edelweiss.Mapping.Drawables.Line">
+            <summary>
+            A class that represents a drawable line
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Line.#ctor">
+            <summary>
+            A class that represents a drawable line
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Line.#ctor(MoonSharp.Interpreter.Table)">
+            <summary>
+            Creates a line from a given Lua table
+            </summary>
+        </member>
         <member name="M:Edelweiss.Mapping.Drawables.Line.Draw">
             <inheritdoc/>
         </member>
@@ -876,6 +891,42 @@
             <param name="actionName">The identifier for the action that was triggered</param>
             <param name="extraData">Any additional data that was requested in the toolbar's JSON file</param>
         </member>
+        <member name="T:Edelweiss.Plugins.HookManager">
+            <summary>
+            Handles all mod hooks
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.HookManager.AddHook``1(System.String,``0)">
+            <summary>
+            Registers an on hook
+            </summary>
+            <typeparam name="T">The type of the delegate (usually autodetected by the compiler and IDE)</typeparam>
+            <param name="method">The key of the method: takes the form "TypeName.MethodName"</param>
+            <param name="hook">The hook itself</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.HookManager.AddILHook(System.String,MonoMod.Cil.ILContext.Manipulator)">
+            <summary>
+            Registers an IL hook
+            </summary>
+            <param name="method">The method itself (useful for hooking into other mods)</param>
+            <param name="hook">The IL manipulator</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.HookManager.AddHook``1(System.Delegate,``0)">
+            <summary>
+            Registers an on hook
+            </summary>
+            <typeparam name="T">The type of the delegate (usually autodetected by the compiler and IDE)</typeparam>
+            <param name="method">A reference to the method itself (only works for static methods)</param>
+            <param name="hook">The hook itself</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.HookManager.AddHook``1(System.Reflection.MethodBase,``0)">
+            <summary>
+            Registers an on hook
+            </summary>
+            <typeparam name="T">The type of the delegate (usually autodetected by the compiler and IDE)</typeparam>
+            <param name="method">The method itself (useful for hooking into other mods)</param>
+            <param name="hook">The hook itself</param>
+        </member>
         <member name="T:Edelweiss.Plugins.LoadAfterAttribute">
             <summary>
             Classes marked with this attribute will require that the specified types be loaded before they can be loaded
@@ -899,6 +950,23 @@
             A class that logs messages
             </summary>
             <param name="plugin">The plugin this logger belongs to</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.#ctor(Edelweiss.Plugins.Plugin,System.String)">
+            <summary>
+            Creates a Logger object that writes to a specific file
+            </summary>
+            <param name="plugin">The plugin this logger belongs to</param>
+            <param name="filePath">The file that the logger writes to</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Break(System.String)">
+            <summary>
+            Outputs an empty line in the log
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Break">
+            <summary>
+            Outputs an empty line in the log
+            </summary>
         </member>
         <member name="M:Edelweiss.Plugins.Logger.Log(System.Object)">
             <summary>
@@ -1038,6 +1106,26 @@
         <member name="M:Edelweiss.Plugins.PluginLoader.LoadBaseRegistryObjects(System.Reflection.Assembly)">
             <summary>
             Loads the base registry types for a given assembly.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.PluginFileData">
+            <summary>
+            Contains the plugin asset for any given file and the path relative to the plugin asset
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginFileData.#ctor(System.String,Edelweiss.Utils.PluginAsset)">
+            <summary>
+            Contains the plugin asset for any given file and the path relative to the plugin asset
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.PluginFileData.filePath">
+            <summary>
+            The path of the file relative to the plugin asset
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.PluginFileData.asset">
+            <summary>
+            The plugin asset that contains the file
             </summary>
         </member>
         <member name="T:Edelweiss.Plugins.PacketReceiver">
@@ -1406,6 +1494,11 @@
             The loaded texture keys to the absolute paths to the texture
             </summary>
         </member>
+        <member name="E:Edelweiss.Utils.CelesteModLoader.PostLoadMods">
+            <summary>
+            Called after all mods are loaded on the background thread
+            </summary>
+        </member>
         <member name="M:Edelweiss.Utils.CelesteModLoader.GetTextureData(System.String)">
             <summary>
             Returns the data for the texture for a given key
@@ -1480,9 +1573,48 @@
             Returns the Pythagorean distance between two points.
             </summary>
         </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.MakeTuple(System.Type@,System.Object[])">
+            <summary>
+            Converts a list of objects into a ValueTuple and outputs the type
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Unpack(MoonSharp.Interpreter.Table)">
+            <summary>
+            Returns all members of a table in tuple form
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.CastTuple``2(System.Object)">
+            <summary>
+            For every member of the input tuple with the type T, converts it to type U in the output tuple
+            </summary>
+            <typeparam name="T">The source type</typeparam>
+            <typeparam name="U">The target type</typeparam>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Value(MoonSharp.Interpreter.DynValue)">
+            <summary>
+            Gets the value of a DynValue if it is a value type (bool, number, table or string) otherwise null
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.GetPluginAssetsFromDirectory(System.String)">
+            <summary>
+            Gets all the directories and zip files in a directory, in that order and converts them to plugin assets
+            </summary>
+        </member>
         <member name="M:Edelweiss.Utils.EdelweissUtils.Get``1(MoonSharp.Interpreter.Table,System.String,``0)">
             <summary>
             Gets the value of the given key from a table, casting it to the desired type and returning the default value if the key is not in the table.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Stream(System.IO.Compression.ZipArchive)">
+            <summary>
+            Exposes the private stream of a given zip archive
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Path(System.IO.Compression.ZipArchive)">
+            <summary>
+            Returns the path to a given zip archive
             </summary>
         </member>
         <member name="T:Edelweiss.Utils.FormLoader">
@@ -1523,6 +1655,74 @@
             Attempts to get the localization for a given key.
             </summary>
             <returns>Whether or not the localization exists.</returns>
+        </member>
+        <member name="T:Edelweiss.Utils.PluginAsset">
+            <summary>
+            An object that can contain either a zip file or a directory
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.PluginAsset.IsZipFile">
+            <summary>
+            Whether or not this asset is a zip file
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.PluginAsset.AssetPath">
+            <summary>
+            The path to the directory this asset contains if it is not a zip file
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.PluginAsset.PluginArchive">
+            <summary>
+            The archive this asset contains if it is a zip file
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.Finalize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.op_Implicit(System.String)~Edelweiss.Utils.PluginAsset">
+            <summary>
+            Converts a path to a PluginAsset. If the path is a file, it is treated as a zip. If the path is a directory, the asset is treated as a directory.
+            </summary>
+            <param name="assetPath"></param>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.op_Implicit(System.IO.Compression.ZipArchive)~Edelweiss.Utils.PluginAsset">
+            <summary>
+            Converts a zip archive into a plugin asset
+            </summary>
+            <param name="pluginArchive"></param>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.DirExists(System.String)">
+            <summary>
+            Returns true if the asset contains a directory with the given path
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.FileExists(System.String)">
+            <summary>
+            Returns true if the asset contains a file with the given path
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.GetFiles(System.String,System.IO.SearchOption)">
+            <summary>
+            Returns all the files in the asset matching a given pattern
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.GetFiles(System.String,System.String,System.IO.SearchOption)">
+            <summary>
+            Returns all the files in the asset matching a given pattern and that are in the given path
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.GetStream(System.String)">
+            <summary>
+            Opens the entry with the given path and returns the stream
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.ToString">
+            <summary>
+            Returns the directory if the asset is a directory and the path to the zip archive if it is a zip file.
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:Edelweiss.Utils.TileLoader">
             <summary>

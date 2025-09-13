@@ -1,5 +1,7 @@
 /prefs.json
 /log.txt
+/diagnostics.txt
+/blacklist.txt
 /bin/*
 /.vscode/*
 /.config/*

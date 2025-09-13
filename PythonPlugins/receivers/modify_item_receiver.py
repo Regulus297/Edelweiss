@@ -34,7 +34,6 @@ class ModifyItemShapeReceiver(PacketReceiver):
                 gItem.refresh({})
         elif data["action"] == "add":
             for shape in data["shapes"]:
-                print(shape)
                 gItem.addShape(shape)
             gItem.refresh({})
         elif data["action"] == "clear":

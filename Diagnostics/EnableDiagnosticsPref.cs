@@ -2,7 +2,7 @@ using Edelweiss.Plugins;
 
 namespace Edelweiss.Diagnostics
 {
-    public class EnableDiagnosticsPref : PluginSaveablePreference
+    internal class EnableDiagnosticsPref : PluginSaveablePreference
     {
         public override void SetDefaultValue()
         {
