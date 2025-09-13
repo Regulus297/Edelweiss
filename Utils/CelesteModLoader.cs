@@ -30,17 +30,19 @@ namespace Edelweiss.Utils
 
 
         internal static Dictionary<string, EntityData> entities = [];
-        internal static bool LoadTexturesFromDirectory(string graphicsPath)
+        internal static bool LoadTexturesFromDirectory(PluginAsset path)
         {
-            Logger.Log(nameof(CelesteModLoader), $"Loading textures from {graphicsPath}");
-            graphicsPath = Path.Join(graphicsPath, "Graphics", "Atlases");
-            if (!Directory.Exists(graphicsPath))
+            string graphicsPath = Path.Join("Graphics", "Atlases");
+            if (!path.DirExists(graphicsPath))
                 return false;
 
-            foreach (string file in Directory.GetFiles(graphicsPath, "*.png", SearchOption.AllDirectories))
+            Logger.Log(nameof(CelesteModLoader), $"Loading textures from {path}");
+
+
+            foreach (string file in path.GetFiles(graphicsPath, "*.png", SearchOption.AllDirectories))
             {
                 string key = file.Substring(0, file.Length - 4).Substring(graphicsPath.Length + 1).Replace(Path.DirectorySeparatorChar, '/');
-                texturePaths[key] = file;
+                texturePaths[key] = path.IsZipFile ? path.PluginArchive.Name() + char.ConvertFromUtf32(0) + file : Path.Join(path.AssetPath, file);
             }
 
             return true;
@@ -48,76 +50,33 @@ namespace Edelweiss.Utils
 
         internal static void LoadMods()
         {
-            foreach (string path in Directory.GetDirectories(Path.Join(MainPlugin.CelesteDirectory, "Mods")))
+            foreach (PluginAsset path in EdelweissUtils.GetPluginAssetsFromDirectory(Path.Join(MainPlugin.CelesteDirectory, "Mods")))
             {
-                LoadDirectory(path);
-            }
-            foreach (string path in Directory.GetFiles(Path.Join(MainPlugin.CelesteDirectory, "Mods"), "*.zip"))
-            {
-                LoadZip(path);
+                LoadMod(path);
             }
             MainPlugin.textures.Value = texturePaths;
         }
 
-        internal static void LoadDirectory(string modPath)
+        internal static void LoadMod(PluginAsset modPath)
         {
             Logger.Log(nameof(CelesteModLoader), $"Loading mod from folder {modPath}");
             LoadTexturesFromDirectory(modPath);
-            string loennEntityPath = Path.Join(modPath, "Loenn", "entities");
-            string loennLangPath = Path.Join(modPath, "Loenn", "lang");
+            string loennEntityPath = Path.Join("Loenn", "entities");
+            string loennLangPath = Path.Join("Loenn", "lang");
 
-            if (Directory.Exists(loennLangPath))
+            if (modPath.DirExists(loennLangPath))
             {
-                PluginLoader.LoadLangFiles(loennLangPath, "Loenn", true);
+                PluginLoader.LoadLangFiles(modPath, "Loenn", true);
             }
-            if (Directory.Exists(loennEntityPath))
+            if (modPath.DirExists(loennEntityPath))
             {
-                foreach (string entityFile in Directory.GetFiles(loennEntityPath, "*.lua", SearchOption.AllDirectories))
+                foreach (string entityFile in modPath.GetFiles(loennEntityPath, "*.lua", SearchOption.AllDirectories))
                 {
-                    Table table = LoadLua(entityFile, File.ReadAllText(entityFile), out Script script);
+                    using StreamReader reader = new(modPath.GetStream(entityFile));
+                    Table table = LoadLua(entityFile.Split("/")[^1], reader.ReadToEnd(), out Script script);
                     if (table != null)
                     {
                         CreateEntities(entityFile, table, script);
-                    }
-                }
-            }
-        }
-
-        internal static void LoadZip(string modPath)
-        {
-            Logger.Log(nameof(CelesteModLoader), $"Loading mod from .zip {modPath}");
-            using (ZipArchive zip = ZipFile.OpenRead(modPath))
-            {
-                foreach (ZipArchiveEntry langEntry in zip.Entries)
-                {
-                    if (langEntry.FullName.StartsWith("Loenn/lang") && langEntry.FullName.EndsWith(".lang"))
-                    {
-                        using (var stream = langEntry.Open())
-                        {
-                            PluginLoader.LoadLangFile(stream, langEntry.Name, "Loenn");
-                        }
-                    }
-                    if (langEntry.FullName.StartsWith("Graphics/Atlases") && langEntry.FullName.EndsWith(".png"))
-                    {
-                        string key = langEntry.FullName.Substring(0, langEntry.FullName.Length - 4).Substring("Graphics/Atlases".Length + 1);
-                        texturePaths[key] = $"{modPath}{char.ConvertFromUtf32(0)}{langEntry.FullName}";
-                    }
-                }
-                foreach (ZipArchiveEntry entry in zip.Entries)
-                {
-                    if (entry.FullName.StartsWith("Loenn/entities") && entry.FullName.EndsWith(".lua"))
-                    {
-                        using (var stream = entry.Open())
-                        {
-                            using (var streamReader = new StreamReader(stream))
-                            {
-                                Table table = LoadLua(entry.FullName, streamReader.ReadToEnd(), out Script script);
-                                if (table != null)
-                                {
-                                    CreateEntities(entry.FullName, table, script);
-                                }
-                            }
-                        }
                     }
                 }
             }

@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using Edelweiss.Plugins;
 using MoonSharp.Interpreter;
@@ -171,6 +174,18 @@ namespace Edelweiss.Utils
             };
         }
 
+        public static List<PluginAsset> GetPluginAssetsFromDirectory(string directory)
+        {
+            List<PluginAsset> assets = [];
+
+            foreach (string assetDir in Directory.GetDirectories(directory, "*", SearchOption.TopDirectoryOnly))
+                assets.Add(assetDir);
+            foreach (string zipPath in Directory.GetFiles(directory, "*.zip", SearchOption.TopDirectoryOnly))
+                assets.Add(zipPath);
+
+            return assets;
+        }
+
         /// <summary>
         /// Gets the value of the given key from a table, casting it to the desired type and returning the default value if the key is not in the table.
         /// </summary>
@@ -185,5 +200,13 @@ namespace Edelweiss.Utils
                 return defaultValue;
             }
         }
+
+        public static FileStream Stream(this ZipArchive zipArchive)
+        {
+            var field = typeof(ZipArchive).GetField("_archiveStream", BindingFlags.NonPublic | BindingFlags.Instance);
+            return (FileStream)field?.GetValue(zipArchive);
+        }
+
+        public static string Name(this ZipArchive zipArchive) => zipArchive.Stream().Name;
     }
 }

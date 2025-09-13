@@ -27,6 +27,8 @@ namespace Edelweiss.Mapping.Tools
                 cachedMaterials = [];
                 foreach (string material in favourites)
                 {
+                    if (!CelesteModLoader.entities.ContainsKey(material))
+                        continue;
                     if (IsSearched(CelesteModLoader.entities[material].Name))
                         cachedMaterials[material] = "★ " + CelesteModLoader.entities[material].Name;
                 }

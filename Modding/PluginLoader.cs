@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Loader;
 using System.Text.Json.Nodes;
 using Edelweiss.Network;
 using Edelweiss.RegistryTypes;
+using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Plugins
@@ -16,7 +19,7 @@ namespace Edelweiss.Plugins
     /// </summary>
     public static class PluginLoader
     {
-        private static Dictionary<string, string> jsonPaths = [];
+        private static Dictionary<string, PluginFileData> jsonPaths = [];
         private static Dictionary<string, string> jsonCache = [];
         /// <summary>
         /// Dictionary containing language keys to localization dictionary.
@@ -35,26 +38,39 @@ namespace Edelweiss.Plugins
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
 
-
-            foreach (string modDirectory in Directory.GetDirectories(directory, "*", SearchOption.TopDirectoryOnly))
+            foreach (PluginAsset pluginAsset in EdelweissUtils.GetPluginAssetsFromDirectory(directory))
             {
-                if (ValidateModDirectory(modDirectory, out string modFilePath))
+                if (ValidateModDirectory(pluginAsset, out string modFilePath))
                 {
-                    Assembly assembly = Assembly.LoadFile(modFilePath);
+                    Assembly assembly;
+                    // Deflate stream first
+                    using (Stream stream = pluginAsset.GetStream(modFilePath))
+                    {
+                        MemoryStream ms = new();
+                        stream.CopyTo(ms);
+                        ms.Position = 0;
+                        assembly = AssemblyLoadContext.Default.LoadFromStream(ms);
+                    }
                     Plugin plugin = LoadAssembly(assembly);
-                    LoadLangFiles(Directory.GetCurrentDirectory(), plugin.ID);
-                    LoadPythonPlugins(directory);
-                    LoadJsonFiles(directory, plugin.ID);
+                    if (plugin == null)
+                    {
+                        Logger.Error("Edelweiss", $"Assembly {modFilePath} does not define a Plugin class, skipping loading");
+                        continue;
+                    }
+
+                    LoadLangFiles(pluginAsset, plugin.ID);
+                    LoadPythonPlugins(pluginAsset);
+                    LoadJsonFiles(pluginAsset, plugin.ID);
                 }
             }
 
             Registry.ForAll<Plugin>(plugin => plugin.PostLoad());
         }
 
-        private static bool ValidateModDirectory(string modDirectory, out string modFilePath)
+        private static bool ValidateModDirectory(PluginAsset modDirectory, out string modFilePath)
         {
             modFilePath = "";
-            string[] files = Directory.GetFiles(modDirectory, "*.dll");
+            string[] files = modDirectory.GetFiles("*.dll");
             if (files.Length > 0)
             {
                 modFilePath = files[0];
@@ -139,13 +155,13 @@ namespace Edelweiss.Plugins
         /// <summary>
         /// Finds all the python plugins from a given directory and registers them with the frontend.
         /// </summary>
-        public static void LoadPythonPlugins(string directory)
+        public static void LoadPythonPlugins(PluginAsset directory)
         {
-            string pluginDirectory = Path.Join(directory, "PythonPlugins");
-            if (!Directory.Exists(pluginDirectory))
+            string pluginDirectory = "PythonPlugins";
+            if (!directory.DirExists(pluginDirectory))
                 return;
 
-            var files = Directory.GetFiles(pluginDirectory, "*.py", SearchOption.AllDirectories);
+            var files = directory.GetFiles(pluginDirectory, "*.py", SearchOption.AllDirectories);
             if (files.Length == 0)
                 return;
             JToken token = JToken.FromObject(files);
@@ -161,17 +177,17 @@ namespace Edelweiss.Plugins
         /// </summary>
         /// <param name="directory"></param>
         /// <param name="pluginID">The prefix that will be added to the key</param>
-        public static void LoadJsonFiles(string directory, string pluginID)
+        public static void LoadJsonFiles(PluginAsset directory, string pluginID)
         {
-            string jsonDirectory = Path.Join(directory, "Resources", "JSON");
-            if (!Directory.Exists(jsonDirectory))
+            string jsonDirectory = Path.Join("Resources", "JSON");
+            if (!directory.DirExists(jsonDirectory))
                 return;
 
-            foreach (string file in Directory.GetFiles(jsonDirectory, "*.json", SearchOption.AllDirectories))
+            foreach (string file in directory.GetFiles(jsonDirectory, "*.json", SearchOption.AllDirectories))
             {
                 string key = $"{pluginID}:{file.Substring(0, file.Length - 5).Substring(jsonDirectory.Length + 1)}";
                 key = key.Replace(Path.DirectorySeparatorChar, '/');
-                jsonPaths[key] = file;
+                jsonPaths[key] = new(file, directory);
             }
         }
 
@@ -181,15 +197,15 @@ namespace Edelweiss.Plugins
         /// <param name="directory">The directory to load from</param>
         /// <param name="pluginID">The prefix that will be added to the file key</param>
         /// <param name="celesteMod">True if the directory is a Celeste mod, false if it is an Edelweiss plugin</param>
-        public static void LoadLangFiles(string directory, string pluginID, bool celesteMod = false)
+        public static void LoadLangFiles(PluginAsset directory, string pluginID, bool celesteMod = false)
         {
-            string langDirectory = celesteMod ? directory : Path.Join(directory, "Resources", "Localization");
-            if (!Directory.Exists(langDirectory))
+            string langDirectory = celesteMod ? Path.Join("Loenn", "lang") : Path.Join("Resources", "Localization");
+            if (!directory.DirExists(langDirectory))
                 return;
 
-            foreach (string file in Directory.GetFiles(langDirectory, "*.lang", SearchOption.AllDirectories))
+            foreach (string file in directory.GetFiles(langDirectory, "*.lang", SearchOption.AllDirectories))
             {
-                using Stream fileContent = File.OpenRead(file);
+                using Stream fileContent = directory.GetStream(file);
                 LoadLangFile(fileContent, file.Substring(langDirectory.Length + 1), pluginID);
             }
         }
@@ -219,13 +235,13 @@ namespace Edelweiss.Plugins
         /// <returns>An empty JSON object as a string if the key does not exist.</returns>
         public static string RequestJson(string key)
         {
-            if (!jsonPaths.TryGetValue(key, out string jsonPath))
+            if (!jsonPaths.TryGetValue(key, out PluginFileData jsonPath))
                 return "{}";
 
             if (jsonCache.TryGetValue(key, out string json))
                 return json;
 
-            using (StreamReader reader = new(jsonPath))
+            using (StreamReader reader = new(jsonPath.asset.GetStream(jsonPath.filePath)))
             {
                 json = reader.ReadToEnd();
                 jsonCache[key] = json;
@@ -254,5 +270,11 @@ namespace Edelweiss.Plugins
                 }
             }
         }
+    }
+
+    public struct PluginFileData(string filePath, PluginAsset asset)
+    {
+        public string filePath = filePath;
+        public PluginAsset asset = asset;
     }
 }

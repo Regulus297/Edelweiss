@@ -12,6 +12,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Diagnostics\**\*.cs"/>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="MoonSharp" Version="2.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Python.Runtime" Version="2.7.9" />

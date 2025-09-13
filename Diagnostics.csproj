@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RollForward>Major</RollForward>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+    <PublishDir>./Plugins/Diagnostics</PublishDir>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Diagnostics\**\*.cs"/>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MoonSharp" Version="2.0.0">
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3">
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Edelweiss.csproj" Private="false"/>
+    
+  </ItemGroup>
+  <Target Name="CreateOutputPath" BeforeTargets="BeforeBuild">
+    <MakeDir Directories="$(PublishDir)"/>
+  </Target>
+  <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
+    <Message Text="Restoring dotnet tools" Importance="High" />
+    <Exec Command="dotnet tool restore" />
+  </Target>
+  <Target Name="RestoreDotnetTools" AfterTargets="Publish">
+    <ZipPlugin SourceDir="$(PublishDir)" ZipPath="$(PublishDir)..\$(AssemblyName).zip"/>
+  </Target>
+
+   <UsingTask 
+      TaskName="ZipPlugin" 
+      TaskFactory="RoslynCodeTaskFactory"
+      AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <SourceDir ParameterType="System.String" Required="true" />
+      <ZipPath ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO.Compression" />
+      <Using Namespace="System.IO" />
+      <Code Type="Fragment" Language="cs">
+        <![CDATA[
+          string libPath;
+          if(File.Exists(libPath = Path.Combine(SourceDir, "Newtonsoft.Json.dll"))) {
+            File.Delete(libPath);
+          }
+          if(File.Exists(libPath = Path.Combine(SourceDir, "MoonSharp.Interpreter.dll"))) {
+            File.Delete(libPath);
+          }
+          if (File.Exists(ZipPath))
+            File.Delete(ZipPath);
+          ZipFile.CreateFromDirectory(SourceDir, ZipPath);
+          Directory.Delete(SourceDir, true);
+        ]]>
+      </Code>
+    </Task>
+  </UsingTask>
+</Project>

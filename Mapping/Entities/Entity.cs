@@ -129,7 +129,6 @@ namespace Edelweiss.Mapping.Entities
             entityData.Draw(shapes, entityRoom ?? RoomData.Default, this);
 
             item["shapes"] = shapes;
-            string entityName;
             if (entityObject == null)
             {
                 NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()

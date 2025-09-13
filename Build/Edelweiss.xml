@@ -1004,19 +1004,19 @@
             <param name="assembly"></param>
             <returns>The plugin that the assembly defines</returns>
         </member>
-        <member name="M:Edelweiss.Plugins.PluginLoader.LoadPythonPlugins(System.String)">
+        <member name="M:Edelweiss.Plugins.PluginLoader.LoadPythonPlugins(Edelweiss.Utils.PluginAsset)">
             <summary>
             Finds all the python plugins from a given directory and registers them with the frontend.
             </summary>
         </member>
-        <member name="M:Edelweiss.Plugins.PluginLoader.LoadJsonFiles(System.String,System.String)">
+        <member name="M:Edelweiss.Plugins.PluginLoader.LoadJsonFiles(Edelweiss.Utils.PluginAsset,System.String)">
             <summary>
             Loads all the JSON files from a given directory.
             </summary>
             <param name="directory"></param>
             <param name="pluginID">The prefix that will be added to the key</param>
         </member>
-        <member name="M:Edelweiss.Plugins.PluginLoader.LoadLangFiles(System.String,System.String,System.Boolean)">
+        <member name="M:Edelweiss.Plugins.PluginLoader.LoadLangFiles(Edelweiss.Utils.PluginAsset,System.String,System.Boolean)">
             <summary>
             Loads the language files from a given directory.
             </summary>
@@ -1478,6 +1478,11 @@
         <member name="M:Edelweiss.Utils.EdelweissUtils.Distance(System.Drawing.Point,System.Drawing.Point)">
             <summary>
             Returns the Pythagorean distance between two points.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Get``1(MoonSharp.Interpreter.Table,System.String,``0)">
+            <summary>
+            Gets the value of the given key from a table, casting it to the desired type and returning the default value if the key is not in the table.
             </summary>
         </member>
         <member name="T:Edelweiss.Utils.FormLoader">
