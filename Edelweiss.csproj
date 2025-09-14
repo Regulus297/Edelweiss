@@ -8,9 +8,6 @@
     <PublishDir>./Build/</PublishDir>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Diagnostics\**\*.cs" />
   </ItemGroup>

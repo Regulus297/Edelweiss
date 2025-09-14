@@ -117,6 +117,15 @@ namespace Edelweiss.Mapping.Drawables
                 return sprite;
             });
 
+            sprite["setAlpha"] = (Func<double, Table>)((alpha) =>
+            {
+                int a = (int)(alpha * 255);
+                Table color = script.NewColor(sprite.Get("color").Color()).Table;
+                color[4] = DynValue.NewNumber(a);
+                sprite["color"] = color;
+                return sprite;
+            });
+
             sprite["setScale"] = (Func<double, double, Table>)((x, y) =>
             {
                 sprite["scaleX"] = x;

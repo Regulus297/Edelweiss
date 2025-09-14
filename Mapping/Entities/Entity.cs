@@ -95,8 +95,8 @@ namespace Edelweiss.Mapping.Entities
             foreach (Point p in nodes)
             {
                 Table nodeTable = new Table(script);
-                nodeTable["x"] = p.X;
-                nodeTable["y"] = p.Y;
+                nodeTable["x"] = p.X + x;
+                nodeTable["y"] = p.Y + y;
                 nodesTable.Append(DynValue.NewTable(nodeTable));
             }
             table["nodes"] = nodesTable;

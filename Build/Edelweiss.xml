@@ -192,6 +192,11 @@
             
             </summary>
         </member>
+        <member name="F:Edelweiss.Mapping.Drawables.NinePatch.color">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:Edelweiss.Mapping.Drawables.NinePatch.#ctor(MoonSharp.Interpreter.Table)">
             <summary>
             Creates a NinePatch from the given Lua table
@@ -1557,6 +1562,13 @@
             <summary>
             Converts a DynValue into a hex color string in ARGB format
             </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.NewColor(MoonSharp.Interpreter.Script,System.String)">
+            <summary>
+            Returns a table containing the given color
+            </summary>
+            <param name="script">The script the table belongs to</param>
+            <param name="color">The hex code of the color in ARGB format</param>
         </member>
         <member name="M:Edelweiss.Utils.EdelweissUtils.MatchesSignature(MoonSharp.Interpreter.DynValue[],MoonSharp.Interpreter.DataType[])">
             <summary>

@@ -19,6 +19,12 @@ namespace Edelweiss.Loenn.Utils
 
             utils["log"] = (Action<DynValue>)MainPlugin.Instance.Logger.Log;
 
+            utils["getColor"] = (Func<DynValue, DynValue>)(v =>
+            {
+                string color = v.Color();
+                return script.NewColor(color);
+            });
+
             utils["rectangle"] = (Func<double, double, double, double, Table>)((x, y, w, h) =>
             {
                 Table rect = new Table(script);

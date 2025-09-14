@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
@@ -81,8 +82,30 @@ namespace Edelweiss.Utils
                 return hex;
             }
             else if (color.Type == DataType.String)
-                return color.String.StartsWith("#") ? color.String : "#" + color.String;
-            return "#ffffff";
+            {
+                string c = color.String.TrimStart('#');
+                if (c.Length == 3)
+                    return "#ff" + c.Substring(0, 1) + c.Substring(0, 1) + c.Substring(1, 1) + c.Substring(1, 1) + c.Substring(2, 1) + c.Substring(2, 1);
+                if (c.Length == 6)
+                    return "#ff" + c;
+                if (c.Length == 8)
+                    return "#" + c;
+            }
+            return "#ffffffff";
+        }
+
+        /// <summary>
+        /// Returns a table containing the given color
+        /// </summary>
+        /// <param name="script">The script the table belongs to</param>
+        /// <param name="color">The hex code of the color in ARGB format</param>
+        public static DynValue NewColor(this Script script, string color)
+        {
+            int a = int.Parse(color.Substring(1, 2), System.Globalization.NumberStyles.HexNumber);
+            int r = int.Parse(color.Substring(3, 2), System.Globalization.NumberStyles.HexNumber);
+            int g = int.Parse(color.Substring(5, 2), System.Globalization.NumberStyles.HexNumber);
+            int b = int.Parse(color.Substring(7, 2), System.Globalization.NumberStyles.HexNumber);
+            return DynValue.NewTable(script, DynValue.NewNumber(r / 255f), DynValue.NewNumber(g / 255f), DynValue.NewNumber(b / 255f), DynValue.NewNumber(a / 255f));
         }
 
         /// <summary>

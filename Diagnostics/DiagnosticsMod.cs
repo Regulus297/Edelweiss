@@ -7,6 +7,7 @@ using Edelweiss.RegistryTypes;
 using Edelweiss.Utils;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
+using MoonSharp.Interpreter;
 
 namespace Edelweiss.Diagnostics
 {
@@ -15,6 +16,7 @@ namespace Edelweiss.Diagnostics
         public static bool Enabled => (bool)Registry.registry[typeof(PluginSaveablePreference)].GetValue<EnableDiagnosticsPref>().Value;
         public override string ID => "Diagnostics";
         Dictionary<string, long> loadTimes = [];
+        Dictionary<string, int> missingModules = [];
         public override void Load()
         {
             Logger = new Logger(this, "diagnostics.txt");
@@ -56,9 +58,34 @@ namespace Edelweiss.Diagnostics
                     {
                         Logger.Log($"{mod}: {loadTimes[mod]} ms");
                     }
+
+                    Logger.Break();
+                    Logger.Log("Missing Loenn modules arranged by how many entities need them:");
+                    List<string> modules = missingModules.Keys.ToList();
+                    modules.Sort((string x, string y) => missingModules[y] - missingModules[x]);
+                    foreach (string module in modules)
+                    {
+                        Logger.Log($"{module} required by {missingModules[module]} entities");
+                    }
                 }))
                 {
                     orig();
+                }
+            });
+
+            HookManager.AddHook("LoennModule.RequireModule", (Func<Script, string, DynValue> orig, Script script, string mod) =>
+            {
+                try
+                {
+                    return orig(script, mod);
+                }
+                catch (ScriptRuntimeException e)
+                {
+                    string module = e.Message.Trim().Substring("Unrecognized module ".Length);
+                    if (!missingModules.ContainsKey(module))
+                        missingModules[module] = 0;
+                    missingModules[module]++;
+                    throw;
                 }
             });
         }

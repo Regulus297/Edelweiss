@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Utils;
 using MoonSharp.Interpreter;
 
 namespace Edelweiss.Loenn.Structs
@@ -12,12 +14,12 @@ namespace Edelweiss.Loenn.Structs
         {
             Table table = new(script);
 
-            table["fromPoints"] = (Func<Table, string, DynValue, DynValue, DynValue, DynValue>)((points, color, offsetX, offsetY, magnitudeOffset) =>
+            table["fromPoints"] = (Func<Table, DynValue, DynValue, DynValue, DynValue, DynValue>)((points, color, offsetX, offsetY, magnitudeOffset) =>
             {
                 Line line = new()
                 {
                     Points = points,
-                    color = color,
+                    color = color.Color(),
                     offsetX = offsetX.Type == DataType.Number ? (float)offsetX.Number : 0,
                     offsetY = offsetY.Type == DataType.Number ? (float)offsetY.Number : 0,
                     magnitudeOffset = magnitudeOffset.Type == DataType.Number ? (float)magnitudeOffset.Number : 0

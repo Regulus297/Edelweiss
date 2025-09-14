@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Edelweiss.Loenn;
+using Edelweiss.Plugins;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
 
@@ -46,6 +47,11 @@ namespace Edelweiss.Mapping.Drawables
         public int borderLeft = 0, borderRight = 0, borderTop = 0, borderBottom = 0;
 
         /// <summary>
+        /// 
+        /// </summary>
+        public string color;
+
+        /// <summary>
         /// Creates a NinePatch from the given Lua table
         /// </summary>
         public NinePatch(Table table) : this()
@@ -65,7 +71,7 @@ namespace Edelweiss.Mapping.Drawables
             borderRight = (int)table.Get("borderRight").Number;
             borderTop = (int)table.Get("borderTop").Number;
             borderBottom = (int)table.Get("borderBottom").Number;
-
+            color = table.Get("color").Color();
         }
 
         /// <summary>
@@ -234,6 +240,11 @@ namespace Edelweiss.Mapping.Drawables
                 }
             }
 
+            foreach (Sprite sprite in sprites)
+            {
+                sprite.color = color;
+            }
+
             return sprites;
         }
 
@@ -260,6 +271,7 @@ namespace Edelweiss.Mapping.Drawables
             ninePatch["borderRight"] = borderRight;
             ninePatch["borderTop"] = borderTop;
             ninePatch["borderBottom"] = borderBottom;
+            ninePatch["color"] = script.NewColor(DynValue.NewString(color).Color());
 
             ninePatch["getDrawableSprite"] = () =>
             {
@@ -268,9 +280,16 @@ namespace Edelweiss.Mapping.Drawables
                 {
                     sprite.x += x;
                     sprite.y += y;
+                    sprite.color = ninePatch.Get("color").Color();
                     spriteTable.Append(DynValue.NewTable(sprite.ToLuaTable(script)));
                 }
                 return spriteTable;
+            };
+
+            ninePatch["setColor"] = (DynValue color) =>
+            {
+                ninePatch["color"] = color;
+                return ninePatch;
             };
 
             return ninePatch;

@@ -9,9 +9,6 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <EnableDefaultCompileItems>False</EnableDefaultCompileItems>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Diagnostics\**\*.cs" />
   </ItemGroup>

@@ -34,6 +34,7 @@ namespace Edelweiss.Loenn.Structs
                 ninePatch["borderRight"] = options.Get("borderRight").CastToNumber() ?? options.Get("border").CastToNumber() ?? ninePatch["tileWidth"];
                 ninePatch["borderTop"] = options.Get("borderTop").CastToNumber() ?? options.Get("border").CastToNumber() ?? ninePatch["tileHeight"];
                 ninePatch["borderBottom"] = options.Get("borderBottom").CastToNumber() ?? options.Get("border").CastToNumber() ?? ninePatch["tileHeight"];
+                ninePatch["color"] = options.Get("color").Color();
 
                 return new NinePatch(ninePatch).ToLuaTable(script);
             });
