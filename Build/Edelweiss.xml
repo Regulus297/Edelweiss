@@ -505,6 +505,33 @@
             </summary>
             <param name="entity">The entity instance</param>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.NodeTexture(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <summary>
+            The texture of the node, relative to Gameplay/
+            Defaults to returning the value returned by <see cref="M:Edelweiss.Mapping.Entities.EntityData.Texture(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)"/>
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+            <param name="nodeIndex">The 0-based index of the node in the entity</param> 
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.NodeSprite(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <summary>
+            Gets the sprites for the node. Defaults to returning a sprite with the texture key returned by <see cref="M:Edelweiss.Mapping.Entities.EntityData.NodeTexture(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)"/> 
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+            <param name="nodeIndex">The 0-based index of the node in the entity</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.NodeDraw(Newtonsoft.Json.Linq.JArray,Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <summary>
+            Draws the node onto the shapes array.
+            Defaults to drawing the sprites returned by <see cref="M:Edelweiss.Mapping.Entities.EntityData.NodeSprite(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)"/> onto the array.
+            </summary>
+            <param name="shapes">The list of shapes the entity will be drawn to</param>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+            <param name="nodeIndex">The 0-based index of the node in the entity</param>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.EntityData.GetPlacementData">
             <summary>
             Gets the fields of the entity from the placement
@@ -565,6 +592,15 @@
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.NodeLineRenderType(Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.NodeTexture(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.NodeSprite(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.NodeDraw(Newtonsoft.Json.Linq.JArray,Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.GetPlacementData">

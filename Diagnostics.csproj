@@ -22,7 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Edelweiss.csproj" Private="false" />
-    
   </ItemGroup>
   <Target Name="CreateOutputPath" BeforeTargets="BeforeBuild">
     <MakeDir Directories="$(PublishDir)" />

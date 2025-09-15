@@ -37,8 +37,7 @@ namespace Edelweiss.Mapping.Drawables
             thickness = (float)table.Get<double>("thickness", 1f) * LoveModule.PEN_THICKNESS;
             offsetX = (float)table.Get<double>("offsetX");
             offsetY = (float)table.Get<double>("offsetY");
-            Logger.Warn("E", offsetY);
-            magnitudeOffset = table.Get<float>("magnitudeOffset");
+            magnitudeOffset = (float)table.Get<double>("magnitudeOffset");
         }
 
         /// <inheritdoc/>

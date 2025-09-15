@@ -135,6 +135,49 @@ namespace Edelweiss.Mapping.Entities
         {
             return "none";
         }
+        
+        /// <summary>
+        /// The texture of the node, relative to Gameplay/
+        /// Defaults to returning the value returned by <see cref="Texture"/>
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        /// <param name="nodeIndex">The 0-based index of the node in the entity</param> 
+        public virtual string NodeTexture(RoomData room, Entity entity, int nodeIndex)
+        {
+            return Texture(room, entity);
+        }
+
+        /// <summary>
+        /// Gets the sprites for the node. Defaults to returning a sprite with the texture key returned by <see cref="NodeTexture"/> 
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        /// <param name="nodeIndex">The 0-based index of the node in the entity</param>
+        public virtual List<Drawable> NodeSprite(RoomData room, Entity entity, int nodeIndex)
+        {
+            return [new Sprite(NodeTexture(room, entity, nodeIndex)) {
+                justificationX = Justification(room, entity)[0],
+                justificationY = Justification(room, entity)[1],
+                x = entity.x,
+                y = entity.y
+            }];
+        }
+
+        /// <summary>
+        /// Draws the node onto the shapes array.
+        /// Defaults to drawing the sprites returned by <see cref="NodeSprite"/> onto the array.
+        /// </summary>
+        /// <param name="shapes">The list of shapes the entity will be drawn to</param>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        /// <param name="nodeIndex">The 0-based index of the node in the entity</param>
+        public virtual void NodeDraw(JArray shapes, RoomData room, Entity entity, int nodeIndex)
+        {
+            using var dest = new SpriteDestination(shapes, entity.x, entity.y);
+            foreach (var sprite in NodeSprite(room, entity, nodeIndex))
+                sprite.Draw();
+        }
 
         /// <summary>
         /// Gets the fields of the entity from the placement

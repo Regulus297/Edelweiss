@@ -221,6 +221,74 @@ namespace Edelweiss.Mapping.Entities
         }
 
         /// <inheritdoc/>
+        public override string NodeTexture(RoomData room, Entity entity, int nodeIndex)
+        {
+            DynValue textureMethod = entityTable.Get("nodeTexture");
+            if (textureMethod.IsNil())
+            {
+                return base.NodeTexture(room, entity, nodeIndex);
+            }
+            if (textureMethod.Type == DataType.String)
+            {
+                return textureMethod.String;
+            }
+            var p = entity.nodes[nodeIndex];
+            return script.Call(textureMethod, room.ToLuaTable(script), entity.ToLuaTable(script), new Table(script, DynValue.NewNumber(p.X + entity.x), DynValue.NewNumber(p.Y + entity.y)), nodeIndex, new Table(script)).String;
+        }
+
+        /// <inheritdoc/>
+        public override List<Drawable> NodeSprite(RoomData room, Entity entity, int nodeIndex)
+        {
+            DynValue spriteMethod = entityTable.Get("nodeSprite");
+            // If sprite method is defined but no node texture, use that
+            if (!entityTable.Get("sprite").IsNil() && entityTable.Get("nodeTexture").IsNil())
+                return Sprite(room, entity);
+
+            if (spriteMethod.IsNil())
+                return base.NodeSprite(room, entity, nodeIndex);
+            var p = entity.nodes[nodeIndex];
+            DynValue sprite = script.Call(spriteMethod, room.ToLuaTable(script), entity.ToLuaTable(script), new Table(script, DynValue.NewNumber(p.X + entity.x), DynValue.NewNumber(p.Y + entity.y)), nodeIndex, new Table(script));
+            if (sprite.IsNil())
+                return [];
+            if (sprite.Table.Get("_type").IsNil())
+            {
+                List<Drawable> output = [];
+                // It's a list
+                foreach (var table in sprite.Table.Values)
+                    output.Add(Drawable.FromTable(table.Table));
+                return output;
+            }
+            // It's one sprite
+            return [Drawable.FromTable(sprite.Table)];
+        }
+
+        /// <inheritdoc/>
+        public override void NodeDraw(JArray shapes, RoomData room, Entity entity, int nodeIndex)
+        {
+            try
+            {
+                DynValue drawMethod = entityTable.Get("nodeDraw");
+                if (drawMethod.IsNil())
+                {
+                    base.NodeDraw(shapes, room, entity, nodeIndex);
+                }
+                else
+                {
+                    using var dest = new SpriteDestination(shapes, entity.x, entity.y);
+                    script.Call(drawMethod, room.ToLuaTable(script), entity.ToLuaTable(script), new Table(script));
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error("LuaEntity", $"Error while drawing node for entity {Name}: \n {e.Formatted()}");
+
+                // If everything fails, draw the rectangle
+                using var dest = new SpriteDestination(shapes, entity.x, entity.y);
+                Rectangle(room, entity).Draw();
+            }
+        }
+
+        /// <inheritdoc/>
         public override Dictionary<string, object> GetPlacementData()
         {
             try

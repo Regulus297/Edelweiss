@@ -21,4 +21,21 @@
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />
   </Target>
+
+  <Target Name="PrepRelease" AfterTargets="Publish" Condition="'$(Configuration)' == 'Release'">
+    <RemoveDir Directories="Release"/>
+    <MakeDir Directories="$(ProjectDir)Release" />
+    <Exec WorkingDirectory="$(ProjectDir)" Command="Tools\ProjectCompressor.exe $(ProjectDir) Release\Edelweiss.dll &quot;obj/.+ bin/.+ UI/.+ \..+/.+&quot; &quot;zip dll json lua py qss lang&quot;"/>
+  </Target>
+  <Target Name="BuildPython" AfterTargets="Publish" Condition="'$(Configuration)' == 'Release'">
+    <PropertyGroup>
+      <PythonPath>$(ProjectDir)\UI\.venv\Scripts\python.exe</PythonPath>
+    </PropertyGroup>
+    <Exec Command="$(PythonPath) -m PyInstaller --onefile &quot;$(ProjectDir)UI\main.py&quot;"/>
+    <RemoveDir Directories="Build\main"/>
+    <Delete Files="main.spec"/>
+    <Copy SourceFiles="dist\main.exe" DestinationFolder="Release\"/>
+    <Copy SourceFiles="Tools\ProjectDecompressor.exe" DestinationFolder="Release\"/>
+    <RemoveDir Directories="dist"/>
+  </Target>
 </Project>

@@ -200,7 +200,7 @@ namespace Edelweiss.Mapping.Entities
 
                 using (new SpriteDestination(null, -point.X, -point.Y))
                 {
-                    entityData.Draw(nodeShapes, entityRoom, this);
+                    entityData.NodeDraw(nodeShapes, entityRoom, this, i - 1);
                 }
 
                 NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
