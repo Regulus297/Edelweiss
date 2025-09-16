@@ -84,6 +84,12 @@
             <exception cref="T:System.Collections.Generic.KeyNotFoundException">Thrown if the _type in the table is not a defined Drawable.</exception>
             <exception cref="T:System.MissingMethodException">Thrown if the found Drawable type does not have a constructor accepting a table.</exception>
         </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Drawable.ToLuaTable(MoonSharp.Interpreter.Script)">
+            <summary>
+            Converts the drawable to a table
+            </summary>
+            <param name="script">The script the table should belong to</param>
+        </member>
         <member name="T:Edelweiss.Mapping.Drawables.Line">
             <summary>
             A class that represents a drawable line
@@ -410,6 +416,13 @@
             Converts the entity to a Lua table compatible with Loenn
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.PointToTable(System.Drawing.Point,MoonSharp.Interpreter.Script)">
+            <summary>
+            Converts a point in local space to global space and then converts it to a table
+            </summary>
+            <param name="point"></param>
+            <param name="script">The script the table should belong to</param>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.Entity.Draw(System.Single,System.String,System.Int32)">
             <summary>
             Draws the entity to the frontend
@@ -426,6 +439,11 @@
         <member name="P:Edelweiss.Mapping.Entities.EntityData.Name">
             <summary>
             The name of the entity
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.EntityData.DisplayName">
+            <summary>
+            The name of the entity as displayed in Edelweiss
             </summary>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.EntityData.Texture(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
@@ -500,8 +518,6 @@
             line: nodes are connected to the previous node <br/>
             fan: all nodes are connected directly to the main entity <br/>
             circle: nodes draw a circle around the main entity. <br/>
-            In Edelweiss, circle supports multiple nodes, not just one. Each will draw a circle around the entity. <br/>
-            Defaults to none.
             </summary>
             <param name="entity">The entity instance</param>
         </member>
@@ -532,6 +548,29 @@
             <param name="entity">The entity instance</param>
             <param name="nodeIndex">The 0-based index of the node in the entity</param>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.CanResize(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            A pair of booleans determining whether the entity can be resized horizontally and vertically respectively.
+            Each boolean defaults to true if the placement contains a definition for that axis and false if not
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.SizeBounds(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            The minimum and maximum sizes an entity can have. Returns an array with the minimum width, minimum height, maximum width and maximum height.
+            Defaults to [1, 1, int.MaxValue, int.MaxValue]
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.NodeVisibility(Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            Determines when the entity's nodes should be rendered.
+            Defaults to <see cref="F:Edelweiss.Mapping.Entities.Visibility.Selected"/>
+            </summary>
+            <param name="entity">The entity instance</param>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.EntityData.GetPlacementData">
             <summary>
             Gets the fields of the entity from the placement
@@ -543,6 +582,51 @@
             </summary>
             <param name="room">The room the entity is in</param>
             <param name="entity">The entity instance</param>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.NodeLineRenderType">
+            <summary>
+            Determines how nodes are connected to the main entity
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.NodeLineRenderType.None">
+            <summary>
+            Nodes are not connected to the main entity
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.NodeLineRenderType.Line">
+            <summary>
+            Nodes are connected to the previous node in the chain
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.NodeLineRenderType.Fan">
+            <summary>
+            All nodes are connected directly to the main entity
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.NodeLineRenderType.Circle">
+            <summary>
+            Nodes draw a circle around the main entity.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.Visibility">
+            <summary>
+            Enum containing options for the visibility of an object
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.Visibility.Never">
+            <summary>
+            Never visible
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.Visibility.Selected">
+            <summary>
+            Only visible when the object is selected
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.Visibility.Always">
+            <summary>
+            Always visible
+            </summary>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.LuaEntityData">
             <summary>
@@ -565,6 +649,9 @@
             <param name="entityTable">The table containing all entity data</param>
         </member>
         <member name="P:Edelweiss.Mapping.Entities.LuaEntityData.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.LuaEntityData.DisplayName">
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Texture(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
@@ -594,6 +681,9 @@
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.NodeLineRenderType(Edelweiss.Mapping.Entities.Entity)">
             <inheritdoc/>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.NodeVisibility(Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.NodeTexture(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
             <inheritdoc/>
         </member>
@@ -601,6 +691,12 @@
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.NodeDraw(Newtonsoft.Json.Linq.JArray,Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.CanResize(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.SizeBounds(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.GetPlacementData">
@@ -991,6 +1087,31 @@
             A class that logs messages
             </summary>
             <param name="plugin">The plugin this logger belongs to</param>
+        </member>
+        <member name="E:Edelweiss.Plugins.Logger.OnLog">
+            <summary>
+            Called when the corresponding Logger method is called
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Plugins.Logger.OnDebug">
+            <summary>
+            Called when the corresponding Logger method is called
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Plugins.Logger.OnWarn">
+            <summary>
+            Called when the corresponding Logger method is called
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Plugins.Logger.OnError">
+            <summary>
+            Called when the corresponding Logger method is called
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Plugins.Logger.OnWrite">
+            <summary>
+            Called when the corresponding Logger method is called
+            </summary>
         </member>
         <member name="M:Edelweiss.Plugins.Logger.#ctor(Edelweiss.Plugins.Plugin,System.String)">
             <summary>
@@ -1540,6 +1661,11 @@
             Called after all mods are loaded on the background thread
             </summary>
         </member>
+        <member name="F:Edelweiss.Utils.CelesteModLoader.entities">
+            <summary>
+            The list of all loaded entities
+            </summary>
+        </member>
         <member name="M:Edelweiss.Utils.CelesteModLoader.GetTextureData(System.String)">
             <summary>
             Returns the data for the texture for a given key
@@ -1655,6 +1781,11 @@
             Gets the value of the given key from a table, casting it to the desired type and returning the default value if the key is not in the table.
             </summary>
         </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Get``1(MoonSharp.Interpreter.Table,System.Int32,``0)">
+            <summary>
+            Gets the value of the given index from a table, casting it to the desired type and returning the default value if the index is not in the table.
+            </summary>
+        </member>
         <member name="M:Edelweiss.Utils.EdelweissUtils.Stream(System.IO.Compression.ZipArchive)">
             <summary>
             Exposes the private stream of a given zip archive
@@ -1663,6 +1794,11 @@
         <member name="M:Edelweiss.Utils.EdelweissUtils.Path(System.IO.Compression.ZipArchive)">
             <summary>
             Returns the path to a given zip archive
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.ToLuaTable(System.Drawing.Point,MoonSharp.Interpreter.Script)">
+            <summary>
+            Converts a point to a Lua table
             </summary>
         </member>
         <member name="T:Edelweiss.Utils.FormLoader">

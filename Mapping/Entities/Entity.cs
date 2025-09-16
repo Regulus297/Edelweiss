@@ -5,6 +5,7 @@ using System.Linq;
 using Edelweiss.Loenn;
 using Edelweiss.Mapping.Drawables;
 using Edelweiss.Network;
+using Edelweiss.Plugins;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
 using Newtonsoft.Json.Linq;
@@ -46,7 +47,8 @@ namespace Edelweiss.Mapping.Entities
         /// 
         /// </summary>
         public int x = 0, y = 0, width = 0, height = 0;
-        EntityData entityData;
+
+        internal EntityData entityData;
         RoomData entityRoom;
 
         /// <summary>
@@ -76,6 +78,17 @@ namespace Edelweiss.Mapping.Entities
             return created;
         }
 
+        public void Resize(int width, int height)
+        {
+            List<int> bounds = entityData.SizeBounds(entityRoom ?? RoomData.Default, this);
+            width = Math.Clamp(width, bounds[0], bounds[2]);
+            height = Math.Clamp(height, bounds[1], bounds[3]);
+            this.width = width;
+            this.height = height;
+            data["width"] = width;
+            data["height"] = height;
+        }
+
         /// <summary>
         /// Converts the entity to a Lua table compatible with Loenn
         /// </summary>
@@ -85,6 +98,10 @@ namespace Edelweiss.Mapping.Entities
             table["_name"] = _name;
             table["_id"] = _id;
             table["_type"] = _type;
+            foreach (var d in data)
+            {
+                table[d.Key] = DynValue.FromObject(script, d.Value);
+            }
 
             table["x"] = x;
             table["y"] = y;
@@ -94,17 +111,20 @@ namespace Edelweiss.Mapping.Entities
             Table nodesTable = new Table(script);
             foreach (Point p in nodes)
             {
-                Table nodeTable = new Table(script);
-                nodeTable["x"] = p.X + x;
-                nodeTable["y"] = p.Y + y;
-                nodesTable.Append(DynValue.NewTable(nodeTable));
+                nodesTable.Append(DynValue.NewTable(PointToTable(p, script)));
             }
             table["nodes"] = nodesTable;
-            foreach (var d in data)
-            {
-                table[d.Key] = DynValue.FromObject(script, d.Value);
-            }
             return table;
+        }
+        
+        /// <summary>
+        /// Converts a point in local space to global space and then converts it to a table
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="script">The script the table should belong to</param>
+        public Table PointToTable(Point point, Script script)
+        {
+            return new Point(point.X + x, point.Y + y).ToLuaTable(script);
         }
 
         /// <summary>
@@ -151,15 +171,18 @@ namespace Edelweiss.Mapping.Entities
                 });
             }
 
+            if (entityData.NodeVisibility(this) == Visibility.Never)
+                return;
+
             int i = 0;
-            string nodeLineRenderType = entityData.NodeLineRenderType(this);
+            NodeLineRenderType nodeLineRenderType = entityData.NodeLineRenderType(this);
             foreach (Point point in nodes)
             {
                 JArray nodeShapes = new()
                 {
                 };
 
-                if (nodeLineRenderType == "fan")
+                if (nodeLineRenderType == NodeLineRenderType.Fan)
                 {
                     nodeShapes.Add(new JObject() {
                         {"type", "line"},
@@ -171,7 +194,7 @@ namespace Edelweiss.Mapping.Entities
                         {"thickness", LoveModule.PEN_THICKNESS}
                     });
                 }
-                else if (nodeLineRenderType == "line")
+                else if (nodeLineRenderType == NodeLineRenderType.Line)
                 {
                     string previous = i == 0 ? entityObject : $"{entityObject}/{entityObject}_node{i - 1}";
                     nodeShapes.Add(new JObject() {
@@ -184,7 +207,7 @@ namespace Edelweiss.Mapping.Entities
                         {"thickness", LoveModule.PEN_THICKNESS}
                     });
                 }
-                else if (nodeLineRenderType == "circle")
+                else if (nodeLineRenderType == NodeLineRenderType.Circle)
                 {
                     nodeShapes.Add(new JObject() {
                         {"type", "circle"},

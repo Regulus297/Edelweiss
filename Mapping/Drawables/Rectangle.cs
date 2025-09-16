@@ -74,22 +74,22 @@ namespace Edelweiss.Mapping.Drawables
         /// <summary>
         /// Converts the Rectangle to a Lua table.
         /// </summary>
-        public Table ToLuaTable(Script script)
+        public override Table ToLuaTable(Script script)
         {
-            Table rectangle = new(script);
+            Table rectangle = base.ToLuaTable(script);
 
             rectangle["x"] = x;
             rectangle["y"] = y;
             rectangle["width"] = width;
             rectangle["height"] = height;
-            rectangle["color"] = color;
-            rectangle["secondaryColor"] = borderColor;
+            rectangle["color"] = script.NewColor(color);
+            rectangle["secondaryColor"] = script.NewColor(borderColor);
             rectangle["mode"] = mode;
             rectangle["_type"] = Name;
 
             rectangle["setColor"] = (Func<DynValue, Table>)((color) =>
             {
-                rectangle["color"] = color;
+                rectangle["color"] = script.NewColor(color.Color());
                 return rectangle;
             });
 

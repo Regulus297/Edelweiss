@@ -37,6 +37,5 @@ class ModifyItemShapeReceiver(PacketReceiver):
                 gItem.addShape(shape)
             gItem.refresh({})
         elif data["action"] == "clear":
-            for child in gItem.childItems():
-                gItem.scene().removeItem(child)
-                del child
+            gItem.shapes.clear()
+            gItem.shapeRenderers.clear()

@@ -15,6 +15,11 @@ namespace Edelweiss.Plugins
         static ReaderWriterLockSlim readWriteLock = new ReaderWriterLockSlim();
         string filePath = null;
 
+        /// <summary>
+        /// Called when the corresponding Logger method is called
+        /// </summary>
+        public static event Action<string, object> OnLog, OnDebug, OnWarn, OnError, OnWrite;
+
         static Logger()
         {
             File.Open("log.txt", FileMode.Create).Close();
@@ -35,6 +40,22 @@ namespace Edelweiss.Plugins
 
         private static void Write(string id, string type, object message, string filePath = null)
         {
+            switch (id)
+            {
+                case "Log":
+                    OnLog?.Invoke(id, message);
+                    break;
+                case "Debug":
+                    OnDebug?.Invoke(id, message);
+                    break;
+                case "Warn":
+                    OnWarn?.Invoke(id, message);
+                    break;
+                case "Error":
+                    OnError?.Invoke(id, message);
+                    break;
+            }
+            OnWrite?.Invoke(id, message);
             WriteThreadSafe($"({DateTime.Now}) [{id}] [{type}] {message}", filePath);
         }
 

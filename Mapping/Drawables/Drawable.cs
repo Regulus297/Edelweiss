@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Edelweiss.Loenn;
 using Edelweiss.Plugins;
 using Edelweiss.RegistryTypes;
 using MoonSharp.Interpreter;
@@ -12,7 +13,7 @@ namespace Edelweiss.Mapping.Drawables
     /// All inheriting objects must define a parameterless constructor and a constructor accepting a table.
     /// </summary>
     [BaseRegistryObject()]
-    public abstract class Drawable : PluginRegistryObject
+    public abstract class Drawable : PluginRegistryObject, ILuaConvertible
     {
         private static Dictionary<string, Type> drawables = [];
         /// <summary>
@@ -43,6 +44,20 @@ namespace Edelweiss.Mapping.Drawables
                 throw new MissingMethodException($"Drawable type '{drawableType}' does not define a constructor that accepts a table.");
 
             return (Drawable)constructor.Invoke([table]);
+        }
+
+        /// <summary>
+        /// Converts the drawable to a table
+        /// </summary>
+        /// <param name="script">The script the table should belong to</param>
+        public virtual Table ToLuaTable(Script script)
+        {
+            Table table = new(script);
+            table["draw"] = () =>
+            {
+                FromTable(table).Draw();
+            };
+            return table;
         }
     }
 }

@@ -251,9 +251,9 @@ namespace Edelweiss.Mapping.Drawables
         /// <summary>
         /// Converts the NinePatch to a Lua table.
         /// </summary>
-        public Table ToLuaTable(Script script)
+        public override Table ToLuaTable(Script script)
         {
-            Table ninePatch = new(script);
+            Table ninePatch = base.ToLuaTable(script);
 
             ninePatch["_type"] = Name;
             ninePatch["texture"] = texture;

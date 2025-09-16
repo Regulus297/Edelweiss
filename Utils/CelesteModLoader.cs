@@ -36,7 +36,10 @@ namespace Edelweiss.Utils
         public static event Action PostLoadMods;
 
 
-        internal static ConcurrentDictionary<string, EntityData> entities = [];
+        /// <summary>
+        /// The list of all loaded entities
+        /// </summary>
+        public static ConcurrentDictionary<string, EntityData> entities = [];
         internal static bool LoadTexturesFromDirectory(PluginAsset path)
         {
             string graphicsPath = Path.Join("Graphics", "Atlases");
@@ -95,6 +98,19 @@ namespace Edelweiss.Utils
             try
             {
                 tempScript.Globals["require"] = (Func<string, DynValue>)(module => LoennModule.RequireModule(tempScript, module));
+
+                tempScript.DoString(@"
+                function string:split(sep)
+                    local result = {}
+                    local pattern = string.format('([^%s]+)', sep)
+                    for part in self:gmatch(pattern) do
+                        table.insert(result, part)
+                    end
+                    return result
+                end
+                ");
+
+
                 foreach (var pair in LoennModule.globalModules)
                 {
                     tempScript.Globals[pair.Key] = pair.Value(tempScript);

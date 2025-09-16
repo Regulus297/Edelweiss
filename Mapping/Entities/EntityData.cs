@@ -16,6 +16,11 @@ namespace Edelweiss.Mapping.Entities
         public abstract string Name { get; }
 
         /// <summary>
+        /// The name of the entity as displayed in Edelweiss
+        /// </summary>
+        public virtual string DisplayName => Name;
+
+        /// <summary>
         /// The texture key of the entity, relative to Gameplay/
         /// </summary>
         /// <param name="room">The room the entity is in</param>
@@ -127,15 +132,13 @@ namespace Edelweiss.Mapping.Entities
         /// line: nodes are connected to the previous node <br/>
         /// fan: all nodes are connected directly to the main entity <br/>
         /// circle: nodes draw a circle around the main entity. <br/>
-        /// In Edelweiss, circle supports multiple nodes, not just one. Each will draw a circle around the entity. <br/>
-        /// Defaults to none.
         /// </summary>
         /// <param name="entity">The entity instance</param>
-        public virtual string NodeLineRenderType(Entity entity)
+        public virtual NodeLineRenderType NodeLineRenderType(Entity entity)
         {
-            return "none";
+            return Entities.NodeLineRenderType.None;
         }
-        
+
         /// <summary>
         /// The texture of the node, relative to Gameplay/
         /// Defaults to returning the value returned by <see cref="Texture"/>
@@ -180,6 +183,38 @@ namespace Edelweiss.Mapping.Entities
         }
 
         /// <summary>
+        /// A pair of booleans determining whether the entity can be resized horizontally and vertically respectively.
+        /// Each boolean defaults to true if the placement contains a definition for that axis and false if not
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        public virtual List<bool> CanResize(RoomData room, Entity entity)
+        {
+            return [GetPlacementData().ContainsKey("width"), GetPlacementData().ContainsKey("height")];
+        }
+
+        /// <summary>
+        /// The minimum and maximum sizes an entity can have. Returns an array with the minimum width, minimum height, maximum width and maximum height.
+        /// Defaults to [1, 1, int.MaxValue, int.MaxValue]
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        public virtual List<int> SizeBounds(RoomData room, Entity entity)
+        {
+            return [1, 1, int.MaxValue, int.MaxValue];
+        }
+
+        /// <summary>
+        /// Determines when the entity's nodes should be rendered.
+        /// Defaults to <see cref="Visibility.Selected"/>
+        /// </summary>
+        /// <param name="entity">The entity instance</param>
+        public virtual Visibility NodeVisibility(Entity entity)
+        {
+            return Visibility.Selected;
+        }
+
+        /// <summary>
         /// Gets the fields of the entity from the placement
         /// </summary>
         public virtual Dictionary<string, object> GetPlacementData()
@@ -196,5 +231,52 @@ namespace Edelweiss.Mapping.Entities
         {
             return [0.5f, 0.5f];
         }
+    }
+
+    /// <summary>
+    /// Determines how nodes are connected to the main entity
+    /// </summary>
+    public enum NodeLineRenderType
+    {
+        /// <summary>
+        /// Nodes are not connected to the main entity
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Nodes are connected to the previous node in the chain
+        /// </summary>
+        Line,
+
+        /// <summary>
+        /// All nodes are connected directly to the main entity
+        /// </summary>
+        Fan,
+
+        /// <summary>
+        /// Nodes draw a circle around the main entity.
+        /// </summary>
+        Circle
+    }
+
+    /// <summary>
+    /// Enum containing options for the visibility of an object
+    /// </summary>
+    public enum Visibility
+    {
+        /// <summary>
+        /// Never visible
+        /// </summary>
+        Never,
+
+        /// <summary>
+        /// Only visible when the object is selected
+        /// </summary>
+        Selected,
+
+        /// <summary>
+        /// Always visible
+        /// </summary>
+        Always
     }
 }

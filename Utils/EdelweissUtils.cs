@@ -244,6 +244,21 @@ namespace Edelweiss.Utils
         }
 
         /// <summary>
+        /// Gets the value of the given index from a table, casting it to the desired type and returning the default value if the index is not in the table.
+        /// </summary>
+        public static T Get<T>(this Table table, int key, T defaultValue = default)
+        {
+            try
+            {
+                return (T)table.Get(key)?.Value() ?? defaultValue;
+            }
+            catch (InvalidCastException)
+            {
+                return defaultValue;
+            }
+        }
+
+        /// <summary>
         /// Exposes the private stream of a given zip archive
         /// </summary>
         public static FileStream Stream(this ZipArchive zipArchive)
@@ -256,5 +271,16 @@ namespace Edelweiss.Utils
         /// Returns the path to a given zip archive
         /// </summary>
         public static string Path(this ZipArchive zipArchive) => zipArchive.Stream().Name;
+
+        /// <summary>
+        /// Converts a point to a Lua table
+        /// </summary>
+        public static Table ToLuaTable(this Point p, Script script)
+        {
+            Table table = new Table(script);
+            table["x"] = p.X;
+            table["y"] = p.Y;
+            return table;
+        }
     }
 }

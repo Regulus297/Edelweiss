@@ -73,9 +73,9 @@ namespace Edelweiss.Mapping.Drawables
         /// <summary>
         /// Converts the sprite to a Lua table that is compatible with Loenn
         /// </summary>
-        public Table ToLuaTable(Script script)
+        public override Table ToLuaTable(Script script)
         {
-            Table sprite = new(script);
+            Table sprite = base.ToLuaTable(script);
 
             sprite["texture"] = texture;
 
@@ -158,9 +158,11 @@ namespace Edelweiss.Mapping.Drawables
                 return sprite;
             });
 
-            sprite["draw"] = () =>
+            sprite["setOffset"] = (double x, double y) =>
             {
-                new Sprite(sprite).Draw();
+                sprite["offsetX"] = x;
+                sprite["offsetY"] = y;
+                return sprite;
             };
 
             Table mt = new(script);

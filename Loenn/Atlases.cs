@@ -16,6 +16,12 @@ namespace Edelweiss.Loenn
             Table meta = new(script);
             table.MetaTable = meta;
 
+            table["getResource"] = (string tex, string atlasKey) =>
+            {
+                DynValue atlas = script.Call(meta["__index"], table, atlasKey.ToLower());
+                return script.Call(atlas.Table.MetaTable["__index"], atlas.Table, tex);
+            };
+
             meta["__index"] = (Func<Table, string, DynValue>)((t, key) =>
             {
                 if (key == "gameplay")

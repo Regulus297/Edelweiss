@@ -9,6 +9,7 @@ using Edelweiss.Utils;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using MoonSharp.Interpreter;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Diagnostics
 {
@@ -18,9 +19,19 @@ namespace Edelweiss.Diagnostics
         public override string ID => "Diagnostics";
         Dictionary<string, long> loadTimes = [];
         Dictionary<string, int> missingModules = [];
+        static bool testingEntities = false;
+        static int failedEntities = 0;
         public override void Load()
         {
             Logger = new Logger(this, "diagnostics.txt");
+            Logger.OnWrite += (id, msg) =>
+            {
+                if (testingEntities && id != ID)
+                {
+                    Logger.Error("FAILED!");
+                    failedEntities++;
+                }
+            };
             HookManager.AddHook("CelesteModLoader.LoadMod", (Action<PluginAsset> orig, PluginAsset asset) =>
             {
                 if (!Enabled)
@@ -72,6 +83,7 @@ namespace Edelweiss.Diagnostics
                 {
                     orig();
                 }
+                TestEntities();
             });
 
             HookManager.AddHook("LoennModule.RequireModule", (Func<Script, string, DynValue> orig, Script script, string mod) =>
@@ -89,6 +101,20 @@ namespace Edelweiss.Diagnostics
                     throw;
                 }
             });
+        }
+
+        private void TestEntities()
+        {
+            testingEntities = true;
+            Logger.Log("Testing all entities");
+            foreach (var item in CelesteModLoader.entities)
+            {
+                Logger.Log($"Drawing {item.Key}:");
+                Entity.DefaultFromData(item.Value, RoomData.Default).Draw(0.5f, "emptyObject", 0);
+            }
+            Logger.Break();
+            Logger.Log($"Tested all entities, {failedEntities}/{CelesteModLoader.entities.Count} failed");
+            testingEntities = false;
         }
     }
 }

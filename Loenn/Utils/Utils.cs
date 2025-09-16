@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Edelweiss.Plugins;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
 
@@ -35,6 +37,27 @@ namespace Edelweiss.Loenn.Utils
                 rect["height"] = Math.Abs(h);
                 return rect;
             });
+
+            // Does nothing yet
+            utils["setSimpleCoordinateSeed"] = (DynValue x) =>
+            {
+
+            };
+
+            utils["parseHexColor"] = (DynValue color) =>
+            {
+                string col = color.Color();
+                bool alpha = color.String.TrimStart('#').Length == 8;
+                Table converted = script.NewColor(col).Table;
+                DynValue[] output = new DynValue[alpha? 5: 4];
+                output[0] = DynValue.True;
+                output[1] = converted.Get(1);
+                output[2] = converted.Get(2);
+                output[3] = converted.Get(3);
+                if (alpha)
+                    output[4] = converted.Get(4);
+                return DynValue.NewTuple(output);
+            };
 
             return utils;
         }

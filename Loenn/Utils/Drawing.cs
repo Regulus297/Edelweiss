@@ -34,6 +34,13 @@ namespace Edelweiss.Loenn.Utils
                 return result;
             });
 
+            table["callKeepOriginalColor"] = (DynValue callback) =>
+            {
+                string color = LoveModule.color;
+                script.Call(callback);
+                LoveModule.color = color;
+            };
+
             return table;
         }
         

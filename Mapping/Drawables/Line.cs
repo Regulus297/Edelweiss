@@ -12,7 +12,7 @@ namespace Edelweiss.Mapping.Drawables
     /// <summary>
     /// A class that represents a drawable line
     /// </summary>
-    public class Line() : Drawable, ILuaConvertible
+    public class Line() : Drawable
     {
         internal List<float> points = [];
         internal Table Points
@@ -64,13 +64,13 @@ namespace Edelweiss.Mapping.Drawables
         /// <summary>
         /// Converts the line to a Lua table
         /// </summary>
-        public Table ToLuaTable(Script script)
+        public override Table ToLuaTable(Script script)
         {
-            Table line = new(script);
+            Table line = base.ToLuaTable(script);
 
             line["_type"] = Name;
             line["points"] = new Table(script, points.Select(t => DynValue.NewNumber(t)).ToArray());
-            line["color"] = color;
+            line["color"] = script.NewColor(color);
             line["thickness"] = thickness;
             line["offsetX"] = offsetX;
             line["offsetY"] = offsetY;
@@ -85,6 +85,12 @@ namespace Edelweiss.Mapping.Drawables
             {
                 line["offsetX"] = x;
                 line["offsetY"] = y;
+                return line;
+            };
+
+            line["setColor"] = (DynValue color) =>
+            {
+                line["color"] = color;
                 return line;
             };
 
