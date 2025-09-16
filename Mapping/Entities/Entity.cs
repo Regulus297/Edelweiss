@@ -72,12 +72,15 @@ namespace Edelweiss.Mapping.Entities
 
             for (int i = 0; i < entityData.NodeLimits(room, created)[0]; i++)
             {
-                created.nodes.Add(new Point((i+1) * 32, 0));
+                created.nodes.Add(new Point((i + 1) * 32, 0));
             }
 
             return created;
         }
 
+        /// <summary>
+        /// Resizes the entity to the desired width and height while respecting the size bounds for the entity
+        /// </summary>
         public void Resize(int width, int height)
         {
             List<int> bounds = entityData.SizeBounds(entityRoom ?? RoomData.Default, this);
@@ -95,13 +98,52 @@ namespace Edelweiss.Mapping.Entities
         public Table ToLuaTable(Script script)
         {
             Table table = new(script);
-            table["_name"] = _name;
+            Table meta = new(script);
+            table.MetaTable = meta;
+
+            meta["__index"] = (Table t, string key) =>
+            {
+                if (key == "_name")
+                    return DynValue.NewString(_name);
+                if (data.ContainsKey(key))
+                    return DynValue.FromObject(script, data[key]);
+                return DynValue.Nil;
+            };
+
+            meta["__newindex"] = (Table t, string key, DynValue value) =>
+            {
+                if (key == "_name")
+                {
+                    _name = value.String;
+                    entityData = CelesteModLoader.entities[CelesteModLoader.defaultPlacements[_name]];
+                }
+                else if (key == "x")
+                {
+                    x = (int)value.Number;
+                }
+                else if (key == "y")
+                {
+                    y = (int)value.Number;
+                }
+                else if (key == "width")
+                {
+                    width = (int)value.Number;
+                }
+                else if (key == "height")
+                {
+                    height = (int)value.Number;
+                }
+
+                if (data.ContainsKey(key))
+                {
+                    data[key] = value.Value();
+                }
+            };
+
             table["_id"] = _id;
             table["_type"] = _type;
-            foreach (var d in data)
-            {
-                table[d.Key] = DynValue.FromObject(script, d.Value);
-            }
+
+
 
             table["x"] = x;
             table["y"] = y;
@@ -116,7 +158,7 @@ namespace Edelweiss.Mapping.Entities
             table["nodes"] = nodesTable;
             return table;
         }
-        
+
         /// <summary>
         /// Converts a point in local space to global space and then converts it to a table
         /// </summary>
@@ -141,7 +183,8 @@ namespace Edelweiss.Mapping.Entities
                 {"x", x},
                 {"y", y},
                 {"width", width},
-                {"height", height}
+                {"height", height},
+                {"rotation", entityData.Rotation(entityRoom ?? RoomData.Default, this)}
             };
 
 
@@ -168,6 +211,14 @@ namespace Edelweiss.Mapping.Entities
                     {"index", entityIndex},
                     {"action", "add"},
                     {"shapes", shapes}
+                });
+                NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
+                {
+                    {"widget", "Mapping/MainView"},
+                    {"item", entityObject},
+                    {"data", new JObject() {
+                        {"rotation", entityData.Rotation(entityRoom ?? RoomData.Default, this)}
+                    }}
                 });
             }
 
@@ -234,6 +285,20 @@ namespace Edelweiss.Mapping.Entities
                     {"shapes", nodeShapes}
                 });
             }
+        }
+
+        /// <summary>
+        /// Rotates the entity by a given direction. Clockwise rotations are positive and anticlockwise ones are negative
+        /// </summary>
+        /// <param name="direction"></param>
+        public bool Rotate(int direction)
+        {
+            return entityData.Rotate(entityRoom ?? RoomData.Default, this, direction);
+        }
+
+        public bool Flip(bool horizontal, bool vertical)
+        {
+            return entityData.Flip(entityRoom ?? RoomData.Default, this, horizontal, vertical);
         }
     }
 }

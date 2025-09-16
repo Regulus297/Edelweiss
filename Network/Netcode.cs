@@ -92,7 +92,7 @@ namespace Edelweiss.Network
         /// <summary>
         /// 
         /// </summary>
-        public const long BUTTON_PRESSED = -0x1;
+        public const long KEY_PRESSED = -0x1;
 
         /// <summary>
         /// 

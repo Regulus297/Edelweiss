@@ -19,6 +19,10 @@ class CustomDrawItem(QGraphicsItem):
         self.height = data["height"]
         self.name = data["name"]
         self.setPos(QPoint(data["x"], data["y"]))
+
+        if "rotation" in data:
+            self.setRotation(data["rotation"])
+
         if "zIndex" in data:
             self.setZValue(data["zIndex"])
 
@@ -110,6 +114,9 @@ class CustomDrawItem(QGraphicsItem):
         self.height = self.data["height"]
         self.name = self.data["name"]
         self.setPos(QPoint(self.data["x"], self.data["y"]))
+
+        if "rotation" in self.data:
+            self.setRotation(self.data["rotation"])
 
         if update_shapes:
             self.shapes.clear()

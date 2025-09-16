@@ -231,6 +231,41 @@ namespace Edelweiss.Mapping.Entities
         {
             return [0.5f, 0.5f];
         }
+
+        /// <summary>
+        /// Rotates the entity
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        /// <param name="rotation">The amount of steps to rotate the entity. Positive means clockwise rotation, negative means anticlockwise rotation.</param>
+        /// <returns>True if the entity is rotated, false if not</returns>
+        public virtual bool Rotate(RoomData room, Entity entity, int rotation)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Flips the entity on the given axis
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        /// <param name="horizontal">True if the entity should be flipped horizontally</param>
+        /// <param name="vertical">True if the entity should be flipped vertically</param>
+        /// <returns>True if the flip changed the entity, false if not</returns>
+        public virtual bool Flip(RoomData room, Entity entity, bool horizontal, bool vertical)
+        {
+            return false;
+        }
+        
+        /// <summary>
+        /// The rotation of the entity in degrees
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        public virtual float Rotation(RoomData room, Entity entity)
+        {
+            return 0f;
+        }
     }
 
     /// <summary>

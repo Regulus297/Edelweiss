@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Edelweiss.Mapping.Entities;
+using Edelweiss.Mapping.Keybinds;
 using Edelweiss.Network;
 using Edelweiss.Plugins;
 using Edelweiss.Utils;
@@ -32,6 +33,36 @@ namespace Edelweiss.Mapping.Tools
             {
                 recache = true;
             };
+            PluginKeybind.AddListener<RotateKeybind>(RotateGhost);
+            PluginKeybind.AddListener<VerticalFlipKeybind>(() => FlipGhost(false));
+            PluginKeybind.AddListener<HorizontalFlipKeybind>(() => FlipGhost(true));
+        }
+
+        private void RotateGhost()
+        {
+            if (this != MappingTab.selectedTool)
+            {
+                return;
+            }
+
+            var rotate = ghostEntity?.Rotate(1);
+            if (rotate == true)
+            {
+                RefreshGhost();
+            }
+        }
+
+        private void FlipGhost(bool horizontal) {
+            if (this != MappingTab.selectedTool)
+            {
+                return;
+            }
+
+            var flip = ghostEntity?.Flip(horizontal, !horizontal);
+            if (flip == true)
+            {
+                RefreshGhost();
+            }
         }
 
         public override Dictionary<string, string> GetMaterials()
@@ -134,25 +165,30 @@ namespace Edelweiss.Mapping.Tools
                 ghostEntity.nodes[0] = new Point(tileX * 8 - startTileX * 8, tileY * 8 - startTileY * 8);
             }
             if (changed)
-            {        
-                NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
-                {
-                    {"widget", "Mapping/MainView"},
-                    {"item", "cursorGhost"},
-                    {"action", "clear"}
-                });
-                ghostEntity.Draw(0.5f, "cursorGhost", 1);
+            {
+                RefreshGhost();
             }
+        }
+
+        private void RefreshGhost()
+        {
+            NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
+            {
+                {"widget", "Mapping/MainView"},
+                {"item", "cursorGhost"},
+                {"action", "clear"}
+            });
+            ghostEntity.Draw(0.5f, "cursorGhost", 1);
         }
 
         public override void MouseRelease(JObject room, float x, float y)
         {
             dragging = false;
             RoomData backendRoom = MappingTab.map.rooms.FirstOrDefault(r => r.name == room.Value<string>("name"));
-            EntityData found = CelesteModLoader.entities[selectedMaterial];
             (int tileX, int tileY) = EdelweissUtils.ToTileCoordinate(x, y);
-            Entity created = Entity.DefaultFromData(found, backendRoom);
-            created._name = found.Name;
+            Entity created = Entity.DefaultFromData(ghostEntity.entityData, backendRoom);
+            created.data = ghostEntity.data;
+            created._name = ghostEntity._name;
             created._id = backendRoom.entities.Count().ToString();
             created.x = 8 * startTileX;
             created.y = 8 * startTileY;
@@ -248,8 +284,20 @@ namespace Edelweiss.Mapping.Tools
                         }}
                     }}
                 });
+                
+                Dictionary<string, object> prevData = ghostEntity?.data ?? [];
+                string prevName = ghostEntity?._name ?? "";
+                EntityData prevEntityData = ghostEntity?.entityData;
 
                 ghostEntity = Entity.DefaultFromData(found, RoomData.Default);
+
+                if (redrawGhost && lastSelectedMaterial == selectedMaterial)
+                {
+                    ghostEntity.data = prevData;
+                    ghostEntity._name = prevName;
+                    ghostEntity.entityData = prevEntityData;
+                }
+
                 ghostEntity.Draw(0.5f, "cursorGhost", 1);
                 lastSelectedMaterial = selectedMaterial;
                 redrawGhost = false;

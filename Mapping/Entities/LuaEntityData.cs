@@ -27,9 +27,10 @@ namespace Edelweiss.Mapping.Entities
         string placementName = placementName;
 
         /// <inheritdoc/>
-        public override string Name => name;
+        public override string Name => $"{name}.{placementName}";
+
         /// <inheritdoc/>
-        public override string DisplayName => Language.GetTextOrDefault($"Loenn.entities.{name}.placements.name.{placementName}") ?? placementName;
+        public override string DisplayName => Language.GetTextOrDefault($"Loenn.entities.{name}.placements.name.{placementName}") ?? Name;
 
         /// <inheritdoc/>
         public override string Texture(RoomData room, Entity entity)
@@ -415,6 +416,60 @@ namespace Edelweiss.Mapping.Entities
             {
                 Logger.Error("LuaEntity", $"Error while getting placement data for entity {Name}: \n {e.Formatted()}");
                 return [];
+            }
+        }
+
+        /// <inheritdoc/>
+        public override bool Rotate(RoomData room, Entity entity, int rotation)
+        {
+            try
+            {
+                DynValue rotateMethod = entityTable.Get("rotate");
+                if (rotateMethod.IsNil())
+                    return base.Rotate(room, entity, rotation);
+                DynValue result = script.Call(rotateMethod, room.ToLuaTable(script), entity.ToLuaTable(script), DynValue.NewNumber(rotation));
+                return result.Boolean;
+            }
+            catch (Exception e)
+            {
+                Logger.Error("LuaEntity", $"Error while rotating entity {Name}: \n {e.Formatted()}");
+                return base.Rotate(room, entity, rotation);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override bool Flip(RoomData room, Entity entity, bool horizontal, bool vertical)
+        {
+            try
+            {
+                DynValue flipMethod = entityTable.Get("flip");
+                if (flipMethod.IsNil())
+                    return base.Flip(room, entity, horizontal, vertical);
+                DynValue result = script.Call(flipMethod, room.ToLuaTable(script), entity.ToLuaTable(script), DynValue.NewBoolean(horizontal), DynValue.NewBoolean(vertical));
+                return result.Boolean;
+            }
+            catch (Exception e)
+            {
+                Logger.Error("LuaEntity", $"Error while flipping entity {Name}: \n {e.Formatted()}");
+                return base.Flip(room, entity, horizontal, vertical);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override float Rotation(RoomData room, Entity entity)
+        {
+            try
+            {
+                DynValue rotationMethod = entityTable.Get("rotation");
+                if (rotationMethod.IsNil())
+                    return base.Rotation(room, entity);
+                float radians = rotationMethod.Type == DataType.Number ? (float)rotationMethod.Number : (float)script.Call(rotationMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Number;
+                return radians * 180 / MathF.PI;
+            }
+            catch (Exception e)
+            {
+                Logger.Error("LuaEntity", $"Error while getting rotation for entity {Name}: \n {e.Formatted()}");
+                return base.Rotation(room, entity);
             }
         }
     }

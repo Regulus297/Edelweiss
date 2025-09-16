@@ -35,7 +35,11 @@ namespace Edelweiss.Mapping.Drawables
         /// <exception cref="MissingMethodException">Thrown if the found Drawable type does not have a constructor accepting a table.</exception>
         public static Drawable FromTable(Table table)
         {
-            string type = table.Get("_type").String;
+            string type = table?.Get("_type")?.String;
+            if (type == null)
+            {
+                return new EmptyDrawable();
+            }
             if (!drawables.TryGetValue(type, out Type drawableType))
                 throw new KeyNotFoundException($"Drawable type '{type}' does not exist.");
 

@@ -101,6 +101,9 @@ class MappingWindow(QMainWindow):
     def current_tab(self):
         return self.tabs[self.stack.currentIndex()]
 
+    def keyPressEvent(self, a0):
+        PyNetworkManager.send_packet(Netcode.KEY_PRESSED, json.dumps({"key": a0.key()}))
+
     def closeEvent(self, a0):
         PyNetworkManager.exit()
         super().closeEvent(a0)

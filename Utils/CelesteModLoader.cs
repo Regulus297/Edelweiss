@@ -40,6 +40,11 @@ namespace Edelweiss.Utils
         /// The list of all loaded entities
         /// </summary>
         public static ConcurrentDictionary<string, EntityData> entities = [];
+
+        /// <summary>
+        /// Contains the name of the default (first) placement (entity_name.placement_name) for a given entity (entity_name)
+        /// </summary>
+        public static ConcurrentDictionary<string, string> defaultPlacements = [];
         internal static bool LoadTexturesFromDirectory(PluginAsset path)
         {
             string graphicsPath = Path.Join("Graphics", "Atlases");
@@ -99,6 +104,8 @@ namespace Edelweiss.Utils
             {
                 tempScript.Globals["require"] = (Func<string, DynValue>)(module => LoennModule.RequireModule(tempScript, module));
 
+                // Required by aonHelper's Darker Matter
+                // It draws in Loenn so I assume it defines a split method but I can't be fucked finding where
                 tempScript.DoString(@"
                 function string:split(sep)
                     local result = {}
@@ -136,7 +143,13 @@ namespace Edelweiss.Utils
             {
                 DynValue placementValue = table.Get("placements");
                 if (placementValue.Type != DataType.Table)
-                    return;
+                {
+                    // It's a list of entities
+                    foreach (DynValue value in table.Values)
+                    {
+                        CreateEntities(fileName, value.Table, script);
+                    }
+                }
 
                 List<Table> placements = [placementValue.Table];
                 if (placementValue.Table.Get("name").IsNil())
@@ -151,6 +164,10 @@ namespace Edelweiss.Utils
                 {
                     LuaEntityData entityData = new(table.Get("name").String, placement.Get("name").String, placement, script, table);
                     entities[entityData.Name] = entityData;
+                    if (!defaultPlacements.ContainsKey(entityData.Name))
+                    {
+                        defaultPlacements[table.Get("name").String] = entityData.Name;
+                    }
                 }
             }
             catch (Exception e)

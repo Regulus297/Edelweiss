@@ -27,7 +27,7 @@ namespace Edelweiss.Mapping.Tools
         /// <summary>
         /// Returns true if the input material matches the current search term
         /// </summary>
-        protected bool IsSearched(string material) => MappingTab.searchTerm == "" || material.Contains(MappingTab.searchTerm, StringComparison.CurrentCultureIgnoreCase);
+        protected bool IsSearched(string material) => material == null ? false : MappingTab.searchTerm == "" || material.Contains(MappingTab.searchTerm, StringComparison.CurrentCultureIgnoreCase);
 
         /// <summary>
         /// If true, clicking will also trigger <see cref="MouseDrag"/> as well as <see cref="MouseClick"/>  

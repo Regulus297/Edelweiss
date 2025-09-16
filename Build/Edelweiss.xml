@@ -90,6 +90,15 @@
             </summary>
             <param name="script">The script the table should belong to</param>
         </member>
+        <member name="T:Edelweiss.Mapping.Drawables.EmptyDrawable">
+            <summary>
+            An empty drawable, draws nothing.
+            Used as a fallback if "_type" is not set when loading a drawable.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.EmptyDrawable.Draw">
+            <inheritdoc/>
+        </member>
         <member name="T:Edelweiss.Mapping.Drawables.Line">
             <summary>
             A class that represents a drawable line
@@ -411,6 +420,11 @@
             Creates a default entity with the placement data from the given entity data
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.Resize(System.Int32,System.Int32)">
+            <summary>
+            Resizes the entity to the desired width and height while respecting the size bounds for the entity
+            </summary>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.Entity.ToLuaTable(MoonSharp.Interpreter.Script)">
             <summary>
             Converts the entity to a Lua table compatible with Loenn
@@ -430,6 +444,12 @@
             <param name="opacity"></param>
             <param name="entityObject">The ID of the entity object in the viewport if the entity should be drawn to an existing object. Null if not.</param>
             <param name="entityIndex"></param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.Rotate(System.Int32)">
+            <summary>
+            Rotates the entity by a given direction. Clockwise rotations are positive and anticlockwise ones are negative
+            </summary>
+            <param name="direction"></param>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.EntityData">
             <summary>
@@ -583,6 +603,32 @@
             <param name="room">The room the entity is in</param>
             <param name="entity">The entity instance</param>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Rotate(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <summary>
+            Rotates the entity
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+            <param name="rotation">The amount of steps to rotate the entity. Positive means clockwise rotation, negative means anticlockwise rotation.</param>
+            <returns>True if the entity is rotated, false if not</returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Flip(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Boolean,System.Boolean)">
+            <summary>
+            Flips the entity on the given axis
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+            <param name="horizontal">True if the entity should be flipped horizontally</param>
+            <param name="vertical">True if the entity should be flipped vertically</param>
+            <returns>True if the flip changed the entity, false if not</returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Rotation(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            The rotation of the entity in degrees
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.NodeLineRenderType">
             <summary>
             Determines how nodes are connected to the main entity
@@ -700,6 +746,15 @@
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.GetPlacementData">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Rotate(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Flip(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Boolean,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Rotation(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
             <inheritdoc/>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.MapData">
@@ -835,6 +890,30 @@
             <summary>
             Converts the room to a Lua table compatible with Loenn.
             </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Keybinds.HorizontalFlipKeybind">
+            <summary>
+            Keybind for flipping an object horizontally. Defaults to H
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Keybinds.HorizontalFlipKeybind.DefaultBindings">
+            <inheritdoc/>
+        </member>
+        <member name="T:Edelweiss.Mapping.Keybinds.RotateKeybind">
+            <summary>
+            The keybind for rotating an object. Bound to R by default
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Keybinds.RotateKeybind.DefaultBindings">
+            <inheritdoc/>
+        </member>
+        <member name="T:Edelweiss.Mapping.Keybinds.VerticalFlipKeybind">
+            <summary>
+            Keybind for flipping an object vertically. Defaults to V
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Keybinds.VerticalFlipKeybind.DefaultBindings">
+            <inheritdoc/>
         </member>
         <member name="T:Edelweiss.Mapping.Tools.MappingTool">
             <summary>
@@ -1217,6 +1296,46 @@
             Prefixes the plugin's ID to the given key and attempts to get the localization for it.
             </summary>
         </member>
+        <member name="T:Edelweiss.Plugins.PluginKeybind">
+            <summary>
+            A saveable preference that contains keybinds
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.PluginKeybind.QtKeyNames">
+            <summary>
+            A dictionary relating Qt Keycodes to their names
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.PluginKeybind.ReverseQtKeyNames">
+            <summary>
+            A dictionary relating Qt Key names to their keycodes
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginKeybind.DefaultBindings">
+            <summary>
+            The keys that this keybind is bound to by default
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginKeybind.CurrentBindings">
+            <summary>
+            The keys that this keybind is currently bound to
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Plugins.PluginKeybind.OnPressed">
+            <summary>
+            The event invoked when this keybind is pressed
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginKeybind.SetDefaultValue">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginKeybind.AddListener``1(System.Action)">
+            <summary>
+            Adds a listener that is invoked whenever the keybind of the target type is pressed
+            </summary>
+            <typeparam name="T">The type of keybind to listen to</typeparam>
+            <param name="callback">The action called when the keybind is pressed</param>
+        </member>
         <member name="T:Edelweiss.Plugins.PluginLoader">
             <summary>
             Handles all plugin-related code.
@@ -1465,7 +1584,7 @@
             - widgets: the list of widget trackers that should be refreshed.
             </summary>
         </member>
-        <member name="F:Edelweiss.Network.Netcode.BUTTON_PRESSED">
+        <member name="F:Edelweiss.Network.Netcode.KEY_PRESSED">
             <summary>
             
             </summary>
@@ -1664,6 +1783,11 @@
         <member name="F:Edelweiss.Utils.CelesteModLoader.entities">
             <summary>
             The list of all loaded entities
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Utils.CelesteModLoader.defaultPlacements">
+            <summary>
+            Contains the name of the default (first) placement (entity_name.placement_name) for a given entity (entity_name)
             </summary>
         </member>
         <member name="M:Edelweiss.Utils.CelesteModLoader.GetTextureData(System.String)">
