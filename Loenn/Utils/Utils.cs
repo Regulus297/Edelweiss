@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Edelweiss.Plugins;
 using Edelweiss.Utils;
@@ -57,6 +58,34 @@ namespace Edelweiss.Loenn.Utils
                 if (alpha)
                     output[4] = converted.Get(4);
                 return DynValue.NewTuple(output);
+            };
+
+            utils["typeof"] = (DynValue value) =>
+            {
+                DataType type = value.Type;
+                if (type == DataType.Table)
+                {
+                    return value.Table.Get<string>("_type", value.Table.Get<string>("__type", "table"));
+                }
+                return script.Call(script.Globals.Get("type"), value).String;
+            };
+
+            utils["cycle"] = (Table table, DynValue current, DynValue amount) =>
+            {
+                int a = amount.IsNil() ? (int)amount.Number : 1;
+                List<DynValue> items = table.Values.ToList();
+                int i = items.IndexOf(current);
+                if (i == -1)
+                    return current;
+
+                i += a;
+                if (i < 0)
+                {
+                    i += items.Count * Math.Abs(i);
+                }
+
+                i %= items.Count;
+                return items[i];
             };
 
             return utils;

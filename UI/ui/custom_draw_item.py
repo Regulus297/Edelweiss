@@ -34,41 +34,45 @@ class CustomDrawItem(QGraphicsItem):
             if not data["focusable"]:
                 self.setAcceptedMouseButtons(Qt.NoButton)
 
-        self.onMousePressed = lambda x, y: None
+        self.onMousePressed = lambda x, y, b: None
         if "onMousePressed" in data:
             netcode, extraData = get_event_data(data["onMousePressed"])
-            self.onMousePressed = lambda x, y: PyNetworkManager.send_packet(netcode, json.dumps({
+            self.onMousePressed = lambda x, y, b: PyNetworkManager.send_packet(netcode, json.dumps({
                 "x": x,
                 "y": y,
                 "name": self.name,
                 "type": "press",
+                "button": b,
                 "extraData": extraData,
                 "item": self.data
             }, cls=DefaultEncoder))
 
-        self.onMouseMoved = lambda x, y: None
+        self.onMouseMoved = lambda x, y, b: None
         if "onMouseMoved" in data:
-            netcode, extraData = get_event_data(data["onMouseMoved"])
-            self.onMouseMoved = lambda x, y: PyNetworkManager.send_packet(netcode, json.dumps({
+            netcode1, extraData1 = get_event_data(data["onMouseMoved"])
+            self.onMouseMoved = lambda x, y, b: PyNetworkManager.send_packet(netcode1, json.dumps({
                 "x": x,
                 "y": y,
                 "name": self.name,
                 "type": "move",
-                "extraData": extraData,
+                "button": b,
+                "extraData": extraData1,
                 "item": self.data
             }, cls=DefaultEncoder))
 
-        self.onMouseReleased = lambda x, y: None
+        self.onMouseReleased = lambda x, y, b: None
         if "onMouseReleased" in data:
-            netcode, extraData = get_event_data(data["onMouseReleased"])
-            self.onMouseReleased = lambda x, y: PyNetworkManager.send_packet(netcode, json.dumps({
+            netcode2, extraData2 = get_event_data(data["onMouseReleased"])
+            self.onMouseReleased = lambda x, y, b: PyNetworkManager.send_packet(netcode2, json.dumps({
                 "x": x,
                 "y": y,
                 "name": self.name,
                 "type": "release",
-                "extraData": extraData,
+                "button": b,
+                "extraData": extraData2,
                 "item": self.data
             }, cls=DefaultEncoder))
+
 
         self.shapeRenderers = []
         for shape in self.shapes:
@@ -128,12 +132,13 @@ class CustomDrawItem(QGraphicsItem):
 
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
-        self.onMousePressed(event.pos().x(), event.pos().y())
+        event.accept()
+        self.onMousePressed(event.pos().x(), event.pos().y(), event.button())
 
     def mouseMoveEvent(self, event):
         super().mouseMoveEvent(event)
-        self.onMouseMoved(event.pos().x(), event.pos().y())
+        self.onMouseMoved(event.pos().x(), event.pos().y(), event.button())
 
     def mouseReleaseEvent(self, event):
         super().mouseReleaseEvent(event)
-        self.onMouseReleased(event.pos().x(), event.pos().y())
+        self.onMouseReleased(event.pos().x(), event.pos().y(), event.button())

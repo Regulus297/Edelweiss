@@ -36,6 +36,7 @@ namespace Edelweiss.Mapping.Tools
             PluginKeybind.AddListener<RotateKeybind>(RotateGhost);
             PluginKeybind.AddListener<VerticalFlipKeybind>(() => FlipGhost(false));
             PluginKeybind.AddListener<HorizontalFlipKeybind>(() => FlipGhost(true));
+            PluginKeybind.AddListener<CycleKeybind>(CycleGhost);
         }
 
         private void RotateGhost()
@@ -60,6 +61,20 @@ namespace Edelweiss.Mapping.Tools
 
             var flip = ghostEntity?.Flip(horizontal, !horizontal);
             if (flip == true)
+            {
+                RefreshGhost();
+            }
+        }
+
+        private void CycleGhost()
+        {
+            if (this != MappingTab.selectedTool)
+            {
+                return;
+            }
+
+            var cycle = ghostEntity?.Cycle(1);
+            if (cycle == true)
             {
                 RefreshGhost();
             }

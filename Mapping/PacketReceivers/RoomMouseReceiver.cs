@@ -13,6 +13,10 @@ namespace Edelweiss.Mapping.PacketReceivers
         public override void ProcessPacket(Packet packet)
         {
             JObject data = JObject.Parse(packet.data);
+
+            if (data.Value<int>("button") != 1)
+                return;
+
             float mouseX = data.Value<float>("x");
             float mouseY = data.Value<float>("y");
             JObject room = (JObject) data["item"];

@@ -256,6 +256,19 @@ namespace Edelweiss.Mapping.Entities
         {
             return false;
         }
+
+        /// <summary>
+        /// "Cycles" between different states of the entities (like colors of spinners, colors of cassette blocks, etc.)
+        /// Edelweiss exclusive
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        /// <param name="amount">The amount to cycle this entity by</param>
+        /// <returns>True if the entity was changed, false if not</returns>
+        public virtual bool Cycle(RoomData room, Entity entity, int amount)
+        {
+            return false;
+        }
         
         /// <summary>
         /// The rotation of the entity in degrees

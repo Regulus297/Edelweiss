@@ -184,7 +184,7 @@ namespace Edelweiss.Mapping.Entities
                 {"y", y},
                 {"width", width},
                 {"height", height},
-                {"rotation", entityData.Rotation(entityRoom ?? RoomData.Default, this)}
+                {"rotation", entityData.Rotation(entityRoom ?? RoomData.Default, this)},
             };
 
 
@@ -296,9 +296,23 @@ namespace Edelweiss.Mapping.Entities
             return entityData.Rotate(entityRoom ?? RoomData.Default, this, direction);
         }
 
+        /// <summary>
+        /// Flips the entity along the given axes
+        /// </summary>
+        /// <param name="horizontal">Whether or not the entity should be flipped horizontally</param>
+        /// <param name="vertical">Whether or not the entity should be flipped vertically</param>
+        /// <returns>True if flipping affected the entity, false if not</returns>
         public bool Flip(bool horizontal, bool vertical)
         {
             return entityData.Flip(entityRoom ?? RoomData.Default, this, horizontal, vertical);
+        }
+
+        /// <summary>
+        /// Cycles the entity's state by the given amount
+        /// </summary>
+        public bool Cycle(int amount)
+        {
+            return entityData.Cycle(entityRoom ?? RoomData.Default, this, amount);
         }
     }
 }

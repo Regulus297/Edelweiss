@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v8.0": {
       "Edelweiss/1.0.0": {
         "dependencies": {
+          "Edelweiss": "1.0.0",
           "MonoMod": "22.7.31.1",
           "MonoMod.RuntimeDetour": "25.3.0",
           "MoonSharp": "2.0.0",

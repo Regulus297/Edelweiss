@@ -456,6 +456,27 @@ namespace Edelweiss.Mapping.Entities
         }
 
         /// <inheritdoc/>
+        /// <remarks>
+        /// Implementend in lua as entity.cycle(room, entity, amount)
+        /// </remarks>
+        public override bool Cycle(RoomData room, Entity entity, int amount)
+        {
+            try
+            {
+                DynValue cycleMethod = entityTable.Get("cycle");
+                if (cycleMethod.IsNil())
+                    return base.Cycle(room, entity, amount);
+                DynValue result = script.Call(cycleMethod, room.ToLuaTable(script), entity.ToLuaTable(script), DynValue.NewNumber(amount));
+                return result.Boolean;
+            }
+            catch (Exception e)
+            {
+                Logger.Error("LuaEntity", $"Error while cycling entity {Name}: \n {e.Formatted()}");
+                return base.Cycle(room, entity, amount);
+            }
+        }
+
+        /// <inheritdoc/>
         public override float Rotation(RoomData room, Entity entity)
         {
             try

@@ -451,6 +451,19 @@
             </summary>
             <param name="direction"></param>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.Flip(System.Boolean,System.Boolean)">
+            <summary>
+            Flips the entity along the given axes
+            </summary>
+            <param name="horizontal">Whether or not the entity should be flipped horizontally</param>
+            <param name="vertical">Whether or not the entity should be flipped vertically</param>
+            <returns>True if flipping affected the entity, false if not</returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.Cycle(System.Int32)">
+            <summary>
+            Cycles the entity's state by the given amount
+            </summary>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.EntityData">
             <summary>
             Base class for entity data
@@ -622,6 +635,16 @@
             <param name="vertical">True if the entity should be flipped vertically</param>
             <returns>True if the flip changed the entity, false if not</returns>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Cycle(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <summary>
+            "Cycles" between different states of the entities (like colors of a spinners, colors of cassette blocks, etc.)
+            Edelweiss exclusive
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+            <param name="amount">The amount to cycle this entity by</param>
+            <returns>True if the entity was changed, false if not</returns>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.EntityData.Rotation(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
             <summary>
             The rotation of the entity in degrees
@@ -753,6 +776,12 @@
         </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Flip(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Boolean,System.Boolean)">
             <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Cycle(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <inheritdoc/>
+            <remarks>
+            Implementend in lua as entity.cycle(room, entity, amount)
+            </remarks>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Rotation(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
             <inheritdoc/>
@@ -890,6 +919,14 @@
             <summary>
             Converts the room to a Lua table compatible with Loenn.
             </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Keybinds.CycleKeybind">
+            <summary>
+            The keybind for cycling the state of an object. Defaults to Tab
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Keybinds.CycleKeybind.DefaultBindings">
+            <inheritdoc/>
         </member>
         <member name="T:Edelweiss.Mapping.Keybinds.HorizontalFlipKeybind">
             <summary>
