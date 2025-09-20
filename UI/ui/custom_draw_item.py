@@ -1,11 +1,12 @@
 import json
 
-from PyQt5.QtCore import QPoint, QRectF, Qt
+from PyQt5.QtCore import QPoint, QRectF, Qt, QTimer
 from PyQt5.QtGui import QPainterPath, QPen, QPainter, QColor, QBrush, QPixmap
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView, QGraphicsScene
 
 from network import PyNetworkManager
 from plugins import get_event_data, DefaultEncoder
+from ui.shape_item import ShapeItem
 
 
 class CustomDrawItem(QGraphicsItem):
@@ -75,24 +76,29 @@ class CustomDrawItem(QGraphicsItem):
 
 
         self.shapeRenderers = []
+        self.items = {}
         for shape in self.shapes:
-            self.shapeRenderers.append(type(CustomDrawItem.shapes[shape["type"]])(self, shape))
+            self.addShapeDelayed(shape)
+
+    def addShapeDelayed(self, shape):
+        QTimer.singleShot(0, lambda: self.addShape(shape))
+
+    def addShape(self, shape):
+        depth = shape["depth"] if "depth" in shape else 0
+        if depth not in self.items:
+            item = ShapeItem(depth, self.width, self.height, self, shape)
+            self.items[depth] = item
+            self.scene().addItem(item)
+        else:
+            item = self.items[depth]
+        item.addShape(shape)
 
     def paint(self, painter, option, widget = ...):
         if "opacity" in self.data:
             painter.setOpacity(float(self.data["opacity"]))
-        for shape in self.shapeRenderers:
-            if "visible" in shape.data and not shape.data["visible"]:
-                continue
-            shape.draw(painter)
-
-    def addShape(self, shape):
-        self.shapes.append(shape)
-        self.shapeRenderers.append(type(CustomDrawItem.shapes[shape["type"]])(self, shape))
 
     def boundingRect(self):
         return QRectF(0, 0, self.width, self.height)
-
 
     def get_pen(self, shape):
         pen = QPen()
@@ -123,12 +129,15 @@ class CustomDrawItem(QGraphicsItem):
             self.setRotation(self.data["rotation"])
 
         if update_shapes:
-            self.shapes.clear()
-            self.shapeRenderers.clear()
             for shape in data["shapes"]:
                 self.addShape(shape)
 
         self.update()
+
+    def clear(self):
+        for _, item in self.items.items():
+            item.shapes.clear()
+            item.shapeRenderers.clear()
 
     def mousePressEvent(self, event):
         super().mousePressEvent(event)

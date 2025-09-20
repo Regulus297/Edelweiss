@@ -14,7 +14,7 @@ namespace Edelweiss.Mapping.PacketReceivers
         {
             JObject data = JObject.Parse(packet.data);
 
-            if (data.Value<int>("button") != 1)
+            if (data.Value<int>("button") > 1)
                 return;
 
             float mouseX = data.Value<float>("x");

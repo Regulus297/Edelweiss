@@ -26,16 +26,9 @@ class ModifyItemShapeReceiver(PacketReceiver):
         if "action" not in data or data["action"] == "modify":
             widget.trackedItems[data["item"]].update(data["data"])
             widget.trackedGraphicsItems[data["item"]].refresh(data["data"], "shapes" in data["data"])
-        elif data["action"] == "remove":
-            indices = [data["index"]] if isinstance(data["index"], int) else data["index"]
-            for index in reversed(sorted(indices)):
-                del item["shapes"][index]
-                del gItem.shapeRenderers[index]
-                gItem.refresh({})
         elif data["action"] == "add":
             for shape in data["shapes"]:
                 gItem.addShape(shape)
             gItem.refresh({})
         elif data["action"] == "clear":
-            gItem.shapes.clear()
-            gItem.shapeRenderers.clear()
+            gItem.clear()

@@ -637,7 +637,7 @@
         </member>
         <member name="M:Edelweiss.Mapping.Entities.EntityData.Cycle(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
             <summary>
-            "Cycles" between different states of the entities (like colors of a spinners, colors of cassette blocks, etc.)
+            "Cycles" between different states of the entities (like colors of spinners, colors of cassette blocks, etc.)
             Edelweiss exclusive
             </summary>
             <param name="room">The room the entity is in</param>

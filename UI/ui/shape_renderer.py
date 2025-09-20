@@ -1,9 +1,9 @@
-from ui import CustomDrawItem
+from .shape_item import ShapeItem
 
 
 class ShapeRenderer:
     def __init__(self, shape_type, parent, data):
-        CustomDrawItem.shapes[shape_type] = self
+        ShapeItem.shapes[shape_type] = self
         self.parent = parent
         self.data = data
 

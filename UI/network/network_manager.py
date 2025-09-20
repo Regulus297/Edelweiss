@@ -39,13 +39,14 @@ class PyNetworkManager:
         while len(NetworkManager.queued) > 0:
             packet = NetworkManager.queued[0]
 
-            if packet.code == Netcode.REGISTER_PYTHON_PLUGINS:
-                data = JSONPreprocessor.loads(packet.data)
-                for file in data["files"]:
-                    PluginLoader.load_python_plugin(file)
-            elif packet.code in PyNetworkManager.receivers.keys():
-                for receiver in PyNetworkManager.receivers[packet.code]:
-                    receiver.process_packet(packet)
+            if packet is not None:
+                if packet.code == Netcode.REGISTER_PYTHON_PLUGINS:
+                    data = JSONPreprocessor.loads(packet.data)
+                    for file in data["files"]:
+                        PluginLoader.load_python_plugin(file)
+                elif packet.code in PyNetworkManager.receivers.keys():
+                    for receiver in PyNetworkManager.receivers[packet.code]:
+                        receiver.process_packet(packet)
 
             NetworkManager.DequeuePacket()
         Main.Update()

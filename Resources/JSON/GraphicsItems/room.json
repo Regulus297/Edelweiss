@@ -12,12 +12,14 @@
         {
             "type": "tiles",
             "tiles": "Edelweiss:BackgroundTiles",
-            "tileData": "Hello"
+            "tileData": "Hello",
+            "depth": 10000
         },
         {
             "type": "tiles",
             "tiles": "Edelweiss:ForegroundTiles",
-            "tileData": "Hello"
+            "tileData": "Hello",
+            "depth": -10000
         },
         {
             "type": "rectangle",
@@ -26,7 +28,8 @@
             "x": 0,
             "y": 0,
             "width": 1.0,
-            "height": 1.0
+            "height": 1.0,
+            "depth": -10000000000000000
         }
     ]
 }

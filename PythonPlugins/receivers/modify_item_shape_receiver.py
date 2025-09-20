@@ -12,6 +12,7 @@ class ModifyItemShapeReceiver(PacketReceiver):
 
     def process_packet(self, packet):
         data = JSONPreprocessor.loads(packet.data)
+        print(data)
         widget = MappingWindow.instance.get_tracked_widget(data["widget"])
         if type(widget) != ZoomableView:
             print(f"Failed to add item as widget {type(widget)} is not a {ZoomableView}")
