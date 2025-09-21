@@ -6,8 +6,9 @@ class ShapeItem(QGraphicsItem):
     shapes = {}
 
     def __init__(self, depth, width, height, parent, *shapes):
-        super().__init__(parent)
-        self.setZValue(-parent.zValue() - depth)
+        super().__init__()
+        self.setZValue(-depth)
+        self.parent = parent
         self.shapes = []
         self.shapeRenderers = []
         self.width = width
@@ -21,7 +22,7 @@ class ShapeItem(QGraphicsItem):
 
     def addShape(self, shape):
         self.shapes.append(shape)
-        self.shapeRenderers.append(type(ShapeItem.shapes[shape["type"]])(self.parentItem(), shape))
+        self.shapeRenderers.append(type(ShapeItem.shapes[shape["type"]])(self.parent, shape))
 
     def paint(self, painter, option, widget = ...):
         for shape in self.shapeRenderers:

@@ -291,7 +291,8 @@ namespace Edelweiss.Mapping.Tools
                                 {"thickness", "@defer('@pen_thickness(\\'Mapping/MainView\\')')"},
                                 {"width", 8},
                                 {"height", 8},
-                                {"coords", new JArray() {
+                                {"depth", int.MinValue},
+                                { "coords", new JArray() {
                                     "0,0"
                                 }},
                                 { "visible", false}

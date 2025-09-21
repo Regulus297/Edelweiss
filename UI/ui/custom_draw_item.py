@@ -77,6 +77,7 @@ class CustomDrawItem(QGraphicsItem):
 
         self.shapeRenderers = []
         self.items = {}
+        self.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
         for shape in self.shapes:
             self.addShapeDelayed(shape)
 
@@ -89,6 +90,7 @@ class CustomDrawItem(QGraphicsItem):
             item = ShapeItem(depth, self.width, self.height, self, shape)
             self.items[depth] = item
             self.scene().addItem(item)
+            item.setTransform(self.sceneTransform())
         else:
             item = self.items[depth]
         item.addShape(shape)
@@ -105,6 +107,13 @@ class CustomDrawItem(QGraphicsItem):
         pen.setColor(QColor(shape["color"]))
         pen.setWidthF(float(shape["thickness"]))
         return pen
+
+    def itemChange(self, change, value):
+        if change in (QGraphicsItem.ItemPositionHasChanged, QGraphicsItem.ItemTransformHasChanged):
+            trans = self.sceneTransform()
+            for i in self.items.values():
+                i.setTransform(trans)
+        return super().itemChange(change, value)
 
     def get_dimensions(self, x, y, width, height):
         if type(x) == float:
@@ -141,6 +150,8 @@ class CustomDrawItem(QGraphicsItem):
 
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
+        if "focusable" not in self.data or not self.data["focusable"]:
+            return
         event.accept()
         self.onMousePressed(event.pos().x(), event.pos().y(), event.button())
 

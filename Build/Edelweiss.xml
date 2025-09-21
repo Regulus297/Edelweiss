@@ -69,6 +69,11 @@
             All inheriting objects must define a parameterless constructor and a constructor accepting a table.
             </summary>
         </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Drawable.depth">
+            <summary>
+            The render depth of the drawable. Positive values are further back and negative values are further forward.
+            </summary>
+        </member>
         <member name="M:Edelweiss.Mapping.Drawables.Drawable.Draw">
             <summary>
             Draws the object to the current SpriteDestination.
@@ -652,6 +657,13 @@
             <param name="room">The room the entity is in</param>
             <param name="entity">The entity instance</param>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Depth(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            The render depth of the entity. Positive values are behind the player and negative values are in front of the player. Defaults to 0.
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.NodeLineRenderType">
             <summary>
             Determines how nodes are connected to the main entity
@@ -784,6 +796,9 @@
             </remarks>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Rotation(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Depth(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
             <inheritdoc/>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.MapData">

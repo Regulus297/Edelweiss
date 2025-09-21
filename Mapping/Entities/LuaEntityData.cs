@@ -493,5 +493,23 @@ namespace Edelweiss.Mapping.Entities
                 return base.Rotation(room, entity);
             }
         }
+
+        /// <inheritdoc/>
+        public override int Depth(RoomData room, Entity entity)
+        {
+            try
+            {
+                DynValue depthMethod = entityTable.Get("depth");
+                if (depthMethod.IsNil())
+                    return base.Depth(room, entity);
+                int depth = depthMethod.Type == DataType.Number ? (int)depthMethod.Number : (int)script.Call(depthMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Number;
+                return depth;
+            }
+            catch (Exception e)
+            {
+                Logger.Error("LuaEntity", $"Error while getting rotation for entity {Name}: \n {e.Formatted()}");
+                return base.Depth(room, entity);
+            }
+        }
     }
 }

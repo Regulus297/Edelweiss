@@ -67,7 +67,8 @@ namespace Edelweiss.Mapping.Drawables
                 {"height", height},
                 {"color", borderColor},
                 {"thickness", LoveModule.PEN_THICKNESS},
-                {"fill", color}
+                {"fill", color},
+                {"depth", depth}
             });
         }
 

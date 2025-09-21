@@ -41,7 +41,8 @@ namespace Edelweiss.Mapping.Entities
                 justificationX = Justification(room, entity)[0],
                 justificationY = Justification(room, entity)[1],
                 x = entity.x,
-                y = entity.y
+                y = entity.y,
+                depth = Depth(room, entity)
             }];
         }
 
@@ -269,7 +270,7 @@ namespace Edelweiss.Mapping.Entities
         {
             return false;
         }
-        
+
         /// <summary>
         /// The rotation of the entity in degrees
         /// </summary>
@@ -278,6 +279,15 @@ namespace Edelweiss.Mapping.Entities
         public virtual float Rotation(RoomData room, Entity entity)
         {
             return 0f;
+        }
+
+        /// <summary>
+        /// The render depth of the entity. Positive values are behind the player and negative values are in front of the player. Defaults to 0.
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        public virtual int Depth(RoomData room, Entity entity) {
+            return 0;
         }
     }
 

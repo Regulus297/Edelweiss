@@ -16,6 +16,12 @@ namespace Edelweiss.Mapping.Drawables
     public abstract class Drawable : PluginRegistryObject, ILuaConvertible
     {
         private static Dictionary<string, Type> drawables = [];
+
+        /// <summary>
+        /// The render depth of the drawable. Positive values are further back and negative values are further forward.
+        /// </summary>
+        public int depth;
+
         /// <summary>
         /// Draws the object to the current SpriteDestination.
         /// </summary>
@@ -57,6 +63,7 @@ namespace Edelweiss.Mapping.Drawables
         public virtual Table ToLuaTable(Script script)
         {
             Table table = new(script);
+            table["depth"] = depth;
             table["draw"] = () =>
             {
                 FromTable(table).Draw();

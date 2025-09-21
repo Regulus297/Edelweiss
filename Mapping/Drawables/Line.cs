@@ -56,7 +56,8 @@ namespace Edelweiss.Mapping.Drawables
                     {"x2", points[2 + i] - SpriteDestination.offsetX + offsetX},
                     {"y2", points[3 + i] - SpriteDestination.offsetY + offsetY},
                     {"color", color},
-                    {"thickness", thickness}
+                    {"thickness", thickness},
+                    {"depth", depth}
                 });
             }
         }

@@ -21,7 +21,6 @@ namespace Edelweiss.Mapping.Drawables
         internal float scaleX, scaleY;
         internal float renderOffsetX, renderOffsetY;
         internal float rotation;
-        internal int depth;
 
         internal int sourceX = -1, sourceY = -1, sourceWidth = -1, sourceHeight = -1;
         internal int atlasX, atlasY, atlasWidth, atlasHeight;
@@ -130,8 +129,6 @@ namespace Edelweiss.Mapping.Drawables
 
             sprite["rotation"] = rotation;
 
-            sprite["depth"] = depth;
-
             sprite["color"] = color;
 
             sprite["_type"] = Name;
@@ -233,14 +230,15 @@ namespace Edelweiss.Mapping.Drawables
                 {"x", x - SpriteDestination.offsetX + (int)renderOffsetX},
                 {"y", y - SpriteDestination.offsetY + (int)renderOffsetY},
                 {"justification", JToken.FromObject(new List<float>() {justificationX, justificationY})},
-                {"sourceX", sourceX < 0 ? atlasX : sourceX + atlasX},
-                {"sourceY", sourceY < 0 ? atlasY : sourceY + atlasY},
+                {"sourceX", sourceX < 0 ? atlasX : sourceX + Math.Max(atlasX, 0)},
+                {"sourceY", sourceY < 0 ? atlasY : sourceY + Math.Max(atlasY, 0)},
                 {"sourceWidth", sourceWidth < 0 ? atlasWidth : sourceWidth},
                 {"sourceHeight", sourceHeight < 0 ? atlasHeight : sourceHeight},
                 {"rotation", rotation * 180/MathF.PI},
                 {"scaleX", scaleX},
                 {"scaleY", scaleY},
-                {"color", color}
+                {"color", color},
+                {"depth", depth}
             };
         }
     }

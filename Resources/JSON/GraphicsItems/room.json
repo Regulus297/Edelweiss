@@ -8,6 +8,7 @@
     "onMouseMoved": "@netcode('Edelweiss:RoomMouse')",
     "onMouseReleased": "@netcode('Edelweiss:RoomMouse')",
     "selectable": true,
+    "focusable": true,
     "shapes": [
         {
             "type": "tiles",

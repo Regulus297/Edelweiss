@@ -103,47 +103,55 @@ namespace Edelweiss.Mapping.Drawables
                     sourceWidth = borderLeft,
                     sourceHeight = borderTop,
                     justificationX = 0,
-                    justificationY = 0
+                    justificationY = 0,
+                    depth = depth,
+                    color = color
                 });
             }
             if (width > 0 && height > 0 && borderRight > 0 && borderTop > 0)
             {
                 sprites.Add(new(texture)
                 {
-                    x = (int)width - borderRight,
+                    x = width - borderRight,
                     sourceX = data.width-borderRight,
                     sourceY = 0,
                     sourceWidth = borderRight,
                     sourceHeight = borderTop,
                     justificationX = 0,
-                    justificationY = 0
+                    justificationY = 0,
+                    depth = depth,
+                    color = color
                 });
             }
             if (width > 0 && height > 0 && borderLeft > 0 && borderBottom > 0)
             {
                 sprites.Add(new(texture)
                 {
-                    y = (int)height - borderBottom,
+                    y = height - borderBottom,
                     sourceX = 0,
                     sourceY = data.height-borderBottom,
                     sourceWidth = borderLeft,
                     sourceHeight = borderBottom,
                     justificationX = 0,
-                    justificationY = 0
+                    justificationY = 0,
+                    depth = depth,
+                    color = color
                 });
             }
             if (width > 0 && height > 0 && borderRight > 0 && borderBottom > 0)
             {
                 sprites.Add(new(texture)
                 {
-                    x = (int)width - borderRight,
-                    y = (int)height - borderBottom,
+                    x = width - borderRight,
+                    y = height - borderBottom,
                     sourceX = data.width-borderRight,
                     sourceY = data.height-borderBottom,
                     sourceWidth = borderLeft,
                     sourceHeight = borderBottom,
                     justificationX = 0,
-                    justificationY = 0
+                    justificationY = 0,
+                    depth = depth,
+                    color = color
                 });
             }
 
@@ -163,7 +171,9 @@ namespace Edelweiss.Mapping.Drawables
                         sourceWidth = tileWidth,
                         sourceHeight = borderTop,
                         justificationX = 0,
-                        justificationY = 0
+                        justificationY = 0,
+                        depth = depth,
+                        color = color
                     });
                 }
                 if (borderBottom > 0)
@@ -171,13 +181,15 @@ namespace Edelweiss.Mapping.Drawables
                     sprites.Add(new Sprite(texture)
                     {
                         x = x,
-                        y = (int)height - borderBottom,
+                        y = height - borderBottom,
                         sourceX = sourceX,
                         sourceY = data.height-borderBottom,
                         sourceWidth = tileWidth,
                         sourceHeight = borderBottom,
                         justificationX = 0,
-                        justificationY = 0
+                        justificationY = 0,
+                        depth = depth,
+                        color = color
                     });
                 }
             }
@@ -198,7 +210,9 @@ namespace Edelweiss.Mapping.Drawables
                         sourceWidth = borderLeft,
                         sourceHeight = tileHeight,
                         justificationX = 0,
-                        justificationY = 0
+                        justificationY = 0,
+                        depth = depth,
+                        color = color
                     });
                 }
                 if (borderRight > 0)
@@ -207,12 +221,14 @@ namespace Edelweiss.Mapping.Drawables
                     {
                         x = width - borderRight,
                         y = y,
-                        sourceX = data.width-borderRight,
+                        sourceX = data.width - borderRight,
                         sourceY = sourceY,
                         sourceWidth = borderRight,
                         sourceHeight = tileHeight,
                         justificationX = 0,
-                        justificationY = 0
+                        justificationY = 0,
+                        depth = depth,
+                        color = color
                     });
                 }
             }
@@ -235,14 +251,10 @@ namespace Edelweiss.Mapping.Drawables
                         sourceWidth = tileWidth,
                         sourceHeight = tileHeight,
                         justificationX = 0,
-                        justificationY = 0
+                        justificationY = 0,
+                        depth = depth
                     });
                 }
-            }
-
-            foreach (Sprite sprite in sprites)
-            {
-                sprite.color = color;
             }
 
             return sprites;
