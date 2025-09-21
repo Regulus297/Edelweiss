@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Xml;
+using Edelweiss.Plugins;
 
 namespace Edelweiss.Utils
 {
@@ -61,33 +62,59 @@ namespace Edelweiss.Utils
     /// <summary>
     /// Contains data for a tile
     /// </summary>
-    /// <param name="ID">The ID of the tile</param>
-    /// <param name="path">The path to the texture of the tile relative to Gameplay/tilesets/</param>
-    /// <param name="masks">The patterns of the tile</param>
-    /// <param name="ignores">Which tiles, if any, that the tile ignores</param>
-    public class TileData(string ID, string path, Dictionary<string, List<Point>> masks, string ignores = "")
+    public class TileData
     {
         /// <summary>
         /// The ID of the tile
         /// </summary>
-        public string ID { get; set; } = ID;
+        public string ID { get; set; }
         /// <summary>
         /// The path to the texture of the tile
         /// </summary>
-        public string path { get; set; } = "Gameplay/tilesets/" + path;
+        public string path { get; set; }
+
+        /// <summary>
+        /// The x-position of the tileset in the atlas
+        /// </summary>
+        public int atlasX { get; set; }
+
+        /// <summary>
+        /// The y-position of the tileset in the atlas
+        /// </summary>
+        public int atlasY { get; set; }
 
         /// <summary>
         /// The patterns of the tile
         /// </summary>
-        public Dictionary<string, List<Point>> masks { get; set; } = masks;
+        public Dictionary<string, List<Point>> masks { get; set; }
         /// <summary>
         /// Which tiles, if any, that the tile ignores
         /// </summary>
-        public string ignores { get; set; } = ignores;
+        public string ignores { get; set; }
 
         /// <summary>
         /// The display name of the tile
         /// </summary>
-        public string name { get; set; } = (path.StartsWith("bg") ? path.Substring(2) : path).CamelCaseToText();
+        public string name { get; set; }
+
+        /// <param name="ID">The ID of the tile</param>
+        /// <param name="path">The path to the texture of the tile relative to Gameplay/tilesets/</param>
+        /// <param name="masks">The patterns of the tile</param>
+        /// <param name="ignores">Which tiles, if any, that the tile ignores</param>
+        public TileData(string ID, string path, Dictionary<string, List<Point>> masks, string ignores = "")
+        {
+            this.ID = ID;
+            this.path = "Gameplay/tilesets/" + path;
+            this.masks = masks;
+            this.ignores = ignores;
+            name = (path.StartsWith("bg") ? path.Substring(2) : path).CamelCaseToText();
+
+            TextureData data = CelesteModLoader.GetTextureData(this.path);
+            if (data == null)
+                return;
+
+            atlasX = data.atlasX;
+            atlasY = data.atlasY;
+        }
     }
 }

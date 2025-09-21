@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq;
 using Edelweiss.Network;
 using Edelweiss.Plugins;
 using Edelweiss.Preferences;
 using Edelweiss.RegistryTypes;
 using Edelweiss.Utils;
-using Newtonsoft.Json.Linq;
 
 namespace Edelweiss
 {
@@ -24,26 +21,22 @@ namespace Edelweiss
 
         internal static string CelesteDirectory => Registry.registry[typeof(PluginSaveablePreference)].GetValue<CelesteDirectoryPref>().Value.ToString();
 
-        public long NetcodeDynamic { get; private set; }
-
         public override void Load()
         {
             Instance = this;
-            NetcodeDynamic = CreateNetcode(nameof(NetcodeDynamic), false);
         }
 
         public override void PostSetupContent()
         {
+            AtlasLoader.LoadAtlasMetaFile(Path.Join(CelesteDirectory, "Content/Graphics/Atlases/Gameplay.meta"));
+            AtlasLoader.LoadAtlasMetaFile(Path.Join(CelesteDirectory, "Content/Graphics/Atlases/Gui.meta"));
             LoadForegroundTiles();
             LoadBackgroundTiles();
 
-
-
-
-            if (!CelesteModLoader.LoadTexturesFromDirectory(Path.Join(CelesteDirectory, "graphics-dump")))
-            {
-                Console.WriteLine("Failed to load textures: please place graphics dump inside celeste directory");
-            }
+            // if (!CelesteModLoader.LoadTexturesFromDirectory(Path.Join(CelesteDirectory, "graphics-dump")))
+            // {
+            //     Console.WriteLine("Failed to load textures: please place graphics dump inside celeste directory");
+            // }
             textures.Value = CelesteModLoader.texturePaths;
         }
 

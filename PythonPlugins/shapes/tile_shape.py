@@ -38,7 +38,7 @@ class TileShape(ShapeRenderer):
             tileX, tileY = self.pickTile(x, y, tileData[tile]["masks"]).split(", ")
             tileX = int(tileX)
             tileY = int(tileY)
-            painter.drawPixmap(x * 8, y * 8, PixmapLoader.load_texture(tileData[tile]["path"]), tileX * 8, tileY * 8, 8, 8)
+            painter.drawPixmap(x * 8, y * 8, PixmapLoader.load_texture(tileData[tile]["path"]), tileData[tile]["atlasX"] + tileX * 8, tileData[tile]["atlasY"] + tileY * 8, 8, 8)
 
         self._cache_dirty = False
 

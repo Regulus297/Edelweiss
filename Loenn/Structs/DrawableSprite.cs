@@ -17,15 +17,16 @@ namespace Edelweiss.Loenn.Structs
 
             table["fromTexture"] = (Func<string, Table, DynValue>)((texture, data) =>
             {
-                if (CelesteModLoader.GetTextureData("Gameplay/" + texture) == null)
+                TextureData textureData;
+                if ((textureData = CelesteModLoader.GetTextureData("Gameplay/" + texture)) == null)
                 {
                     return DynValue.Nil;
                 }
                 return DynValue.NewTable(new Sprite(texture)
-                    {
-                        x = (int)(data?.Get("x").Number ?? 0),
-                        y = (int)(data?.Get("y").Number ?? 0)
-                    }.ToLuaTable(script));
+                {
+                    x = (int)(data?.Get("x").Number ?? 0),
+                    y = (int)(data?.Get("y").Number ?? 0),     
+                }.ToLuaTable(script));
             });
 
             return table;

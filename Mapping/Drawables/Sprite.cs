@@ -13,19 +13,52 @@ namespace Edelweiss.Mapping.Drawables
     /// <summary>
     /// 
     /// </summary>
-    public class Sprite(string texture, int x, int y, float justificationX, float justificationY, float scaleX, float scaleY, float renderOffsetX, float renderOffsetY, float rotation, int depth) : Drawable, ILuaConvertible
+    public class Sprite : Drawable, ILuaConvertible
     {
-        internal string texture = texture;
-        internal int x = x, y = y;
-        internal float justificationX = justificationX, justificationY = justificationY;
-        internal float scaleX = scaleX, scaleY = scaleY;
-        internal float renderOffsetX = renderOffsetX, renderOffsetY = renderOffsetY;
-        internal float rotation = rotation;
-        internal int depth = depth;
+        internal string texture;
+        internal int x, y;
+        internal float justificationX, justificationY;
+        internal float scaleX, scaleY;
+        internal float renderOffsetX, renderOffsetY;
+        internal float rotation;
+        internal int depth;
 
         internal int sourceX = -1, sourceY = -1, sourceWidth = -1, sourceHeight = -1;
+        internal int atlasX, atlasY, atlasWidth, atlasHeight;
 
         internal string color = "#ffffff";
+
+        /// <summary>
+        /// 
+        /// </summary>
+        internal Sprite(string texture, int x, int y, float justificationX, float justificationY, float scaleX, float scaleY, float renderOffsetX, float renderOffsetY, float rotation, int depth)
+        {
+            this.texture = texture;
+            this.x = x;
+            this.y = y;
+            this.justificationX = justificationX;
+            this.justificationY = justificationY;
+            this.scaleX = scaleX;
+            this.scaleY = scaleY;
+            this.renderOffsetX = renderOffsetX;
+            this.renderOffsetY = renderOffsetY;
+            this.rotation = rotation;
+            this.depth = depth;
+
+            atlasX = -1;
+            atlasY = -1;
+            atlasWidth = -1;
+            atlasHeight = -1;
+
+            TextureData textureData;
+            if ((textureData = CelesteModLoader.GetTextureData("Gameplay/" + texture)) == null)
+                return;
+
+            atlasX = textureData.atlasX;
+            atlasY = textureData.atlasY;
+            atlasWidth = textureData.atlasWidth;
+            atlasHeight = textureData.atlasHeight;
+        }
 
         /// <summary>
         /// Creates a sprite with the given texture key
@@ -33,7 +66,6 @@ namespace Edelweiss.Mapping.Drawables
         /// <param name="texture">The texture of the sprite relative to Gameplay/</param>
         public Sprite(string texture) : this(texture, 0, 0, 0.5f, 0.5f, 1, 1, 0, 0, 0, 0)
         {
-
         }
 
         /// <summary>
@@ -198,13 +230,13 @@ namespace Edelweiss.Mapping.Drawables
             {
                 {"type", "pixmap"},
                 {"path", "Gameplay/" + texture},
-                {"x", x - SpriteDestination.offsetX},
-                {"y", y - SpriteDestination.offsetY},
+                {"x", x - SpriteDestination.offsetX + (int)renderOffsetX},
+                {"y", y - SpriteDestination.offsetY + (int)renderOffsetY},
                 {"justification", JToken.FromObject(new List<float>() {justificationX, justificationY})},
-                {"sourceX", sourceX},
-                {"sourceY", sourceY},
-                {"sourceWidth", sourceWidth},
-                {"sourceHeight", sourceHeight},
+                {"sourceX", sourceX < 0 ? atlasX : sourceX + atlasX},
+                {"sourceY", sourceY < 0 ? atlasY : sourceY + atlasY},
+                {"sourceWidth", sourceWidth < 0 ? atlasWidth : sourceWidth},
+                {"sourceHeight", sourceHeight < 0 ? atlasHeight : sourceHeight},
                 {"rotation", rotation * 180/MathF.PI},
                 {"scaleX", scaleX},
                 {"scaleY", scaleY},

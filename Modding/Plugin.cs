@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Edelweiss.Network;
 using Edelweiss.Preferences;
 using Edelweiss.RegistryTypes;
@@ -60,7 +61,7 @@ namespace Edelweiss.Plugins
         /// <param name="name">The name of the netcode</param>
         /// <param name="positive">If true, the generated netcode will be positive.</param>
         public long CreateNetcode(string name, bool positive) => Netcode.CreateNetcode($"{ID}:{name}", positive);
-        
+
         /// <summary>
         /// Prefixes the plugin's ID to the given key.
         /// </summary>
@@ -72,6 +73,39 @@ namespace Edelweiss.Plugins
         public string GetLocalization(string key)
         {
             return Language.GetText(GetLocalizationKey(key));
+        }
+
+        /// <summary>
+        /// Creates a cache file with the given filename at the cache directory for the plugin
+        /// </summary>
+        /// <param name="filename">The filename (with extension) for the cache file</param>
+        /// <returns>The stream of the cache file</returns>
+        public Stream CreateCache(string filename)
+        {
+            string cacheDirectory = Path.Join(Directory.GetCurrentDirectory(), ".cache", ID);
+            if (!Directory.Exists(cacheDirectory))
+            {
+                Directory.CreateDirectory(cacheDirectory);
+            }
+
+            return File.OpenWrite(Path.Join(cacheDirectory, filename));
+        }
+
+        /// <summary>
+        /// Returns whether or not the given cache exists.
+        /// </summary>
+        /// <param name="filename">The cache path</param>
+        public bool CacheExists(string filename)
+        {
+            return File.Exists(CachePath(filename));
+        }
+
+        /// <summary>
+        /// Returns the absolute path to the cache with the given name
+        /// </summary>
+        public string CachePath(string filename)
+        {
+            return Path.Join(Directory.GetCurrentDirectory(), ".cache", ID, filename);
         }
     }
 }

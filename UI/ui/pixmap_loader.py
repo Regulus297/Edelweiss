@@ -7,6 +7,7 @@ from network import SyncedVariables
 
 class PixmapLoader:
     loaded_textures = {}
+    loaded_paths = {}
 
     @staticmethod
     def load_texture(key):
@@ -16,14 +17,16 @@ class PixmapLoader:
         textures = SyncedVariables.variables["Edelweiss:Textures"]
         if key in textures:
             path = textures[key]
+            if path in PixmapLoader.loaded_paths:
+                return PixmapLoader.loaded_paths[path]
             if chr(0) in path:
                 zip_path, name = path.split(chr(0))
                 with zipfile.ZipFile(zip_path) as mod:
                     pixmap = QPixmap()
                     pixmap.loadFromData(mod.read(name))
-                    PixmapLoader.loaded_textures[key] = pixmap
+                    PixmapLoader.loaded_textures[key] = PixmapLoader.loaded_paths[path] = pixmap
                     return pixmap
 
-            PixmapLoader.loaded_textures[key] = QPixmap(path)
+            PixmapLoader.loaded_textures[key] = PixmapLoader.loaded_paths[path] = QPixmap(path)
             return PixmapLoader.loaded_textures[key]
         return None

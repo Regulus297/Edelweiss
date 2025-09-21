@@ -1333,6 +1333,24 @@
             Prefixes the plugin's ID to the given key and attempts to get the localization for it.
             </summary>
         </member>
+        <member name="M:Edelweiss.Plugins.Plugin.CreateCache(System.String)">
+            <summary>
+            Creates a cache file with the given filename at the cache directory for the plugin
+            </summary>
+            <param name="filename">The filename (with extension) for the cache file</param>
+            <returns>The stream of the cache file</returns>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.CacheExists(System.String)">
+            <summary>
+            Returns whether or not the given cache exists.
+            </summary>
+            <param name="filename">The cache path</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.CachePath(System.String)">
+            <summary>
+            Returns the absolute path to the cache with the given name
+            </summary>
+        </member>
         <member name="T:Edelweiss.Plugins.PluginKeybind">
             <summary>
             A saveable preference that contains keybinds
@@ -1802,6 +1820,23 @@
             The number of entries in the list
             </summary>
         </member>
+        <member name="T:Edelweiss.Utils.AtlasLoader">
+            <summary>
+            The class responsible for loading atlases
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.AtlasLoader.LoadAtlasMetaFile(System.String)">
+            <summary>
+            Loads a .meta atlas file and adds the sprites and sprite data to the CelesteModLoader dictionaries
+            </summary>
+            <param name="filePath"></param>
+        </member>
+        <member name="M:Edelweiss.Utils.AtlasLoader.LoadAtlasTexture(System.String)">
+            <summary>
+            Loads an atlas texture (.data file) and then caches it as a .bmp file.
+            </summary>
+            <param name="path">The absolute path to the atlas texture</param>
+        </member>
         <member name="T:Edelweiss.Utils.CelesteModLoader">
             <summary>
             The class responsible for loading Celeste mods
@@ -1843,14 +1878,34 @@
             Contains data for a texture
             </summary>
         </member>
-        <member name="F:Edelweiss.Utils.TextureData.width">
+        <member name="P:Edelweiss.Utils.TextureData.width">
             <summary>
             The width of the texture in pixels
             </summary>
         </member>
-        <member name="F:Edelweiss.Utils.TextureData.height">
+        <member name="P:Edelweiss.Utils.TextureData.height">
             <summary>
             The height of the texture in pixels
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Utils.TextureData.atlasX">
+            <summary>
+            The position of the texture in the atlas
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Utils.TextureData.atlasY">
+            <summary>
+            The position of the texture in the atlas
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Utils.TextureData.atlasWidth">
+            <summary>
+            The width and height of the texture in the atlas
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Utils.TextureData.atlasHeight">
+            <summary>
+            The width and height of the texture in the atlas
             </summary>
         </member>
         <member name="M:Edelweiss.Utils.TextureData.ToLuaTable(MoonSharp.Interpreter.Script)">
@@ -2084,19 +2139,6 @@
             <summary>
             Contains data for a tile
             </summary>
-            <param name="ID">The ID of the tile</param>
-            <param name="path">The path to the texture of the tile relative to Gameplay/tilesets/</param>
-            <param name="masks">The patterns of the tile</param>
-            <param name="ignores">Which tiles, if any, that the tile ignores</param>
-        </member>
-        <member name="M:Edelweiss.Utils.TileData.#ctor(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.Drawing.Point}},System.String)">
-            <summary>
-            Contains data for a tile
-            </summary>
-            <param name="ID">The ID of the tile</param>
-            <param name="path">The path to the texture of the tile relative to Gameplay/tilesets/</param>
-            <param name="masks">The patterns of the tile</param>
-            <param name="ignores">Which tiles, if any, that the tile ignores</param>
         </member>
         <member name="P:Edelweiss.Utils.TileData.ID">
             <summary>
@@ -2106,6 +2148,16 @@
         <member name="P:Edelweiss.Utils.TileData.path">
             <summary>
             The path to the texture of the tile
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.TileData.atlasX">
+            <summary>
+            The x-position of the tileset in the atlas
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.TileData.atlasY">
+            <summary>
+            The y-position of the tileset in the atlas
             </summary>
         </member>
         <member name="P:Edelweiss.Utils.TileData.masks">
@@ -2122,6 +2174,12 @@
             <summary>
             The display name of the tile
             </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.TileData.#ctor(System.String,System.String,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.Drawing.Point}},System.String)">
+            <param name="ID">The ID of the tile</param>
+            <param name="path">The path to the texture of the tile relative to Gameplay/tilesets/</param>
+            <param name="masks">The patterns of the tile</param>
+            <param name="ignores">Which tiles, if any, that the tile ignores</param>
         </member>
     </members>
 </doc>

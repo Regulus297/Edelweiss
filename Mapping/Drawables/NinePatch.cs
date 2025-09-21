@@ -111,7 +111,7 @@ namespace Edelweiss.Mapping.Drawables
                 sprites.Add(new(texture)
                 {
                     x = (int)width - borderRight,
-                    sourceX = -borderRight,
+                    sourceX = data.width-borderRight,
                     sourceY = 0,
                     sourceWidth = borderRight,
                     sourceHeight = borderTop,
@@ -125,7 +125,7 @@ namespace Edelweiss.Mapping.Drawables
                 {
                     y = (int)height - borderBottom,
                     sourceX = 0,
-                    sourceY = -borderBottom,
+                    sourceY = data.height-borderBottom,
                     sourceWidth = borderLeft,
                     sourceHeight = borderBottom,
                     justificationX = 0,
@@ -138,8 +138,8 @@ namespace Edelweiss.Mapping.Drawables
                 {
                     x = (int)width - borderRight,
                     y = (int)height - borderBottom,
-                    sourceX = -borderRight,
-                    sourceY = -borderBottom,
+                    sourceX = data.width-borderRight,
+                    sourceY = data.height-borderBottom,
                     sourceWidth = borderLeft,
                     sourceHeight = borderBottom,
                     justificationX = 0,
@@ -173,7 +173,7 @@ namespace Edelweiss.Mapping.Drawables
                         x = x,
                         y = (int)height - borderBottom,
                         sourceX = sourceX,
-                        sourceY = -borderBottom,
+                        sourceY = data.height-borderBottom,
                         sourceWidth = tileWidth,
                         sourceHeight = borderBottom,
                         justificationX = 0,
@@ -207,7 +207,7 @@ namespace Edelweiss.Mapping.Drawables
                     {
                         x = width - borderRight,
                         y = y,
-                        sourceX = -borderRight,
+                        sourceX = data.width-borderRight,
                         sourceY = sourceY,
                         sourceWidth = borderRight,
                         sourceHeight = tileHeight,

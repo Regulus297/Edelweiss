@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Edelweiss.Loenn;
 using Edelweiss.Mapping.Entities;
 using Edelweiss.Plugins;
+using Edelweiss.Preferences;
 using MoonSharp.Interpreter;
 
 namespace Edelweiss.Utils
@@ -244,15 +245,49 @@ namespace Edelweiss.Utils
     /// </summary>
     public class TextureData : ILuaConvertible
     {
+        private int _width;
+
         /// <summary>
         /// The width of the texture in pixels
         /// </summary>
-        public int width;
+        public int width
+        {
+            get
+            {
+                return atlasWidth < 0 ? _width : atlasWidth;
+            }
+            set
+            {
+                _width = value;
+            }
+        }
+
+        private int _height;
 
         /// <summary>
         /// The height of the texture in pixels
         /// </summary>
-        public int height;
+        public int height
+        {
+            get
+            {
+                return atlasHeight < 0 ? _height : atlasHeight;
+            }
+            set
+            {
+                _height = value;
+            }
+        }
+
+        /// <summary>
+        /// The position of the texture in the atlas
+        /// </summary>
+        public int atlasX = -1, atlasY = -1;
+
+        /// <summary>
+        /// The width and height of the texture in the atlas
+        /// </summary>
+        public int atlasWidth = -1, atlasHeight = -1;
 
         /// <summary>
         /// 
