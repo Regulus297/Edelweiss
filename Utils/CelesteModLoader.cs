@@ -11,6 +11,7 @@ using Edelweiss.Mapping.Entities;
 using Edelweiss.Plugins;
 using Edelweiss.Preferences;
 using MoonSharp.Interpreter;
+using YamlDotNet.RepresentationModel;
 
 namespace Edelweiss.Utils
 {
@@ -41,6 +42,8 @@ namespace Edelweiss.Utils
         /// The list of all loaded entities
         /// </summary>
         public static ConcurrentDictionary<string, EntityData> entities = [];
+
+        internal static ConcurrentDictionary<string, List<string>> modEntities = [];
 
         /// <summary>
         /// Contains the name of the default (first) placement (entity_name.placement_name) for a given entity (entity_name)
@@ -77,6 +80,27 @@ namespace Edelweiss.Utils
         {
             Logger.Log(nameof(CelesteModLoader), $"Loading mod from folder {modPath}");
             LoadTexturesFromDirectory(modPath);
+
+            Stream s = modPath.GetStream("everest.yaml");
+            string modName = Path.GetFileNameWithoutExtension(modPath.ToString());
+            if (s != null)
+            {
+                using StreamReader r = new StreamReader(s);
+                string yaml = r.ReadToEnd();
+                YamlStream stream = new YamlStream();
+                stream.Load(new StringReader(yaml));
+                YamlNode root = stream.Documents[0].RootNode;
+                try
+                {
+                    modName = root[0]["Name"]?.ToString();
+                }
+                catch (ArgumentException)
+                {
+                    
+                }
+            }
+            s?.Dispose();
+
             string loennEntityPath = Path.Join("Loenn", "entities");
             string loennLangPath = Path.Join("Loenn", "lang");
 
@@ -92,7 +116,7 @@ namespace Edelweiss.Utils
                     Table table = LoadLua(entityFile.Split("/")[^1], reader.ReadToEnd(), out Script script);
                     if (table != null)
                     {
-                        CreateEntities(entityFile, table, script);
+                        CreateEntities(modName, entityFile, table, script);
                     }
                 }
             }
@@ -106,7 +130,7 @@ namespace Edelweiss.Utils
                 tempScript.Globals["require"] = (Func<string, DynValue>)(module => LoennModule.RequireModule(tempScript, module));
 
                 // Required by aonHelper's Darker Matter
-                // It draws in Loenn so I assume it defines a split method but I can't be fucked finding where
+                // It draws in Loenn so I assume it [Loenn] defines a split method but I can't be fucked finding where
                 tempScript.DoString(@"
                 function string:split(sep)
                     local result = {}
@@ -138,7 +162,7 @@ namespace Edelweiss.Utils
             return null;
         }
 
-        internal static void CreateEntities(string fileName, Table table, Script script)
+        internal static void CreateEntities(string modName, string fileName, Table table, Script script)
         {
             try
             {
@@ -148,7 +172,7 @@ namespace Edelweiss.Utils
                     // It's a list of entities
                     foreach (DynValue value in table.Values)
                     {
-                        CreateEntities(fileName, value.Table, script);
+                        CreateEntities(modName, fileName, value.Table, script);
                     }
                 }
 
@@ -163,8 +187,14 @@ namespace Edelweiss.Utils
 
                 foreach (Table placement in placements)
                 {
-                    LuaEntityData entityData = new(table.Get("name").String, placement.Get("name").String, placement, script, table);
+                    LuaEntityData entityData = new(table.Get("name").String, placement.Get("name").String, placement, script, table, modName);
                     entities[entityData.Name] = entityData;
+                    if (!modEntities.ContainsKey(modName))
+                    {
+                        modEntities[modName] = [];
+                    }
+                    modEntities[modName].Add(entityData.Name);
+
                     if (!defaultPlacements.ContainsKey(entityData.Name))
                     {
                         defaultPlacements[table.Get("name").String] = entityData.Name;

@@ -286,9 +286,23 @@ namespace Edelweiss.Mapping.Entities
         /// </summary>
         /// <param name="room">The room the entity is in</param>
         /// <param name="entity">The entity instance</param>
-        public virtual int Depth(RoomData room, Entity entity) {
+        public virtual int Depth(RoomData room, Entity entity)
+        {
             return 0;
         }
+
+        /// <summary>
+        /// The list of mods associated with this entity
+        /// </summary>
+        public virtual List<string> Mods()
+        {
+            return [];
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public string ModsList => Mods().Count > 0 ? "[" + string.Join(" + ", Mods()) + "]" : "";
     }
 
     /// <summary>

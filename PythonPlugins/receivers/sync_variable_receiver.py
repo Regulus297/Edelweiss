@@ -12,3 +12,6 @@ class SyncVariableReceiver(PacketReceiver):
     def process_packet(self, packet):
         data = JSONPreprocessor.loads(packet.data)
         SyncedVariables.variables[data["name"]] = data["value"]
+        if data["name"] in SyncedVariables.variable_listeners:
+            for callback in SyncedVariables.variable_listeners[data["name"]]:
+                callback()

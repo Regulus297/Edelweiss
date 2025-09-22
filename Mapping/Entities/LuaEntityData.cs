@@ -18,19 +18,21 @@ namespace Edelweiss.Mapping.Entities
     /// <param name="placement">The placement table that this entity is for</param>
     /// <param name="script">The script the table belongs to</param>
     /// <param name="entityTable">The table containing all entity data</param>
-    public class LuaEntityData(string name, string placementName, Table placement, Script script, Table entityTable) : EntityData
+    /// <param name="modName">The name of the mod defining this entity</param>
+    public class LuaEntityData(string name, string placementName, Table placement, Script script, Table entityTable, string modName) : EntityData
     {
         Script script = script;
         Table entityTable = entityTable;
         Table placement = placement;
         string name = name;
         string placementName = placementName;
+        string modName = modName;
 
         /// <inheritdoc/>
         public override string Name => $"{name}.{placementName}";
 
         /// <inheritdoc/>
-        public override string DisplayName => Language.GetTextOrDefault($"Loenn.entities.{name}.placements.name.{placementName}") ?? Name;
+        public override string DisplayName => (Language.GetTextOrDefault($"Loenn.entities.{name}.placements.name.{placementName}") ?? Name) + " " + ModsList;
 
         /// <inheritdoc/>
         public override string Texture(RoomData room, Entity entity)
@@ -509,6 +511,25 @@ namespace Edelweiss.Mapping.Entities
             {
                 Logger.Error("LuaEntity", $"Error while getting rotation for entity {Name}: \n {e.Formatted()}");
                 return base.Depth(room, entity);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override List<string> Mods()
+        {
+            List<string> mods = [modName];
+            try
+            {
+                DynValue associatedMods = entityTable.Get("associatedMods");
+                if (associatedMods.IsNil())
+                    return mods;
+                Table extra = associatedMods.Type == DataType.Table ? associatedMods.Table : script.Call(associatedMods, Entity.DefaultFromData(this, RoomData.Default)).Table;
+                return [modName, ..extra.Values.Select(t => t.String)];
+            }
+            catch (Exception e)
+            {
+                Logger.Error("LuaEntity", $"Error while getting associated mods for entity {Name}: \n {e.Formatted()}");
+                return mods;
             }
         }
     }

@@ -94,13 +94,17 @@ namespace Edelweiss.Mapping.Tools
                     if (IsSearched(CelesteModLoader.entities[material].DisplayName))
                         cachedMaterials[material] = "★ " + CelesteModLoader.entities[material].DisplayName;
                 }
-                foreach (var entity in CelesteModLoader.entities)
+                foreach (var modEntityList in CelesteModLoader.modEntities)
                 {
-                    if (favourites.Contains(entity.Key))
-                        continue;
+                    foreach (string entity in modEntityList.Value)
+                    {
+                        if (favourites.Contains(entity))
+                            continue;
 
-                    if (IsSearched(entity.Value.DisplayName))
-                        cachedMaterials[entity.Key] = entity.Value.DisplayName;
+                        EntityData entityData = CelesteModLoader.entities[entity];
+                        if (IsSearched(entityData.DisplayName))
+                            cachedMaterials[entity] = entityData.DisplayName;
+                    }
                 }
             }
             return cachedMaterials;
@@ -174,7 +178,7 @@ namespace Edelweiss.Mapping.Tools
                     
                 }
             }
-            else if (ghostEntity.nodes.Count > 0)
+            else if (ghostEntity.nodes.Count == 1)
             {
                 changed = true;
                 ghostEntity.nodes[0] = new Point(tileX * 8 - startTileX * 8, tileY * 8 - startTileY * 8);
@@ -221,7 +225,7 @@ namespace Edelweiss.Mapping.Tools
                 }
                 created.Resize(ghostEntity.width, ghostEntity.height);
             }
-            else if (created.nodes.Count > 0)
+            else if (created.nodes.Count == 1)
             {
                 created.nodes[0] = new(8 * tileX - 8 * startTileX, 8 * tileY - 8 * startTileY);
             }
@@ -246,25 +250,37 @@ namespace Edelweiss.Mapping.Tools
 
         public override void OnDeselect()
         {
-            NetworkManager.SendPacket(Netcode.MODIFY_ITEM_SHAPE, new JObject()
+            NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
             {
                 {"widget", "Mapping/MainView"},
                 {"item", "cursorGhost"},
-                {"index", 0},
-                {"data", new JObject() {
-                    {"visible", true}
-                }}
+                {"action", "clear"}
             });
 
             NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
             {
                 {"widget", "Mapping/MainView"},
                 {"item", "cursorGhost"},
-                {"action", "remove"},
-                {"index", JToken.FromObject(Enumerable.Range(1, cursorGhostItems))}
+                {"data", new JObject() {
+                    {"shapes", new JArray() {
+                        new JObject() {
+                            {"type", "tileGhost"},
+                            {"color", "#aaaaaa"},
+                            {"thickness", "@defer('@pen_thickness(\\'Mapping/MainView\\')')"},
+                            {"width", 8},
+                            {"height", 8},
+                            {"depth", int.MinValue},
+                            { "coords", new JArray() {
+                                "0,0"
+                            }}
+                        }
+                    }}
+                }}
             });
+            
             cursorGhostItems = 0;
             lastSelectedMaterial = "";
+            
         }
 
         public override bool UpdateCursorGhost(float mouseX, float mouseY)

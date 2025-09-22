@@ -138,6 +138,7 @@ class CustomDrawItem(QGraphicsItem):
             self.setRotation(self.data["rotation"])
 
         if update_shapes:
+            self.clear()
             for shape in data["shapes"]:
                 self.addShape(shape)
 

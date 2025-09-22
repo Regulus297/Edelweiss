@@ -664,6 +664,16 @@
             <param name="room">The room the entity is in</param>
             <param name="entity">The entity instance</param>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Mods">
+            <summary>
+            The list of mods associated with this entity
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.EntityData.ModsList">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.NodeLineRenderType">
             <summary>
             Determines how nodes are connected to the main entity
@@ -718,8 +728,9 @@
             <param name="placement">The placement table that this entity is for</param>
             <param name="script">The script the table belongs to</param>
             <param name="entityTable">The table containing all entity data</param>
+            <param name="modName">The name of the mod defining this entity</param>
         </member>
-        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.#ctor(System.String,System.String,MoonSharp.Interpreter.Table,MoonSharp.Interpreter.Script,MoonSharp.Interpreter.Table)">
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.#ctor(System.String,System.String,MoonSharp.Interpreter.Table,MoonSharp.Interpreter.Script,MoonSharp.Interpreter.Table,System.String)">
             <summary>
             The class containing entity data for a Loenn entity
             </summary>
@@ -728,6 +739,7 @@
             <param name="placement">The placement table that this entity is for</param>
             <param name="script">The script the table belongs to</param>
             <param name="entityTable">The table containing all entity data</param>
+            <param name="modName">The name of the mod defining this entity</param>
         </member>
         <member name="P:Edelweiss.Mapping.Entities.LuaEntityData.Name">
             <inheritdoc/>
@@ -799,6 +811,9 @@
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Depth(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Mods">
             <inheritdoc/>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.MapData">

@@ -10,6 +10,9 @@ class PixmapShape(ShapeRenderer):
     def __init__(self, parent=None, data=None):
         super().__init__("pixmap", parent, data)
 
+        self.cached = None
+        self.prevColor = ""
+
     def tint(self, pixmap, color):
         tinted = QPixmap(pixmap.size())
         tinted.fill(Qt.transparent)
@@ -32,7 +35,12 @@ class PixmapShape(ShapeRenderer):
             return
 
         if "color" in self.data and self.data["color"].upper() != "#FFFFFFFF" and self.data["color"].upper() != "#FFFFFF":
-            pixmap = self.tint(pixmap, QColor(self.data["color"]))
+            if self.cached is None or self.prevColor != self.data["color"]:
+                self.cached = self.tint(pixmap, QColor(self.data["color"]))
+                self.prevColor = self.data["color"]
+        elif self.cached is None:
+            self.cached = pixmap
+            
         
         justification = self.data["justification"] if "justification" in self.data else [0.5, 0.5]
         x, y, _, _ = self.parent.get_dimensions(self.data["x"], self.data["y"], 0, 0)
@@ -41,7 +49,7 @@ class PixmapShape(ShapeRenderer):
         sourceY = self.data["sourceY"] if "sourceY" in self.data else -1
         sourceWidth = self.data["sourceWidth"] if "sourceWidth" in self.data else -1
         sourceHeight = self.data["sourceHeight"] if "sourceHeight" in self.data else -1
-        width, height = sourceWidth if sourceWidth > -1 else pixmap.width(), sourceHeight if sourceHeight > -1 else pixmap.height()
+        width, height = sourceWidth if sourceWidth > -1 else self.cached.width(), sourceHeight if sourceHeight > -1 else self.cached.height()
 
         transform = painter.transform()
         painter.translate(x, y)
@@ -54,10 +62,10 @@ class PixmapShape(ShapeRenderer):
             painter.scale(scaleX, scaleY)
 
         if sourceWidth <= 0 or sourceHeight <= 0:
-            painter.drawPixmap(int(-width*justification[0]), int(-height*justification[1]), pixmap)
+            painter.drawPixmap(int(-width*justification[0]), int(-height*justification[1]), self.cached)
         else:
             sx = sourceX if sourceX >= 0 else width + sourceX
             sy = sourceY if sourceY >= 0 else height + sourceY
-            painter.drawPixmap(int(-width*justification[0]), int(-height*justification[1]), pixmap, sx, sy, sourceWidth, sourceHeight)
+            painter.drawPixmap(int(-width*justification[0]), int(-height*justification[1]), self.cached, sx, sy, sourceWidth, sourceHeight)
 
         painter.setTransform(transform)
