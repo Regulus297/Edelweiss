@@ -109,6 +109,20 @@ namespace Edelweiss.Utils
         }
 
         /// <summary>
+        /// Gets the hex color code for the given RGBA ranging from 0-1
+        /// </summary>
+        public static string GetColor(float r, float g, float b, float a = 1)
+        {
+            return DynValue.NewTable(new Script(), DynValue.NewNumber(r), DynValue.NewNumber(g), DynValue.NewNumber(b), DynValue.NewNumber(a)).Color();
+        }
+        
+        
+        /// <summary>
+        /// Gets the hex color code for the given RGBA ranging from 0-255
+        /// </summary>
+        public static string GetColor(int r, int g, int b, int a = 255) => GetColor(r / 255f, g / 255f, b / 255f, a / 255f);
+
+        /// <summary>
         /// Returns true if the inputted array of arguments matches the desired signature
         /// </summary>
         public static bool MatchesSignature(this DynValue[] args, params DataType[] signature)
@@ -275,12 +289,31 @@ namespace Edelweiss.Utils
         /// <summary>
         /// Converts a point to a Lua table
         /// </summary>
-        public static Table ToLuaTable(this Point p, Script script)
+        public static Table ToLuaTable(this Point p, Script script, bool keyed = true)
         {
             Table table = new Table(script);
-            table["x"] = p.X;
-            table["y"] = p.Y;
+            table[keyed ? "x": 1] = p.X;
+            table[keyed ? "y": 2] = p.Y;
             return table;
+        }
+
+        /// <summary>
+        /// Cycles through a list
+        /// </summary>
+        public static T Cycle<T>(this List<T> items, T current, int amount = 1)
+        {
+            int i = items.IndexOf(current);
+            if (i == -1)
+                return current;
+
+            i += amount;
+            if (i < 0)
+            {
+                i += items.Count * Math.Abs(i);
+            }
+
+            i %= items.Count;
+            return items[i];
         }
     }
 }

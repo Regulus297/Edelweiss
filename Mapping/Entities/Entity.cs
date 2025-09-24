@@ -24,6 +24,22 @@ namespace Edelweiss.Mapping.Entities
         public string _name = name;
 
         /// <summary>
+        /// The name of the entity. Setting it automatically changes the entity data
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+                entityData = CelesteModLoader.entities[CelesteModLoader.defaultPlacements[_name]];
+            }
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         public string _id = id;
@@ -65,10 +81,10 @@ namespace Edelweiss.Mapping.Entities
             created.entityRoom = room;
 
             if (created.data.TryGetValue("width", out object width))
-                created.width = (int)(double)width;
+                created.width = width.GetType() == typeof(double) ? (int)(double)width : (int)width;
 
             if (created.data.TryGetValue("height", out object height))
-                created.height = (int)(double)height;
+                created.height = height.GetType() == typeof(double) ? (int)(double)height : (int)height;
 
             for (int i = 0; i < entityData.NodeLimits(room, created)[0]; i++)
             {
@@ -114,8 +130,7 @@ namespace Edelweiss.Mapping.Entities
             {
                 if (key == "_name")
                 {
-                    _name = value.String;
-                    entityData = CelesteModLoader.entities[CelesteModLoader.defaultPlacements[_name]];
+                    Name = value.String;
                 }
                 else if (key == "x")
                 {
@@ -167,6 +182,18 @@ namespace Edelweiss.Mapping.Entities
         public Table PointToTable(Point point, Script script)
         {
             return new Point(point.X + x, point.Y + y).ToLuaTable(script);
+        }
+
+        /// <summary>
+        /// Gets the position of the node in global space
+        /// </summary>
+        /// <param name="nodeIndex">The node's 0-based index</param>
+        public Point GetNode(int nodeIndex)
+        {
+            if (nodeIndex >= nodes.Count)
+                return Point.Empty;
+
+            return new Point(nodes[nodeIndex].X + x, nodes[nodeIndex].Y + y);
         }
 
         /// <summary>
@@ -313,6 +340,21 @@ namespace Edelweiss.Mapping.Entities
         public bool Cycle(int amount)
         {
             return entityData.Cycle(entityRoom ?? RoomData.Default, this, amount);
+        }
+
+        /// <summary>
+        /// Gets the data with the given key
+        /// </summary>
+        public object this[string key]
+        {
+            get
+            {
+                return data.GetValueOrDefault(key);
+            }
+            set
+            {
+                data[key] = value;
+            }
         }
     }
 }

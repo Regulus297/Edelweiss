@@ -119,6 +119,11 @@
             Creates a line from a given Lua table
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Line.#ctor(System.Drawing.Point,System.Drawing.Point,System.String,System.Single)">
+            <summary>
+            Creates a line between the given two points
+            </summary>
+        </member>
         <member name="M:Edelweiss.Mapping.Drawables.Line.Draw">
             <inheritdoc/>
         </member>
@@ -222,6 +227,11 @@
             Creates a NinePatch from the given Lua table
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.Drawables.NinePatch.#ctor(System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Creates a NinePatch with the given parameters
+            </summary>
+        </member>
         <member name="M:Edelweiss.Mapping.Drawables.NinePatch.Draw">
             <summary>
             Draws the NinePatch to the current SpriteDestination.
@@ -283,6 +293,11 @@
             Creates a rectangle from the given Lua table.
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Rectangle.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Creates a rectangle with the given parameters
+            </summary>
+        </member>
         <member name="M:Edelweiss.Mapping.Drawables.Rectangle.Draw">
             <summary>
             Draws the rectangle to the current SpriteDestination
@@ -308,6 +323,16 @@
             Creates a sprite with the given texture key
             </summary>
             <param name="texture">The texture of the sprite relative to Gameplay/</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Sprite.#ctor(System.String,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            Creates a sprite with the given texture key at the entity's position
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Sprite.#ctor(System.String,System.Drawing.Point)">
+            <summary>
+            Creates a sprite at the given texture key at the given point
+            </summary>
         </member>
         <member name="M:Edelweiss.Mapping.Drawables.Sprite.#ctor">
             <summary>
@@ -365,6 +390,44 @@
             
             </summary>
         </member>
+        <member name="T:Edelweiss.Mapping.Entities.CSEntityData">
+            <summary>
+            Base class for entity data defined in C#
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.CSEntityData.placement">
+            <summary>
+            The name of the placement for this specific entity
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.CSEntityData.EntityName">
+            <summary>
+            The name of the entity
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.CSEntityData.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.CSEntityData.DisplayName">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.CSEntityData.OnRegister">
+            <summary>
+            Adds the entity data to the CelesteModLoader list
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.CSEntityData.Draw(Newtonsoft.Json.Linq.JArray,Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.CSEntityData.NodeSprite(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.CSEntityData.PlacementNames">
+            <summary>
+            The names of the placements this entity has
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.Entity">
             <summary>
             Class containing data for an entity placed in the map.
@@ -378,6 +441,11 @@
         <member name="F:Edelweiss.Mapping.Entities.Entity._name">
             <summary>
             
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.Entity.Name">
+            <summary>
+            The name of the entity. Setting it automatically changes the entity data
             </summary>
         </member>
         <member name="F:Edelweiss.Mapping.Entities.Entity._id">
@@ -442,6 +510,12 @@
             <param name="point"></param>
             <param name="script">The script the table should belong to</param>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.GetNode(System.Int32)">
+            <summary>
+            Gets the position of the node in global space
+            </summary>
+            <param name="nodeIndex">The node's 0-based index</param>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.Entity.Draw(System.Single,System.String,System.Int32)">
             <summary>
             Draws the entity to the frontend
@@ -467,6 +541,11 @@
         <member name="M:Edelweiss.Mapping.Entities.Entity.Cycle(System.Int32)">
             <summary>
             Cycles the entity's state by the given amount
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.Entity.Item(System.String)">
+            <summary>
+            Gets the data with the given key
             </summary>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.EntityData">
@@ -1892,6 +1971,14 @@
             Contains the name of the default (first) placement (entity_name.placement_name) for a given entity (entity_name)
             </summary>
         </member>
+        <member name="M:Edelweiss.Utils.CelesteModLoader.AddEntity(System.String,Edelweiss.Mapping.Entities.EntityData,System.String)">
+            <summary>
+            Adds an entity to the list of entities
+            </summary>
+            <param name="mod">The mod this entity belongs to</param>
+            <param name="entity">The entity data</param>
+            <param name="name">The name of the entity without the placement</param>
+        </member>
         <member name="M:Edelweiss.Utils.CelesteModLoader.GetTextureData(System.String)">
             <summary>
             Returns the data for the texture for a given key
@@ -1938,6 +2025,26 @@
             The width and height of the texture in the atlas
             </summary>
         </member>
+        <member name="F:Edelweiss.Utils.TextureData.atlasOffsetX">
+            <summary>
+            The position at which the texture starts in the atlas as compared to the padded texture
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Utils.TextureData.atlasOffsetY">
+            <summary>
+            The position at which the texture starts in the atlas as compared to the padded texture
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Utils.TextureData.paddedWidth">
+            <summary>
+            The width of the padded texture
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Utils.TextureData.paddedHeight">
+            <summary>
+            The width of the padded texture
+            </summary>
+        </member>
         <member name="M:Edelweiss.Utils.TextureData.ToLuaTable(MoonSharp.Interpreter.Script)">
             <summary>
             
@@ -1977,6 +2084,16 @@
             </summary>
             <param name="script">The script the table belongs to</param>
             <param name="color">The hex code of the color in ARGB format</param>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.GetColor(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Gets the hex color code for the given RGBA ranging from 0-1
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.GetColor(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Gets the hex color code for the given RGBA ranging from 0-255
+            </summary>
         </member>
         <member name="M:Edelweiss.Utils.EdelweissUtils.MatchesSignature(MoonSharp.Interpreter.DynValue[],MoonSharp.Interpreter.DataType[])">
             <summary>
@@ -2042,9 +2159,14 @@
             Returns the path to a given zip archive
             </summary>
         </member>
-        <member name="M:Edelweiss.Utils.EdelweissUtils.ToLuaTable(System.Drawing.Point,MoonSharp.Interpreter.Script)">
+        <member name="M:Edelweiss.Utils.EdelweissUtils.ToLuaTable(System.Drawing.Point,MoonSharp.Interpreter.Script,System.Boolean)">
             <summary>
             Converts a point to a Lua table
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Cycle``1(System.Collections.Generic.List{``0},``0,System.Int32)">
+            <summary>
+            Cycles through a list
             </summary>
         </member>
         <member name="T:Edelweiss.Utils.FormLoader">

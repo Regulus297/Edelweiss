@@ -19,7 +19,6 @@ namespace Edelweiss.Mapping.Tools
         internal string previousSearchTerm = "";
         internal bool recache = false;
         private string lastSelectedMaterial = "";
-        private int cursorGhostItems = 0;
 
         private int startTileX, startTileY;
         Entity ghostEntity;
@@ -94,9 +93,9 @@ namespace Edelweiss.Mapping.Tools
                     if (IsSearched(CelesteModLoader.entities[material].DisplayName))
                         cachedMaterials[material] = "★ " + CelesteModLoader.entities[material].DisplayName;
                 }
-                foreach (var modEntityList in CelesteModLoader.modEntities)
+                foreach (string mod in CelesteModLoader.entityMods)
                 {
-                    foreach (string entity in modEntityList.Value)
+                    foreach (string entity in CelesteModLoader.modEntities[mod])
                     {
                         if (favourites.Contains(entity))
                             continue;
@@ -277,10 +276,7 @@ namespace Edelweiss.Mapping.Tools
                     }}
                 }}
             });
-            
-            cursorGhostItems = 0;
             lastSelectedMaterial = "";
-            
         }
 
         public override bool UpdateCursorGhost(float mouseX, float mouseY)

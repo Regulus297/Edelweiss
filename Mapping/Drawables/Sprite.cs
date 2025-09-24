@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using Edelweiss.Loenn;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities;
 using Edelweiss.Plugins;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
@@ -24,6 +25,8 @@ namespace Edelweiss.Mapping.Drawables
 
         internal int sourceX = -1, sourceY = -1, sourceWidth = -1, sourceHeight = -1;
         internal int atlasX, atlasY, atlasWidth, atlasHeight;
+        internal int offsetX, offsetY, paddedWidth, paddedHeight;
+        internal TextureData data;
 
         internal string color = "#ffffff";
 
@@ -57,6 +60,11 @@ namespace Edelweiss.Mapping.Drawables
             atlasY = textureData.atlasY;
             atlasWidth = textureData.atlasWidth;
             atlasHeight = textureData.atlasHeight;
+            offsetX = textureData.atlasOffsetX;
+            offsetY = textureData.atlasOffsetY;
+            paddedWidth = textureData.paddedWidth;
+            paddedHeight = textureData.paddedHeight;
+            data = textureData;
         }
 
         /// <summary>
@@ -65,6 +73,24 @@ namespace Edelweiss.Mapping.Drawables
         /// <param name="texture">The texture of the sprite relative to Gameplay/</param>
         public Sprite(string texture) : this(texture, 0, 0, 0.5f, 0.5f, 1, 1, 0, 0, 0, 0)
         {
+        }
+
+        /// <summary>
+        /// Creates a sprite with the given texture key at the entity's position
+        /// </summary>
+        public Sprite(string texture, Entity entity) : this(texture)
+        {
+            x = entity.x;
+            y = entity.y;
+        }
+
+        /// <summary>
+        /// Creates a sprite at the given texture key at the given point
+        /// </summary>
+        public Sprite(string texture, Point point) : this(texture)
+        {
+            x = point.X;
+            y = point.Y;
         }
 
         /// <summary>
@@ -238,7 +264,11 @@ namespace Edelweiss.Mapping.Drawables
                 {"scaleX", scaleX},
                 {"scaleY", scaleY},
                 {"color", color},
-                {"depth", depth}
+                {"depth", depth},
+                {"paddedWidth", paddedWidth},
+                {"paddedHeight", paddedHeight},
+                {"offsetX", -offsetX},
+                {"offsetY", -offsetY}
             };
         }
     }

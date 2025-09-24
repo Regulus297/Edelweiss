@@ -12,5 +12,88 @@ Line = Line
 
 Mapping.CreateRoom = Create Room
 
-RoomCreationForm.Name = Create room
+RoomCreationForm = Create room
 RoomCreationForm.Submit = Create
+
+
+# Entities
+entities.badelineBoost.boost = Badeline Boost
+entities.finalBoss.boss = Badeline Boss
+entities.darkChaser.dark_chaser = Badeline Chaser
+entities.darkChaserEnd.barrier = Badeline Chaser barrier
+entities.bird.bird = Bird NPC
+entities.birdPath.bird_path = Bird Path
+entities.bonfire.bonfire = Bonfire
+entities.booster.green = Booster (Green)
+entities.booster.red = Booster (Red)
+entities.bounceBlock.fire = Core Block (Fire)
+entities.bounceBlock.ice = Core Block (Ice)
+entities.bigSpinner.bumper = Bumper
+entities.cassette.cassette = Cassette
+entities.cliffside_flag.cliffside_flag = Cliffside Flag
+entities.cloud.normal = Cloud (White)
+entities.cloud.fragile = Cloud (Pink)
+entities.redBlocks.red = Clutter Block (Laundry)
+entities.yellowBlocks.yellow = Clutter Block (Boxes)
+entities.greenBlocks.green = Clutter Block (Books)
+entities.clutterCabinet.cabinet = Clutter Cabinet
+entities.clutterDoor.red = Clutter Door (Laundry)
+entities.clutterDoor.green = Clutter Door (Books)
+entities.clutterDoor.yellow = Clutter Door (Boxes)
+entities.clutterDoor.lightning = Clutter Door (Lightning)
+entities.colorSwitch.red = Clutter Switch (Laundry)
+entities.colorSwitch.green = Clutter Switch (Books)
+entities.colorSwitch.yellow = Clutter Switch (Boxes)
+entities.colorSwitch.lightning = Clutter Switch (Lightning)
+entities.cobweb.cobweb = Cobweb
+entities.coreModeToggle.both = Core Mode Toggle (Both)
+entities.coreModeToggle.fire = Core Mode Toggle (Fire)
+entities.coreModeToggle.ice = Core Mode Toggle (Ice)
+entities.blackGem.crystal_heart = Crystal Heart
+
+entities.dashSwitchH.left_default = Dash Switch (Left, Default)
+entities.dashSwitchH.left_mirror = Dash Switch (Left, Mirror)
+entities.dashSwitchH.right_default = Dash Switch (Right, Default)
+entities.dashSwitchH.right_mirror = Dash Switch (Right, Mirror)
+entities.dashSwitchV.up_default = Dash Switch (Up, Default)
+entities.dashSwitchV.up_mirror = Dash Switch (Up, Mirror)
+entities.dashSwitchV.down_default = Dash Switch (Down, Default)
+entities.dashSwitchV.down_mirror = Dash Switch (Down, Mirror)
+
+entities.door.wood = Door (Wood)
+entities.door.metal = Door (Metal)
+
+entities.dreamBlock.dream_block = Dream Block
+
+entities.dreammirror.normal = Dream Mirror
+
+entities.everest/customBirdTutorial.bird = Custom Bird Tutorial
+
+entities.infiniteStar.normal = Feather
+
+entities.fireBall.fireball = Fireball
+entities.fireBal.iceball = Iceball
+
+entities.fireBarrier.fire_barrier = Fire Barrier
+
+entities.bridgeFixed.bridge_fixed = Fixed Bridge
+
+entities.flingBird.fling_bird = Fling Bird
+
+entities.floatingDebris.floating_debris = Floating Debris
+
+entities.flutterbird.normal = Flutterbird
+
+entities.foregroundDebris.foreground_debris = Foreground Debris
+
+entities.birdForsakenCityGem.satellite = Forsaken City Satellite
+
+entities.glassBlock.glass_block = Glass Block
+
+entities.glider.normal = Jelly
+entities.glider.floating = Jelly (Floating)
+
+entities.goldenBlock.golden_block = Golden Block
+
+entities.goldenBerry.normal = Golden Berry
+entities.goldenBerry.winged = Golden Berry (Winged)

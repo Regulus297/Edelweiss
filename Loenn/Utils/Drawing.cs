@@ -24,7 +24,7 @@ namespace Edelweiss.Loenn.Utils
                 double res = resolution.IsNil() ? 16 : resolution.Number;
                 Table result = new(script);
 
-                for (int i = 0; i < res; i++)
+                for (int i = 0; i <= res; i++)
                 {
                     (double x, double y) = ((double, double))GetCurvePoint(script, start, stop, control, i / res).Table.Unpack();
                     result.Append(DynValue.NewNumber(x));

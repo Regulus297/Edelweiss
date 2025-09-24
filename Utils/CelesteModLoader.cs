@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Edelweiss.Loenn;
@@ -44,6 +45,7 @@ namespace Edelweiss.Utils
         public static ConcurrentDictionary<string, EntityData> entities = [];
 
         internal static ConcurrentDictionary<string, List<string>> modEntities = [];
+        internal static ConcurrentQueue<string> entityMods = [];
 
         /// <summary>
         /// Contains the name of the default (first) placement (entity_name.placement_name) for a given entity (entity_name)
@@ -188,22 +190,38 @@ namespace Edelweiss.Utils
                 foreach (Table placement in placements)
                 {
                     LuaEntityData entityData = new(table.Get("name").String, placement.Get("name").String, placement, script, table, modName);
-                    entities[entityData.Name] = entityData;
-                    if (!modEntities.ContainsKey(modName))
-                    {
-                        modEntities[modName] = [];
-                    }
-                    modEntities[modName].Add(entityData.Name);
+                    AddEntity(modName, entityData, table.Get<string>("name"));
 
-                    if (!defaultPlacements.ContainsKey(entityData.Name))
-                    {
-                        defaultPlacements[table.Get("name").String] = entityData.Name;
-                    }
                 }
             }
             catch (Exception e)
             {
                 Logger.Error(nameof(CelesteModLoader), $"Failed loading entity {fileName} with error: \n {LuaErrorEncoder.GetString(LuaErrorEncoder.GetBytes(e.ToString()))}");
+            }
+        }
+
+        /// <summary>
+        /// Adds an entity to the list of entities
+        /// </summary>
+        /// <param name="mod">The mod this entity belongs to</param>
+        /// <param name="entity">The entity data</param>
+        /// <param name="name">The name of the entity without the placement</param>
+        public static void AddEntity(string mod, EntityData entity, string name)
+        {
+            entities[entity.Name] = entity;
+            if (!modEntities.ContainsKey(mod))
+            {
+                modEntities[mod] = [];
+            }
+            modEntities[mod].Add(entity.Name);
+
+            if (!entityMods.Contains(mod))
+            {
+                entityMods.Enqueue(mod);
+            }
+            if (!defaultPlacements.ContainsKey(entity.Name))
+            {
+                defaultPlacements[name] = entity.Name;
             }
         }
 
@@ -318,6 +336,16 @@ namespace Edelweiss.Utils
         /// The width and height of the texture in the atlas
         /// </summary>
         public int atlasWidth = -1, atlasHeight = -1;
+
+        /// <summary>
+        /// The position at which the texture starts in the atlas as compared to the padded texture
+        /// </summary>
+        public int atlasOffsetX = 0, atlasOffsetY = 0;
+
+        /// <summary>
+        /// The width of the padded texture
+        /// </summary>
+        public int paddedWidth = 0, paddedHeight = 0;
 
         /// <summary>
         /// 

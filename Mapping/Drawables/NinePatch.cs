@@ -75,6 +75,28 @@ namespace Edelweiss.Mapping.Drawables
         }
 
         /// <summary>
+        /// Creates a NinePatch with the given parameters
+        /// </summary>
+        public NinePatch(string texture, int x, int y, int width, int height, string mode = "fill", string borderMode = "repeat", string fillMode = "repeat", string color = "#ffffff", int tileWidth = 8, int tileHeight = 8, int borderLeft = 8, int borderRight = 8, int borderTop = 8, int borderBottom = 8) : this()
+        {
+            this.texture = texture;
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.mode = mode;
+            this.borderMode = borderMode;
+            this.fillMode = fillMode;
+            this.color = color;
+            this.tileWidth = tileWidth;
+            this.tileHeight = tileHeight;
+            this.borderLeft = borderLeft;
+            this.borderRight = borderRight;
+            this.borderTop = borderTop;
+            this.borderBottom = borderBottom;
+        }
+
+        /// <summary>
         /// Draws the NinePatch to the current SpriteDestination.
         /// </summary>
         public override void Draw()

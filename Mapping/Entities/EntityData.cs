@@ -77,7 +77,8 @@ namespace Edelweiss.Mapping.Entities
                 width = hasDimensions ? entity.width : 4,
                 height = hasDimensions ? entity.height : 4,
                 color = FillColor(room, entity),
-                borderColor = BorderColor(room, entity)
+                borderColor = BorderColor(room, entity),
+                depth = Depth(room, entity)
             };
         }
 

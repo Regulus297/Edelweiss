@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Edelweiss.Loenn;
 using Edelweiss.Plugins;
@@ -38,6 +39,16 @@ namespace Edelweiss.Mapping.Drawables
             offsetX = (float)table.Get<double>("offsetX");
             offsetY = (float)table.Get<double>("offsetY");
             magnitudeOffset = (float)table.Get<double>("magnitudeOffset");
+        }
+
+        /// <summary>
+        /// Creates a line between the given two points
+        /// </summary>
+        public Line(Point a, Point b, string color = "#ffffffff", float thickness = 1f * LoveModule.PEN_THICKNESS) : this()
+        {
+            points = [a.X, a.Y, b.X, b.Y];
+            this.color = color;
+            this.thickness = thickness;
         }
 
         /// <inheritdoc/>

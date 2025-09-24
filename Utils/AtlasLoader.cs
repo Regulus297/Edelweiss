@@ -56,7 +56,11 @@ namespace Edelweiss.Utils
                         atlasX = x,
                         atlasY = y,
                         atlasWidth = w,
-                        atlasHeight = h
+                        atlasHeight = h,
+                        atlasOffsetX = x1,
+                        atlasOffsetY = y1,
+                        paddedWidth = w1,
+                        paddedHeight = h1
                     };
                 }
             }

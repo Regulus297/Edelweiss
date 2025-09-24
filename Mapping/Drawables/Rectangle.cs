@@ -51,6 +51,20 @@ namespace Edelweiss.Mapping.Drawables
         }
 
         /// <summary>
+        /// Creates a rectangle with the given parameters
+        /// </summary>
+        public Rectangle(int x, int y, int width, int height, string color, string borderColor = null) : this()
+        {
+            borderColor = borderColor ?? color;
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+            this.color = color;
+            this.borderColor = borderColor;
+        }
+
+        /// <summary>
         /// Draws the rectangle to the current SpriteDestination
         /// </summary>
         public override void Draw()

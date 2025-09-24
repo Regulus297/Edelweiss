@@ -51,6 +51,8 @@ class PixmapShape(ShapeRenderer):
         sourceHeight = self.data["sourceHeight"] if "sourceHeight" in self.data else -1
         width, height = sourceWidth if sourceWidth > -1 else self.cached.width(), sourceHeight if sourceHeight > -1 else self.cached.height()
 
+        padded_width, padded_height = self.data["paddedWidth"] if "paddedWidth" in self.data else width, self.data["paddedHeight"] if "paddedHeight" in self.data else height
+
         transform = painter.transform()
         painter.translate(x, y)
         if "rotation" in self.data:
@@ -61,11 +63,14 @@ class PixmapShape(ShapeRenderer):
         if scaleX != 1 or scaleY != 1:
             painter.scale(scaleX, scaleY)
 
+        offset_x, offset_y = self.data["offsetX"] if "offsetX" in self.data else 0, self.data["offsetY"] if "offsetY" in self.data else 0
+        offset_x += int(-padded_width*justification[0])
+        offset_y += int(-padded_height*justification[1])
         if sourceWidth <= 0 or sourceHeight <= 0:
-            painter.drawPixmap(int(-width*justification[0]), int(-height*justification[1]), self.cached)
+            painter.drawPixmap(offset_x, offset_y, self.cached)
         else:
             sx = sourceX if sourceX >= 0 else width + sourceX
             sy = sourceY if sourceY >= 0 else height + sourceY
-            painter.drawPixmap(int(-width*justification[0]), int(-height*justification[1]), self.cached, sx, sy, sourceWidth, sourceHeight)
+            painter.drawPixmap(offset_x, offset_y, self.cached, sx, sy, sourceWidth, sourceHeight)
 
         painter.setTransform(transform)
