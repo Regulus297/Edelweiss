@@ -33,7 +33,7 @@ namespace Edelweiss.Mapping.Entities
         /// <summary>
         /// Adds the entity data to the CelesteModLoader list
         /// </summary>
-        public void OnRegister()
+        public virtual void OnRegister()
         {
             foreach (string name in PlacementNames())
             {
@@ -72,5 +72,21 @@ namespace Edelweiss.Mapping.Entities
         /// </summary>
         /// <returns></returns>
         public abstract List<string> PlacementNames();
+
+        /// <summary>
+        /// Cycles a boolean value of an entity by the given amount
+        /// </summary>
+        /// <param name="entity">The entity being cycled</param>
+        /// <param name="key">The field being cycled</param>
+        /// <param name="amount">The amount to cycle by. If even, does nothing</param>
+        protected bool CycleBoolean(Entity entity, string key, int amount)
+        {
+            if (amount.Mod(2) == 0)
+            {
+                return false;
+            }
+            entity[key] = !(bool)entity[key];
+            return true;
+        }
     }
 }

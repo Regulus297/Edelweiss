@@ -42,8 +42,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            entity["notCoreMode"] = !(bool)entity["notCoreMode"];
-            return true;
+            return CycleBoolean(entity, "notCoreMode", amount); 
         }
     }
 }

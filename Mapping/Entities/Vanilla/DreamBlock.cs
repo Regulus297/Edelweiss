@@ -24,8 +24,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            entity["below"] = !(bool)entity["below"];
-            return true;
+            return CycleBoolean(entity, "below", amount);
         }
 
         public override Dictionary<string, object> GetPlacementData()

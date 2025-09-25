@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Edelweiss.Utils;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
@@ -8,16 +10,16 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         private static Dictionary<string, int> modeFacingScale = new Dictionary<string, int>()
         {
-            {"climbingtutorial", -1},
-            {"dashingtutorial", 1},
-            {"dreamjumptutorial", 1},
-            {"superwalljumptutorial", -1},
-            {"hyperjumptutorial", -1},
-            {"movetonodes", -1},
-            {"waitforlightningoff", -1},
-            {"flyaway", -1},
-            {"sleeping", 1},
-            {"none", -1}
+            {"ClimbingTutorial", -1},
+            {"DashingTutorial", 1},
+            {"DreamJumpTutorial", 1},
+            {"SuperWallJumpTutorial", -1},
+            {"HyperJumpTutorial", -1},
+            {"MoveToNodes", -1},
+            {"WaitForLightningOff", -1},
+            {"FlyAway", -1},
+            {"Sleeping", 1},
+            {"None", -1}
         };
 
         public override List<string> PlacementNames()
@@ -31,7 +33,16 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override string Texture(RoomData room, Entity entity) => "characters/bird/crow00";
         public override List<int> NodeLimits(RoomData room, Entity entity) => [0, -1];
 
-        // TODO: implement scale
+        public override List<float> Scale(RoomData room, Entity entity)
+        {
+            return [modeFacingScale.GetValueOrDefault(entity["mode"].ToString(), 1), 1];
+        }
+
+        public override bool Cycle(RoomData room, Entity entity, int amount)
+        {
+            entity["mode"] = modeFacingScale.Keys.ToList().Cycle(entity["mode"].ToString(), amount);
+            return true;
+        }
 
         public override Dictionary<string, object> GetPlacementData()
         {

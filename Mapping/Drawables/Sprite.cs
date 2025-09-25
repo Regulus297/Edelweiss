@@ -76,12 +76,18 @@ namespace Edelweiss.Mapping.Drawables
         }
 
         /// <summary>
-        /// Creates a sprite with the given texture key at the entity's position
+        /// Creates a sprite with the given texture key at the entity's position with some of the entity's data
         /// </summary>
         public Sprite(string texture, Entity entity) : this(texture)
         {
             x = entity.x;
             y = entity.y;
+            rotation = entity.entityData.Rotation(RoomData.Default, entity);
+            justificationX = entity.justificationX;
+            justificationY = entity.justificationY;
+            rotation = entity.rotation;
+            scaleX = entity.scaleX;
+            scaleY = entity.scaleY;
         }
 
         /// <summary>
@@ -249,6 +255,8 @@ namespace Edelweiss.Mapping.Drawables
         /// </summary>
         public JObject ToJObject()
         {
+            int clampedSourceWidth = atlasWidth < 0 ? sourceWidth : sourceWidth < 0 ? sourceWidth : sourceX + sourceWidth > atlasWidth ? atlasWidth - sourceX : sourceWidth;
+            int clampedSourceHeight = atlasHeight < 0 ? sourceHeight : sourceHeight < 0 ? sourceHeight : sourceY + sourceHeight > atlasHeight ? atlasHeight - sourceY : sourceHeight;
             return new JObject()
             {
                 {"type", "pixmap"},
@@ -258,8 +266,8 @@ namespace Edelweiss.Mapping.Drawables
                 {"justification", JToken.FromObject(new List<float>() {justificationX, justificationY})},
                 {"sourceX", sourceX < 0 ? atlasX : sourceX + Math.Max(atlasX, 0)},
                 {"sourceY", sourceY < 0 ? atlasY : sourceY + Math.Max(atlasY, 0)},
-                {"sourceWidth", sourceWidth < 0 ? atlasWidth : sourceWidth},
-                {"sourceHeight", sourceHeight < 0 ? atlasHeight : sourceHeight},
+                {"sourceWidth", sourceWidth < 0 ? atlasWidth : clampedSourceWidth},
+                {"sourceHeight", sourceHeight < 0 ? atlasHeight : clampedSourceHeight},
                 {"rotation", rotation * 180/MathF.PI},
                 {"scaleX", scaleX},
                 {"scaleY", scaleY},
@@ -268,7 +276,7 @@ namespace Edelweiss.Mapping.Drawables
                 {"paddedWidth", paddedWidth},
                 {"paddedHeight", paddedHeight},
                 {"offsetX", -offsetX},
-                {"offsetY", -offsetY}
+                {"offsetY", -offsetY},
             };
         }
     }

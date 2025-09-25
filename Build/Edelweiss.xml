@@ -124,6 +124,11 @@
             Creates a line between the given two points
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Line.#ctor(System.Single,System.Single,System.Single,System.Single,System.String,System.Single)">
+            <summary>
+            Creates a line between the given coordinates
+            </summary>
+        </member>
         <member name="M:Edelweiss.Mapping.Drawables.Line.Draw">
             <inheritdoc/>
         </member>
@@ -326,7 +331,7 @@
         </member>
         <member name="M:Edelweiss.Mapping.Drawables.Sprite.#ctor(System.String,Edelweiss.Mapping.Entities.Entity)">
             <summary>
-            Creates a sprite with the given texture key at the entity's position
+            Creates a sprite with the given texture key at the entity's position with some of the entity's data
             </summary>
         </member>
         <member name="M:Edelweiss.Mapping.Drawables.Sprite.#ctor(System.String,System.Drawing.Point)">
@@ -428,6 +433,14 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.CSEntityData.CycleBoolean(Edelweiss.Mapping.Entities.Entity,System.String,System.Int32)">
+            <summary>
+            Cycles a boolean value of an entity by the given amount
+            </summary>
+            <param name="entity">The entity being cycled</param>
+            <param name="key">The field being cycled</param>
+            <param name="amount">The amount to cycle by. If even, does nothing</param>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.Entity">
             <summary>
             Class containing data for an entity placed in the map.
@@ -486,6 +499,31 @@
         <member name="F:Edelweiss.Mapping.Entities.Entity.height">
             <summary>
             
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.Entity.rotation">
+            <summary>
+            The rotation of the entity
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.Entity.justificationX">
+            <summary>
+            The x-axis justification of the entity
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.Entity.justificationY">
+            <summary>
+            The y-axis justification of the entity
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.Entity.scaleX">
+            <summary>
+            The x-axis scale of the entity
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.Entity.scaleY">
+            <summary>
+            The y-axis scale of the entity
             </summary>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.Entity.DefaultFromData(Edelweiss.Mapping.Entities.EntityData,Edelweiss.Mapping.Entities.RoomData)">
@@ -732,6 +770,13 @@
         <member name="M:Edelweiss.Mapping.Entities.EntityData.Rotation(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
             <summary>
             The rotation of the entity in degrees
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Scale(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            The scale of the entity
             </summary>
             <param name="room">The room the entity is in</param>
             <param name="entity">The entity instance</param>
@@ -2167,6 +2212,11 @@
         <member name="M:Edelweiss.Utils.EdelweissUtils.Cycle``1(System.Collections.Generic.List{``0},``0,System.Int32)">
             <summary>
             Cycles through a list
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Mod(System.Int32,System.Int32)">
+            <summary>
+            Takes the modulus of two numbers ensuring the result is positive
             </summary>
         </member>
         <member name="T:Edelweiss.Utils.FormLoader">

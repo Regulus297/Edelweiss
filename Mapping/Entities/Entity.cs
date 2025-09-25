@@ -64,6 +64,31 @@ namespace Edelweiss.Mapping.Entities
         /// </summary>
         public int x = 0, y = 0, width = 0, height = 0;
 
+        /// <summary>
+        /// The rotation of the entity
+        /// </summary>
+        public float rotation => entityData.Rotation(entityRoom ?? RoomData.Default, this) * 180 / MathF.PI;
+
+        /// <summary>
+        /// The x-axis justification of the entity
+        /// </summary>
+        public float justificationX => entityData.Justification(entityRoom ?? RoomData.Default, this)[0];
+
+        /// <summary>
+        /// The y-axis justification of the entity
+        /// </summary>
+        public float justificationY => entityData.Justification(entityRoom ?? RoomData.Default, this)[1];
+
+        /// <summary>
+        /// The x-axis scale of the entity
+        /// </summary>
+        public float scaleX => entityData.Scale(entityRoom ?? RoomData.Default, this)[0];
+
+        /// <summary>
+        /// The y-axis scale of the entity
+        /// </summary>
+        public float scaleY => entityData.Scale(entityRoom ?? RoomData.Default, this)[1];
+
         internal EntityData entityData;
         RoomData entityRoom;
 
@@ -86,7 +111,23 @@ namespace Edelweiss.Mapping.Entities
             if (created.data.TryGetValue("height", out object height))
                 created.height = height.GetType() == typeof(double) ? (int)(double)height : (int)height;
 
-            for (int i = 0; i < entityData.NodeLimits(room, created)[0]; i++)
+            if (created.data.TryGetValue("nodes", out object nodes))
+            {
+                List<Point> nodesList = nodes as List<Point>;
+                if (nodes is Table table)
+                {
+                    foreach (DynValue v in table.Values)
+                    {
+                        nodesList.Add(new Point((int)v.Table.Get<double>("x"), (int)v.Table.Get<double>("y")));
+                    }
+                }
+                if (nodesList != null)
+                {
+                    created.nodes = nodesList;
+                }
+            }
+
+            for (int i = created.nodes.Count; i < entityData.NodeLimits(room, created)[0]; i++)
             {
                 created.nodes.Add(new Point((i + 1) * 32, 0));
             }

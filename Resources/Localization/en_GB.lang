@@ -16,7 +16,7 @@ RoomCreationForm = Create room
 RoomCreationForm.Submit = Create
 
 
-# Entities
+# Entities (typed manually, but still credits to Loenn)
 entities.badelineBoost.boost = Badeline Boost
 entities.finalBoss.boss = Badeline Boss
 entities.darkChaser.dark_chaser = Badeline Chaser
@@ -72,7 +72,7 @@ entities.everest/customBirdTutorial.bird = Custom Bird Tutorial
 entities.infiniteStar.normal = Feather
 
 entities.fireBall.fireball = Fireball
-entities.fireBal.iceball = Iceball
+entities.fireBall.iceball = Iceball
 
 entities.fireBarrier.fire_barrier = Fire Barrier
 
@@ -95,5 +95,44 @@ entities.glider.floating = Jelly (Floating)
 
 entities.goldenBlock.golden_block = Golden Block
 
-entities.goldenBerry.normal = Golden Berry
-entities.goldenBerry.winged = Golden Berry (Winged)
+entities.goldenBerry.golden = Golden Berry
+entities.goldenBerry.golden_winged = Golden Berry (Winged)
+
+entities.hahaha.hahaha = Hahaha
+
+entities.hanginglamp.hanging_lamp = Hanging Lamp
+
+entities.heartGemDoor.door = Heart Door
+
+entities.iceBlock.ice_block = Ice Block
+
+entities.wavedashmachine.cafe = Internet Café
+
+entities.introCar.intro_car = Intro Car
+
+entities.invisibleBarrier.invisible_barrier = Invisible Barrier
+
+entities.crushBlock.both = Kevin (Both)
+entities.crushBlock.horizontal = Kevin (Horizontal)
+entities.crushBlock.vertical = Kevin (Vertical)
+
+entities.kevins_pc.kevins_pc = Kevin's PC
+
+entities.key.normal = Key
+entities.key.with_return = Key (With Return)
+
+entities.killbox.killbox = Killbox
+
+entities.lamp.normal = Lamp
+entities.lamp.broken = Lamp (Broken)
+
+entities.lightning.lightning = Lightning
+
+entities.lightningBlock.breaker_box = Breaker Box
+
+entities.lockBlock.wood = Lock Block (Wood)
+entities.lockBlock.temple_a = Lock Block (Temple A)
+entities.lockBlock.temple_b = Lock Block (Temple B)
+entities.lockBlock.moon = Lock Block (Moon)
+
+entities.everest/memorial.memorial = Custom Memorial

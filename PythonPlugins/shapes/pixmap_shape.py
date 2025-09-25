@@ -7,13 +7,19 @@ from PyQt5.QtCore import Qt
 
 @plugin_loadable
 class PixmapShape(ShapeRenderer):
+    tint_cache = {}
+
     def __init__(self, parent=None, data=None):
         super().__init__("pixmap", parent, data)
 
         self.cached = None
         self.prevColor = ""
 
-    def tint(self, pixmap, color):
+    def tint(self, pixmap, color, path, hexc):
+        cached = PixmapShape.tint_cache.get((path, hexc))
+        if cached:
+            return cached
+
         tinted = QPixmap(pixmap.size())
         tinted.fill(Qt.transparent)
 
@@ -27,6 +33,7 @@ class PixmapShape(ShapeRenderer):
         painter.drawPixmap(0, 0, pixmap)
 
         painter.end()
+        PixmapShape.tint_cache[(path, hexc)] = tinted
         return tinted
 
     def draw(self, painter):
@@ -36,7 +43,7 @@ class PixmapShape(ShapeRenderer):
 
         if "color" in self.data and self.data["color"].upper() != "#FFFFFFFF" and self.data["color"].upper() != "#FFFFFF":
             if self.cached is None or self.prevColor != self.data["color"]:
-                self.cached = self.tint(pixmap, QColor(self.data["color"]))
+                self.cached = self.tint(pixmap, QColor(self.data["color"]), self.data["path"], self.data["color"])
                 self.prevColor = self.data["color"]
         elif self.cached is None:
             self.cached = pixmap

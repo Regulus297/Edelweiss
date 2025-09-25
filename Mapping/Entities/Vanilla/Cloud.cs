@@ -38,8 +38,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            entity["fragile"] = !(bool)entity["fragile"];
-            return true;
+            return CycleBoolean(entity, "fragile", amount);
         }
     }
 }

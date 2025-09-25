@@ -51,6 +51,16 @@ namespace Edelweiss.Mapping.Drawables
             this.thickness = thickness;
         }
 
+        /// <summary>
+        /// Creates a line between the given coordinates
+        /// </summary>
+        public Line(float x1, float y1, float x2, float y2, string color = "#ffffffff", float thickness = 1f * LoveModule.PEN_THICKNESS) : this()
+        {
+            points = [x1, y1, x2, y2];
+            this.color = color;
+            this.thickness = thickness;
+        }
+
         /// <inheritdoc/>
         public override void Draw()
         {

@@ -42,7 +42,10 @@ namespace Edelweiss.Mapping.Entities
                 justificationY = Justification(room, entity)[1],
                 x = entity.x,
                 y = entity.y,
-                depth = Depth(room, entity)
+                depth = Depth(room, entity),
+                scaleX = Scale(room, entity)[0],
+                scaleY = Scale(room, entity)[1],
+                color = Color(room, entity)
             }];
         }
 
@@ -280,6 +283,16 @@ namespace Edelweiss.Mapping.Entities
         public virtual float Rotation(RoomData room, Entity entity)
         {
             return 0f;
+        }
+
+        /// <summary>
+        /// The scale of the entity
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        public virtual List<float> Scale(RoomData room, Entity entity)
+        {
+            return [1f, 1f];
         }
 
         /// <summary>

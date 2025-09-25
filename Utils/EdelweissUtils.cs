@@ -115,8 +115,8 @@ namespace Edelweiss.Utils
         {
             return DynValue.NewTable(new Script(), DynValue.NewNumber(r), DynValue.NewNumber(g), DynValue.NewNumber(b), DynValue.NewNumber(a)).Color();
         }
-        
-        
+
+
         /// <summary>
         /// Gets the hex color code for the given RGBA ranging from 0-255
         /// </summary>
@@ -292,8 +292,8 @@ namespace Edelweiss.Utils
         public static Table ToLuaTable(this Point p, Script script, bool keyed = true)
         {
             Table table = new Table(script);
-            table[keyed ? "x": 1] = p.X;
-            table[keyed ? "y": 2] = p.Y;
+            table[keyed ? "x" : 1] = p.X;
+            table[keyed ? "y" : 2] = p.Y;
             return table;
         }
 
@@ -314,6 +314,14 @@ namespace Edelweiss.Utils
 
             i %= items.Count;
             return items[i];
+        }
+
+        /// <summary>
+        /// Takes the modulus of two numbers ensuring the result is positive
+        /// </summary>
+        public static int Mod(this int a, int b)
+        {
+            return ((a % b) + b) % b;
         }
     }
 }

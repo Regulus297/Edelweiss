@@ -52,8 +52,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            entity["bubble"] = !(bool)entity["bubble"];
-            return true;
+            return CycleBoolean(entity, "bubble", amount);
         }
     }
 }

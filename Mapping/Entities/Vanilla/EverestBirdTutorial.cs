@@ -35,6 +35,16 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             };
         }
 
-        // TODO: implement scale
+        public override List<float> Scale(RoomData room, Entity entity)
+        {
+            return [(bool)entity["faceLeft"] ? -1 : 1, 1];
+        }
+
+        public override bool Flip(RoomData room, Entity entity, bool horizontal, bool vertical)
+        {
+            if (horizontal)
+                entity["faceLeft"] = !(bool)entity["faceLeft"];
+            return horizontal;
+        }
     }
 }
