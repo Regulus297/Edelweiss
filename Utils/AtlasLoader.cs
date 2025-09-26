@@ -62,6 +62,7 @@ namespace Edelweiss.Utils
                         paddedWidth = w1,
                         paddedHeight = h1
                     };
+                    CelesteModLoader.vanillaTextures.Add(key);
                 }
             }
         }

@@ -36,12 +36,6 @@ class PixmapLoader:
         return None
 
     @staticmethod
-    def load_subtexture(key, atlasX, atlasY, atlasW, atlasH):
-        pixmap = PixmapLoader.load_texture(key)
-        PixmapLoader.loaded_textures[key] = pixmap.copy(atlasX, atlasY, atlasW, atlasH)
-        return PixmapLoader.loaded_textures[key]
-
-    @staticmethod
     def clear_cache():
         PixmapLoader.loaded_textures = {}
         PixmapLoader.loaded_paths = {}

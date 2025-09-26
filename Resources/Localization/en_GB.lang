@@ -20,7 +20,7 @@ RoomCreationForm.Submit = Create
 entities.badelineBoost.boost = Badeline Boost
 entities.finalBoss.boss = Badeline Boss
 entities.darkChaser.dark_chaser = Badeline Chaser
-entities.darkChaserEnd.barrier = Badeline Chaser barrier
+entities.darkChaserEnd.barrier = Badeline Chaser Barrier
 entities.bird.bird = Bird NPC
 entities.birdPath.bird_path = Bird Path
 entities.bonfire.bonfire = Bonfire
@@ -136,3 +136,76 @@ entities.lockBlock.temple_b = Lock Block (Temple B)
 entities.lockBlock.moon = Lock Block (Moon)
 
 entities.everest/memorial.memorial = Custom Memorial
+
+entities.moonCreature.moon_creature = Moon Creature
+
+entities.moveBlock.Up_steer_slow = Move Block (Up, Steerable)
+entities.moveBlock.Up_steer_fast = Move Block (Up, Steerable, Fast)
+entities.moveBlock.Up_nosteer_slow = Move Block (Up)
+entities.moveBlock.Up_nosteer_fast = Move Block (Up, Fast)
+entities.moveBlock.Right_steer_slow = Move Block (Right, Steerable)
+entities.moveBlock.Right_steer_fast = Move Block (Right, Steerable, Fast)
+entities.moveBlock.Right_nosteer_slow = Move Block (Right)
+entities.moveBlock.Right_nosteer_fast = Move Block (Right, Fast)
+entities.moveBlock.Down_steer_slow = Move Block (Down, Steerable)
+entities.moveBlock.Down_steer_fast = Move Block (Down, Steerable, Fast)
+entities.moveBlock.Down_nosteer_slow = Move Block (Down)
+entities.moveBlock.Down_nosteer_fast = Move Block (Down, Fast)
+entities.moveBlock.Left_steer_slow = Move Block (Left, Steerable)
+entities.moveBlock.Left_steer_fast = Move Block (Left, Steerable, Fast)
+entities.moveBlock.Left_nosteer_slow = Move Block (Left)
+entities.moveBlock.Left_nosteer_fast = Move Block (Left, Fast)
+
+entities.negaBlock.nega_block = Nega Block
+
+entities.everest/npc.npc = Custom NPC
+
+entities.friendlyGhost.oshiro_boss = Oshiro Boss
+
+entities.oshirodoor.oshiro_door = Oshiro Door
+
+entities.payphone.payphone = Payphone
+
+entities.picoconsole.pico_console = Pico 8 Console
+
+entities.plateau.plateau = Plateau
+
+entities.player.player = Player Spawn Point
+
+entities.playbackTutorial.playback = Playback Tutorial
+
+entities.playerSeeker.player_seeker = Player Seeker
+
+entities.powerSourceNumber.default = Power Source Number
+
+entities.eyebomb.left = Puffer (Left)
+entities.eyebomb.right = Puffer (Right)
+
+entities.finalBossFallingBlock.default = Badeline Boss Falling Block
+
+entities.conditionBlock.default = Condition Block
+
+entities.everest/coreMessage.default = Custom Core Message
+
+entities.coverupWall.default = Coverup Wall
+
+entities.crumbleBlock.default = Crumble Block (Normal)
+entities.crumbleBlock.cliffside = Crumble Block (Cliffside)
+
+entities.crumbleWallOnRumble.default = Crumble Wall on Rumble
+
+entities.dashBlock.default = Dash Block
+
+entities.exitBlock.default = Exit Block
+
+entities.fakeBlock.default = Fake Block
+
+entities.fakeWall.default = Fake Wall
+
+entities.fallingBlock.default = Falling Block
+
+entities.floatySpaceBlock.default = Floaty Space Block
+
+entities.sandwichLava.default = Lava Sandwich
+
+

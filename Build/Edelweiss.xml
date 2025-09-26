@@ -395,6 +395,85 @@
             
             </summary>
         </member>
+        <member name="T:Edelweiss.Mapping.Drawables.Tiles">
+            <summary>
+            A class that draws tile data
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Tiles.foreground">
+            <summary>
+            Whether this object draws foreground tiles
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Tiles.width">
+            <summary>
+            The dimensions in tiles of the drawable
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Tiles.height">
+            <summary>
+            The dimensions in tiles of the drawable
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Tiles.x">
+            <summary>
+            The position of the drawable in pixels
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Tiles.y">
+            <summary>
+            The position of the drawable in pixels
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Tiles.data">
+            <summary>
+            The tile data this drawable contains
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Drawables.Tiles.opacity">
+            <summary>
+            The opacity of the tile object. 1 is fully opaque and 0 is fully transparent
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Tiles.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Tiles.#ctor(MoonSharp.Interpreter.Table)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Tiles.#ctor(Edelweiss.Utils.TileData,System.Int32,System.Int32,System.Int32,System.Int32,System.Single)">
+            <summary>
+            Creates a drawable tiles object with the given parameters
+            </summary>
+            <param name="tile">The tile data to use</param>
+            <param name="x">The x-coordinate of the drawable in pixels</param>
+            <param name="y">The y-coordinate of the drawable in pixels</param>
+            <param name="tileWidth">The width of the drawable in tiles</param>
+            <param name="tileHeight">The height of the drawable in tiles</param>
+            <param name="opacity">The opacity of the drawable</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Tiles.#ctor(System.String,System.Boolean,System.Int32,System.Int32,System.Int32,System.Int32,System.Single)">
+            <summary>
+            Creates a drawable tiles object with the given parameters
+            </summary>
+            <param name="tileID">The ID of the tile to use</param>
+            <param name="foreground">Whether the tile is a foreground tile</param>
+            <param name="x">The x-coordinate of the drawable in pixels</param>
+            <param name="y">The y-coordinate of the drawable in pixels</param>
+            <param name="tileWidth">The width of the drawable in tiles</param>
+            <param name="tileHeight">The height of the drawable in tiles</param>
+            <param name="opacity">The opacity of the drawable</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Tiles.Draw">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Tiles.ToLuaTable(MoonSharp.Interpreter.Script)">
+            <inheritdoc/>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.CSEntityData">
             <summary>
             Base class for entity data defined in C#
@@ -524,6 +603,11 @@
         <member name="P:Edelweiss.Mapping.Entities.Entity.scaleY">
             <summary>
             The y-axis scale of the entity
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.Entity.depth">
+            <summary>
+            The depth of the entity
             </summary>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.Entity.DefaultFromData(Edelweiss.Mapping.Entities.EntityData,Edelweiss.Mapping.Entities.RoomData)">
@@ -842,6 +926,42 @@
             <summary>
             Always visible
             </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.TileHelper">
+            <summary>
+            Class that assists in making fake tile entities
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.TileHelper.GetMaterial(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Gets the currently selected tile
+            </summary>
+            <param name="fallback">The tile used if the current material is unsuitable</param>
+            <param name="foreground">Whether to return the foreground material</param>
+            <param name="allowAir">Whether air is a valid tile to return</param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.TileHelper.GetSprite(Edelweiss.Mapping.Entities.Entity,System.String,System.Boolean,System.Single)">
+            <summary>
+            Gets the sprite for a fake tile entity
+            </summary>
+            <param name="entity">The entity instance</param>
+            <param name="key">The key of the placement data containing the tile ID</param>
+            <param name="foreground">Whether this is a foreground tile</param>
+            <param name="opacity">The opacity of the tile object</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.TileHelper.Cycle(Edelweiss.Mapping.Entities.Entity,System.String,System.Int32,System.Boolean)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.TileHelper.GetCycleValue(System.String,System.Int32,System.Boolean)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.TileHelper.Load">
+            <inheritdoc/>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.LuaEntityData">
             <summary>
@@ -1253,6 +1373,12 @@
             <param name="y">The y-coordinate of the tile</param>
             <returns>True if the tile is in bounds, false otherwise</returns>
         </member>
+        <member name="M:Edelweiss.Mapping.Tools.TileTool.OnDeselect">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Tools.TileTool.OnSelect">
+            <inheritdoc/>
+        </member>
         <member name="T:Edelweiss.Plugins.CustomTab">
             <summary>
             Registers a custom UI tab, like the mapping tab.
@@ -1345,6 +1471,11 @@
             Classes marked with this attribute will require that the specified types be loaded before they can be loaded
             </summary>
             <param name="otherTypes">The types to load before this type</param>
+        </member>
+        <member name="T:Edelweiss.Plugins.LoadedType">
+            <summary>
+            Base class for a type that needs to be loaded by the mod loader but does not fall under any other category
+            </summary>
         </member>
         <member name="T:Edelweiss.Plugins.Logger">
             <summary>
@@ -1881,6 +2012,11 @@
             A variable that is synced between backend and frontend automatically whenever its value is set
             </summary>
         </member>
+        <member name="E:Edelweiss.Network.SyncedVariable.OnChanged">
+            <summary>
+            Invoked when the variable's value is changed
+            </summary>
+        </member>
         <member name="P:Edelweiss.Network.SyncedVariable.Value">
             <summary>
             The value of the variable. Converted to a JObject when synced to the frontend.
@@ -2080,14 +2216,14 @@
             The position at which the texture starts in the atlas as compared to the padded texture
             </summary>
         </member>
-        <member name="F:Edelweiss.Utils.TextureData.paddedWidth">
+        <member name="P:Edelweiss.Utils.TextureData.paddedWidth">
             <summary>
             The width of the padded texture
             </summary>
         </member>
-        <member name="F:Edelweiss.Utils.TextureData.paddedHeight">
+        <member name="P:Edelweiss.Utils.TextureData.paddedHeight">
             <summary>
-            The width of the padded texture
+            The height of the padded texture
             </summary>
         </member>
         <member name="M:Edelweiss.Utils.TextureData.ToLuaTable(MoonSharp.Interpreter.Script)">
@@ -2217,6 +2353,16 @@
         <member name="M:Edelweiss.Utils.EdelweissUtils.Mod(System.Int32,System.Int32)">
             <summary>
             Takes the modulus of two numbers ensuring the result is positive
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.GetFromMetatable(MoonSharp.Interpreter.Table,System.String)">
+            <summary>
+            Gets a particular key from the metatable of the table
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.SetToMetatable(MoonSharp.Interpreter.Table,System.String,System.Object)">
+            <summary>
+            Sets the given key to the given value using metatable setters
             </summary>
         </member>
         <member name="T:Edelweiss.Utils.FormLoader">

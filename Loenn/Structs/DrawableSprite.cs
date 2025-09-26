@@ -15,7 +15,7 @@ namespace Edelweiss.Loenn.Structs
         {
             Table table = new(script);
 
-            table["fromTexture"] = (Func<string, Table, DynValue>)((texture, data) =>
+            var fromTexture = (Func<string, Table, DynValue>)((texture, data) =>
             {
                 TextureData textureData;
                 if ((textureData = CelesteModLoader.GetTextureData("Gameplay/" + texture)) == null)
@@ -28,6 +28,9 @@ namespace Edelweiss.Loenn.Structs
                     y = (int)(data?.Get("y").Number ?? 0),     
                 }.ToLuaTable(script));
             });
+            table["fromTexture"] = fromTexture;
+
+            table["fromInternalTexture"] = (string texture, Table data) => fromTexture($"@Internal@/{texture}", data);
 
             return table;
         }

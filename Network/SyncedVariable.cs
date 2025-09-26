@@ -14,6 +14,11 @@ namespace Edelweiss.Network
         private string[] syncedWidgets = [];
 
         /// <summary>
+        /// Invoked when the variable's value is changed
+        /// </summary>
+        public event Action<object> OnChanged;
+
+        /// <summary>
         /// The value of the variable. Converted to a JObject when synced to the frontend.
         /// </summary>
         public object Value
@@ -25,6 +30,7 @@ namespace Edelweiss.Network
             set
             {
                 this.value = value;
+                OnChanged?.Invoke(value);
                 NetworkManager.SendPacket(Netcode.SYNC_VARIABLE, new JObject()
                 {
                     {"name", name},

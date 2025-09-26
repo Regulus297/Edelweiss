@@ -37,6 +37,7 @@ namespace Edelweiss.Plugins
             LoadPythonPlugins(Directory.GetCurrentDirectory());
             LoadAssembly(Assembly.GetExecutingAssembly());
             LoadJsonFiles(Directory.GetCurrentDirectory(), "Edelweiss");
+            CelesteModLoader.LoadTexturesFromDirectory(Path.Join(Directory.GetCurrentDirectory(), "Resources"));
 
             string directory = Path.Join(Directory.GetCurrentDirectory(), "Plugins");
 
@@ -51,7 +52,7 @@ namespace Edelweiss.Plugins
                     // Deflate stream first
                     using (Stream stream = pluginAsset.GetStream(modFilePath))
                     {
-                        MemoryStream ms = new();
+                        MemoryStream ms = new();    
                         stream.CopyTo(ms);
                         ms.Position = 0;
                         assembly = AssemblyLoadContext.Default.LoadFromStream(ms);
@@ -66,6 +67,7 @@ namespace Edelweiss.Plugins
                     LoadLangFiles(pluginAsset, plugin.ID);
                     LoadPythonPlugins(pluginAsset);
                     LoadJsonFiles(pluginAsset, plugin.ID);
+                    CelesteModLoader.LoadTexturesFromDirectory(pluginAsset);
                 }
             }
 

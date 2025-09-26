@@ -323,5 +323,21 @@ namespace Edelweiss.Utils
         {
             return ((a % b) + b) % b;
         }
+
+        /// <summary>
+        /// Gets a particular key from the metatable of the table
+        /// </summary>
+        public static DynValue GetFromMetatable(this Table table, string key)
+        {
+            return table.OwnerScript.Call(table.MetaTable.Get("__index"), table, key);
+        }
+
+        /// <summary>
+        /// Sets the given key to the given value using metatable setters
+        /// </summary>
+        public static void SetToMetatable(this Table table, string key, object value)
+        {
+            table.OwnerScript.Call(table.MetaTable.Get("__newindex"), table, key, DynValue.FromObject(table.OwnerScript, value));
+        }
     }
 }

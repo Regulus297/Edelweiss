@@ -89,6 +89,15 @@ namespace Edelweiss.Mapping.Entities
         /// </summary>
         public float scaleY => entityData.Scale(entityRoom ?? RoomData.Default, this)[1];
 
+        /// <summary>
+        /// The depth of the entity
+        /// </summary>
+        public int depth => entityData.Depth(entityRoom ?? RoomData.Default, this);
+
+        internal Func<int, bool> customRotate;
+        internal Func<bool, bool, bool> customFlip;
+        internal Func<int, bool> customCycle;
+
         internal EntityData entityData;
         RoomData entityRoom;
 
@@ -162,6 +171,8 @@ namespace Edelweiss.Mapping.Entities
             {
                 if (key == "_name")
                     return DynValue.NewString(_name);
+                if (key == "depth")
+                    return DynValue.NewNumber(depth);
                 if (data.ContainsKey(key))
                     return DynValue.FromObject(script, data[key]);
                 return DynValue.Nil;
@@ -188,6 +199,21 @@ namespace Edelweiss.Mapping.Entities
                 else if (key == "height")
                 {
                     height = (int)value.Number;
+                }
+                else if (key == "customCycle")
+                {
+                    customCycle = (int amount) =>
+                    {
+                        return script.Call(value.Callback, amount).Boolean;
+                    };
+                }
+                else if (key == "customFlip")
+                {
+                    customFlip = (bool h, bool w) => script.Call(value.Callback, h, w).Boolean;
+                }
+                else if (key == "customRotate")
+                {
+                    customRotate = (int rotation) => script.Call(value.Callback, rotation).Boolean;
                 }
 
                 if (data.ContainsKey(key))
@@ -361,7 +387,7 @@ namespace Edelweiss.Mapping.Entities
         /// <param name="direction"></param>
         public bool Rotate(int direction)
         {
-            return entityData.Rotate(entityRoom ?? RoomData.Default, this, direction);
+            return customRotate?.Invoke(direction) ?? entityData.Rotate(entityRoom ?? RoomData.Default, this, direction);
         }
 
         /// <summary>
@@ -372,7 +398,7 @@ namespace Edelweiss.Mapping.Entities
         /// <returns>True if flipping affected the entity, false if not</returns>
         public bool Flip(bool horizontal, bool vertical)
         {
-            return entityData.Flip(entityRoom ?? RoomData.Default, this, horizontal, vertical);
+            return customFlip?.Invoke(horizontal, vertical) ?? entityData.Flip(entityRoom ?? RoomData.Default, this, horizontal, vertical);
         }
 
         /// <summary>
@@ -380,7 +406,7 @@ namespace Edelweiss.Mapping.Entities
         /// </summary>
         public bool Cycle(int amount)
         {
-            return entityData.Cycle(entityRoom ?? RoomData.Default, this, amount);
+            return customCycle?.Invoke(amount) ?? entityData.Cycle(entityRoom ?? RoomData.Default, this, amount);
         }
 
         /// <summary>

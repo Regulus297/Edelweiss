@@ -21,12 +21,15 @@ class TileShape(ShapeRenderer):
     def _redraw_cache(self):
         self.tiles = self.data["tileData"]
         self._prev_data = self.tiles
-        self.width = self.parent.width // 8
-        self.height = self.parent.height // 8
+        self.width = self.data["width"] if "width" in self.data else self.parent.width // 8
+        self.height = self.data["height"] if "height" in self.data else self.parent.height // 8
+
+        self.connect_to_out_of_bounds = self.data.get("connectToOutOfBounds")
 
         self._cache = QPixmap(self.width * 8, self.height * 8)
         self._cache.fill(QColor(0, 0, 0, 0))
         painter = QPainter(self._cache)
+        painter.setOpacity(self.data["opacity"] if "opacity" in self.data else 1)
 
         tileData = SyncedVariables.variables[self.data["tiles"]]
         for i, tile in enumerate(self.tiles):
@@ -79,7 +82,7 @@ class TileShape(ShapeRenderer):
         return "padding"
     
     def canConnect(self, b):
-        return b == self.currentTile or b == "✪" or b != " "
+        return b == self.currentTile or (self.connect_to_out_of_bounds != False and b == "✪") or (b != " " and b != "✪")
 
     def canConnectToCoords(self, x, y):
         return self.canConnect(self.getTile(x, y))

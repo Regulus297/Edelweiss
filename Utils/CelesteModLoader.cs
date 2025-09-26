@@ -32,6 +32,7 @@ namespace Edelweiss.Utils
         /// </summary>
         public static Dictionary<string, string> texturePaths = [];
         internal static Dictionary<string, TextureData> textureDataCache = [];
+        internal static List<string> vanillaTextures = [];
         
         /// <summary>
         /// Called after all mods are loaded on the background thread
@@ -62,6 +63,11 @@ namespace Edelweiss.Utils
             foreach (string file in path.GetFiles(graphicsPath, "*.png", SearchOption.AllDirectories))
             {
                 string key = file.Substring(0, file.Length - 4).Substring(graphicsPath.Length + 1).Replace(Path.DirectorySeparatorChar, '/');
+                if (vanillaTextures.Contains(key))
+                {
+                    Logger.Warn(nameof(CelesteModLoader), $"Mod {path} replaces vanilla texture {key}: skipping the texture");
+                    continue;
+                }
                 texturePaths[key] = path.IsZipFile ? path.PluginArchive.Path() + char.ConvertFromUtf32(0) + file : Path.Join(path.AssetPath, file);
             }
 
@@ -342,10 +348,37 @@ namespace Edelweiss.Utils
         /// </summary>
         public int atlasOffsetX = 0, atlasOffsetY = 0;
 
+        private int _paddedWidth = 0, _paddedHeight = 0;
+
         /// <summary>
         /// The width of the padded texture
         /// </summary>
-        public int paddedWidth = 0, paddedHeight = 0;
+        public int paddedWidth
+        {
+            get
+            {
+                return _paddedWidth <= 0 ? width : _paddedWidth;
+            }
+            set
+            {
+                _paddedWidth = value;
+            }
+        }
+
+        /// <summary>
+        /// The height of the padded texture
+        /// </summary>
+        public int paddedHeight
+        {
+            get
+            {
+                return _paddedHeight <= 0 ? height : _paddedHeight;
+            }
+            set
+            {
+                _paddedHeight = value;
+            }
+        }
 
         /// <summary>
         /// 

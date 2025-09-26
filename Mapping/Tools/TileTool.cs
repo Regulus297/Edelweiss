@@ -17,6 +17,8 @@ namespace Edelweiss.Mapping.Tools
         internal List<string> favouriteFG = [];
         internal List<string> favouriteBG = [];
 
+        internal static string selectedFG, selectedBG;
+
         /// <inheritdoc/>
         public override Dictionary<string, string> GetMaterials()
         {
@@ -101,5 +103,32 @@ namespace Edelweiss.Mapping.Tools
         {
             return (x >= 0) && (x < ((int)room["width"] / 8)) && (y >= 0) && (y < ((int)room["height"] / 8));
         }
+
+        /// <inheritdoc/>
+        public override void OnDeselect()
+        {
+            if (selectedLayer == 0)
+            {
+                selectedFG = selectedMaterial;
+            }
+            else
+            {
+                selectedBG = selectedMaterial;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void OnSelect()
+        {
+            if (selectedLayer == 0 && selectedFG != null)
+            {
+                selectedMaterial = selectedFG;
+            }
+            else if (selectedBG != null)
+            {
+                selectedMaterial = selectedBG;
+            }
+        }
+
     }
 }
