@@ -98,6 +98,8 @@ namespace Edelweiss.Mapping.Entities
         internal Func<bool, bool, bool> customFlip;
         internal Func<int, bool> customCycle;
 
+        private int nodeOffsetX, nodeOffsetY;
+
         internal EntityData entityData;
         RoomData entityRoom;
 
@@ -233,6 +235,9 @@ namespace Edelweiss.Mapping.Entities
             table["height"] = height;
 
             Table nodesTable = new Table(script);
+            Table nodeMeta = new Table(script);
+            nodesTable.MetaTable = nodeMeta;
+
             foreach (Point p in nodes)
             {
                 nodesTable.Append(DynValue.NewTable(PointToTable(p, script)));
@@ -248,7 +253,7 @@ namespace Edelweiss.Mapping.Entities
         /// <param name="script">The script the table should belong to</param>
         public Table PointToTable(Point point, Script script)
         {
-            return new Point(point.X + x, point.Y + y).ToLuaTable(script);
+            return new Point(point.X + x + nodeOffsetX, point.Y + y + nodeOffsetY).ToLuaTable(script);
         }
 
         /// <summary>
@@ -260,16 +265,24 @@ namespace Edelweiss.Mapping.Entities
             if (nodeIndex >= nodes.Count)
                 return Point.Empty;
 
-            return new Point(nodes[nodeIndex].X + x, nodes[nodeIndex].Y + y);
+            return new Point(nodes[nodeIndex].X + x + nodeOffsetX, nodes[nodeIndex].Y + y + nodeOffsetY);
+        }
+
+        /// <summary>
+        /// Sets the value nodes should be offset by. Used when drawing sprite for nodes when no nodeSprite is defined
+        /// </summary>
+        public void SetNodeOffset(int x, int y)
+        {
+            nodeOffsetX = x;
+            nodeOffsetY = y;
         }
 
         /// <summary>
         /// Draws the entity to the frontend
         /// </summary>
-        /// <param name="opacity"></param>
         /// <param name="entityObject">The ID of the entity object in the viewport if the entity should be drawn to an existing object. Null if not.</param>
         /// <param name="entityIndex"></param>
-        public void Draw(float opacity = 1, string entityObject = null, int entityIndex = 0)
+        public void Draw(string entityObject = null, int entityIndex = 0)
         {
             JObject item = new()
             {
@@ -303,8 +316,12 @@ namespace Edelweiss.Mapping.Entities
                     {"widget", "Mapping/MainView"},
                     {"item", entityObject},
                     {"index", entityIndex},
-                    {"action", "add"},
-                    {"shapes", shapes}
+                    {"action", "modify"},
+                    {"data", new JObject()
+                        {
+                            {"shapes", shapes }
+                        }
+                    }
                 });
                 NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
                 {
@@ -341,7 +358,6 @@ namespace Edelweiss.Mapping.Entities
                 }
                 else if (nodeLineRenderType == NodeLineRenderType.Line)
                 {
-                    string previous = i == 0 ? entityObject : $"{entityObject}/{entityObject}_node{i - 1}";
                     nodeShapes.Add(new JObject() {
                         {"type", "line"},
                         {"x1", 0},

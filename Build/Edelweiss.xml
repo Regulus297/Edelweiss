@@ -638,11 +638,15 @@
             </summary>
             <param name="nodeIndex">The node's 0-based index</param>
         </member>
-        <member name="M:Edelweiss.Mapping.Entities.Entity.Draw(System.Single,System.String,System.Int32)">
+        <member name="M:Edelweiss.Mapping.Entities.Entity.SetNodeOffset(System.Int32,System.Int32)">
+            <summary>
+            Sets the value nodes should be offset by. Used when drawing sprite for nodes when no nodeSprite is defined
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.Draw(System.String,System.Int32)">
             <summary>
             Draws the entity to the frontend
             </summary>
-            <param name="opacity"></param>
             <param name="entityObject">The ID of the entity object in the viewport if the entity should be drawn to an existing object. Null if not.</param>
             <param name="entityIndex"></param>
         </member>
@@ -950,6 +954,11 @@
             <param name="foreground">Whether this is a foreground tile</param>
             <param name="opacity">The opacity of the tile object</param>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.TileHelper.GetMergedSprite(System.Collections.Generic.IEnumerable{Edelweiss.Mapping.Entities.Entity},System.String,System.Boolean,System.Single)">
+            <summary>
+            Gets the merged sprite for multiple fake tile entities
+            </summary>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.TileHelper.Cycle(Edelweiss.Mapping.Entities.Entity,System.String,System.Int32,System.Boolean)">
             <summary>
             
@@ -1192,6 +1201,11 @@
         <member name="M:Edelweiss.Mapping.Entities.RoomData.ToLuaTable(MoonSharp.Interpreter.Script)">
             <summary>
             Converts the room to a Lua table compatible with Loenn.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.RoomData.RedrawEntities">
+            <summary>
+            Redraws all entities in the room
             </summary>
         </member>
         <member name="T:Edelweiss.Mapping.Keybinds.CycleKeybind">

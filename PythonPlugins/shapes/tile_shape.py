@@ -16,13 +16,15 @@ class TileShape(ShapeRenderer):
     def draw(self, painter):
         if self._cache is None or self.data["tileData"] != self._prev_data:
             self._redraw_cache()
-        painter.drawPixmap(0, 0, self._cache)
+        painter.drawPixmap(self.x, self.y, self._cache)
 
     def _redraw_cache(self):
         self.tiles = self.data["tileData"]
         self._prev_data = self.tiles
         self.width = self.data["width"] if "width" in self.data else self.parent.width // 8
         self.height = self.data["height"] if "height" in self.data else self.parent.height // 8
+        self.x = self.data["x"] if "x" in self.data else 0
+        self.y = self.data["y"] if "y" in self.data else 0
 
         self.connect_to_out_of_bounds = self.data.get("connectToOutOfBounds")
 

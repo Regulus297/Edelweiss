@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Edelweiss.Mapping.Drawables;
 using Edelweiss.Mapping.Tools;
 using Edelweiss.Plugins;
@@ -42,6 +45,51 @@ namespace Edelweiss.Mapping.Entities
                 depth = entity.depth
             }];
         }
+
+        /// <summary>
+        /// Gets the merged sprite for multiple fake tile entities
+        /// </summary>
+        public static List<Drawable> GetMergedSprite(IEnumerable<Entity> entities, string key, bool foreground = true, float opacity = 1)
+        {
+            int minX = int.MaxValue, minY = int.MaxValue;
+            int maxX = int.MinValue, maxY = int.MinValue;
+            foreach (Entity entity in entities)
+            {
+                minX = Math.Min(minX, entity.x / 8);
+                minY = Math.Min(minY, entity.y / 8);
+                maxX = Math.Max(maxX, (entity.x + entity.width) / 8);
+                maxY = Math.Max(maxY, (entity.y + entity.height) / 8);
+            }
+            int w = maxX - minX;
+            int h = maxY - minY;
+
+            string[] ids = Enumerable.Repeat(" ", w * h).ToArray();
+            foreach (Entity entity in entities)
+            {
+                for (int x = 0; x < entity.width / 8; x++)
+                {
+                    for (int y = 0; y < entity.height / 8; y++)
+                    {
+                        int cx = -minX + x + entity.x / 8;
+                        int cy = -minY + y + entity.y / 8;
+                        ids[cx + w * cy] = entity[key].ToString();
+                    }
+                }
+            }
+            Tiles tiles = new Tiles()
+            {
+                data = string.Concat(ids),
+                x = minX * 8,
+                y = minY * 8,
+                width = w,
+                height = h,
+                foreground = true,
+                opacity = opacity
+            };
+
+            return [tiles];
+        }
+
         /// <summary>
         /// 
         /// </summary>

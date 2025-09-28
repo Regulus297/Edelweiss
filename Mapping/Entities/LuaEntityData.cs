@@ -281,8 +281,7 @@ namespace Edelweiss.Mapping.Entities
             {
                 return textureMethod.String;
             }
-            var p = entity.nodes[nodeIndex];
-            return script.Call(textureMethod, room.ToLuaTable(script), entity.ToLuaTable(script), entity.PointToTable(p, script), nodeIndex, new Table(script)).String;
+            return script.Call(textureMethod, room.ToLuaTable(script), entity.ToLuaTable(script), entity.GetNode(nodeIndex).ToLuaTable(script), nodeIndex, new Table(script)).String;
         }
 
         /// <inheritdoc/>
@@ -290,23 +289,31 @@ namespace Edelweiss.Mapping.Entities
         {
             DynValue spriteMethod = entityTable.Get("nodeSprite");
             // If sprite method is defined but no node texture, use that
-            if (!entityTable.Get("sprite").IsNil() && entityTable.Get("nodeTexture").IsNil())
-                return Sprite(room, entity);
+            if (!entityTable.Get("sprite").IsNil() && entityTable.Get("nodeTexture").IsNil() && spriteMethod.IsNil())
+            {
+                var node = entity.GetNode(nodeIndex);
+                entity.SetNodeOffset(entity.x-node.X, entity.y-node.Y);
+                var result = Sprite(room, entity);
+                entity.SetNodeOffset(0, 0);
+                return result;
+            }
 
             if (spriteMethod.IsNil())
                 return base.NodeSprite(room, entity, nodeIndex);
-            var p = entity.nodes[nodeIndex];
-            DynValue sprite = script.Call(spriteMethod, room.ToLuaTable(script), entity.ToLuaTable(script), entity.PointToTable(p, script), nodeIndex, new Table(script));
+
+            DynValue sprite = script.Call(spriteMethod, room.ToLuaTable(script), entity.ToLuaTable(script), entity.GetNode(nodeIndex).ToLuaTable(script), nodeIndex, new Table(script));
             if (sprite.IsNil())
-                return [];
-            if (sprite.Table.Get("_type").IsNil())
             {
-                List<Drawable> output = [];
-                // It's a list
-                foreach (var table in sprite.Table.Values)
-                    output.Add(Drawable.FromTable(table.Table));
-                return output;
+                return [];
             }
+            if (sprite.Table.Get("_type").IsNil())
+                {
+                    List<Drawable> output = [];
+                    // It's a list
+                    foreach (var table in sprite.Table.Values)
+                        output.Add(Drawable.FromTable(table.Table));
+                    return output;
+                }
             // It's one sprite
             return [Drawable.FromTable(sprite.Table)];
         }
@@ -324,8 +331,7 @@ namespace Edelweiss.Mapping.Entities
                 else
                 {
                     using var dest = new SpriteDestination(shapes, entity.x, entity.y);
-                    Point p = entity.nodes[nodeIndex];
-                    script.Call(drawMethod, room.ToLuaTable(script), entity.ToLuaTable(script), entity.PointToTable(p, script), nodeIndex, new Table(script));
+                    script.Call(drawMethod, room.ToLuaTable(script), entity.ToLuaTable(script), entity.GetNode(nodeIndex).ToLuaTable(script), nodeIndex, new Table(script));
                 }
             }
             catch (Exception e)

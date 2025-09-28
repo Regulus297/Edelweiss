@@ -110,7 +110,7 @@ namespace Edelweiss.Diagnostics
             foreach (var item in CelesteModLoader.entities)
             {
                 Logger.Log($"Drawing {item.Key}:");
-                Entity.DefaultFromData(item.Value, RoomData.Default).Draw(0.5f, "emptyObject", 0);
+                Entity.DefaultFromData(item.Value, RoomData.Default).Draw("emptyObject", 0);
             }
             Logger.Break();
             Logger.Log($"Tested all entities, {failedEntities}/{CelesteModLoader.entities.Count} failed");

@@ -7,34 +7,13 @@ from PyQt5.QtCore import Qt
 
 @plugin_loadable
 class PixmapShape(ShapeRenderer):
-    tint_cache = {}
 
     def __init__(self, parent=None, data=None):
         super().__init__("pixmap", parent, data)
 
         self.cached = None
         self.prevColor = ""
-
-    def tint(self, pixmap, color, path, hexc):
-        cached = PixmapShape.tint_cache.get((path, hexc))
-        if cached:
-            return cached
-
-        tinted = QPixmap(pixmap.size())
-        tinted.fill(Qt.transparent)
-
-        painter = QPainter(tinted)
-        painter.drawPixmap(0, 0, pixmap)
-
-        painter.setCompositionMode(QPainter.CompositionMode_SourceIn)
-        painter.fillRect(pixmap.rect(), color)
-
-        painter.setCompositionMode(QPainter.CompositionMode_Multiply)
-        painter.drawPixmap(0, 0, pixmap)
-
-        painter.end()
-        PixmapShape.tint_cache[(path, hexc)] = tinted
-        return tinted
+    
 
     def draw(self, painter):
         pixmap = PixmapLoader.load_texture(self.data["path"])
@@ -43,7 +22,7 @@ class PixmapShape(ShapeRenderer):
 
         if "color" in self.data and self.data["color"].upper() != "#FFFFFFFF" and self.data["color"].upper() != "#FFFFFF":
             if self.cached is None or self.prevColor != self.data["color"]:
-                self.cached = self.tint(pixmap, QColor(self.data["color"]), self.data["path"], self.data["color"])
+                self.cached = PixmapLoader.tint(pixmap, QColor(self.data["color"]), self.data["path"], self.data["color"])
                 self.prevColor = self.data["color"]
         elif self.cached is None:
             self.cached = pixmap

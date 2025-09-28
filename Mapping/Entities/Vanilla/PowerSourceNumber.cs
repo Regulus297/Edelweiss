@@ -25,8 +25,8 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            Sprite number = new Sprite("scenery/powersource_numbers/1");
-            Sprite glow = new Sprite("scenery/powersource_numbers/1_glow");
+            Sprite number = new Sprite("scenery/powersource_numbers/1", entity);
+            Sprite glow = new Sprite("scenery/powersource_numbers/1_glow", entity);
             return [number, glow];
         }
     }

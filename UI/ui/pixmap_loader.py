@@ -1,6 +1,7 @@
 import zipfile
 
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QPixmap, QPainter
 
 from network import SyncedVariables
 
@@ -9,7 +10,7 @@ class PixmapLoader:
     loaded_textures = {}
     loaded_paths = {}
 
-    loaded_tints = {}
+    tint_cache = {}
 
     @staticmethod
     def load_texture(key):
@@ -39,3 +40,25 @@ class PixmapLoader:
     def clear_cache():
         PixmapLoader.loaded_textures = {}
         PixmapLoader.loaded_paths = {}
+
+
+    @staticmethod
+    def tint(pixmap, color, path, hexc):
+        cached = PixmapLoader.tint_cache.get((path, hexc))
+        if cached:
+            return cached
+
+        tinted = QPixmap(pixmap.size())
+        tinted.fill(Qt.transparent)
+
+        painter = QPainter(tinted)
+        painter.drawPixmap(0, 0, pixmap)
+
+        painter.setCompositionMode(QPainter.CompositionMode_SourceIn)
+        painter.fillRect(pixmap.rect(), color)
+
+        painter.setCompositionMode(QPainter.CompositionMode_Multiply)
+        painter.drawPixmap(0, 0, pixmap)
+        painter.end()
+        PixmapLoader.tint_cache[(path, hexc)] = tinted
+        return tinted

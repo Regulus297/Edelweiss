@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -165,6 +166,17 @@ namespace Edelweiss.Mapping.Entities
                 table[field.Name] = field.GetValue(this);
             }
             return table;
+        }
+
+        /// <summary>
+        /// Redraws all entities in the room
+        /// </summary>
+        public void RedrawEntities()
+        {
+            foreach (Entity entity in entities)
+            {
+                entity.Draw($"{name}/{entity._id}");
+            }
         }
     }
 }

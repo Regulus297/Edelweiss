@@ -4,6 +4,7 @@ using Edelweiss.Loenn;
 using Edelweiss.Plugins;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Drawables
 {
@@ -101,12 +102,41 @@ namespace Edelweiss.Mapping.Drawables
         /// </summary>
         public override void Draw()
         {
-            foreach (Sprite sprite in GetSprites())
+            // foreach (Sprite sprite in GetSprites())
+            // {
+            //     sprite.x += x;
+            //     sprite.y += y;
+            //     sprite.Draw();
+            // }
+
+            if (SpriteDestination.destination == null)
+                return;
+
+            TextureData data = CelesteModLoader.GetTextureData("Gameplay/" + texture);
+            if (data == null)
+                return;
+
+            SpriteDestination.destination.Add(new JObject()
             {
-                sprite.x += x;
-                sprite.y += y;
-                sprite.Draw();
-            }
+                {"type", "ninePatch"},
+                {"texture", texture},
+                {"mode", mode},
+                {"borderMode", borderMode},
+                {"fillMode", fillMode},
+                {"color", color},
+                {"tileWidth", tileWidth},
+                {"tileHeight", tileHeight},
+                {"borderLeft", borderLeft},
+                {"borderRight", borderRight},
+                {"borderTop", borderTop},
+                {"borderBottom", borderBottom},
+                {"depth", depth},
+                {"x", x - SpriteDestination.offsetX},
+                {"y", y - SpriteDestination.offsetY},
+                {"width", width},
+                {"height", height},
+                {"textureData", JToken.FromObject(data)}
+            });
         }
 
         internal List<Sprite> GetSprites()
@@ -309,14 +339,7 @@ namespace Edelweiss.Mapping.Drawables
 
             ninePatch["getDrawableSprite"] = () =>
             {
-                Table spriteTable = new(script);
-                foreach (Sprite sprite in GetSprites())
-                {
-                    sprite.x += x;
-                    sprite.y += y;
-                    sprite.color = ninePatch.Get("color").Color();
-                    spriteTable.Append(DynValue.NewTable(sprite.ToLuaTable(script)));
-                }
+                Table spriteTable = new(script, DynValue.NewTable(ninePatch));
                 return spriteTable;
             };
 

@@ -196,7 +196,7 @@ namespace Edelweiss.Mapping.Tools
                 {"item", "cursorGhost"},
                 {"action", "clear"}
             });
-            ghostEntity.Draw(0.5f, "cursorGhost", 1);
+            ghostEntity.Draw("cursorGhost", 1);
         }
 
         public override void MouseRelease(JObject room, float x, float y)
@@ -205,7 +205,7 @@ namespace Edelweiss.Mapping.Tools
             RoomData backendRoom = MappingTab.map.rooms.FirstOrDefault(r => r.name == room.Value<string>("name"));
             (int tileX, int tileY) = EdelweissUtils.ToTileCoordinate(x, y);
             Entity created = Entity.DefaultFromData(ghostEntity.entityData, backendRoom);
-            created.data = ghostEntity.data;
+            created.data = ghostEntity.data.ToDictionary();
             created._name = ghostEntity._name;
             created._id = backendRoom.entities.Count().ToString();
             created.x = 8 * startTileX;
@@ -232,6 +232,7 @@ namespace Edelweiss.Mapping.Tools
 
             backendRoom?.entities.Add(created);
             created.Draw();
+            backendRoom?.RedrawEntities();
         }
 
         public override void OnSelect()
@@ -326,7 +327,7 @@ namespace Edelweiss.Mapping.Tools
                     ghostEntity.entityData = prevEntityData;
                 }
 
-                ghostEntity.Draw(0.5f, "cursorGhost", 1);
+                ghostEntity.Draw("cursorGhost", 1);
                 lastSelectedMaterial = selectedMaterial;
                 redrawGhost = false;
             }
