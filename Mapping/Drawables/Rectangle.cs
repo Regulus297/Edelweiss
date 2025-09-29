@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using Edelweiss.Loenn;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
@@ -9,7 +10,7 @@ namespace Edelweiss.Mapping.Drawables
     /// <summary>
     /// A class that represents a drawable rectangle.
     /// </summary>
-    public class Rectangle() : Drawable, ILuaConvertible
+    public class Rect() : Drawable, ILuaConvertible
     {
         /// <summary>
         /// 
@@ -39,7 +40,7 @@ namespace Edelweiss.Mapping.Drawables
         /// <summary>
         /// Creates a rectangle from the given Lua table.
         /// </summary>
-        public Rectangle(Table table) : this()
+        public Rect(Table table) : this()
         {
             x = (int)table.Get("x").Number;
             y = (int)table.Get("y").Number;
@@ -53,7 +54,7 @@ namespace Edelweiss.Mapping.Drawables
         /// <summary>
         /// Creates a rectangle with the given parameters
         /// </summary>
-        public Rectangle(int x, int y, int width, int height, string color, string borderColor = null) : this()
+        public Rect(int x, int y, int width, int height, string color, string borderColor = null) : this()
         {
             borderColor = borderColor ?? color;
             this.x = x;
@@ -62,6 +63,14 @@ namespace Edelweiss.Mapping.Drawables
             this.height = height;
             this.color = color;
             this.borderColor = borderColor;
+        }
+
+        /// <summary>
+        /// Creates a drawable rectangle from the given System.Drawing.Rectangle
+        /// </summary>
+        public Rect(Rectangle rectangle, string color, string borderColor = null) : this(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height, color, borderColor)
+        {
+
         }
 
         /// <summary>
@@ -84,6 +93,12 @@ namespace Edelweiss.Mapping.Drawables
                 {"fill", color},
                 {"depth", depth}
             });
+        }
+
+        /// <inheritdoc/>
+        public override Rectangle Bounds()
+        {
+            return new Rectangle(x, y, width, height);
         }
 
         /// <summary>

@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.Linq;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
@@ -111,6 +112,12 @@ namespace Edelweiss.Mapping.Drawables
                 { "connectToOutOfBounds", false },
                 { "opacity", opacity }
             });
+        }
+
+        /// <inheritdoc/>
+        public override Rectangle Bounds()
+        {
+            return new Rectangle(x, y, width, height);
         }
 
         /// <inheritdoc/>

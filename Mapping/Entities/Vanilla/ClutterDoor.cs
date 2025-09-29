@@ -19,7 +19,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
             string variant = (string)entity["type"];
-            Rectangle rectangle = new(entity.x, entity.y, entity.width, entity.height, FillColor(room, entity), BorderColor(room, entity));
+            Rect rectangle = new(entity.x, entity.y, entity.width, entity.height, FillColor(room, entity), BorderColor(room, entity));
             Sprite sprite = new Sprite($"objects/resortclutter/icon_{variant}", entity);
             sprite.x += entity.width / 2;
             sprite.y += entity.height / 2;

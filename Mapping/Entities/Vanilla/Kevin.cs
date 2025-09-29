@@ -40,7 +40,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             bool giant = entity.width >= 48 && entity.height >= 48 && chillout;
 
             NinePatch frame = new NinePatch($"objects/crushblock/block{frameIndex:00}", entity.x, entity.y, entity.width, entity.height, "border");
-            Rectangle rectangle = new Rectangle(entity.x + 2, entity.y + 2, entity.width - 4, entity.height - 4, EdelweissUtils.GetColor(98, 34, 43));
+            Rect rectangle = new Rect(entity.x + 2, entity.y + 2, entity.width - 4, entity.height - 4, EdelweissUtils.GetColor(98, 34, 43));
             Sprite face = new Sprite(giant ? "objects/crushblock/giant_block00" : "objects/crushblock/idle_face", entity);
             face.x += entity.width / 2;
             face.y += entity.height / 2;

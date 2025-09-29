@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Edelweiss.Mapping.Drawables;
 using Edelweiss.Utils;
 
@@ -48,7 +49,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             int x = entity.x;
             int y = 0;
 
-            Rectangle bg = new Rectangle(x, y, entity.width, room.height, EdelweissUtils.GetColor(47, 187, 255));
+            Rect bg = new Rect(x, y, entity.width, room.height, EdelweissUtils.GetColor(47, 187, 255));
             List<Drawable> sprites = [];
 
             for (int i = 0; i < room.height; i += 8)
@@ -103,7 +104,15 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return [bg, .. sprites];
         }
 
-        // TODO: drawselected, selection
-        
+        // TODO: drawselected
+        public override List<Rectangle> Selection(RoomData room, Entity entity)
+        {
+            if (entity.nodes.Count == 0)
+            {
+                return [new Rectangle(entity.x, 0, entity.width, room.height)];
+            }
+            Point node = entity.GetNode(0);
+            return [new Rectangle(entity.x, 0, entity.width, room.height), new Rectangle(node.X - 8, node.Y, entity.width + 16, 8)];
+        }
     }
 }

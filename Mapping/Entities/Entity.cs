@@ -298,6 +298,18 @@ namespace Edelweiss.Mapping.Entities
             JArray shapes = new();
             entityData.Draw(shapes, entityRoom ?? RoomData.Default, this);
 
+            foreach (Rectangle rectangle in entityData.Selection(entityRoom ?? RoomData.Default, this))
+            {
+                Rect rect = new Rect(rectangle, "#446d9eed", "#6d9eed")
+                {
+                    depth = -10000000
+                };
+                using (new SpriteDestination(shapes, x, y))
+                {
+                    rect.Draw();
+                }
+            }
+
             item["shapes"] = shapes;
             if (entityObject == null)
             {

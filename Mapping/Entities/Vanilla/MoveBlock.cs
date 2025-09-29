@@ -62,8 +62,8 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
             NinePatch block = new NinePatch(blockTexture, entity.x, entity.y, entity.width, entity.height, "border", "repeat");
 
-            Rectangle highlight = new Rectangle(entity.x + 2, entity.y + 2, entity.width - 4, entity.height - 4, EdelweissUtils.GetColor(59, 50, 101));
-            Rectangle mid = new Rectangle(entity.x + 8, entity.y + 8, entity.width - 16, entity.height - 16, EdelweissUtils.GetColor(4, 3, 23));
+            Rect highlight = new Rect(entity.x + 2, entity.y + 2, entity.width - 4, entity.height - 4, EdelweissUtils.GetColor(59, 50, 101));
+            Rect mid = new Rect(entity.x + 8, entity.y + 8, entity.width - 16, entity.height - 16, EdelweissUtils.GetColor(4, 3, 23));
 
             int arrowIndex = direction switch
             {
@@ -78,7 +78,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
             int arrowX = entity.x + (entity.width - arrow.data.width) / 2;
             int arrowY = entity.y + (entity.height - arrow.data.height) / 2;
-            Rectangle arrowRect = new Rectangle(arrowX, arrowY, arrow.data.width, arrow.data.height, highlight.color);
+            Rect arrowRect = new Rect(arrowX, arrowY, arrow.data.width, arrow.data.height, highlight.color);
             List<Drawable> sprites = [highlight, mid];
 
             if (steer)

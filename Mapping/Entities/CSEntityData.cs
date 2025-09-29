@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Reflection;
 using Edelweiss.Mapping.Drawables;
 using Edelweiss.RegistryTypes;
@@ -46,10 +47,10 @@ namespace Edelweiss.Mapping.Entities
         /// <inheritdoc/>
         public override void Draw(JArray shapes, RoomData room, Entity entity)
         {
-            if (Texture(room, entity) == "" && GetType().GetMethod("Sprite").DeclaringType == typeof(EntityData))
+            if (Texture(room, entity) == "" && !MethodImplemented("Sprite"))
             {
                 using var dest = new SpriteDestination(shapes, entity.x, entity.y);
-                Rectangle(room, entity).Draw();
+                new Rect(Rectangle(room, entity), FillColor(room, entity), BorderColor(room, entity)).Draw();
             }
             else
             {
@@ -60,12 +61,24 @@ namespace Edelweiss.Mapping.Entities
         /// <inheritdoc/>
         public override List<Drawable> NodeSprite(RoomData room, Entity entity, int nodeIndex)
         {
-            if (NodeTexture(room, entity, nodeIndex) == "" && GetType().GetMethod("NodeTexture").DeclaringType == typeof(EntityData))
+            if (NodeTexture(room, entity, nodeIndex) == "" && !MethodImplemented("NodeTexture"))
             {
                 return Sprite(room, entity);
             }
             return base.NodeSprite(room, entity, nodeIndex);
         }
+
+        /// <inheritdoc/>
+        public override Rectangle GetDefaultRectangle(RoomData room, Entity entity, int nodeIndex)
+        {
+            if (nodeIndex == -1 && MethodImplemented("Rectangle"))
+                return Rectangle(room, entity);
+            if (nodeIndex >= 0 && MethodImplemented("NodeRectangle"))
+                return NodeRectangle(room, entity, nodeIndex);
+            return base.GetDefaultRectangle(room, entity, nodeIndex);
+        }
+
+        private bool MethodImplemented(string method) => GetType().GetMethod(method).DeclaringType == GetType();
 
         /// <summary>
         /// The names of the placements this entity has

@@ -65,5 +65,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                 {"color", "#696A6A"}
             };
         }
+
+        public override Rectangle GetDefaultRectangle(RoomData room, Entity entity, int nodeIndex)
+        {
+            Point pos = nodeIndex == -1 ? new Point(entity.x, entity.y) : entity.GetNode(nodeIndex);
+            return new Rectangle(pos.X - 2, pos.Y - 2, 5, 5);
+        }
     }
 }

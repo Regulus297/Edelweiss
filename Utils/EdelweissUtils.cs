@@ -339,5 +339,76 @@ namespace Edelweiss.Utils
         {
             table.OwnerScript.Call(table.MetaTable.Get("__newindex"), table, key, DynValue.FromObject(table.OwnerScript, value));
         }
+
+        /// <summary>
+        /// Gets the smallest rectangle that completely covers both input rectangles
+        /// </summary>
+        public static Rectangle Combine(this Rectangle a, Rectangle b)
+        {
+            if (a == default || b == default)
+            {
+                return a == default ? b : a;
+            }
+            int minX = int.Min(a.X, b.X);
+            int minY = int.Min(a.Y, b.Y);
+            int maxX = int.Max(a.X + a.Width, b.X + b.Width);
+            int maxY = int.Max(a.Y + a.Height, b.Y + b.Height);
+            return new Rectangle(minX, minY, maxX - minX, maxY - minY);
+        }
+
+        /// <summary>
+        /// Returns the scaled version of the given rectangle
+        /// </summary>
+        public static Rectangle Scaled(this Rectangle a, float scaleX, float scaleY)
+        {
+            return new Rectangle((int)(a.X * scaleX), (int)(a.Y * scaleY), (int)(a.Width * scaleX), (int)(a.Height * scaleY));
+        }
+
+        /// <summary>
+        /// Returns the smallest axis-aligned rectangle that covers the rotated rectangle
+        /// </summary>
+        public static Rectangle Rotated(this Rectangle a, float rotation)
+        {
+            Point topLeft = a.Location.Rotated(rotation);
+            Point topRight = new Point(a.X + a.Width, a.Y).Rotated(rotation);
+            Point bottomLeft = new Point(a.X, a.Y + a.Height).Rotated(rotation);
+            Point bottomRight = new Point(a.X + a.Width, a.Y + a.Height).Rotated(rotation);
+
+            List<Point> points = [topLeft, topRight, bottomLeft, bottomRight];
+            int minX = int.MaxValue, minY = int.MaxValue;
+            int maxX = int.MinValue, maxY = int.MinValue;
+            foreach (Point point in points)
+            {
+                minX = int.Min(point.X, minX);
+                minY = int.Min(point.Y, minY);
+                maxX = int.Max(point.X, maxX);
+                maxY = int.Max(point.Y, maxY);
+            }
+            return new Rectangle(minX, minY, maxX - minX, maxY - minY);
+        }
+
+        /// <summary>
+        /// Rotates a point by a given amount using (0, 0) as the anchor
+        /// </summary>
+        public static Point Rotated(this Point point, float rotation)
+        {
+            return new Point((int)(point.X * MathF.Cos(rotation) - point.Y * MathF.Sin(rotation)), (int)(point.X * MathF.Sin(rotation) + point.Y * MathF.Cos(rotation)));
+        }
+
+        /// <summary>
+        /// Translates the given rectangle
+        /// </summary>
+        public static Rectangle Translated(this Rectangle a, int x, int y)
+        {
+            return new Rectangle(a.X + x, a.Y + y, a.Width, a.Height);
+        }
+
+        /// <summary>
+        /// Converts the given table into a rectangle
+        /// </summary>
+        public static Rectangle ToRectangle(this Table table)
+        {
+            return new Rectangle((int)(double)table["x"], (int)(double)table["y"], (int)(double)table["width"], (int)(double)table["height"]);
+        }
     }
 }

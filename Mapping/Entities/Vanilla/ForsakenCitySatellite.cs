@@ -6,6 +6,7 @@ using Edelweiss.Utils;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
+    // TODO: Fix node positions
     internal class ForsakenCitySatellite : CSEntityData
     {
         public override string EntityName => "birdForsakenCityGem";
@@ -59,7 +60,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> NodeSprite(RoomData room, Entity entity, int nodeIndex)
         {
-            Point node = entity.GetNode(0);
+            Point node = entity.GetNode(nodeIndex);
             if (nodeIndex == 0)
             {
                 List<Drawable> sprites = [];
@@ -91,7 +92,14 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
             return [new Sprite(GemTexture, node)];
         }
-        
-        // TODO: Add node selection
+
+        public override Rectangle NodeRectangle(RoomData room, Entity entity, int nodeIndex)
+        {
+            Point node = entity.GetNode(nodeIndex);
+            if (nodeIndex == 0)
+                return new Rectangle(node.X - 8, node.Y - 8, 16, 16);
+
+            return new Sprite(GemTexture, node).Bounds();
+        }
     }
 }

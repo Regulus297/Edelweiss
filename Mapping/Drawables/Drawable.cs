@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Reflection;
 using Edelweiss.Loenn;
 using Edelweiss.Plugins;
@@ -26,6 +27,14 @@ namespace Edelweiss.Mapping.Drawables
         /// Draws the object to the current SpriteDestination.
         /// </summary>
         public abstract void Draw();
+
+        /// <summary>
+        /// Gets the rectangle that covers the drawable
+        /// </summary>
+        public virtual Rectangle Bounds()
+        {
+            return Rectangle.Empty;
+        }
 
 
         /// <inheritdoc/>

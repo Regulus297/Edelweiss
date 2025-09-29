@@ -64,7 +64,7 @@ namespace Edelweiss.Loenn
 
                 var module = RequireModule(script, "structs.drawable_rectangle").Table;
                 Table table = script.Call(module.Get("fromRectangle"), mode, x, y, width, height, color, color).Table;
-                Rectangle rectangle = new(table);
+                Rect rectangle = new(table);
                 rectangle.Draw();
             };
         }

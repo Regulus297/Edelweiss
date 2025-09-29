@@ -79,7 +79,7 @@ namespace Edelweiss.Mapping.Entities
                     if (entityTable.Get("texture").IsNil() && entityTable.Get("sprite").IsNil())
                     {
                         using var dest = new SpriteDestination(shapes, entity.x, entity.y);
-                        Rectangle(room, entity).Draw();
+                        new Rect(Rectangle(room, entity), FillColor(room, entity), BorderColor(room, entity)).Draw();
                         return;
                     }
                     base.Draw(shapes, room, entity);
@@ -96,7 +96,7 @@ namespace Edelweiss.Mapping.Entities
 
                 // If everything fails, draw the rectangle
                 using var dest = new SpriteDestination(shapes, entity.x, entity.y);
-                Rectangle(room, entity).Draw();
+                new Rect(Rectangle(room, entity), FillColor(room, entity), BorderColor(room, entity)).Draw();
             }
         }
 
@@ -292,7 +292,7 @@ namespace Edelweiss.Mapping.Entities
             if (!entityTable.Get("sprite").IsNil() && entityTable.Get("nodeTexture").IsNil() && spriteMethod.IsNil())
             {
                 var node = entity.GetNode(nodeIndex);
-                entity.SetNodeOffset(entity.x-node.X, entity.y-node.Y);
+                entity.SetNodeOffset(entity.x - node.X, entity.y - node.Y);
                 var result = Sprite(room, entity);
                 entity.SetNodeOffset(0, 0);
                 return result;
@@ -307,13 +307,13 @@ namespace Edelweiss.Mapping.Entities
                 return [];
             }
             if (sprite.Table.Get("_type").IsNil())
-                {
-                    List<Drawable> output = [];
-                    // It's a list
-                    foreach (var table in sprite.Table.Values)
-                        output.Add(Drawable.FromTable(table.Table));
-                    return output;
-                }
+            {
+                List<Drawable> output = [];
+                // It's a list
+                foreach (var table in sprite.Table.Values)
+                    output.Add(Drawable.FromTable(table.Table));
+                return output;
+            }
             // It's one sprite
             return [Drawable.FromTable(sprite.Table)];
         }
@@ -340,7 +340,7 @@ namespace Edelweiss.Mapping.Entities
 
                 // If everything fails, draw the rectangle
                 using var dest = new SpriteDestination(shapes, entity.x, entity.y);
-                Rectangle(room, entity).Draw();
+                new Rect(Rectangle(room, entity), FillColor(room, entity), BorderColor(room, entity)).Draw();
             }
         }
 
@@ -515,7 +515,7 @@ namespace Edelweiss.Mapping.Entities
             }
             catch (Exception e)
             {
-                Logger.Error("LuaEntity", $"Error while getting rotation for entity {Name}: \n {e.Formatted()}");
+                Logger.Error("LuaEntity", $"Error while getting depth for entity {Name}: \n {e.Formatted()}");
                 return base.Depth(room, entity);
             }
         }
@@ -530,13 +530,100 @@ namespace Edelweiss.Mapping.Entities
                 if (associatedMods.IsNil())
                     return mods;
                 Table extra = associatedMods.Type == DataType.Table ? associatedMods.Table : script.Call(associatedMods, Entity.DefaultFromData(this, RoomData.Default)).Table;
-                return [modName, ..extra.Values.Select(t => t.String)];
+                return [modName, .. extra.Values.Select(t => t.String)];
             }
             catch (Exception e)
             {
                 Logger.Error("LuaEntity", $"Error while getting associated mods for entity {Name}: \n {e.Formatted()}");
                 return mods;
             }
+        }
+
+        /// <inheritdoc/>
+        public override List<Rectangle> Selection(RoomData room, Entity entity)
+        {
+            try
+            {
+                DynValue selectionMethod = entityTable.Get("selection");
+                if (selectionMethod.IsNil())
+                    return base.Selection(room, entity);
+
+                DynValue result = script.Call(selectionMethod, room.ToLuaTable(script), entity.ToLuaTable(script));
+                if (result.Type == DataType.Table)
+                {
+                    return [result.Table.ToRectangle()];
+                }
+                else if (result.Type == DataType.Tuple)
+                {
+                    Table main = result.Tuple[0].Table;
+                    Table nodes = result.Tuple[1].Table;
+                    List<Rectangle> output = [];
+
+                    output.Add(main.ToRectangle());
+                    if (nodes == null)
+                        return output;
+
+                    foreach (DynValue node in nodes.Values)
+                    {
+                        output.Add(node.Table.ToRectangle());
+                    }
+                }
+
+                return base.Selection(room, entity);
+            }
+            catch (Exception e)
+            {
+                Logger.Error("LuaEntity", $"Error while getting selection for entity {Name}: \n {e.Formatted()}");
+                return base.Selection(room, entity);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override Rectangle Rectangle(RoomData room, Entity entity)
+        {
+            try
+            {
+                DynValue rectangleMethod = entityTable.Get("rectangle");
+                if (rectangleMethod.IsNil())
+                    return base.Rectangle(room, entity);
+
+                DynValue result = script.Call(rectangleMethod, room.ToLuaTable(script), entity.ToLuaTable(script));
+                return result.Table.ToRectangle();
+            }
+            catch (Exception e)
+            {
+                Logger.Error("LuaEntity", $"Error while getting rectangle for entity {Name}: \n {e.Formatted()}");
+                return base.Rectangle(room, entity);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override Rectangle NodeRectangle(RoomData room, Entity entity, int nodeIndex)
+        {
+            try
+            {
+                DynValue rectangleMethod = entityTable.Get("nodeRectangle");
+                if (rectangleMethod.IsNil())
+                    return base.Rectangle(room, entity);
+
+                DynValue result = script.Call(rectangleMethod, room.ToLuaTable(script), entity.ToLuaTable(script), entity.GetNode(nodeIndex).ToLuaTable(script), nodeIndex);
+                return result.Table.ToRectangle();
+            }
+            catch (Exception e)
+            {
+                Logger.Error("LuaEntity", $"Error while getting node rectangle for entity {Name}: \n {e.Formatted()}");
+                return base.Rectangle(room, entity);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override Rectangle GetDefaultRectangle(RoomData room, Entity entity, int nodeIndex)
+        {
+            if (nodeIndex == -1 && !entityTable.Get("rectangle").IsNil())
+                return Rectangle(room, entity);
+            if (nodeIndex >= 0 && !entityTable.Get("nodeRectangle").IsNil())
+                return NodeRectangle(room, entity, nodeIndex);
+            return base.GetDefaultRectangle(room, entity, nodeIndex);
         }
     }
 }

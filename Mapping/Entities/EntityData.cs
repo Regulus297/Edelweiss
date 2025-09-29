@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities
@@ -73,16 +75,7 @@ namespace Edelweiss.Mapping.Entities
         public virtual Rectangle Rectangle(RoomData room, Entity entity)
         {
             bool hasDimensions = entity.width != 0 && entity.height != 0;
-            return new Rectangle()
-            {
-                x = entity.x - (hasDimensions ? 0 : 2),
-                y = entity.y - (hasDimensions ? 0 : 2),
-                width = hasDimensions ? entity.width : 4,
-                height = hasDimensions ? entity.height : 4,
-                color = FillColor(room, entity),
-                borderColor = BorderColor(room, entity),
-                depth = Depth(room, entity)
-            };
+            return new Rectangle(entity.x - (hasDimensions ? 0 : 2), entity.y - (hasDimensions ? 0 : 2), hasDimensions ? entity.width : 4, hasDimensions ? entity.height : 4);
         }
 
         /// <summary>
@@ -185,6 +178,22 @@ namespace Edelweiss.Mapping.Entities
             using var dest = new SpriteDestination(shapes, entity.x, entity.y);
             foreach (var sprite in NodeSprite(room, entity, nodeIndex))
                 sprite.Draw();
+        }
+
+        /// <summary>
+        /// Returns the rectangle containing the node.
+        /// Defaults to returning the entity's rectangle at the node's position
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        /// <param name="nodeIndex">The 0-based index of the node in the entity</param>
+        public virtual Rectangle NodeRectangle(RoomData room, Entity entity, int nodeIndex)
+        {
+            if (nodeIndex >= entity.nodes.Count)
+                return default;
+
+            Point node = entity.nodes[nodeIndex];
+            return Rectangle(room, entity).Translated(node.X, node.Y);
         }
 
         /// <summary>
@@ -317,6 +326,49 @@ namespace Edelweiss.Mapping.Entities
         /// 
         /// </summary>
         public string ModsList => Mods().Count > 0 ? "[" + string.Join(" + ", Mods()) + "]" : "";
+
+        /// <summary>
+        /// Gets the selection rectangles for the entity and its nodes
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        public virtual List<Rectangle> Selection(RoomData room, Entity entity)
+        {
+            List<Rectangle> output = [];
+            for (int i = -1; i < entity.nodes.Count; i++)
+            {
+                if (i == -1 && (entity.width != 0 || entity.height != 0))
+                {
+                    output.Add(new Rectangle(entity.x, entity.y, entity.width, entity.height));
+                    continue;
+                }
+                output.Add(GetDefaultRectangle(room, entity, i));
+            }
+            return output;
+        }
+
+        /// <summary>
+        /// Gets the default rectangle for the entity and the node index
+        /// </summary>
+        /// <param name="room">The room the entity is in</param>
+        /// <param name="entity">The entity instance</param>
+        /// <param name="nodeIndex">-1 for the main entity</param>
+        public virtual Rectangle GetDefaultRectangle(RoomData room, Entity entity, int nodeIndex)
+        {
+            List<Drawable> sprites = nodeIndex == -1 ? Sprite(room, entity) : NodeSprite(room, entity, nodeIndex);
+            if (sprites.Count == 0)
+                return default;
+
+            Rectangle output = sprites[0].Bounds();
+            for (int i = 1; i < sprites.Count; i++)
+            {
+                output = output.Combine(sprites[i].Bounds());
+            }
+            if (nodeIndex == -1)
+                return output;
+            Point node = entity.nodes[nodeIndex];
+            return output.Translated(node.X, node.Y);
+        }
     }
 
     /// <summary>

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using Edelweiss.Mapping.Drawables;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
@@ -23,6 +24,10 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override int Depth(RoomData room, Entity entity) => 2000;
 
         // TODO: warnbelowsize, selection
+        public override List<Rectangle> Selection(RoomData room, Entity entity)
+        {
+            return [new Rectangle(entity.x, entity.y, 8, entity.height)];
+        }
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {

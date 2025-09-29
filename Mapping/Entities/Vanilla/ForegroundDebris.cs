@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Edelweiss.Mapping.Drawables;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
@@ -32,6 +33,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return sprites;
         }
 
-        // TODO: selection
+        public override List<Rectangle> Selection(RoomData room, Entity entity) => [new Rectangle(entity.x - 24, entity.y - 24, 48, 48)];
     }
 }

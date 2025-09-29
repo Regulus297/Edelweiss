@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Edelweiss.Loenn;
 using Edelweiss.Plugins;
 using Edelweiss.Utils;
@@ -138,6 +139,12 @@ namespace Edelweiss.Mapping.Drawables
                 {"textureData", JToken.FromObject(data)}
             });
         }
+        
+        /// <inheritdoc/>
+        public override Rectangle Bounds()
+        {
+            return new Rectangle(x, y, width, height);
+        }
 
         internal List<Sprite> GetSprites()
         {
@@ -165,7 +172,7 @@ namespace Edelweiss.Mapping.Drawables
                 sprites.Add(new(texture)
                 {
                     x = width - borderRight,
-                    sourceX = data.width-borderRight,
+                    sourceX = data.width - borderRight,
                     sourceY = 0,
                     sourceWidth = borderRight,
                     sourceHeight = borderTop,
@@ -181,7 +188,7 @@ namespace Edelweiss.Mapping.Drawables
                 {
                     y = height - borderBottom,
                     sourceX = 0,
-                    sourceY = data.height-borderBottom,
+                    sourceY = data.height - borderBottom,
                     sourceWidth = borderLeft,
                     sourceHeight = borderBottom,
                     justificationX = 0,
@@ -196,8 +203,8 @@ namespace Edelweiss.Mapping.Drawables
                 {
                     x = width - borderRight,
                     y = height - borderBottom,
-                    sourceX = data.width-borderRight,
-                    sourceY = data.height-borderBottom,
+                    sourceX = data.width - borderRight,
+                    sourceY = data.height - borderBottom,
                     sourceWidth = borderLeft,
                     sourceHeight = borderBottom,
                     justificationX = 0,
@@ -235,7 +242,7 @@ namespace Edelweiss.Mapping.Drawables
                         x = x,
                         y = height - borderBottom,
                         sourceX = sourceX,
-                        sourceY = data.height-borderBottom,
+                        sourceY = data.height - borderBottom,
                         sourceWidth = tileWidth,
                         sourceHeight = borderBottom,
                         justificationX = 0,

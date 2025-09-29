@@ -15,7 +15,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            Rectangle rect = new Rectangle(entity.x, entity.y, 32, 32, EdelweissUtils.GetColor(74, 71, 135, 153), "#ffffff");
+            Rect rect = new Rect(entity.x, entity.y, 32, 32, EdelweissUtils.GetColor(74, 71, 135, 153), "#ffffff");
             Sprite oshiro = new Sprite("characters/oshiro/oshiro24", entity)
             {
                 color = "#ccffffff"

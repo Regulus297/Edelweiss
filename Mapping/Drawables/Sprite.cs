@@ -250,6 +250,23 @@ namespace Edelweiss.Mapping.Drawables
             }
         }
 
+        /// <inheritdoc/>
+        public override Rectangle Bounds()
+        {
+            if (data == null)
+                return Rectangle.Empty;
+            int jox = (int)(-justificationX * paddedWidth);
+            int joy = (int)(-justificationY * paddedHeight);
+
+            if (scaleX == 1 && scaleY == 1 && rotation == 0)
+            {
+                return new Rectangle(x + jox - offsetX, y + joy - offsetY, data.width, data.height);
+            }
+
+            Rectangle rectangle = new Rectangle(jox - offsetX, joy - offsetY, data.width, data.height);
+            return rectangle.Scaled(scaleX, scaleY).Rotated(rotation).Translated(x, y);
+        }
+
         /// <summary>
         /// Converts the sprite to a shape JObject that can be drawn by the frontend
         /// </summary>

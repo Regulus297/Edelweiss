@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using Edelweiss.Mapping.Drawables;
 using Edelweiss.Utils;
 
@@ -23,7 +24,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override Rectangle Rectangle(RoomData room, Entity entity)
         {
-            return new Rectangle(entity.x, entity.y, entity.width, 32, Color(room, entity));
+            return new Rectangle(entity.x, entity.y, entity.width, 32);
         }
 
         public override string Color(RoomData room, Entity entity)

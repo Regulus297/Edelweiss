@@ -79,6 +79,11 @@
             Draws the object to the current SpriteDestination.
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Drawable.Bounds">
+            <summary>
+            Gets the rectangle that covers the drawable
+            </summary>
+        </member>
         <member name="M:Edelweiss.Mapping.Drawables.Drawable.Load">
             <inheritdoc/>
         </member>
@@ -242,73 +247,84 @@
             Draws the NinePatch to the current SpriteDestination.
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.Drawables.NinePatch.Bounds">
+            <inheritdoc/>
+        </member>
         <member name="M:Edelweiss.Mapping.Drawables.NinePatch.ToLuaTable(MoonSharp.Interpreter.Script)">
             <summary>
             Converts the NinePatch to a Lua table.
             </summary>
         </member>
-        <member name="T:Edelweiss.Mapping.Drawables.Rectangle">
+        <member name="T:Edelweiss.Mapping.Drawables.Rect">
             <summary>
             A class that represents a drawable rectangle.
             </summary>
         </member>
-        <member name="M:Edelweiss.Mapping.Drawables.Rectangle.#ctor">
+        <member name="M:Edelweiss.Mapping.Drawables.Rect.#ctor">
             <summary>
             A class that represents a drawable rectangle.
             </summary>
         </member>
-        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.x">
+        <member name="F:Edelweiss.Mapping.Drawables.Rect.x">
             <summary>
             
             </summary>
         </member>
-        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.y">
+        <member name="F:Edelweiss.Mapping.Drawables.Rect.y">
             <summary>
             
             </summary>
         </member>
-        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.width">
+        <member name="F:Edelweiss.Mapping.Drawables.Rect.width">
             <summary>
             
             </summary>
         </member>
-        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.height">
+        <member name="F:Edelweiss.Mapping.Drawables.Rect.height">
             <summary>
             
             </summary>
         </member>
-        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.color">
+        <member name="F:Edelweiss.Mapping.Drawables.Rect.color">
             <summary>
             The fill color for the rectangle
             </summary>
         </member>
-        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.borderColor">
+        <member name="F:Edelweiss.Mapping.Drawables.Rect.borderColor">
             <summary>
             The border color for the rectangle
             </summary>
         </member>
-        <member name="F:Edelweiss.Mapping.Drawables.Rectangle.mode">
+        <member name="F:Edelweiss.Mapping.Drawables.Rect.mode">
             <summary>
             Can be bordered, fill, or line.
             Defaults to bordered.
             </summary>
         </member>
-        <member name="M:Edelweiss.Mapping.Drawables.Rectangle.#ctor(MoonSharp.Interpreter.Table)">
+        <member name="M:Edelweiss.Mapping.Drawables.Rect.#ctor(MoonSharp.Interpreter.Table)">
             <summary>
             Creates a rectangle from the given Lua table.
             </summary>
         </member>
-        <member name="M:Edelweiss.Mapping.Drawables.Rectangle.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String)">
+        <member name="M:Edelweiss.Mapping.Drawables.Rect.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String)">
             <summary>
             Creates a rectangle with the given parameters
             </summary>
         </member>
-        <member name="M:Edelweiss.Mapping.Drawables.Rectangle.Draw">
+        <member name="M:Edelweiss.Mapping.Drawables.Rect.#ctor(System.Drawing.Rectangle,System.String,System.String)">
+            <summary>
+            Creates a drawable rectangle from the given System.Drawing.Rectangle
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Rect.Draw">
             <summary>
             Draws the rectangle to the current SpriteDestination
             </summary>
         </member>
-        <member name="M:Edelweiss.Mapping.Drawables.Rectangle.ToLuaTable(MoonSharp.Interpreter.Script)">
+        <member name="M:Edelweiss.Mapping.Drawables.Rect.Bounds">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Rect.ToLuaTable(MoonSharp.Interpreter.Script)">
             <summary>
             Converts the Rectangle to a Lua table.
             </summary>
@@ -355,6 +371,9 @@
             </summary>
         </member>
         <member name="M:Edelweiss.Mapping.Drawables.Sprite.Draw">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Sprite.Bounds">
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Drawables.Sprite.ToJObject">
@@ -471,6 +490,9 @@
         <member name="M:Edelweiss.Mapping.Drawables.Tiles.Draw">
             <inheritdoc/>
         </member>
+        <member name="M:Edelweiss.Mapping.Drawables.Tiles.Bounds">
+            <inheritdoc/>
+        </member>
         <member name="M:Edelweiss.Mapping.Drawables.Tiles.ToLuaTable(MoonSharp.Interpreter.Script)">
             <inheritdoc/>
         </member>
@@ -504,6 +526,9 @@
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.CSEntityData.NodeSprite(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.CSEntityData.GetDefaultRectangle(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.CSEntityData.PlacementNames">
@@ -791,6 +816,15 @@
             <param name="entity">The entity instance</param>
             <param name="nodeIndex">The 0-based index of the node in the entity</param>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.NodeRectangle(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <summary>
+            Returns the rectangle containing the node.
+            Defaults to returning the entity's rectangle at the node's position
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+            <param name="nodeIndex">The 0-based index of the node in the entity</param>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.EntityData.CanResize(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
             <summary>
             A pair of booleans determining whether the entity can be resized horizontally and vertically respectively.
@@ -885,6 +919,21 @@
             <summary>
             
             </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.Selection(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            Gets the selection rectangles for the entity and its nodes
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.GetDefaultRectangle(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <summary>
+            Gets the default rectangle for the entity and the node index
+            </summary>
+            <param name="room">The room the entity is in</param>
+            <param name="entity">The entity instance</param>
+            <param name="nodeIndex">-1 for the main entity</param>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.NodeLineRenderType">
             <summary>
@@ -1067,6 +1116,18 @@
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Mods">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Selection(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.Rectangle(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.NodeRectangle(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.LuaEntityData.GetDefaultRectangle(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
             <inheritdoc/>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.MapData">
@@ -2377,6 +2438,36 @@
         <member name="M:Edelweiss.Utils.EdelweissUtils.SetToMetatable(MoonSharp.Interpreter.Table,System.String,System.Object)">
             <summary>
             Sets the given key to the given value using metatable setters
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Combine(System.Drawing.Rectangle,System.Drawing.Rectangle)">
+            <summary>
+            Gets the smallest rectangle that completely covers both input rectangles
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Scaled(System.Drawing.Rectangle,System.Single,System.Single)">
+            <summary>
+            Returns the scaled version of the given rectangle
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Rotated(System.Drawing.Rectangle,System.Single)">
+            <summary>
+            Returns the smallest axis-aligned rectangle that covers the rotated rectangle
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Rotated(System.Drawing.Point,System.Single)">
+            <summary>
+            Rotates a point by a given amount using (0, 0) as the anchor
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Translated(System.Drawing.Rectangle,System.Int32,System.Int32)">
+            <summary>
+            Translates the given rectangle
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.ToRectangle(MoonSharp.Interpreter.Table)">
+            <summary>
+            Converts the given table into a rectangle
             </summary>
         </member>
         <member name="T:Edelweiss.Utils.FormLoader">

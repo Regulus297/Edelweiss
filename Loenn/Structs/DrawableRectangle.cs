@@ -40,7 +40,7 @@ namespace Edelweiss.Loenn.Structs
                     color = mode == "line" ? "#00000000" : col.Color();
                     borderColor = mode == "fill" ? "#00000000" : col2.IsNil() ? color : col2.Color();
                 }
-                return DynValue.NewTable(new Rectangle()
+                return DynValue.NewTable(new Rect()
                 {
                     x = x,
                     y = y,
