@@ -17,7 +17,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return new Dictionary<string, object>()
             {
                 {"twoDash", placement == "double"},
-                {"oneUse", true}
+                {"oneUse", false}
             };
         }
 

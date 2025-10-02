@@ -640,7 +640,7 @@
             Creates a default entity with the placement data from the given entity data
             </summary>
         </member>
-        <member name="M:Edelweiss.Mapping.Entities.Entity.Resize(System.Int32,System.Int32)">
+        <member name="M:Edelweiss.Mapping.Entities.Entity.Resize(System.Int32,System.Int32,System.Int32)">
             <summary>
             Resizes the entity to the desired width and height while respecting the size bounds for the entity
             </summary>
@@ -668,12 +668,13 @@
             Sets the value nodes should be offset by. Used when drawing sprite for nodes when no nodeSprite is defined
             </summary>
         </member>
-        <member name="M:Edelweiss.Mapping.Entities.Entity.Draw(System.String,System.Int32)">
+        <member name="M:Edelweiss.Mapping.Entities.Entity.Draw(System.String,System.Int32,System.Boolean)">
             <summary>
             Draws the entity to the frontend
             </summary>
             <param name="entityObject">The ID of the entity object in the viewport if the entity should be drawn to an existing object. Null if not.</param>
             <param name="entityIndex"></param>
+            <param name="updatePosition"></param>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.Entity.Rotate(System.Int32)">
             <summary>
@@ -693,6 +694,12 @@
             <summary>
             Cycles the entity's state by the given amount
             </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.AddNode(System.Drawing.Point)">
+            <summary>
+            Adds a node to the entity if nodelimits allow
+            </summary>
+            <param name="relativePosition">The position of the node relative to the entity</param>
         </member>
         <member name="P:Edelweiss.Mapping.Entities.Entity.Item(System.String)">
             <summary>
@@ -1140,6 +1147,11 @@
             The rooms that the map contains
             </summary>
         </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapData.allEntities">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.RoomData">
             <summary>
             Class containing room data for the backend
@@ -1283,6 +1295,14 @@
             </summary>
         </member>
         <member name="P:Edelweiss.Mapping.Keybinds.HorizontalFlipKeybind.DefaultBindings">
+            <inheritdoc/>
+        </member>
+        <member name="T:Edelweiss.Mapping.Keybinds.NodeKeybind">
+            <summary>
+            Keybind for adding a node to an object. Defaults to N
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Keybinds.NodeKeybind.DefaultBindings">
             <inheritdoc/>
         </member>
         <member name="T:Edelweiss.Mapping.Keybinds.RotateKeybind">

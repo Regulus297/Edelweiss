@@ -50,6 +50,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
             string blockTexture = "objects/moveBlock/base";
             bool steer = (bool)entity["canSteer"];
+            bool fast = (bool)entity["fast"];
 
             if (steer)
             {
@@ -78,8 +79,9 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
             int arrowX = entity.x + (entity.width - arrow.data.width) / 2;
             int arrowY = entity.y + (entity.height - arrow.data.height) / 2;
-            Rect arrowRect = new Rect(arrowX, arrowY, arrow.data.width, arrow.data.height, highlight.color);
+            Rect arrowRect = new Rect(arrowX, arrowY, arrow.data.width, arrow.data.height, fast ? "#bf0a1f" : highlight.color);
             List<Drawable> sprites = [highlight, mid];
+
 
             if (steer)
             {

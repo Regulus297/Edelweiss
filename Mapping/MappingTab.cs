@@ -36,7 +36,6 @@ namespace Edelweiss.Mapping
         internal static long RoomMouseNetcode { get; private set; }
         internal static long MaterialFavouritedNetcode { get; private set; }
         internal static long MaterialSearchedNetcode { get; private set; }
-
         internal static MappingTool selectedTool;
 
         internal static MapData map = null;

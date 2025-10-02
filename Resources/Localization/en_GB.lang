@@ -4,6 +4,7 @@ Tabs.ResourcesTab = Resources
 Tools.BrushTool = Brush
 Tools.RectTool = Rectangle
 Tools.EntityTool = Entity
+Tools.SelectionTool = Selection
 
 Foreground = Foreground
 Background = Background
@@ -208,4 +209,22 @@ entities.floatySpaceBlock.default = Floaty Space Block
 
 entities.sandwichLava.default = Lava Sandwich
 
+entities.refill.single = Dash Refill
+entities.refill.double = Dash Refill (Two Dashes)
 
+entities.reflectionHeartStatue.default = Reflection Heart Statue
+
+entities.resortMirror.default = Resort Mirror
+
+entities.resortRoofEnding.default = Resort Roof Ending
+
+entities.ridgeGate.default = Ridge Gate
+
+entities.risingLava.default = Rising Lava
+
+entities.rotateSpinner.blade_clockwise = Rotating Spinner (Blade, Clockwise)
+entities.rotateSpinner.blade_anticlockwise = Rotating Spinner (Blade, Counterclockwise)
+entities.rotateSpinner.dust_clockwise = Rotating Spinner (Dust, Clockwise)
+entities.rotateSpinner.dust_anticlockwise = Rotating Spinner (Dust, Counterclockwise)
+entities.rotateSpinner.star_clockwise = Rotating Spinner (Star, Clockwise)
+entities.rotateSpinner.star_anticlockwise = Rotating Spinner (Star, Counterclockwise)

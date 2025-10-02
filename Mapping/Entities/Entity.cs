@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using Edelweiss.Loenn;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Tools;
 using Edelweiss.Network;
 using Edelweiss.Plugins;
 using Edelweiss.Utils;
@@ -101,7 +102,7 @@ namespace Edelweiss.Mapping.Entities
         private int nodeOffsetX, nodeOffsetY;
 
         internal EntityData entityData;
-        RoomData entityRoom;
+        internal RoomData entityRoom;
 
         /// <summary>
         /// Creates a default entity with the placement data from the given entity data
@@ -149,11 +150,34 @@ namespace Edelweiss.Mapping.Entities
         /// <summary>
         /// Resizes the entity to the desired width and height while respecting the size bounds for the entity
         /// </summary>
-        public void Resize(int width, int height)
+        public void Resize(int width, int height, int step = 1)
         {
             List<int> bounds = entityData.SizeBounds(entityRoom ?? RoomData.Default, this);
-            width = Math.Clamp(width, bounds[0], bounds[2]);
-            height = Math.Clamp(height, bounds[1], bounds[3]);
+            if (step <= 1)
+            {
+                width = Math.Clamp(width, bounds[0], bounds[2]);
+                height = Math.Clamp(height, bounds[1], bounds[3]);
+            }
+            else
+            {
+                if (width < bounds[0])
+                {
+                    width += (1 + (bounds[0] - width) / step) * step;
+                }
+                else if (width > bounds[2])
+                {
+                    width -= (width - bounds[2]) / step * step;
+                }
+
+                if (height < bounds[1])
+                {
+                    height += (1 + (bounds[1] - height) / step) * step;
+                }
+                else if (height > bounds[3])
+                {
+                    height -= (height - bounds[3]) / step * step;
+                }
+            }
             this.width = width;
             this.height = height;
             data["width"] = width;
@@ -282,7 +306,8 @@ namespace Edelweiss.Mapping.Entities
         /// </summary>
         /// <param name="entityObject">The ID of the entity object in the viewport if the entity should be drawn to an existing object. Null if not.</param>
         /// <param name="entityIndex"></param>
-        public void Draw(string entityObject = null, int entityIndex = 0)
+        /// <param name="updatePosition"></param>
+        public void Draw(string entityObject = null, int entityIndex = 0, bool updatePosition = false)
         {
             JObject item = new()
             {
@@ -292,23 +317,34 @@ namespace Edelweiss.Mapping.Entities
                 {"width", width},
                 {"height", height},
                 {"rotation", entityData.Rotation(entityRoom ?? RoomData.Default, this)},
+                {"onSelectionMoved", SelectionTool.SelectionMovedNetcode},
+                {"onSelectionChanged", SelectionTool.SelectionChangedNetcode},
+                {"onSelectionResized", SelectionTool.SelectionResizedNetcode},
+                { "selectable", "@defer('@getVar(\\'Edelweiss:SelectionActive\\')')"}
             };
+
+            JArray selection = [];
+            int j = 0;
+            foreach (Rectangle rectangle in entityData.Selection(entityRoom ?? RoomData.Default, this))
+            {
+                List<bool> canResize = entityData.CanResize(entityRoom ?? RoomData.Default, this);
+                selection.Add(new JObject()
+                {
+                    {"x", rectangle.X},
+                    {"y", rectangle.Y},
+                    {"width", rectangle.Width},
+                    {"height", rectangle.Height},
+                    {"resizeX", canResize[0] && j == 0},
+                    {"resizeY", canResize[1] && j == 0}
+                });
+                j++;
+            }
+
+            item["selection"] = selection;
 
 
             JArray shapes = new();
             entityData.Draw(shapes, entityRoom ?? RoomData.Default, this);
-
-            foreach (Rectangle rectangle in entityData.Selection(entityRoom ?? RoomData.Default, this))
-            {
-                Rect rect = new Rect(rectangle, "#446d9eed", "#6d9eed")
-                {
-                    depth = -10000000
-                };
-                using (new SpriteDestination(shapes, x, y))
-                {
-                    rect.Draw();
-                }
-            }
 
             item["shapes"] = shapes;
             if (entityObject == null)
@@ -331,18 +367,26 @@ namespace Edelweiss.Mapping.Entities
                     {"action", "modify"},
                     {"data", new JObject()
                         {
-                            {"shapes", shapes }
+                            {"shapes", shapes},
+                            {"rotation", entityData.Rotation(entityRoom ?? RoomData.Default, this)}
                         }
                     }
                 });
-                NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
+                if (updatePosition)
                 {
-                    {"widget", "Mapping/MainView"},
-                    {"item", entityObject},
-                    {"data", new JObject() {
-                        {"rotation", entityData.Rotation(entityRoom ?? RoomData.Default, this)}
-                    }}
-                });
+                    NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
+                    {
+                        {"widget", "Mapping/MainView"},
+                        {"item", entityObject},
+                        {"data", new JObject() {
+                            {"x", x},
+                            {"y", y},
+                            {"width", width},
+                            {"height", height},
+                            {"selection", selection}
+                        }}
+                    });
+                }
             }
 
             if (entityData.NodeVisibility(this) == Visibility.Never)
@@ -365,19 +409,22 @@ namespace Edelweiss.Mapping.Entities
                         {"x2", point.X},
                         {"y2", point.Y},
                         {"color", "#ffffff"},
-                        {"thickness", LoveModule.PEN_THICKNESS}
+                        {"thickness", LoveModule.PEN_THICKNESS},
+                        {"depth", depth + 1}
                     });
                 }
                 else if (nodeLineRenderType == NodeLineRenderType.Line)
                 {
+                    Point previous = i == 0 ? Point.Empty : nodes[i - 1];
                     nodeShapes.Add(new JObject() {
                         {"type", "line"},
-                        {"x1", 0},
-                        {"y1", 0},
+                        {"x1", previous.X},
+                        {"y1", previous.Y},
                         {"x2", point.X},
                         {"y2", point.Y},
                         {"color", "#ffffff"},
-                        {"thickness", LoveModule.PEN_THICKNESS}
+                        {"thickness", LoveModule.PEN_THICKNESS},
+                        {"depth", depth + 1}
                     });
                 }
                 else if (nodeLineRenderType == NodeLineRenderType.Circle)
@@ -388,7 +435,8 @@ namespace Edelweiss.Mapping.Entities
                         {"x", point.X},
                         {"y", point.Y},
                         {"color", "#ffffff"},
-                        {"thickness", LoveModule.PEN_THICKNESS}
+                        {"thickness", LoveModule.PEN_THICKNESS},
+                        {"depth", depth + 1}
                     });
                 }
                 i++;
@@ -404,7 +452,8 @@ namespace Edelweiss.Mapping.Entities
                     {"widget", "Mapping/MainView"},
                     {"item", entityObject},
                     {"action", "add"},
-                    {"shapes", nodeShapes}
+                    {"shapes", nodeShapes},
+                    {"selection", i}
                 });
             }
         }
@@ -435,6 +484,19 @@ namespace Edelweiss.Mapping.Entities
         public bool Cycle(int amount)
         {
             return customCycle?.Invoke(amount) ?? entityData.Cycle(entityRoom ?? RoomData.Default, this, amount);
+        }
+
+        /// <summary>
+        /// Adds a node to the entity if nodelimits allow
+        /// </summary>
+        /// <param name="relativePosition">The position of the node relative to the entity</param>
+        public void AddNode(Point relativePosition)
+        {
+            int limit = entityData.NodeLimits(entityRoom ?? RoomData.Default, this)[1];
+            if (limit == -1 || nodes.Count < limit)
+            {
+                nodes.Add(relativePosition);
+            }
         }
 
         /// <summary>

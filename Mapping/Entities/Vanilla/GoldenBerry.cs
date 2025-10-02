@@ -7,7 +7,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override string EntityName => "goldenBerry";
 
         public override List<int> NodeLimits(RoomData room, Entity entity) => [0, -1];
-
+        public override NodeLineRenderType NodeLineRenderType(Entity entity) => Entities.NodeLineRenderType.Fan;
         public override List<string> PlacementNames()
         {
             return ["golden", "golden_winged"];

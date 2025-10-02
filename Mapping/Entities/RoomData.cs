@@ -175,7 +175,7 @@ namespace Edelweiss.Mapping.Entities
         {
             foreach (Entity entity in entities)
             {
-                entity.Draw($"{name}/{entity._id}");
+                entity.Draw($"{name}/{entity._id}", 0, true);
             }
         }
     }

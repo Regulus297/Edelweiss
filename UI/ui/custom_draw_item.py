@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView, QGraphicsScene
 
 from network import PyNetworkManager
 from plugins import get_event_data, DefaultEncoder
+from ui.selection_rect import SelectionRect
 from ui.shape_item import ShapeItem
 
 
@@ -28,7 +29,7 @@ class CustomDrawItem(QGraphicsItem):
             self.setZValue(data["zIndex"])
 
         if "selectable" in data:
-            self.setFlag(QGraphicsItem.ItemIsSelectable, data["selectable"])
+            self.setFlag(QGraphicsItem.ItemIsSelectable, bool(data["selectable"]))
 
         if "focusable" in data:
             self.setFlag(QGraphicsItem.ItemIsFocusable, data["focusable"])
@@ -74,12 +75,63 @@ class CustomDrawItem(QGraphicsItem):
                 "item": self.data
             }, cls=DefaultEncoder))
 
+        self.selections = []
+        self.onSelectionMoved = lambda x, y, i: None
+        if "onSelectionMoved" in data:
+            netcode3, extraData3 = get_event_data(data["onSelectionMoved"])
+            self.onSelectionMoved = lambda x, y, i: PyNetworkManager.send_packet(netcode3, json.dumps({
+                "x": x,
+                "y": y,
+                "name": self.name,
+                "index": i,
+                "extraData": extraData3
+            }, cls=DefaultEncoder))
 
-        self.shapeRenderers = []
+        self.onSelectionChanged = lambda selected, index: None
+        if "onSelectionChanged" in data:
+            netcode4, extraData4 = get_event_data(data["onSelectionChanged"])
+            self.onSelectionChanged = lambda selected, index: PyNetworkManager.send_packet(netcode4, json.dumps({
+                "name": self.name,
+                "selected": selected,
+                "index": index,
+                "extraData": extraData4
+            }, cls=DefaultEncoder))
+
+        self.onSelectionResized = lambda x1, y1, x2, y2, i: None
+        if "onSelectionResized" in data:
+            netcode5, extraData5 = get_event_data(data["onSelectionResized"])
+            self.onSelectionResized = lambda x1, y1, x2, y2, i: PyNetworkManager.send_packet(netcode5, json.dumps({
+                "name": self.name,
+                "deltaWidth": x2,
+                "deltaHeight": y2,
+                "oldWidth": x1,
+                "oldHeight": y1,
+                "index": i,
+                "extraData": extraData5
+            }, cls=DefaultEncoder))
+
+        if "selection" in data:
+            j = 0
+            self.setFlag(QGraphicsItem.ItemIsSelectable, False)
+            for selection in data["selection"]:
+                rect = SelectionRect(selection["x"], selection["y"], selection["width"], selection["height"], self, j)
+                rect.selectable = data["selectable"] if "selectable" in data else True
+                rect.resize_x = selection["resizeX"] if "resizeX" in selection else False
+                rect.resize_y = selection["resizeY"] if "resizeY" in selection else False
+                self.addRectDelayed(rect)
+                j += 1
+
+
+
         self.items = {}
+        self.shapesBySelection = {}
         self.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
         for shape in self.shapes:
             self.addShapeDelayed(shape)
+
+    def addRectDelayed(self, rect):
+        self.selections.append(rect)
+        QTimer.singleShot(0, lambda: self.scene().addItem(rect))
 
     def addShapeDelayed(self, shape):
         QTimer.singleShot(0, lambda: self.addShape(shape))
@@ -94,6 +146,9 @@ class CustomDrawItem(QGraphicsItem):
         else:
             item = self.items[depth]
         item.addShape(shape)
+
+    def selectionMoved(self, index, pos):
+        self.onSelectionMoved(pos.x(), pos.y(), index)
 
     def paint(self, painter, option, widget = ...):
         if "opacity" in self.data:
@@ -136,6 +191,32 @@ class CustomDrawItem(QGraphicsItem):
 
         if "rotation" in self.data:
             self.setRotation(self.data["rotation"])
+
+        if "selection" in data:
+            if len(data["selection"]) < len(self.selections):
+                for i in range(len(data["selection"]), len(self.selections)):
+                    self.scene().removeItem(self.selections[i])
+                del self.selections[len(data["selection"]):]
+
+            for j in range(len(data["selection"])):
+                selection = data["selection"][j]
+                if j >= len(self.selections):
+                    rect = SelectionRect(selection["x"], selection["y"], selection["width"], selection["height"], self, j)
+                    rect.selectable = data["selectable"] if "selectable" in data else True
+                    self.addRectDelayed(rect)
+                else:
+                    current: SelectionRect = self.selections[j]
+                    current.setFlag(QGraphicsItem.ItemSendsGeometryChanges, False)
+                    current.setPos(selection["x"], selection["y"])
+                    current.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+                    current.width = selection["width"]
+                    current.height = selection["height"]
+                    current.shapes[0]["width"] = selection["width"]
+                    current.shapes[0]["height"] = selection["height"]
+
+
+
+
 
         if update_shapes:
             self.clear()

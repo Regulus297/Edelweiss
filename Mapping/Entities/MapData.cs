@@ -12,5 +12,10 @@ namespace Edelweiss.Mapping.Entities
         /// The rooms that the map contains
         /// </summary>
         public List<RoomData> rooms = [];
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Dictionary<string, Entity> allEntities = [];
     }
 }

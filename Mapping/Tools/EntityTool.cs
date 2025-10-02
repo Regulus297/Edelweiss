@@ -207,7 +207,7 @@ namespace Edelweiss.Mapping.Tools
             Entity created = Entity.DefaultFromData(ghostEntity.entityData, backendRoom);
             created.data = ghostEntity.data.ToDictionary();
             created._name = ghostEntity._name;
-            created._id = backendRoom.entities.Count().ToString();
+            created._id = MappingTab.map.allEntities.Count.ToString();
             created.x = 8 * startTileX;
             created.y = 8 * startTileY;
 
@@ -231,6 +231,7 @@ namespace Edelweiss.Mapping.Tools
             redrawGhost = true;
 
             backendRoom?.entities.Add(created);
+            MappingTab.map.allEntities[created._id] = created;
             created.Draw();
             backendRoom?.RedrawEntities();
         }

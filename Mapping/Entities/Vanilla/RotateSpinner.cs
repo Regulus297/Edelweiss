@@ -70,5 +70,30 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
             return sprites;
         }
+
+        public override bool Cycle(RoomData room, Entity entity, int amount)
+        {
+            bool dust = (bool)entity["dust"];
+            bool star = (bool)entity["star"];
+
+            if (dust && !star)
+            {
+                entity["dust"] = false;
+                entity["star"] = true;
+            }
+            else if (!dust && star)
+            {
+                entity["dust"] = false;
+                entity["star"] = false;
+            }
+            else
+            {
+                entity["dust"] = true;
+                entity["star"] = false;
+                
+            }
+
+            return true;
+        }
     }
 }
