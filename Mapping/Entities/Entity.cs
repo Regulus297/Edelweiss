@@ -25,6 +25,16 @@ namespace Edelweiss.Mapping.Entities
         public string _name = name;
 
         /// <summary>
+        /// The name of the entity without the placement
+        /// </summary>
+        public string EntityName => _name.Split(".")[0];
+
+        /// <summary>
+        /// The name of the placement without the entity name
+        /// </summary>
+        public string PlacementName => _name.Split(".")[^1];
+
+        /// <summary>
         /// The name of the entity. Setting it automatically changes the entity data
         /// </summary>
         public string Name
@@ -35,8 +45,8 @@ namespace Edelweiss.Mapping.Entities
             }
             set
             {
-                _name = value;
-                entityData = CelesteModLoader.entities[CelesteModLoader.defaultPlacements[_name]];
+                _name = CelesteModLoader.defaultPlacements[value];
+                entityData = CelesteModLoader.entities[_name];
             }
         }
 
@@ -103,6 +113,17 @@ namespace Edelweiss.Mapping.Entities
 
         internal EntityData entityData;
         internal RoomData entityRoom;
+
+        internal static Queue<string> DiscardedIDs = [];
+
+        internal static string GetEntityID()
+        {
+            if (DiscardedIDs.TryDequeue(out string id))
+            {
+                return id;
+            }
+            return MappingTab.map.allEntities.Count.ToString();
+        }
 
         /// <summary>
         /// Creates a default entity with the placement data from the given entity data
@@ -252,7 +273,6 @@ namespace Edelweiss.Mapping.Entities
             table["_type"] = _type;
 
 
-
             table["x"] = x;
             table["y"] = y;
             table["width"] = width;
@@ -335,7 +355,10 @@ namespace Edelweiss.Mapping.Entities
                     {"width", rectangle.Width},
                     {"height", rectangle.Height},
                     {"resizeX", canResize[0] && j == 0},
-                    {"resizeY", canResize[1] && j == 0}
+                    {"resizeY", canResize[1] && j == 0},
+                    {"tags", new JArray() {
+                        {EntityName}
+                    }}
                 });
                 j++;
             }
@@ -347,62 +370,16 @@ namespace Edelweiss.Mapping.Entities
             entityData.Draw(shapes, entityRoom ?? RoomData.Default, this);
 
             item["shapes"] = shapes;
-            if (entityObject == null)
+
+            if (entityData.NodeVisibility(this) != Visibility.Never)
             {
-                NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()
+                int i = 0;
+                NodeLineRenderType nodeLineRenderType = entityData.NodeLineRenderType(this);
+                foreach (Point point in nodes)
                 {
-                    {"widget", "Mapping/MainView"},
-                    {"parent", entityRoom.name},
-                    {"item", item}
-                });
-                entityObject = $"{entityRoom.name}/{_id}";
-            }
-            else
-            {
-                NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
-                {
-                    {"widget", "Mapping/MainView"},
-                    {"item", entityObject},
-                    {"index", entityIndex},
-                    {"action", "modify"},
-                    {"data", new JObject()
-                        {
-                            {"shapes", shapes},
-                            {"rotation", entityData.Rotation(entityRoom ?? RoomData.Default, this)}
-                        }
-                    }
-                });
-                if (updatePosition)
-                {
-                    NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
+                    if (nodeLineRenderType == NodeLineRenderType.Fan)
                     {
-                        {"widget", "Mapping/MainView"},
-                        {"item", entityObject},
-                        {"data", new JObject() {
-                            {"x", x},
-                            {"y", y},
-                            {"width", width},
-                            {"height", height},
-                            {"selection", selection}
-                        }}
-                    });
-                }
-            }
-
-            if (entityData.NodeVisibility(this) == Visibility.Never)
-                return;
-
-            int i = 0;
-            NodeLineRenderType nodeLineRenderType = entityData.NodeLineRenderType(this);
-            foreach (Point point in nodes)
-            {
-                JArray nodeShapes = new()
-                {
-                };
-
-                if (nodeLineRenderType == NodeLineRenderType.Fan)
-                {
-                    nodeShapes.Add(new JObject() {
+                        shapes.Add(new JObject() {
                         {"type", "line"},
                         {"x1", 0},
                         {"y1", 0},
@@ -412,11 +389,11 @@ namespace Edelweiss.Mapping.Entities
                         {"thickness", LoveModule.PEN_THICKNESS},
                         {"depth", depth + 1}
                     });
-                }
-                else if (nodeLineRenderType == NodeLineRenderType.Line)
-                {
-                    Point previous = i == 0 ? Point.Empty : nodes[i - 1];
-                    nodeShapes.Add(new JObject() {
+                    }
+                    else if (nodeLineRenderType == NodeLineRenderType.Line)
+                    {
+                        Point previous = i == 0 ? Point.Empty : nodes[i - 1];
+                        shapes.Add(new JObject() {
                         {"type", "line"},
                         {"x1", previous.X},
                         {"y1", previous.Y},
@@ -426,10 +403,10 @@ namespace Edelweiss.Mapping.Entities
                         {"thickness", LoveModule.PEN_THICKNESS},
                         {"depth", depth + 1}
                     });
-                }
-                else if (nodeLineRenderType == NodeLineRenderType.Circle)
-                {
-                    nodeShapes.Add(new JObject() {
+                    }
+                    else if (nodeLineRenderType == NodeLineRenderType.Circle)
+                    {
+                        shapes.Add(new JObject() {
                         {"type", "circle"},
                         {"radius", point.Distance(new Point(0, 0))},
                         {"x", point.X},
@@ -438,23 +415,62 @@ namespace Edelweiss.Mapping.Entities
                         {"thickness", LoveModule.PEN_THICKNESS},
                         {"depth", depth + 1}
                     });
+                    }
+                    i++;
+
+
+                    using (new SpriteDestination(null, 0, 0))
+                    {
+                        entityData.NodeDraw(shapes, entityRoom, this, i - 1);
+                    }
                 }
-                i++;
+            }
 
-
-                using (new SpriteDestination(null, -point.X, -point.Y))
+            if (entityObject == null)
+            {
+                NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()
                 {
-                    entityData.NodeDraw(nodeShapes, entityRoom, this, i - 1);
-                }
-
+                    { "widget", "Mapping/MainView" },
+                    { "parent", entityRoom.name },
+                    { "item", item }
+                });
+            }
+            else
+            {
                 NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
                 {
-                    {"widget", "Mapping/MainView"},
-                    {"item", entityObject},
-                    {"action", "add"},
-                    {"shapes", nodeShapes},
-                    {"selection", i}
+                    { "widget", "Mapping/MainView" },
+                    { "item", entityObject },
+                    { "index", entityIndex },
+                    { "action", "modify" },
+                    {
+                        "data",
+                        new JObject()
+                        {
+                            { "shapes", shapes },
+                            { "rotation", entityData.Rotation(entityRoom ?? RoomData.Default, this) }
+                        }
+                    }
                 });
+                if (updatePosition)
+                {
+                    NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
+                    {
+                        { "widget", "Mapping/MainView" },
+                        { "item", entityObject },
+                        {
+                            "data",
+                            new JObject()
+                            {
+                                { "x", x },
+                                { "y", y },
+                                { "width", width },
+                                { "height", height },
+                                { "selection", selection }
+                            }
+                        }
+                    });
+                }
             }
         }
 
@@ -497,6 +513,22 @@ namespace Edelweiss.Mapping.Entities
             {
                 nodes.Add(relativePosition);
             }
+        }
+
+        /// <summary>
+        /// Attempts to remove a node from the entity respecting the node limits
+        /// </summary>
+        /// <param name="index">The index of the node to remove</param>
+        /// <returns>Whether the node could successfully be removed</returns>
+        public bool TryRemoveNode(int index)
+        {
+            int limit = entityData.NodeLimits(entityRoom ?? RoomData.Default, this)[0];
+            if (nodes.Count == limit)
+            {
+                return false;
+            }
+            nodes.RemoveAt(index);
+            return true;
         }
 
         /// <summary>

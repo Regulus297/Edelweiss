@@ -40,7 +40,10 @@ namespace Edelweiss.Mapping.PacketReceivers
             room["shapes"][1]["height"] = height;
             room["name"] = extraData.Value<string>("name");
 
-            MappingTab.map.rooms.Add(new RoomData(extraData));
+            MappingTab.map.rooms.Add(new RoomData(extraData)
+            {
+                map = MappingTab.map
+            });
             MappingTab.rooms.Value = MappingTab.map.rooms.Select(r => r.name);
 
             NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()

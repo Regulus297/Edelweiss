@@ -525,7 +525,7 @@
         <member name="M:Edelweiss.Mapping.Entities.CSEntityData.Draw(Newtonsoft.Json.Linq.JArray,Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
             <inheritdoc/>
         </member>
-        <member name="M:Edelweiss.Mapping.Entities.CSEntityData.NodeSprite(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
+        <member name="M:Edelweiss.Mapping.Entities.CSEntityData.NodeDraw(Newtonsoft.Json.Linq.JArray,Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.CSEntityData.GetDefaultRectangle(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity,System.Int32)">
@@ -558,6 +558,16 @@
         <member name="F:Edelweiss.Mapping.Entities.Entity._name">
             <summary>
             
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.Entity.EntityName">
+            <summary>
+            The name of the entity without the placement
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.Entity.PlacementName">
+            <summary>
+            The name of the placement without the entity name
             </summary>
         </member>
         <member name="P:Edelweiss.Mapping.Entities.Entity.Name">
@@ -700,6 +710,13 @@
             Adds a node to the entity if nodelimits allow
             </summary>
             <param name="relativePosition">The position of the node relative to the entity</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.TryRemoveNode(System.Int32)">
+            <summary>
+            Attempts to remove a node from the entity respecting the node limits
+            </summary>
+            <param name="index">The index of the node to remove</param>
+            <returns>Whether the node could successfully be removed</returns>
         </member>
         <member name="P:Edelweiss.Mapping.Entities.Entity.Item(System.String)">
             <summary>
@@ -1271,6 +1288,11 @@
             
             </summary>
         </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.map">
+            <summary>
+            The map this room belongs to
+            </summary>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.RoomData.ToLuaTable(MoonSharp.Interpreter.Script)">
             <summary>
             Converts the room to a Lua table compatible with Loenn.
@@ -1281,12 +1303,26 @@
             Redraws all entities in the room
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.RoomData.RemoveEntity(Edelweiss.Mapping.Entities.Entity)">
+            <summary>
+            Removes an entity from the room
+            </summary>
+            <param name="entity"></param>
+        </member>
         <member name="T:Edelweiss.Mapping.Keybinds.CycleKeybind">
             <summary>
-            The keybind for cycling the state of an object. Defaults to Tab
+            The keybind for cycling the state of an object. Defaults to E
             </summary>
         </member>
         <member name="P:Edelweiss.Mapping.Keybinds.CycleKeybind.DefaultBindings">
+            <inheritdoc/>
+        </member>
+        <member name="T:Edelweiss.Mapping.Keybinds.DeleteKeybind">
+            <summary>
+            The keybind for deleting an object. Defaults to Del
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.Keybinds.DeleteKeybind.DefaultBindings">
             <inheritdoc/>
         </member>
         <member name="T:Edelweiss.Mapping.Keybinds.HorizontalFlipKeybind">

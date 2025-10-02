@@ -281,27 +281,18 @@ namespace Edelweiss.Mapping.Entities
             {
                 return textureMethod.String;
             }
-            return script.Call(textureMethod, room.ToLuaTable(script), entity.ToLuaTable(script), entity.GetNode(nodeIndex).ToLuaTable(script), nodeIndex, new Table(script)).String;
+            return script.Call(textureMethod, room.ToLuaTable(script), entity.ToLuaTable(script), entity.GetNode(nodeIndex).ToLuaTable(script), nodeIndex + 1, new Table(script)).String;
         }
 
         /// <inheritdoc/>
         public override List<Drawable> NodeSprite(RoomData room, Entity entity, int nodeIndex)
         {
             DynValue spriteMethod = entityTable.Get("nodeSprite");
-            // If sprite method is defined but no node texture, use that
-            if (!entityTable.Get("sprite").IsNil() && entityTable.Get("nodeTexture").IsNil() && spriteMethod.IsNil())
-            {
-                var node = entity.GetNode(nodeIndex);
-                entity.SetNodeOffset(entity.x - node.X, entity.y - node.Y);
-                var result = Sprite(room, entity);
-                entity.SetNodeOffset(0, 0);
-                return result;
-            }
 
             if (spriteMethod.IsNil())
                 return base.NodeSprite(room, entity, nodeIndex);
 
-            DynValue sprite = script.Call(spriteMethod, room.ToLuaTable(script), entity.ToLuaTable(script), entity.GetNode(nodeIndex).ToLuaTable(script), nodeIndex, new Table(script));
+            DynValue sprite = script.Call(spriteMethod, room.ToLuaTable(script), entity.ToLuaTable(script), entity.GetNode(nodeIndex).ToLuaTable(script), nodeIndex + 1, new Table(script));
             if (sprite.IsNil())
             {
                 return [];
@@ -326,12 +317,21 @@ namespace Edelweiss.Mapping.Entities
                 DynValue drawMethod = entityTable.Get("nodeDraw");
                 if (drawMethod.IsNil())
                 {
+
+                    // If no nodeSprite method or nodeTexture method is defined, use the draw method for the main entity
+                    if (entityTable.Get("nodeSprite").IsNil() && entityTable.Get("nodeTexture").IsNil())
+                    {
+                        var node = entity.GetNode(nodeIndex);
+                        using var dest = new SpriteDestination(null, -node.X, -node.Y);
+                        Draw(shapes, room, entity);
+                        return;
+                    }
                     base.NodeDraw(shapes, room, entity, nodeIndex);
                 }
                 else
                 {
                     using var dest = new SpriteDestination(shapes, entity.x, entity.y);
-                    script.Call(drawMethod, room.ToLuaTable(script), entity.ToLuaTable(script), entity.GetNode(nodeIndex).ToLuaTable(script), nodeIndex, new Table(script));
+                    script.Call(drawMethod, room.ToLuaTable(script), entity.ToLuaTable(script), entity.GetNode(nodeIndex).ToLuaTable(script), nodeIndex + 1, new Table(script));
                 }
             }
             catch (Exception e)

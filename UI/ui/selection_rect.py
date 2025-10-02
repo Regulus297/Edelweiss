@@ -5,6 +5,8 @@ from ui.shape_item import ShapeItem
 
 
 class SelectionRect(ShapeItem):
+    selection_rects = {}
+
     def __init__(self, x, y, width, height, parent, _id):
         super().__init__(-10000000, width, height, parent, {
             "type": "rectangle",
@@ -44,18 +46,49 @@ class SelectionRect(ShapeItem):
         self.start_pos = None
         self.start_width = None
         self.start_height = None
+        self.tags = []
+
+        self.doubleClicking = False
+        self.shiftClicked = False
+
+    def addTag(self, tag):
+        self.tags.append(tag)
+        if tag not in SelectionRect.selection_rects:
+            SelectionRect.selection_rects[tag] = []
+        SelectionRect.selection_rects[tag].append(self)
+
+    def removeTag(self, tag):
+        if tag in self.tags:
+            self.tags.remove(tag)
+        if tag in SelectionRect.selection_rects and self in SelectionRect.selection_rects[tag]:
+            SelectionRect.selection_rects[tag].remove(self)
 
     def mousePressEvent(self, event):
         if not bool(self.selectable):
             event.ignore()
             return
-        elif self.edge:
+        if event.modifiers() & Qt.ShiftModifier:
+            if self.doubleClicking:
+                self.setSelected(True)
+            else:
+                self.setSelected(not self.isSelected())
+            self.shiftClicked = True
+            event.accept()
+            return
+        if self.edge:
             self.start = event.scenePos()
             self.start_pos = self.pos()
             self.start_width = self.width
             self.start_height = self.height
             self.resizing = True
         super().mousePressEvent(event)
+
+    def mouseDoubleClickEvent(self, event):
+        self.doubleClicking = True
+        for tag in self.tags:
+            for rect in SelectionRect.selection_rects[tag]:
+                rect.setSelected(True)
+        super().mouseDoubleClickEvent(event)
 
     def mouseMoveEvent(self, event):
         if self.resizing and self.edge is not None:
@@ -89,7 +122,10 @@ class SelectionRect(ShapeItem):
 
     def mouseReleaseEvent(self, event):
         self.resizing = False
-        super().mouseReleaseEvent(event)
+        if not self.doubleClicking and not self.shiftClicked:
+            super().mouseReleaseEvent(event)
+        self.doubleClicking = False
+        self.shiftClicked = False
 
     def itemChange(self, change, value):
         if change == QGraphicsItem.ItemSelectedChange:

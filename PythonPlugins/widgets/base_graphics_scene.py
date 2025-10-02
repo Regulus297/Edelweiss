@@ -27,5 +27,3 @@ class BaseGraphicsScene(QGraphicsScene):
 
     def setScene(self, width, height):
         self.setSceneRect(-width//2, -height//2, width, height)
-
-

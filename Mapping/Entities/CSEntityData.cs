@@ -59,13 +59,16 @@ namespace Edelweiss.Mapping.Entities
         }
 
         /// <inheritdoc/>
-        public override List<Drawable> NodeSprite(RoomData room, Entity entity, int nodeIndex)
+        public override void NodeDraw(JArray shapes, RoomData room, Entity entity, int nodeIndex)
         {
-            if (NodeTexture(room, entity, nodeIndex) == "" && !MethodImplemented("NodeTexture"))
+            if (!MethodImplemented(nameof(NodeTexture)) && !MethodImplemented(nameof(NodeSprite)))
             {
-                return Sprite(room, entity);
+                Point node = entity.nodes[nodeIndex];
+                using var dest = new SpriteDestination(null, -node.X, -node.Y);
+                Draw(shapes, room, entity);
+                return;
             }
-            return base.NodeSprite(room, entity, nodeIndex);
+            base.NodeDraw(shapes, room, entity, nodeIndex);
         }
 
         /// <inheritdoc/>
@@ -78,7 +81,7 @@ namespace Edelweiss.Mapping.Entities
             return base.GetDefaultRectangle(room, entity, nodeIndex);
         }
 
-        private bool MethodImplemented(string method) => GetType().GetMethod(method).DeclaringType == GetType();
+        private bool MethodImplemented(string method) => GetType().GetMethod(method).DeclaringType != typeof(EntityData);
 
         /// <summary>
         /// The names of the placements this entity has

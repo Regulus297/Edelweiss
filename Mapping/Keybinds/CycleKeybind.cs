@@ -4,7 +4,7 @@ using Edelweiss.Plugins;
 namespace Edelweiss.Mapping.Keybinds
 {
     /// <summary>
-    /// The keybind for cycling the state of an object. Defaults to Tab
+    /// The keybind for cycling the state of an object. Defaults to E
     /// </summary>
     public class CycleKeybind : PluginKeybind
     {

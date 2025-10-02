@@ -32,3 +32,7 @@ class ModifyItemShapeReceiver(PacketReceiver):
             gItem.refresh({})
         elif data["action"] == "clear":
             gItem.clear()
+        elif data["action"] == "delete":
+            gItem.delete()
+            del widget.trackedItems[data["item"]]
+            del widget.trackedGraphicsItems[data["item"]]

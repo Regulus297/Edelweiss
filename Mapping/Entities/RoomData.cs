@@ -151,6 +151,11 @@ namespace Edelweiss.Mapping.Entities
         public List<Entity> entities = [];
 
         /// <summary>
+        /// The map this room belongs to
+        /// </summary>
+        public MapData map;
+
+        /// <summary>
         /// Converts the room to a Lua table compatible with Loenn.
         /// </summary>
         public Table ToLuaTable(Script script)
@@ -158,6 +163,10 @@ namespace Edelweiss.Mapping.Entities
             Table table = new(script);
             foreach (FieldInfo field in typeof(RoomData).GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
+                if (field.Name == nameof(map))
+                {
+                    continue;
+                }
                 if (field.Name == "entities")
                 {
                     table[field.Name] = entities.Select(e => e.ToLuaTable(script)).ToArray();
@@ -177,6 +186,16 @@ namespace Edelweiss.Mapping.Entities
             {
                 entity.Draw($"{name}/{entity._id}", 0, true);
             }
+        }
+
+        /// <summary>
+        /// Removes an entity from the room
+        /// </summary>
+        /// <param name="entity"></param>
+        public void RemoveEntity(Entity entity)
+        {
+            entities.Remove(entity);
+            map.allEntities.Remove(entity._id);
         }
     }
 }

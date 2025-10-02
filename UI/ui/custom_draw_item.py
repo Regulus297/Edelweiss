@@ -118,6 +118,9 @@ class CustomDrawItem(QGraphicsItem):
                 rect.selectable = data["selectable"] if "selectable" in data else True
                 rect.resize_x = selection["resizeX"] if "resizeX" in selection else False
                 rect.resize_y = selection["resizeY"] if "resizeY" in selection else False
+                if "tags" in selection:
+                    for tag in selection["tags"]:
+                        rect.addTag(tag)
                 self.addRectDelayed(rect)
                 j += 1
 
@@ -194,6 +197,7 @@ class CustomDrawItem(QGraphicsItem):
 
         if "selection" in data:
             if len(data["selection"]) < len(self.selections):
+                self.scene().clearSelection()
                 for i in range(len(data["selection"]), len(self.selections)):
                     self.scene().removeItem(self.selections[i])
                 del self.selections[len(data["selection"]):]
@@ -229,6 +233,15 @@ class CustomDrawItem(QGraphicsItem):
         for _, item in self.items.items():
             item.shapes.clear()
             item.shapeRenderers.clear()
+
+    def delete(self):
+        for _, item in self.items.items():
+            self.scene().removeItem(item)
+
+        for selection in self.selections:
+            self.scene().removeItem(selection)
+        self.scene().removeItem(self)
+        del self
 
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
