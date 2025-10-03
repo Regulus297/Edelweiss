@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Edelweiss.Mapping.Entities;
 using Edelweiss.Network;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
@@ -24,6 +25,7 @@ namespace Edelweiss.Mapping.Tools
         public override void MouseRelease(JObject room, float x, float y)
         {
             isUsing = false;
+            RoomData backendRoom = MappingTab.map.rooms.Find(r => r.name == room["name"].ToString());
 
             // Paint tiles
             (int currentX, int currentY) = EdelweissUtils.ToTileCoordinate(x, y);
@@ -37,6 +39,10 @@ namespace Edelweiss.Mapping.Tools
                     if (selectedMode == 1 && !(loopX == 0 || loopY == 0 || Math.Abs(loopX) == Math.Abs(currentX - startRoomX) || Math.Abs(loopY) == Math.Abs(currentY - startRoomY)))
                         continue;
                     SetTile(ref tileData, room, loopX + startRoomX, loopY + startRoomY);
+                    if(selectedLayer == 0)
+                        SetTile(ref backendRoom.fgTileData, room, loopX + startRoomX, loopY + startRoomY);
+                    else
+                        SetTile(ref backendRoom.bgTileData, room, loopX + startRoomX, loopY + startRoomY);
                 }
             }
             NetworkManager.SendPacket(Netcode.MODIFY_ITEM_SHAPE, new JObject()

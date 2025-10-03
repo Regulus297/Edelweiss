@@ -1,22 +1,26 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using Edelweiss.Loenn;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.SaveLoad;
 using Edelweiss.Mapping.Tools;
 using Edelweiss.Network;
 using Edelweiss.Plugins;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
 using Newtonsoft.Json.Linq;
+using YamlDotNet.Core.Tokens;
 
 namespace Edelweiss.Mapping.Entities
 {
     /// <summary>
     /// Class containing data for an entity placed in the map.
     /// </summary>
-    public class Entity(string name, string id, params Point[] nodes) : ILuaConvertible
+    public class Entity(string name, string id, params Point[] nodes) : ILuaConvertible, IMapSaveable
     {
 
         /// <summary>
@@ -531,6 +535,59 @@ namespace Edelweiss.Mapping.Entities
             return true;
         }
 
+        /// <inheritdoc/>
+        public void AddToLookup(StringLookup lookup)
+        {
+            lookup.Add(EntityName);
+            lookup.Add("entities", "x", "y", "width", "height", "node", "id");
+            foreach (var value in data)
+            {
+                lookup.Add(value.Key);
+                if (value.Value is string s)
+                {
+                    lookup.Add(s);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Encode(BinaryWriter writer)
+        {
+            writer.WriteLookupString(EntityName);
+            Dictionary<string, object> fields = new Dictionary<string, object>()
+            {
+                {"x", x - entityRoom.x},
+                {"y", y - entityRoom.y},
+                {"id", int.Parse(_id)}
+            };
+            foreach (var item in data)
+            {
+                fields[item.Key] = item.Value;
+            }
+
+            writer.Write((byte)fields.Count); // Attr count
+            foreach (var field in fields)
+            {
+                writer.WriteAttribute(field.Key, field.Value);
+            }
+
+            writer.Write((short)nodes.Count); // Child count
+            foreach (Point node in GetNodes())
+            {
+                SaveNode(writer, node);
+            }
+        }
+
+        private void SaveNode(BinaryWriter writer, Point node)
+        {
+            writer.WriteLookupString("node");
+            writer.Write((byte)2); // Attr count
+            writer.WriteAttribute("x", node.X - entityRoom.x);
+            writer.WriteAttribute("y", node.Y - entityRoom.y);
+
+            writer.Write((short)0); // Child count
+        }
+
         /// <summary>
         /// Gets the data with the given key
         /// </summary>
@@ -543,6 +600,18 @@ namespace Edelweiss.Mapping.Entities
             set
             {
                 data[key] = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the nodes of the entity in global space
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable GetNodes()
+        {
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                yield return GetNode(i);
             }
         }
     }

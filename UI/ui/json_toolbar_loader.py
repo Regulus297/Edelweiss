@@ -21,6 +21,9 @@ class JSONToolbarLoader:
                 action = QAction(toolbar)
                 action.setText(str(item["name"]))
 
+                if "shortcut" in item:
+                    action.setShortcut(item["shortcut"])
+
                 action_id = str(item["id"])
                 if hasattr(toolbar, "json_loader_name"):
                     action_id = getattr(toolbar, "json_loader_name") + "/" + action_id

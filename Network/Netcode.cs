@@ -86,6 +86,17 @@ namespace Edelweiss.Network
         /// </summary>
         public const long REFRESH_WIDGETS = 0x9;
 
+        /// <summary>
+        /// Opens a file dialog popup <br/>
+        /// Parameters: <br/>
+        /// - file: true if the user needs to select a file, false if directory <br/>
+        /// - path: the path the dialog should default to <br/>
+        /// - mode: "save" if user can select nonexistent paths, "load" if only existing paths can be chosen <br/>
+        /// - pattern: glob patterns that can be selected, each separated by two semicolons: "*.bin;;*.png" <br/>
+        /// - submit: event data when the form is submitted. Sends the path and matched pattern to the specified netcode
+        /// </summary>
+        public const long OPEN_FILE_DIALOG = 0xa;
+
 
         // Received packets
 

@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Edelweiss.Loenn;
+using Edelweiss.Mapping.SaveLoad;
 using MoonSharp.Interpreter;
 using Newtonsoft.Json.Linq;
 
@@ -11,7 +13,7 @@ namespace Edelweiss.Mapping.Entities
     /// <summary>
     /// Class containing room data for the backend
     /// </summary>
-    public class RoomData(JObject data) : ILuaConvertible
+    public class RoomData(JObject data) : ILuaConvertible, IMapSaveable
     {
         private static string DefaultJSON = """
         {
@@ -143,7 +145,17 @@ namespace Edelweiss.Mapping.Entities
         /// <summary>
         /// 
         /// </summary>
-        public string color = data.Value<string>("color");
+        public string color = data.Value<string>("colour");
+
+        /// <summary>
+        /// The foreground tiles in the room
+        /// </summary>
+        public string fgTileData = "";
+
+        /// <summary>
+        /// The background tiles in the room
+        /// </summary>
+        public string bgTileData = "";
 
         /// <summary>
         /// 
@@ -196,6 +208,88 @@ namespace Edelweiss.Mapping.Entities
         {
             entities.Remove(entity);
             map.allEntities.Remove(entity._id);
+        }
+
+        /// <inheritdoc/>
+        public void AddToLookup(StringLookup lookup)
+        {
+            lookup.Add("level", "solids", "bg", "fgtiles", "bgtiles", "objtiles", "offsetX", "offsetY", "triggers");
+            foreach (FieldInfo field in typeof(RoomData).GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+            {
+                if (field.Name == nameof(map)  || field.Name == nameof(fgTileData) || field.Name == nameof(bgTileData))
+                {
+                    continue;
+                }
+                lookup.Add(field.Name == "color" ? "c" : field.Name);
+                object value = field.GetValue(this);
+                if (value is string s)
+                {
+                    lookup.Add(s);
+                }
+            }
+            foreach (Entity entity in entities)
+            {
+                entity.AddToLookup(lookup);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void Encode(BinaryWriter writer)
+        {
+            writer.WriteLookupString("level");
+            Dictionary<string, object> fields = [];
+            foreach (FieldInfo field in typeof(RoomData).GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+            {
+                if (field.Name == nameof(map) || field.Name == nameof(entities) || field.Name == nameof(fgTileData) || field.Name == nameof(bgTileData))
+                {
+                    continue;
+                }
+                fields[field.Name == "color" ? "c" : field.Name] = field.Name == "color" ? int.Parse(field.GetValue(this).ToString()) : field.GetValue(this);
+            }
+
+            writer.Write((byte)fields.Count); // Attr count
+            foreach (var field in fields)
+            {
+                writer.WriteAttribute(field.Key, field.Value);
+            }
+
+            writer.Write((short)4); // Child count
+
+            // entities child
+            writer.WriteLookupString("entities");
+            writer.Write((byte)2); // Attr count
+            writer.WriteAttribute("offsetX", 0);
+            writer.WriteAttribute("offsetY", 0);
+
+            writer.Write((short)entities.Count); // Child count
+            foreach (Entity entity in entities)
+            {
+                entity.Encode(writer);
+            }
+
+            // triggers
+            writer.WriteLookupString("triggers");
+            writer.Write((byte)0);
+            writer.Write((short)0);
+
+            // solids
+            writer.WriteLookupString("solids");
+            writer.Write((byte)1);
+            writer.WriteLookupString("innerText");
+            writer.WriteRLEString(FormatTileData(fgTileData));
+            writer.Write((short)0);
+
+            // bg
+            writer.WriteLookupString("bg");
+            writer.Write((byte)1);
+            writer.WriteLookupString("innerText");
+            writer.WriteRLEString(FormatTileData(fgTileData));
+            writer.Write((short)0);
+        }
+
+        private string FormatTileData(string tileData)
+        {
+            return string.Join('\n', Enumerable.Range(0, tileData.Length / (width / 8)).Select(i => tileData.Substring(i * width / 8, width / 8))).Replace(' ', '0').TrimEnd('0', '\n');
         }
     }
 }

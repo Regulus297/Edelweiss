@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Edelweiss.Mapping.Entities;
+using Edelweiss.Mapping.SaveLoad;
 using Edelweiss.Mapping.Tools;
 using Edelweiss.Network;
 using Edelweiss.Plugins;
@@ -36,9 +37,12 @@ namespace Edelweiss.Mapping
         internal static long RoomMouseNetcode { get; private set; }
         internal static long MaterialFavouritedNetcode { get; private set; }
         internal static long MaterialSearchedNetcode { get; private set; }
+        internal static long SaveMapNetcode { get; private set; }
         internal static MappingTool selectedTool;
 
         internal static MapData map = null;
+
+        internal static string filePath = "";
 
         public override void Load()
         {
@@ -46,6 +50,7 @@ namespace Edelweiss.Mapping
             RoomMouseNetcode = Plugin.CreateNetcode("RoomMouse", false);
             MaterialFavouritedNetcode = Plugin.CreateNetcode("MaterialFavourited", false);
             MaterialSearchedNetcode = Plugin.CreateNetcode("MaterialSearched", false);
+            SaveMapNetcode = Plugin.CreateNetcode("SaveMap", false);
         }
 
         public override void PostSetupContent()
@@ -72,6 +77,30 @@ namespace Edelweiss.Mapping
             {
                 case "createRoom":
                     NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, FormLoader.LoadForm("Edelweiss:Forms/room_creation").ToString());
+                    break;
+                case "fileMenu/saveMapAs":
+                    NetworkManager.SendPacket(Netcode.OPEN_FILE_DIALOG, new JObject()
+                    {
+                        {"file", true},
+                        {"path", MainPlugin.CelesteDirectory},
+                        {"mode", "save"},
+                        {"pattern", "*.bin"},
+                        {"submit", SaveMapNetcode}
+                    });
+                    break;
+                case "fileMenu/saveMap":
+                    if (string.IsNullOrEmpty(filePath))
+                    {
+                        goto case "fileMenu/saveMapAs";
+                    }
+                    try
+                    {
+                        MapSaveLoad.SaveMap(map, filePath);
+                    }
+                    catch (Exception e)
+                    {
+                        MainPlugin.Instance.Logger.Error($"Error saving map: {e}");
+                    }
                     break;
             }
         }

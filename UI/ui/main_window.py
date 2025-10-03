@@ -1,12 +1,8 @@
 import json
-from typing import List
 
-from PyQt5.QtCore import Qt, QTimer
-from PyQt5.QtGui import QCursor, QDoubleValidator, QIntValidator
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QGraphicsView, QGraphicsScene, QMenuBar, QPushButton, QApplication, \
-    QSplitter, QListWidget, QSizePolicy, QHBoxLayout, QLineEdit, QListWidgetItem, QTabWidget, QStackedWidget, \
-    QSpacerItem, QToolBar, QMainWindow, QAction, QFrame, QComboBox, QMenu, QWidgetAction, QCheckBox, QGridLayout, \
-    QLabel, QGraphicsItem
+from PyQt5.QtCore import  QTimer
+from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QGraphicsView, QSizePolicy, QStackedWidget, QToolBar,
+                             QMainWindow, QComboBox)
 
 from network import PyNetworkManager
 from Edelweiss.Network import Netcode

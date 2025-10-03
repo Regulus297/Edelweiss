@@ -12,6 +12,9 @@ Fill = Fill
 Line = Line
 
 Mapping.CreateRoom = Create Room
+Mapping.SaveMap = Save...
+Mapping.SaveMapAs = Save As...
+Mapping.File = File
 
 RoomCreationForm = Create room
 RoomCreationForm.Submit = Create

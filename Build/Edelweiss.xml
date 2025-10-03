@@ -718,10 +718,22 @@
             <param name="index">The index of the node to remove</param>
             <returns>Whether the node could successfully be removed</returns>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.AddToLookup(Edelweiss.Mapping.SaveLoad.StringLookup)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.Encode(System.IO.BinaryWriter)">
+            <inheritdoc/>
+        </member>
         <member name="P:Edelweiss.Mapping.Entities.Entity.Item(System.String)">
             <summary>
             Gets the data with the given key
             </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.GetNodes">
+            <summary>
+            Gets the nodes of the entity in global space
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.EntityData">
             <summary>
@@ -1169,6 +1181,12 @@
             
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.MapData.AddToLookup(Edelweiss.Mapping.SaveLoad.StringLookup)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.MapData.Encode(System.IO.BinaryWriter)">
+            <inheritdoc/>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.RoomData">
             <summary>
             Class containing room data for the backend
@@ -1283,6 +1301,16 @@
             
             </summary>
         </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.fgTileData">
+            <summary>
+            The foreground tiles in the room
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.RoomData.bgTileData">
+            <summary>
+            The background tiles in the room
+            </summary>
+        </member>
         <member name="F:Edelweiss.Mapping.Entities.RoomData.entities">
             <summary>
             
@@ -1308,6 +1336,12 @@
             Removes an entity from the room
             </summary>
             <param name="entity"></param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.RoomData.AddToLookup(Edelweiss.Mapping.SaveLoad.StringLookup)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.RoomData.Encode(System.IO.BinaryWriter)">
+            <inheritdoc/>
         </member>
         <member name="T:Edelweiss.Mapping.Keybinds.CycleKeybind">
             <summary>
@@ -1356,6 +1390,137 @@
         </member>
         <member name="P:Edelweiss.Mapping.Keybinds.VerticalFlipKeybind.DefaultBindings">
             <inheritdoc/>
+        </member>
+        <member name="T:Edelweiss.Mapping.SaveLoad.IMapSaveable">
+            <summary>
+            Interface implemented by objects that can be added to a string lookup
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.IMapSaveable.AddToLookup(Edelweiss.Mapping.SaveLoad.StringLookup)">
+            <summary>
+            Adds the attributes of the object to the lookup
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.IMapSaveable.Encode(System.IO.BinaryWriter)">
+            <summary>
+            Saves the object to the writer
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.SaveLoad.MapSaveLoad">
+            <summary>
+            Class responsible for saving and loading Celeste maps
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.SaveLoad.MapSaveLoad.stringLookup">
+            <summary>
+            A string lookup table for the current map being saved
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.SaveLoad.MapSaveLoad.backwardsLookup">
+            <summary>
+            A lookup table for the current map being loaded
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapSaveLoad.SaveMap(Edelweiss.Mapping.Entities.MapData,System.String)">
+            <summary>
+            Saves a map to the given path
+            </summary>
+            <param name="map">The map to save</param>
+            <param name="filePath">The path to save the file to, including the .bin extension</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapSaveLoad.CreateLookup(Edelweiss.Mapping.Entities.MapData)">
+            <summary>
+            Creates a string lookup for the given map
+            </summary>
+            <param name="map"></param>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapSaveLoad.WriteValue(System.IO.BinaryWriter,System.Object)">
+            <summary>
+            Writes a value's type and the value itself to the writer
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapSaveLoad.ReadValue(System.IO.BinaryReader,System.Byte@)">
+            <summary>
+            Reads a value from the start of the reader
+            </summary>
+            <param name="reader"></param>
+            <param name="type">The type of data. 0 = bool, 1 = byte, 2 = short, 3 = int, 4 = float, 5 = lookup string, 6 = string, 7 = RLE string</param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapSaveLoad.WriteLookupString(System.IO.BinaryWriter,System.String)">
+            <summary>
+            Writes the specified string's lookup value to the writer
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapSaveLoad.ReadLookupString(System.IO.BinaryReader)">
+            <summary>
+            
+            </summary>
+            <param name="reader"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapSaveLoad.WriteAttribute(System.IO.BinaryWriter,System.String,System.Object)">
+            <summary>
+            Writes an attribute (key and value) to the writer
+            </summary>
+            <param name="writer"></param>
+            <param name="name"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapSaveLoad.WriteRLEString(System.IO.BinaryWriter,System.String)">
+            <summary>
+            Writes a run-length encoded string to the writer
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapSaveLoad.ReadRLEString(System.IO.BinaryReader)">
+            <summary>
+            Reads a run-length encoded string from the reader
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.SaveLoad.StringLookup">
+            <summary>
+            A lookup table for strings
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.SaveLoad.StringLookup.Count">
+            <summary>
+            The number of entries in the lookup
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.SaveLoad.StringLookup.Item(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="v"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.StringLookup.GetEnumerator">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.StringLookup.Add(System.String)">
+            <summary>
+            Adds an element to the lookup
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.StringLookup.Add(System.String[])">
+            <summary>
+            Adds several elements to the lookup
+            </summary>
+            <param name="values"></param>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.StringLookup.ContainsKey(System.String)">
+            <summary>
+            Determines whether the lookup contains the specified key
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.StringLookup.Clear">
+            <summary>
+            Clears the lookup
+            </summary>
         </member>
         <member name="T:Edelweiss.Mapping.Tools.MappingTool">
             <summary>
@@ -2053,6 +2218,17 @@
             Refreshes widgets with the given trackers <br/>
             Parameters: <br/>
             - widgets: the list of widget trackers that should be refreshed.
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.OPEN_FILE_DIALOG">
+            <summary>
+            Opens a file dialog popup <br/>
+            Parameters: <br/>
+            - file: true if the user needs to select a file, false if directory <br/>
+            - path: the path the dialog should default to <br/>
+            - mode: "save" if user can select nonexistent paths, "load" if only existing paths can be chosen <br/>
+            - pattern: glob patterns that can be selected, each separated by two semicolons: "*.bin;;*.png" <br/>
+            - submit: event data when the form is submitted. Sends the path and matched pattern to the specified netcode
             </summary>
         </member>
         <member name="F:Edelweiss.Network.Netcode.KEY_PRESSED">

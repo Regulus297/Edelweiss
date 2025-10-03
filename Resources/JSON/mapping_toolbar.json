@@ -5,6 +5,27 @@
             "name": "@getText('Edelweiss.Mapping.CreateRoom')",
             "id": "createRoom",
             "onclick": -4
+        },
+        {
+            "type": "menu",
+            "name": "@getText('Edelweiss.Mapping.File')",
+            "id": "fileMenu",
+            "items": [
+                {
+                    "type": "action",
+                    "name": "@getText('Edelweiss.Mapping.SaveMap')",
+                    "id": "saveMap",
+                    "shortcut": "Ctrl+S",
+                    "onclick": -4
+                },
+                {
+                    "type": "action",
+                    "name": "@getText('Edelweiss.Mapping.SaveMapAs')",
+                    "id": "saveMapAs",
+                    "shortcut": "Ctrl+Shift+S",
+                    "onclick": -4
+                }
+            ]
         }
     ]
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Edelweiss.Mapping.Entities;
 using Edelweiss.Preferences;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;

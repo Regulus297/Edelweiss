@@ -42,7 +42,9 @@ namespace Edelweiss.Mapping.PacketReceivers
 
             MappingTab.map.rooms.Add(new RoomData(extraData)
             {
-                map = MappingTab.map
+                map = MappingTab.map,
+                fgTileData = room["shapes"][1]["tileData"].ToString(),
+                bgTileData = room["shapes"][0]["tileData"].ToString()
             });
             MappingTab.rooms.Value = MappingTab.map.rooms.Select(r => r.name);
 
