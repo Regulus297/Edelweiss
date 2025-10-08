@@ -154,7 +154,7 @@ namespace Edelweiss.Mapping.Tools
                             {"widget", "Mapping/MainView"},
                             {"item", "cursorGhost"},
                             {"data", new JObject() {
-                                {"x", tileX * 8}
+                                {"x", tileX * 8 + room.Value<int>("x")}
                             }}
                         });
                     }
@@ -169,7 +169,7 @@ namespace Edelweiss.Mapping.Tools
                             {"widget", "Mapping/MainView"},
                             {"item", "cursorGhost"},
                             {"data", new JObject() {
-                                {"y", tileY * 8}
+                                {"y", tileY * 8 + room.Value<int>("y")}
                             }}
                         });
                     }

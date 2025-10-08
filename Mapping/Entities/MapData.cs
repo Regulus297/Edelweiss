@@ -20,6 +20,11 @@ namespace Edelweiss.Mapping.Entities
         /// </summary>
         public Dictionary<string, Entity> allEntities = [];
 
+        /// <summary>
+        /// The metadata for this map
+        /// </summary>
+        public MapMeta meta = new MapMeta();
+
         /// <inheritdoc/>
         public void AddToLookup(StringLookup lookup)
         {
@@ -28,6 +33,7 @@ namespace Edelweiss.Mapping.Entities
             {
                 room.AddToLookup(lookup);
             }
+            meta.AddToLookup(lookup);
         }
 
         /// <inheritdoc/>
@@ -40,7 +46,7 @@ namespace Edelweiss.Mapping.Entities
             writer.WriteAttribute("_package", "");
 
             // Child count
-            writer.Write((short)1);
+            writer.Write((short)2);
 
             // levels child
             writer.WriteLookupString("levels");
@@ -50,6 +56,8 @@ namespace Edelweiss.Mapping.Entities
             {
                 room.Encode(writer);
             }
+
+            meta.Encode(writer);
         }
     }
 }

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
@@ -40,5 +42,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         }
 
         public override bool Cycle(RoomData room, Entity entity, int amount) => TileHelper.Cycle(entity, "tiletype", amount);
+        public override JObject FieldInformation(string fieldName) => TileHelper.GetFieldInformation(fieldName, "tiletype");
     }
 }

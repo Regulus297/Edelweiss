@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using Edelweiss.Mapping.Drawables;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
@@ -33,11 +34,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                 justificationY = 0
             };
 
-            int width = sprite.atlasWidth / 2;
-            sprite.x += -width / 2;
-            sprite.y += -sprite.atlasHeight;
-            sprite.sourceX = broken ? width : 0;
-            sprite.sourceWidth = width;
+            // TODO: Fix source rect implementation to make these things line up
+            sprite.x -= sprite.atlasWidth / 4;
+            sprite.y -= sprite.atlasHeight;
+            sprite.sourceX = broken ? sprite.atlasWidth / 2  : 0;
+            sprite.sourceWidth = sprite.atlasWidth / 2;
             sprite.sourceHeight = sprite.atlasHeight;
 
 
@@ -49,6 +50,14 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return CycleBoolean(entity, "broken", amount);
         }
 
-        // TODO: selection
+        public override List<Rectangle> Selection(RoomData room, Entity entity)
+        {
+            Sprite sprite = new Sprite("scenery/lamp", entity)
+            {
+                justificationX = 0,
+                justificationY = 0
+            };
+            return [new Rectangle(entity.x - sprite.atlasWidth / 4, entity.y - sprite.atlasHeight, sprite.atlasWidth / 2, sprite.atlasHeight)];
+        }
     }
 }

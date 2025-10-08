@@ -6,15 +6,16 @@ using Edelweiss.Mapping.Drawables;
 using Edelweiss.Mapping.Tools;
 using Edelweiss.Plugins;
 using Edelweiss.Utils;
+using Newtonsoft.Json.Linq;
 
-namespace Edelweiss.Mapping.Entities
+namespace Edelweiss.Mapping.Entities.Helpers
 {
     /// <summary>
     /// Class that assists in making fake tile entities
     /// </summary>
     public sealed class TileHelper : LoadedType
     {
-        internal static List<string> fgids = [], bgids = [];
+        internal static Dictionary<string, string> fgids = [], bgids = [];
         /// <summary>
         /// Gets the currently selected tile
         /// </summary>
@@ -100,14 +101,43 @@ namespace Edelweiss.Mapping.Entities
         }
 
         /// <summary>
+        /// Gets the field information for the entity
+        /// </summary>
+        /// <param name="key">The key currently being asked for</param>
+        /// <param name="tileKey">The key representing the tile for the entity</param>
+        /// <param name="foreground"></param>
+        /// <param name="allowAir"></param>
+        /// <returns></returns>
+        public static JObject GetFieldInformation(string key, string tileKey, bool foreground = true, bool allowAir = false)
+        {
+            if (key != tileKey)
+                return null;
+
+            JObject tiles = [];
+
+            foreach (var pair in foreground ? fgids : bgids)
+            {
+                if (allowAir || pair.Key != " ")
+                {
+                    tiles.Add(pair.Value, pair.Key);
+                }
+            }
+                
+            return new JObject()
+            {
+                {"items", tiles}
+            };
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         public static string GetCycleValue(string current, int amount, bool foreground = true)
         {
-            current = (foreground ? fgids : bgids).Cycle(current.ToString(), amount);
+            current = (foreground ? fgids : bgids).Keys.ToList().Cycle(current.ToString(), amount);
             if (current.ToString() == " ")
             {
-                current = (foreground ? fgids : bgids).Cycle(current.ToString(), amount);
+                current = (foreground ? fgids : bgids).Keys.ToList().Cycle(current.ToString(), amount);
             }
             return current;
         }
@@ -120,9 +150,9 @@ namespace Edelweiss.Mapping.Entities
         }
 
         private static void Recache(bool foreground) {
-            foreach (string key in (foreground ? MainPlugin.Instance.fgTiles : MainPlugin.Instance.bgTiles).Keys)
+            foreach (var key in foreground ? MainPlugin.Instance.fgTiles : MainPlugin.Instance.bgTiles)
             {
-                (foreground ? fgids : bgids).Add(key);
+                (foreground ? fgids : bgids).Add(key.Key, key.Value.name);
             }
         }
     }

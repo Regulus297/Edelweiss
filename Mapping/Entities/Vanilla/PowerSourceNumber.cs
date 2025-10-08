@@ -16,7 +16,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return new Dictionary<string, object>()
             {
                 {"number", 1},
-                {"straberries", ""},
+                {"strawberries", ""},
                 {"keys", ""}
             };
         }

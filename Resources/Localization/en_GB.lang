@@ -15,6 +15,8 @@ Mapping.CreateRoom = Create Room
 Mapping.SaveMap = Save...
 Mapping.SaveMapAs = Save As...
 Mapping.File = File
+Mapping.MapMenu = Map
+Mapping.MapMeta = Metadata
 
 RoomCreationForm = Create room
 RoomCreationForm.Submit = Create

@@ -735,6 +735,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.UpdateData(Newtonsoft.Json.Linq.JObject,System.Int32,Edelweiss.Mapping.Entities.Entity[])">
+            <summary>
+            Updates the entity's data with the values from the given data
+            </summary>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.EntityData">
             <summary>
             Base class for entity data
@@ -971,6 +976,28 @@
             <param name="entity">The entity instance</param>
             <param name="nodeIndex">-1 for the main entity</param>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.GetFormTemplate(Edelweiss.Mapping.Entities.Entity,System.Int32,Edelweiss.Mapping.Entities.Entity[])">
+            <summary>
+            Gets the form template for the entity which can be sent to the frontend
+            </summary>
+            <param name="entity">The entity instance</param>
+            <param name="nodeIndex"></param>
+            <param name="others">A list of other entities that are also selected</param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.FieldInformation(System.String)">
+            <summary>
+            Returns custom field information for the given field name
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.EntityData.ProcessField(System.String,Newtonsoft.Json.Linq.JToken)">
+            <summary>
+            Processes a field's value before it is set to the entity data
+            </summary>
+            <param name="fieldName"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.NodeLineRenderType">
             <summary>
             Determines how nodes are connected to the main entity
@@ -1016,12 +1043,12 @@
             Always visible
             </summary>
         </member>
-        <member name="T:Edelweiss.Mapping.Entities.TileHelper">
+        <member name="T:Edelweiss.Mapping.Entities.Helpers.TileHelper">
             <summary>
             Class that assists in making fake tile entities
             </summary>
         </member>
-        <member name="M:Edelweiss.Mapping.Entities.TileHelper.GetMaterial(System.String,System.Boolean,System.Boolean)">
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.TileHelper.GetMaterial(System.String,System.Boolean,System.Boolean)">
             <summary>
             Gets the currently selected tile
             </summary>
@@ -1030,7 +1057,7 @@
             <param name="allowAir">Whether air is a valid tile to return</param>
             <returns></returns>
         </member>
-        <member name="M:Edelweiss.Mapping.Entities.TileHelper.GetSprite(Edelweiss.Mapping.Entities.Entity,System.String,System.Boolean,System.Single)">
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.TileHelper.GetSprite(Edelweiss.Mapping.Entities.Entity,System.String,System.Boolean,System.Single)">
             <summary>
             Gets the sprite for a fake tile entity
             </summary>
@@ -1039,22 +1066,32 @@
             <param name="foreground">Whether this is a foreground tile</param>
             <param name="opacity">The opacity of the tile object</param>
         </member>
-        <member name="M:Edelweiss.Mapping.Entities.TileHelper.GetMergedSprite(System.Collections.Generic.IEnumerable{Edelweiss.Mapping.Entities.Entity},System.String,System.Boolean,System.Single)">
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.TileHelper.GetMergedSprite(System.Collections.Generic.IEnumerable{Edelweiss.Mapping.Entities.Entity},System.String,System.Boolean,System.Single)">
             <summary>
             Gets the merged sprite for multiple fake tile entities
             </summary>
         </member>
-        <member name="M:Edelweiss.Mapping.Entities.TileHelper.Cycle(Edelweiss.Mapping.Entities.Entity,System.String,System.Int32,System.Boolean)">
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.TileHelper.Cycle(Edelweiss.Mapping.Entities.Entity,System.String,System.Int32,System.Boolean)">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Edelweiss.Mapping.Entities.TileHelper.GetCycleValue(System.String,System.Int32,System.Boolean)">
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.TileHelper.GetFieldInformation(System.String,System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Gets the field information for the entity
+            </summary>
+            <param name="key">The key currently being asked for</param>
+            <param name="tileKey">The key representing the tile for the entity</param>
+            <param name="foreground"></param>
+            <param name="allowAir"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.TileHelper.GetCycleValue(System.String,System.Int32,System.Boolean)">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Edelweiss.Mapping.Entities.TileHelper.Load">
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.TileHelper.Load">
             <inheritdoc/>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.LuaEntityData">
@@ -1181,11 +1218,202 @@
             
             </summary>
         </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapData.meta">
+            <summary>
+            The metadata for this map
+            </summary>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.MapData.AddToLookup(Edelweiss.Mapping.SaveLoad.StringLookup)">
             <inheritdoc/>
         </member>
         <member name="M:Edelweiss.Mapping.Entities.MapData.Encode(System.IO.BinaryWriter)">
             <inheritdoc/>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.MapMeta">
+            <summary>
+            An object containing metadata for a map
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.MapMeta.Inventory">
+            <summary>
+            Options for player inventory (moves the player has access to)
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.Default">
+            <summary>
+            1 dash, dream blocks enabled, wearing a backpack, ground refills enabled
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.CH6End">
+            <summary>
+            2 dashes, dream blocks enabled, wearing a backpack, ground refills enabled
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.Core">
+            <summary>
+            2 dashes, dream blocks enabled, wearing a backpack, ground refills disabled
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.OldSite">
+            <summary>
+            1 dash, dream blocks disabled, wearing a backpack, ground refills enabled
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.Prologue">
+            <summary>
+            0 dashes, dream blocks disabled, wearing a backpack, ground refills enabled
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.TheSummit">
+            <summary>
+            2 dashes, dream blocks enabled, no backpack, ground refills enabled
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.Farewell">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.MapMeta.IntroType">
+            <summary>
+            The way the player enters the map
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.WakeUp">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.Respawn">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.WalkInRight">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.WalkInLeft">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.Jump">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.Fall">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.TempleMirrorVoid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.ThinkForABit">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.None">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.inventory">
+            <summary>
+            The inventory the player has at the start of the map
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.introType">
+            <summary>
+            The way the player enters the map
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.path">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.poemID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.startLevel">
+            <summary>
+            The room the player spawns into on entering the map
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.heartIsEnd">
+            <summary>
+            True if collecting a crystal heart ends the map
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.seekerSlowdown">
+            <summary>
+            Whether Seekers can slow down time while attacking the player
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.theoInBubble">
+            <summary>
+            Whether Theo (and other holdables) can be held while in a booster
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.dreaming">
+            <summary>
+            Whether the player starts the chapter dreaming.
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.interlude">
+            <summary>
+            Whether the map is an interlude chapter: no B-Side and deaths aren't counted
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.overrideASideMeta">
+            <summary>
+            If false, the meta for the A-Side of this map will take priority over the map's metadata
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.wipe">
+            <summary>
+            The wipe that plays upon death
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.colourGrade">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.bloomBase">
+            <summary>
+            The base bloom level
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.bloomStrength">
+            <summary>
+            The bloom strength
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.darknessAlpha">
+            <summary>
+            The alpha used for darkness
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.MapMeta.AddToLookup(Edelweiss.Mapping.SaveLoad.StringLookup)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.MapMeta.Encode(System.IO.BinaryWriter)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.MapMeta.ToJObject">
+            <summary>
+            Converts this map meta object to a JSON object
+            </summary>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.RoomData">
             <summary>
@@ -2202,7 +2430,7 @@
             <summary>
             Opens a popup widget with the passed JSON representation and treats it as a form. <br/>
             No parameters, only the JSON representation of the widget should be sent. <br/>
-            Form JSON files must be loaded with <see cref="M:Edelweiss.Utils.FormLoader.LoadForm(System.String)"/> before being sent
+            Form JSON files must be loaded with <see cref="M:Edelweiss.Utils.FormLoader.LoadForm(System.String,Newtonsoft.Json.Linq.JObject)"/> before being sent
             </summary>
         </member>
         <member name="F:Edelweiss.Network.Netcode.SYNC_VARIABLE">
@@ -2707,11 +2935,21 @@
             A class that loads form JSON files into proper widget objects that can be loaded by Edelweiss
             </summary>
         </member>
-        <member name="M:Edelweiss.Utils.FormLoader.LoadForm(System.String)">
+        <member name="M:Edelweiss.Utils.FormLoader.LoadForm(System.String,Newtonsoft.Json.Linq.JObject)">
             <summary>
             Converts a JSON form file into a widget object that can be sent to the frontend
             </summary>
             <param name="key">The resource key of the JSON file</param>
+            <param name="defaults">The default values of the fields if any. If null, the defined values in the JSON file are used.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Utils.FormLoader.LoadForm(System.String,Newtonsoft.Json.Linq.JObject,Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="formData"></param>
+            <param name="defaults"></param>
             <returns></returns>
         </member>
         <member name="T:Edelweiss.Utils.Language">

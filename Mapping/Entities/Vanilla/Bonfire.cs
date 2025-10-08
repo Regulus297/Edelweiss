@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
@@ -42,6 +43,16 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return new Dictionary<string, object>()
             {
                 {"mode", "Lit"}
+            };
+        }
+
+        public override JObject FieldInformation(string fieldName)
+        {
+            return new JObject()
+            {
+                {"items", new JArray() {
+                    "Lit", "Smoking", "Unlit"
+                }}
             };
         }
     }

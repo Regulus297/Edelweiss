@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
 using Edelweiss.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
@@ -39,7 +40,19 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
             entity["type"] = PlacementNames().Cycle(entity["type"].ToString(), amount);
-            return true; 
+            return true;
+        }
+
+        public override JObject FieldInformation(string fieldName)
+        {
+            if (fieldName != "type")
+                return null;
+            return new JObject()
+            {
+                {"items", new JArray() {
+                    "red", "green", "yellow", "lightning"
+                }}
+            };
         }
     }
 }

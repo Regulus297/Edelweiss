@@ -26,13 +26,25 @@ namespace Edelweiss.Utils
         /// Converts a JSON form file into a widget object that can be sent to the frontend
         /// </summary>
         /// <param name="key">The resource key of the JSON file</param>
+        /// <param name="defaults">The default values of the fields if any. If null, the defined values in the JSON file are used.</param>
         /// <returns></returns>
-        public static JObject LoadForm(string key)
+        public static JObject LoadForm(string key, JObject defaults = null)
         {
             if (formCache.TryGetValue(key, out JObject cached))
                 return cached;
 
-            JObject formData = PluginLoader.RequestJObject(key);
+            return LoadForm(key, PluginLoader.RequestJObject(key), defaults);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="formData"></param>
+        /// <param name="defaults"></param>
+        /// <returns></returns>
+        public static JObject LoadForm(string key, JObject formData, JObject defaults = null)
+        {
             JObject formWidget = new();
 
             string plugin = key.Split(":")[0];
@@ -56,20 +68,36 @@ namespace Edelweiss.Utils
 
             foreach (var item in formData.Value<JObject>("fields"))
             {
-                fields.Add(new FieldData()
+                FieldData fieldData = new FieldData()
                 {
                     name = item.Key,
                     displayName = Language.GetTextOrDefault($"{plugin}.{formID}.Fields.{item.Key}") ?? item.Key.CamelCaseToText(),
                     type = GetFieldType(item.Value),
                     value = item.Value
-                });
+                };
+                fields.Add(fieldData);
 
                 if (fieldInformation != null)
                 {
                     if (fieldInformation.Value<JObject>(item.Key) != null)
                     {
-                        fields[^1].extraData = fieldInformation.Value<JObject>(item.Key);
-                        fields[^1].type = fields[^1].extraData.Value<string>("type") ?? fields[^1].type;
+                        fieldData.extraData = fieldInformation.Value<JObject>(item.Key);
+                        fieldData.type = fieldData.extraData.Value<string>("type") ?? fieldData.type;
+                    }
+                }
+                if (defaults != null)
+                {
+                    if (fieldData.type != "list")
+                    {
+                        fieldData.value = defaults?.Value<JToken>(fieldData.name) ?? fieldData.value;
+                    }
+                    else
+                    {
+                        if (fieldData.extraData == null)
+                        {
+                            fieldData.extraData = new JObject();
+                        }
+                        fieldData.extraData["default"] = defaults?.Value<JToken>(fieldData.name);
                     }
                 }
             }
@@ -132,7 +160,7 @@ namespace Edelweiss.Utils
         {
             return value.Type switch
             {
-                JTokenType.Array => "list",
+                JTokenType.Array or JTokenType.Object => "list",
                 JTokenType.Boolean => "bool",
                 JTokenType.Integer => "int",
                 JTokenType.Float => "float",
@@ -151,7 +179,7 @@ namespace Edelweiss.Utils
                 field.colspan = 2;
                 i++;
             }
-            totalRows = i / 2;
+            totalRows = (int)Math.Ceiling(i / 2f);
         }
 
         private static void AssignSpecificGridLayout(List<FieldData> fields, JToken layout, out int totalCols, out int totalRows)
@@ -207,7 +235,7 @@ namespace Edelweiss.Utils
 
         private static JObject GetWidget(FieldData data)
         {
-            JObject widget = new();
+            JObject widget;
             switch (data.type)
             {
                 case "list":

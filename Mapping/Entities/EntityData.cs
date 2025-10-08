@@ -369,6 +369,86 @@ namespace Edelweiss.Mapping.Entities
             Point node = entity.nodes[nodeIndex];
             return output.Translated(node.X, node.Y);
         }
+
+        /// <summary>
+        /// Gets the form template for the entity which can be sent to the frontend
+        /// </summary>
+        /// <param name="entity">The entity instance</param>
+        /// <param name="nodeIndex"></param>
+        /// <param name="others">A list of other entities that are also selected</param>
+        /// <returns></returns>
+        public virtual JObject GetFormTemplate(Entity entity, int nodeIndex, params Entity[] others)
+        {
+            JObject fields = new JObject();
+            if (others.Length == 0)
+            {
+                fields["x"] = nodeIndex < 0 ? entity.x : entity.GetNode(nodeIndex).X;
+                fields["y"] = nodeIndex < 0 ? entity.y : entity.GetNode(nodeIndex).Y;
+            }
+            JObject fieldInfo = new JObject();
+            JObject form = new JObject()
+            {
+                {"formID", $"EntityData : {entity._id}"},
+                {"fields", fields},
+                {"fieldInfo", fieldInfo}
+            };
+            JObject defaults = new JObject();
+            foreach (var pair in entity.data)
+            {
+                if (pair.Value == null)
+                {
+                    continue;
+                }
+                fields[pair.Key] = JToken.FromObject(pair.Value);
+                defaults[pair.Key] = JToken.FromObject(pair.Value);
+                JObject info = FieldInformation(pair.Key);
+                if (info != null)
+                {
+                    if (info.TryGetValue("items", out JToken items))
+                    {
+                        fields[pair.Key] = items;
+                        info.Remove("items");
+                    }
+                    fieldInfo[pair.Key] = info;
+                }
+            }
+            return FormLoader.LoadForm("Edelweiss:EntityMeta", form, defaults);
+        }
+
+        /// <summary>
+        /// Returns custom field information for the given field name
+        /// </summary>
+        public virtual JObject FieldInformation(string fieldName)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Processes a field's value before it is set to the entity data
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public virtual object ProcessField(string fieldName, JToken value)
+        {
+            JObject fieldInfo = FieldInformation(fieldName);
+            if (fieldInfo == null)
+                return value.ToObject<object>();
+
+            if (!fieldInfo.TryGetValue("fieldType", out JToken type))
+                return value.ToObject<object>();
+
+            object parsed = value.ToObject<object>();
+            if (parsed is not string s)
+                return parsed;
+            return type.ToObject<string>() switch
+            {
+                "integer" => int.Parse(s),
+                "number" => float.Parse(s),
+                "boolean" => bool.Parse(s),
+                _ => parsed,
+            };
+        }
     }
 
     /// <summary>

@@ -317,11 +317,10 @@ namespace Edelweiss.Mapping.Entities
                 DynValue drawMethod = entityTable.Get("nodeDraw");
                 if (drawMethod.IsNil())
                 {
-
                     // If no nodeSprite method or nodeTexture method is defined, use the draw method for the main entity
                     if (entityTable.Get("nodeSprite").IsNil() && entityTable.Get("nodeTexture").IsNil())
                     {
-                        var node = entity.GetNode(nodeIndex);
+                        var node = entity.nodes[nodeIndex];
                         using var dest = new SpriteDestination(null, -node.X, -node.Y);
                         Draw(shapes, room, entity);
                         return;

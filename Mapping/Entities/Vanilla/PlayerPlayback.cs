@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Edelweiss.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
@@ -41,6 +42,15 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return new Dictionary<string, object>()
             {
                 {"tutorial", ""}
+            };
+        }
+
+        public override JObject FieldInformation(string fieldName)
+        {
+            return new JObject()
+            {
+                {"items", JArray.FromObject(tutorials)},
+                {"editable", true}
             };
         }
     }

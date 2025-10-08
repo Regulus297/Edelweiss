@@ -26,6 +26,19 @@
                     "onclick": -4
                 }
             ]
+        },
+        {
+            "type": "menu",
+            "name": "@getText('Edelweiss.Mapping.MapMenu')",
+            "id": "mapMenu",
+            "items": [
+                {
+                    "type": "action",
+                    "name": "@getText('Edelweiss.Mapping.MapMeta')",
+                    "id": "mapMeta",
+                    "onclick": -4
+                }
+            ]
         }
     ]
 }

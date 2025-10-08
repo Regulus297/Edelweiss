@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Edelweiss.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Network
 {
@@ -67,7 +68,7 @@ namespace Edelweiss.Network
         /// <summary>
         /// Opens a popup widget with the passed JSON representation and treats it as a form. <br/>
         /// No parameters, only the JSON representation of the widget should be sent. <br/>
-        /// Form JSON files must be loaded with <see cref="FormLoader.LoadForm(string)"/> before being sent
+        /// Form JSON files must be loaded with <see cref="FormLoader.LoadForm(string, JObject)"/> before being sent
         /// </summary>
         public const long OPEN_POPUP_FORM = 0x7;
 

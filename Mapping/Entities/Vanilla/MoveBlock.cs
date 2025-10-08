@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
 using Edelweiss.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
@@ -165,6 +166,16 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
             return CycleBoolean(entity, "canSteer", amount);
+        }
+
+        public override JObject FieldInformation(string fieldName)
+        {
+            if (fieldName != "direction")
+                return null;
+            return new JObject()
+            {
+                {"items", JArray.FromObject(directions)}
+            };
         }
     }
 }

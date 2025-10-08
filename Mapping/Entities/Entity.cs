@@ -344,6 +344,7 @@ namespace Edelweiss.Mapping.Entities
                 {"onSelectionMoved", SelectionTool.SelectionMovedNetcode},
                 {"onSelectionChanged", SelectionTool.SelectionChangedNetcode},
                 {"onSelectionResized", SelectionTool.SelectionResizedNetcode},
+                {"onSelectionRightClicked", SelectionTool.RightClickedNetcode},
                 { "selectable", "@defer('@getVar(\\'Edelweiss:SelectionActive\\')')"}
             };
 
@@ -354,8 +355,8 @@ namespace Edelweiss.Mapping.Entities
                 List<bool> canResize = entityData.CanResize(entityRoom ?? RoomData.Default, this);
                 selection.Add(new JObject()
                 {
-                    {"x", rectangle.X},
-                    {"y", rectangle.Y},
+                    {"x", rectangle.X + entityRoom?.x ?? 0},
+                    {"y", rectangle.Y + entityRoom?.y ?? 0},
                     {"width", rectangle.Width},
                     {"height", rectangle.Height},
                     {"resizeX", canResize[0] && j == 0},
@@ -421,12 +422,7 @@ namespace Edelweiss.Mapping.Entities
                     });
                     }
                     i++;
-
-
-                    using (new SpriteDestination(null, 0, 0))
-                    {
-                        entityData.NodeDraw(shapes, entityRoom, this, i - 1);
-                    }
+                    entityData.NodeDraw(shapes, entityRoom, this, i - 1);
                 }
             }
 
@@ -556,8 +552,8 @@ namespace Edelweiss.Mapping.Entities
             writer.WriteLookupString(EntityName);
             Dictionary<string, object> fields = new Dictionary<string, object>()
             {
-                {"x", x - entityRoom.x},
-                {"y", y - entityRoom.y},
+                {"x", x},
+                {"y", y},
                 {"id", int.Parse(_id)}
             };
             foreach (var item in data)
@@ -582,8 +578,8 @@ namespace Edelweiss.Mapping.Entities
         {
             writer.WriteLookupString("node");
             writer.Write((byte)2); // Attr count
-            writer.WriteAttribute("x", node.X - entityRoom.x);
-            writer.WriteAttribute("y", node.Y - entityRoom.y);
+            writer.WriteAttribute("x", node.X);
+            writer.WriteAttribute("y", node.Y);
 
             writer.Write((short)0); // Child count
         }
@@ -614,5 +610,60 @@ namespace Edelweiss.Mapping.Entities
                 yield return GetNode(i);
             }
         }
+
+        /// <summary>
+        /// Updates the entity's data with the values from the given data
+        /// </summary>
+        public void UpdateData(JObject data, int nodeIndex, params Entity[] others)
+        {
+            foreach (Entity other in others)
+            {
+                object value;
+                foreach (var pair in data)
+                {
+                    if (pair.Key == "width" && width != (int)pair.Value)
+                    {
+                        other.Resize((int)pair.Value, other.height, 1);
+                    }
+                    else if (pair.Key == "height" && height != (int)pair.Value)
+                    {
+                        other.Resize(other.width, (int)pair.Value, 1);
+                    }
+                    else if (data[pair.Key] != (value = entityData.ProcessField(pair.Key, pair.Value)))
+                    {
+                        other[pair.Key] = value;
+                    }
+                }
+            }
+            foreach (var pair in data)
+            {
+                if (pair.Key == "x")
+                {
+                    if (nodeIndex >= 0)
+                        nodes[nodeIndex] = new Point((int)pair.Value - x, nodes[nodeIndex].Y);
+                    x = (int)pair.Value;
+                }
+                else if (pair.Key == "y")
+                {
+                    if (nodeIndex >= 0)
+                        nodes[nodeIndex] = new Point(nodes[nodeIndex].X, (int)pair.Value - y);
+                    y = (int)pair.Value;
+                }
+                else if (pair.Key == "width")
+                {
+                    Resize((int)pair.Value, height, 1);
+                }
+                else if (pair.Key == "height")
+                {
+                    Resize(width, (int)pair.Value, 1);
+                }
+                else
+                {
+                    this.data[pair.Key] = entityData.ProcessField(pair.Key, pair.Value);
+                }
+            }
+        }
+
+
     }
 }

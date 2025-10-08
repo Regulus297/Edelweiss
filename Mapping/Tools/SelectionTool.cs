@@ -16,6 +16,7 @@ namespace Edelweiss.Mapping.Tools
         internal static long SelectionMovedNetcode { get; private set; }
         internal static long SelectionChangedNetcode { get; private set; }
         internal static long SelectionResizedNetcode { get; private set; }
+        internal static long RightClickedNetcode { get; private set; }
 
         internal static List<(Entity, int)> selected = [];
 
@@ -28,6 +29,7 @@ namespace Edelweiss.Mapping.Tools
             SelectionMovedNetcode = Plugin.CreateNetcode("SelectionMoved", false);
             SelectionChangedNetcode = Plugin.CreateNetcode("SelectionChanged", false);
             SelectionResizedNetcode = Plugin.CreateNetcode("SelectionResized", false);
+            RightClickedNetcode = Plugin.CreateNetcode("RightClickedNetcode", false);
 
             PluginKeybind.AddListener<CycleKeybind>(() => DoForAllSelected((e, _) => e.Cycle(1)));
             PluginKeybind.AddListener<RotateKeybind>(() => DoForAllSelected((e, _) => e.Rotate(1)));
@@ -79,7 +81,7 @@ namespace Edelweiss.Mapping.Tools
             });
         }
 
-        private void DoForAllSelected(Action<Entity, int> action, bool redraw = true)
+        internal void DoForAllSelected(Action<Entity, int> action, bool redraw = true)
         {
             if (MappingTab.selectedTool != this)
                 return;
@@ -107,10 +109,10 @@ namespace Edelweiss.Mapping.Tools
                             {"type", "rectangle"},
                             {"color", "#6d9eed"},
                             {"fill", "#446d9eed"},
-                            { "thickness", 0.5f},
+                            {"thickness", 0.5f},
                             {"x", 0},
                             {"y", 0},
-                            { "width", 0},
+                            {"width", 0},
                             {"height", 0},
                             {"depth", int.MinValue}
                         }

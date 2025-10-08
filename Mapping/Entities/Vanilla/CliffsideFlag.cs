@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
@@ -34,6 +35,19 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return new Dictionary<string, object>()
             {
                 {"index", 0}
+            };
+        }
+
+        public override JObject FieldInformation(string fieldName)
+        {
+            if (fieldName != "index")
+                return null;
+            return new JObject()
+            {
+                {"fieldType", "integer"},
+                {"items", new JArray() {
+                    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+                }}
             };
         }
     }

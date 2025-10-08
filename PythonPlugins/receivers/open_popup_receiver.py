@@ -30,10 +30,30 @@ class OpenPopupReceiver(PacketReceiver):
                 for validator, w in validators.items():
                     if not validator.valid(w):
                         return
-                    
+
+                extraData = get_extra_data_safe(data)
+                for child in widget.children():
+                    if not(hasattr(child, "__json_data__") and child.objectName() != ""):
+                        continue
+                    child_data = getattr(child, "__json_data__")
+                    child_tracker = f"form_{name}/{child.objectName()}"
+                    if isinstance(child, QLineEdit):
+                        lineEditType = "str" if "dataType" not in child_data.keys() else child_data["dataType"]
+                        extraData[child.objectName()] = get_extra_data_safe({
+                            "extraData": {
+                                "text": {
+                                    "type": lineEditType,
+                                    "value": child.text()
+                                }
+                            }
+                        })["text"]
+                    elif isinstance(child, QComboBox):
+                        extraData[child.objectName()] = OpenPopupReceiver.get_combobox_data(child)
+                    elif isinstance(child, QCheckBox):
+                        extraData[child.objectName()] = child.isChecked()
                 PyNetworkManager.send_packet(data["onsubmit"], json.dumps({
                     "id": name,
-                    "extraData": get_extra_data_safe(data)
+                    "extraData": extraData
                 }))
                 widget.close()
                 
@@ -58,20 +78,6 @@ class OpenPopupReceiver(PacketReceiver):
                         lineEditType = "str" if "dataType" not in child_data.keys() else child_data["dataType"]     
                         if hasattr(child, "__custom_validator__"):
                             validators[getattr(child, "__custom_validator__")] = child
-                        data["extraData"][child.objectName()] = {
-                            "type": lineEditType,
-                            "value": JSONPreprocessor.preprocess(f"@defer('@widget_property(\\'{child_tracker}\\', \\'text()\\')')")
-                        }
-                    elif isinstance(child, QComboBox):
-                        data["extraData"][child.objectName()] = {
-                            "type": "str",
-                            "value": JSONPreprocessor.preprocess(f"@defer('@widget_property(\\'{child_tracker}\\', \\'currentText()\\')')")
-                        }
-                    elif isinstance(child, QCheckBox):
-                        data["extraData"][child.objectName()] = {
-                            "type": "bool",
-                            "value": JSONPreprocessor.preprocess(f"@defer('@widget_property(\\'{child_tracker}\\', \\'isChecked()\\')')")
-                        }
 
 
 
@@ -83,3 +89,18 @@ class OpenPopupReceiver(PacketReceiver):
         widget.setStyleSheet(MappingWindow.stylesheet)
 
         widget.show()
+
+    @staticmethod
+    def get_combobox_data(combobox):
+        text = combobox.currentText()
+        if combobox.isEditable():
+            custom = True
+            for i in range(combobox.count()):
+                if text == combobox.itemText(i):
+                    custom = False
+                    break
+            if custom:
+                return text
+        if combobox.currentData() is not None:
+            return combobox.currentData()
+        return text

@@ -1,6 +1,7 @@
 using System;
 using Edelweiss.Mapping.Drawables;
 using Edelweiss.Mapping.Entities;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
 

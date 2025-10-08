@@ -90,8 +90,8 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                     Sprite sprite = new(choice, entity);
                     sprite.justificationX = 0;
                     sprite.justificationY = 0;
-                    sprite.x += x * 8 - 8;
-                    sprite.y += y * 8 - 8;
+                    sprite.x += x * 8;
+                    sprite.y += y * 8;
                     sprites.Add(sprite);
 
                     MarkComplete(filled, x, y, data.width / 8, data.height / 8);

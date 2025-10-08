@@ -102,6 +102,9 @@ namespace Edelweiss.Mapping
                         MainPlugin.Instance.Logger.Error($"Error saving map: {e}");
                     }
                     break;
+                case "mapMenu/mapMeta":
+                    NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, FormLoader.LoadForm("Edelweiss:Forms/map_meta", map.meta.ToJObject()).ToString());
+                    break;
             }
         }
     }

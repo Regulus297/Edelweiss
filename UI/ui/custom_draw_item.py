@@ -97,17 +97,29 @@ class CustomDrawItem(QGraphicsItem):
                 "extraData": extraData4
             }, cls=DefaultEncoder))
 
+        self.onSelectionRightClicked = lambda selected, index, x, y: None
+        if "onSelectionChanged" in data:
+            netcode5, extraData5 = get_event_data(data["onSelectionRightClicked"])
+            self.onSelectionRightClicked = lambda selected, index, x, y: PyNetworkManager.send_packet(netcode5, json.dumps({
+                "name": self.name,
+                "selected": selected,
+                "index": index,
+                "x": x,
+                "y": y,
+                "extraData": extraData5
+            }, cls=DefaultEncoder))
+
         self.onSelectionResized = lambda x1, y1, x2, y2, i: None
         if "onSelectionResized" in data:
-            netcode5, extraData5 = get_event_data(data["onSelectionResized"])
-            self.onSelectionResized = lambda x1, y1, x2, y2, i: PyNetworkManager.send_packet(netcode5, json.dumps({
+            netcode6, extraData6 = get_event_data(data["onSelectionResized"])
+            self.onSelectionResized = lambda x1, y1, x2, y2, i: PyNetworkManager.send_packet(netcode6, json.dumps({
                 "name": self.name,
                 "deltaWidth": x2,
                 "deltaHeight": y2,
                 "oldWidth": x1,
                 "oldHeight": y1,
                 "index": i,
-                "extraData": extraData5
+                "extraData": extraData6
             }, cls=DefaultEncoder))
 
         if "selection" in data:
@@ -129,6 +141,7 @@ class CustomDrawItem(QGraphicsItem):
         self.items = {}
         self.shapesBySelection = {}
         self.setFlag(QGraphicsItem.ItemSendsGeometryChanges, True)
+        self.clickButton = 0
         for shape in self.shapes:
             self.addShapeDelayed(shape)
 
@@ -248,12 +261,14 @@ class CustomDrawItem(QGraphicsItem):
         if "focusable" not in self.data or not self.data["focusable"]:
             return
         event.accept()
+        self.clickButton = event.button()
         self.onMousePressed(event.pos().x(), event.pos().y(), event.button())
 
     def mouseMoveEvent(self, event):
         super().mouseMoveEvent(event)
-        self.onMouseMoved(event.pos().x(), event.pos().y(), event.button())
+        self.onMouseMoved(event.pos().x(), event.pos().y(), self.clickButton)
 
     def mouseReleaseEvent(self, event):
         super().mouseReleaseEvent(event)
+        self.clickButton = 0
         self.onMouseReleased(event.pos().x(), event.pos().y(), event.button())

@@ -67,6 +67,10 @@ class SelectionRect(ShapeItem):
         if not bool(self.selectable):
             event.ignore()
             return
+        if event.button() == Qt.RightButton:
+            event.ignore()
+            self.parent.onSelectionRightClicked(self.isSelected(), self.id, event.pos().x(), event.pos().y())
+            return
         if event.modifiers() & Qt.ShiftModifier:
             if self.doubleClicking:
                 self.setSelected(True)

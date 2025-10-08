@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
@@ -45,6 +46,22 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             if (horizontal)
                 entity["faceLeft"] = !(bool)entity["faceLeft"];
             return horizontal;
+        }
+
+        public override JObject FieldInformation(string fieldName)
+        {
+            return new JObject()
+            {
+                {"items", new JArray() {
+                    "TUTORIAL_CLIMB",
+                    "TUTORIAL_HOLD",
+                    "TUTORIAL_DASH",
+                    "TUTORIAL_DREAMJUMP",
+                    "TUTORIAL_CARRY",
+                    "hyperjump/tutorial00",
+                    "hyperjump/tutorial01"
+                }}
+            };
         }
     }
 }

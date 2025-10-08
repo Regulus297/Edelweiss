@@ -20,7 +20,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return new Dictionary<string, object>()
             {
                 {"width", 40},
-                {"requires", 5},
+                {"requires", 0},
                 {"startHidden", false}
             };
         }

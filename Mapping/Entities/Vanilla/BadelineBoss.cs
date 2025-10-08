@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
@@ -24,6 +25,20 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                 {"cameraPastY", 120.0},
                 {"cameraLockY", true},
                 {"canChangeMusic", true}
+            };
+        }
+
+        public override JObject FieldInformation(string fieldName)
+        {
+            if (fieldName != "patternIndex")
+                return null;
+
+            return new JObject()
+            {
+                {"fieldType", "integer"},
+                {"items", new JArray() {
+                    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15
+                }}
             };
         }
     }

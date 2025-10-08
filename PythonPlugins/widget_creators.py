@@ -210,7 +210,27 @@ class QComboBoxWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None) -> QWidget:
         combobox = QComboBox(parent)
-        combobox.addItems(data["items"])
+        keyed = False
+        if isinstance(data["items"], dict):
+            keyed = True
+            for key, value in data["items"].items():
+                combobox.addItem(str(key), value)
+        else:    
+            combobox.addItems([str(i) for i in data["items"]])
+        combobox.setEditable("editable" in data and data["editable"])
+        if "default" in data:
+            if not keyed:
+                combobox.setCurrentText(str(data["default"]))
+                return combobox
+            
+            found = False
+            for i in range(combobox.count()):
+                if combobox.itemData(i) == data["default"]:
+                    combobox.setCurrentIndex(i)
+                    found = True
+                    break
+            if not found:
+                combobox.setCurrentText(str(data["default"]))
         return combobox
     
 

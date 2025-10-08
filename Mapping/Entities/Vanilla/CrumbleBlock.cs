@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Drawing;
 using Edelweiss.Mapping.Drawables;
 using Edelweiss.Mapping.Tools;
 using Edelweiss.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
@@ -32,6 +34,23 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         {
             entity["texture"] = PlacementNames().Cycle(entity["texture"].ToString(), amount);
             return true;
+        }
+
+        public override List<Rectangle> Selection(RoomData room, Entity entity)
+        {
+            return [new Rectangle(entity.x, entity.y, entity.width, 8)];
+        }
+
+        public override JObject FieldInformation(string fieldName)
+        {
+            if (fieldName != "texture")
+                return null;
+            return new JObject()
+            {
+                {"items", new JArray() {
+                    "default", "cliffside"
+                }}
+            };
         }
     }
 }
