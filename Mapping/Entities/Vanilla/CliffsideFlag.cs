@@ -17,13 +17,13 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override List<float> Justification(RoomData room, Entity entity) => [0f, 0f];
         public override string Texture(RoomData room, Entity entity)
         {
-            int index = (int)entity["index"];
+            int index = entity.Get<int>("index");
             return $"scenery/cliffside/flag{index:00}";
         }
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            int index = (int)entity["index"];
+            int index = entity.Get<int>("index");
             index += amount;
             index %= 11;
             entity["index"] = index;

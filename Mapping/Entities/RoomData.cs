@@ -15,7 +15,7 @@ namespace Edelweiss.Mapping.Entities
     /// </summary>
     public class RoomData(JObject data) : ILuaConvertible, IMapSaveable
     {
-        private static string DefaultJSON = """
+        internal static string DefaultJSON = """
         {
             "name": "a-01",
             "x": 0,
@@ -290,6 +290,63 @@ namespace Edelweiss.Mapping.Entities
         private string FormatTileData(string tileData)
         {
             return string.Join('\n', Enumerable.Range(0, tileData.Length / (width / 8)).Select(i => tileData.Substring(i * width / 8, width / 8))).Replace(' ', '0').TrimEnd('0', '\n');
+        }
+
+        /// <inheritdoc/>
+        public void Decode(MapElement element)
+        {
+            foreach (FieldInfo field in typeof(RoomData).GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+            {
+                if (field.Name == nameof(map) || field.Name == nameof(entities) || field.Name == nameof(fgTileData) || field.Name == nameof(bgTileData))
+                {
+                    continue;
+                }
+                string name = field.Name == "color" ? "c" : field.Name;
+                bool progress = field.Name == "musicProgress" || field.Name == "ambienceProgress";
+                element.AttrIf<object>(name, v => field.SetValue(this, progress ? (string.IsNullOrEmpty(v.ToString()) ? 0f : float.Parse(v.ToString())) : (name == "c" ? v.ToString() : v)));
+            }
+
+            foreach (MapElement child in element)
+            {
+                if (child.Name == "entities")
+                {
+                    foreach (MapElement entityElement in child)
+                    {
+                        Entity entity = new Entity("", "");
+                        entity.Decode(entityElement);
+                        entity.entityRoom = this;
+                        entities.Add(entity);
+                        map.allEntities[entity._id] = entity;
+                    }
+                }
+                else if (child.Name == "solids")
+                {
+                    child.AttrIf<string>("innerText", v => fgTileData = DecodeTileData(v));
+                }
+                else if (child.Name == "bg")
+                {
+                    child.AttrIf<string>("innerText", v => bgTileData = DecodeTileData(v));
+                }
+            }
+        }
+
+        private string DecodeTileData(string tileData)
+        {
+            return string.Join(string.Empty, tileData.Replace('0', ' ').Split('\n').Select(t => t.PadRight(width / 8)));
+        }
+
+        internal static string GetColor(string choice)
+        {
+            return choice switch
+            {
+                "1" => "#ed6a1f",
+                "2" => "#88e33d",
+                "3" => "#3be3dd",
+                "4" => "#227ac7",
+                "5" => "#a723b0",
+                "6" => "#d61aa1",
+                _ => "#ffffff"
+            };
         }
     }
 }

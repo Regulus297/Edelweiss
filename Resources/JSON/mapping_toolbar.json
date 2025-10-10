@@ -13,6 +13,13 @@
             "items": [
                 {
                     "type": "action",
+                    "name": "@getText('Edelweiss.Mapping.OpenMap')",
+                    "id": "openMap",
+                    "shortcut": "Ctrl+O",
+                    "onclick": -4
+                },
+                {
+                    "type": "action",
                     "name": "@getText('Edelweiss.Mapping.SaveMap')",
                     "id": "saveMap",
                     "shortcut": "Ctrl+S",

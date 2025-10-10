@@ -98,6 +98,13 @@ namespace Edelweiss.Network
         /// </summary>
         public const long OPEN_FILE_DIALOG = 0xa;
 
+        /// <summary>
+        /// Deletes all items in the ZoomableView with the given tracker. <br/>
+        /// Parameters: <br/>
+        /// - widget: the tracker for the ZoomableView
+        /// </summary>
+        public const long CLEAR_VIEW = 0xb;
+
 
         // Received packets
 

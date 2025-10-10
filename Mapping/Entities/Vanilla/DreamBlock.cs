@@ -19,7 +19,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override int Depth(RoomData room, Entity entity)
         {
-            return (bool)entity["below"] ? 5000 : -11000;
+            return entity.Get<bool>("below") ? 5000 : -11000;
         }
 
         public override bool Cycle(RoomData room, Entity entity, int amount)

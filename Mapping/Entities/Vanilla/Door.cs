@@ -17,7 +17,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override string Texture(RoomData room, Entity entity)
         {
-            return entity["type"].ToString() == "wood" ? "objects/door/door00" : "objects/door/metaldoor00";
+            return entity.Get("type", "wood") == "wood" ? "objects/door/door00" : "objects/door/metaldoor00";
         }
 
         public override Dictionary<string, object> GetPlacementData()
@@ -30,7 +30,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            entity["type"] = PlacementNames().Cycle(entity["type"].ToString(), amount);
+            entity["type"] = PlacementNames().Cycle(entity.Get("type", "wood"), amount);
             return true;
         }
 

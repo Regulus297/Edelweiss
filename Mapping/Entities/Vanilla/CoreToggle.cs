@@ -13,10 +13,10 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override string Texture(RoomData room, Entity entity)
         {
-            if ((bool)entity["onlyIce"])
+            if (entity.Get<bool>("onlyIce"))
                 return "objects/coreFlipSwitch/switch13";
 
-            if ((bool)entity["onlyFire"])
+            if (entity.Get<bool>("onlyFire"))
                 return "objects/coreFlipSwitch/switch15";
 
             return "objects/coreFlipSwitch/switch01";
@@ -34,12 +34,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            if ((bool)entity["onlyIce"])
+            if (entity.Get<bool>("onlyIce"))
             {
                 entity["onlyIce"] = false;
                 entity["onlyFire"] = true;
             }
-            else if ((bool)entity["onlyFire"])
+            else if (entity.Get<bool>("onlyFire"))
             {
                 entity["onlyIce"] = false;
                 entity["onlyFire"] = false;

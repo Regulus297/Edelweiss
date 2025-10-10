@@ -27,7 +27,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override string Texture(RoomData room, Entity entity)
         {
-            bool ice = (bool)entity["notCoreMode"];
+            bool ice = entity.Get<bool>("entityCoreMode");
             return ice ? "objects/fireball/fireball09" : "objects/fireball/fireball01";
         }
 

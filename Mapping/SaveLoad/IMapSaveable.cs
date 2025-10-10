@@ -16,5 +16,11 @@ namespace Edelweiss.Mapping.SaveLoad
         /// Saves the object to the writer
         /// </summary>
         public void Encode(BinaryWriter writer);
+
+        /// <summary>
+        /// Decodes the object from the given element
+        /// </summary>
+        /// <param name="element"></param>
+        public void Decode(MapElement element);
     }
 }

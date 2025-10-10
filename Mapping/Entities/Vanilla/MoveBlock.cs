@@ -47,11 +47,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            string direction = entity["direction"].ToString().ToLower();
+            string direction = entity.Get("direction", "Up").ToLower();
 
             string blockTexture = "objects/moveBlock/base";
-            bool steer = (bool)entity["canSteer"];
-            bool fast = (bool)entity["fast"];
+            bool steer = entity.Get<bool>("canSteer");
+            bool fast = entity.Get<bool>("fast");
 
             if (steer)
             {
@@ -62,10 +62,19 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                 };
             }
 
-            NinePatch block = new NinePatch(blockTexture, entity.x, entity.y, entity.width, entity.height, "border", "repeat");
+            NinePatch block = new NinePatch(blockTexture, entity.x, entity.y, entity.width, entity.height, "border", "repeat")
+            {
+                depth = entity.depth
+            };
 
-            Rect highlight = new Rect(entity.x + 2, entity.y + 2, entity.width - 4, entity.height - 4, EdelweissUtils.GetColor(59, 50, 101));
-            Rect mid = new Rect(entity.x + 8, entity.y + 8, entity.width - 16, entity.height - 16, EdelweissUtils.GetColor(4, 3, 23));
+            Rect highlight = new Rect(entity.x + 2, entity.y + 2, entity.width - 4, entity.height - 4, EdelweissUtils.GetColor(59, 50, 101))
+            {
+                depth = entity.depth
+            };
+            Rect mid = new Rect(entity.x + 8, entity.y + 8, entity.width - 16, entity.height - 16, EdelweissUtils.GetColor(4, 3, 23))
+            {
+                depth = entity.depth
+            };
 
             int arrowIndex = direction switch
             {
@@ -80,7 +89,10 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
             int arrowX = entity.x + (entity.width - arrow.data.width) / 2;
             int arrowY = entity.y + (entity.height - arrow.data.height) / 2;
-            Rect arrowRect = new Rect(arrowX, arrowY, arrow.data.width, arrow.data.height, fast ? "#bf0a1f" : highlight.color);
+            Rect arrowRect = new Rect(arrowX, arrowY, arrow.data.width, arrow.data.height, fast ? "#bf0a1f" : highlight.color)
+            {
+                depth = entity.depth
+            };
             List<Drawable> sprites = [highlight, mid];
 
 
@@ -159,7 +171,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override bool Rotate(RoomData room, Entity entity, int rotation)
         {
-            entity["direction"] = directions.Cycle(entity["direction"].ToString(), rotation);
+            entity["direction"] = directions.Cycle(entity.Get("direction", "Up"), rotation);
             return true;
         }
 

@@ -11,7 +11,7 @@ class BaseGraphicsScene(QGraphicsScene):
         super().__init__(parent)
 
         self._color_background = QColor("#222222")
-        self._scene_width, self._scene_height = 64000, 64000
+        self._scene_width, self._scene_height = 640000, 640000
         self.setScene(self._scene_width, self._scene_height)
 
         self.setBackgroundBrush(self._color_background)

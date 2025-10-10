@@ -14,14 +14,14 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         private string GetTexture(Entity entity)
         {
-            bool fragile = (bool)entity["fragile"];
+            bool fragile = entity.Get<bool>("fragile");
             return fragile ? "objects/clouds/fragile00" : "objects/clouds/cloud00";
         }
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
             Sprite sprite = new(GetTexture(entity), entity);
-            bool small = (bool)entity["small"];
+            bool small = entity.Get<bool>("small");
             float scale = small ? 29f / 35 : 1.0f;
             sprite.scaleX = scale;
             return [sprite];

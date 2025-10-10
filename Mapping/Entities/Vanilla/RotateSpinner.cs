@@ -48,11 +48,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         {
             List<Drawable> sprites = [];
 
-            if ((bool)entity["star"])
+            if (entity.Get<bool>("star"))
             {
                 sprites.Add(new Sprite("danger/starfish13", entity));
             }
-            else if ((bool)entity["dust"])
+            else if (entity.Get<bool>("dust"))
             {
                 Sprite dustBase = new Sprite("danger/dustcreature/base00", entity);
                 Sprite dustOutline = new Sprite("@Internal@/dust_creature_outlines/base00", entity)
@@ -73,8 +73,8 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            bool dust = (bool)entity["dust"];
-            bool star = (bool)entity["star"];
+            bool dust = entity.Get<bool>("dust");
+            bool star = entity.Get<bool>("star");
 
             if (dust && !star)
             {

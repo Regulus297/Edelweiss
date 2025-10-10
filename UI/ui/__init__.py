@@ -5,9 +5,10 @@ from .json_widget_loader import JSONWidgetLoader, WidgetCreator, LayoutCreator, 
 from .scene_widget import SceneWidget
 from .shape_renderer import ShapeRenderer
 from .pixmap_loader import PixmapLoader
+from .selection_rect import SelectionRect
 
 
 __all__ = [
     "MappingWindow", "CustomDrawItem", "JSONWidgetLoader", "JSONToolbarLoader", "SceneWidget", "ShapeRenderer",
-    "WidgetCreator", "LayoutCreator", "CommonPropertySetter", "PixmapLoader"
+    "WidgetCreator", "LayoutCreator", "CommonPropertySetter", "PixmapLoader", "SelectionRect"
 ]

@@ -19,7 +19,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            string variant = (string)entity["type"];
+            string variant = entity.Get("type", "red");
             Rect rectangle = new(entity.x, entity.y, entity.width, entity.height, FillColor(room, entity), BorderColor(room, entity));
             Sprite sprite = new Sprite($"objects/resortclutter/icon_{variant}", entity);
             sprite.x += entity.width / 2;
@@ -39,7 +39,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            entity["type"] = PlacementNames().Cycle(entity["type"].ToString(), amount);
+            entity["type"] = PlacementNames().Cycle(entity.Get("type", "red"), amount);
             return true;
         }
 

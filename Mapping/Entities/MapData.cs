@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Edelweiss.Mapping.SaveLoad;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities
 {
@@ -34,6 +36,28 @@ namespace Edelweiss.Mapping.Entities
                 room.AddToLookup(lookup);
             }
             meta.AddToLookup(lookup);
+        }
+
+        /// <inheritdoc/>
+        public void Decode(MapElement element)
+        {
+            foreach (MapElement child in element)
+            {
+                if (child.Name == "levels")
+                {
+                    foreach (MapElement room in child)
+                    {
+                        RoomData roomData = new RoomData(JObject.Parse(RoomData.DefaultJSON));
+                        roomData.map = this;
+                        roomData.Decode(room);
+                        rooms.Add(roomData);
+                    }
+                }
+                else if (child.Name == "meta")
+                {
+                    meta.Decode(child);
+                }
+            }
         }
 
         /// <inheritdoc/>

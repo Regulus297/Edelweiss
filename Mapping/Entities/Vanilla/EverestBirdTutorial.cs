@@ -38,18 +38,20 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<float> Scale(RoomData room, Entity entity)
         {
-            return [(bool)entity["faceLeft"] ? -1 : 1, 1];
+            return [entity.Get<bool>("faceLeft") ? -1 : 1, 1];
         }
 
         public override bool Flip(RoomData room, Entity entity, bool horizontal, bool vertical)
         {
             if (horizontal)
-                entity["faceLeft"] = !(bool)entity["faceLeft"];
+                entity["faceLeft"] = !entity.Get<bool>("faceLeft");
             return horizontal;
         }
 
         public override JObject FieldInformation(string fieldName)
         {
+            if (fieldName != "info")
+                return null;
             return new JObject()
             {
                 {"items", new JArray() {

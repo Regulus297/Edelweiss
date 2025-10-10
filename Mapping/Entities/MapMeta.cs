@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Edelweiss.Mapping.SaveLoad;
 using Newtonsoft.Json.Linq;
@@ -215,7 +216,7 @@ namespace Edelweiss.Mapping.Entities
             if (!string.IsNullOrEmpty(path))
                 writer.WriteAttribute("Path", path);
             if (!string.IsNullOrEmpty(poemID))
-                writer.WriteAttribute("TheoInBubble", theoInBubble);
+                writer.WriteAttribute("PoemID", poemID);
 
             writer.Write((short)0);
         }
@@ -241,6 +242,31 @@ namespace Edelweiss.Mapping.Entities
                 {nameof(darknessAlpha), darknessAlpha},
                 {nameof(introType), introType.ToString()}
             };
+        }
+
+        /// <inheritdoc/>
+        public void Decode(MapElement element)
+        {
+            element.SetIfAttr("Dreaming", ref dreaming);
+            element.SetIfAttr("Interlude", ref interlude);
+            element.SetIfAttr("OverrideASideMeta", ref overrideASideMeta);
+            element.SetIfAttr("Wipe", ref wipe);
+            element.SetIfAttr("ColorGrade", ref colourGrade);
+            element.SetIfAttr("BloomBase", ref bloomBase);
+            element.SetIfAttr("BloomStrength", ref bloomStrength);
+            element.SetIfAttr("DarknessAlpha", ref darknessAlpha);
+            element.AttrIf<string>("IntroType", v => introType = (IntroType)Enum.Parse(typeof(IntroType), v));
+
+            foreach (MapElement child in element)
+            {
+                if (child.Name == "mode")
+                {
+                    child.AttrIf<string>("Inventory", v => inventory = (Inventory)Enum.Parse(typeof(Inventory), v));
+                    child.SetIfAttr("HeartIsEnd", ref heartIsEnd);
+                    child.SetIfAttr("SeekerSlowdown", ref seekerSlowdown);
+                    child.SetIfAttr("TheoInBubble", ref theoInBubble);
+                }
+            }
         }
     }
 }

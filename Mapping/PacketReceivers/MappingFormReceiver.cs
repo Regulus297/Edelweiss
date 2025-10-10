@@ -69,7 +69,7 @@ namespace Edelweiss.Mapping.PacketReceivers
             room["y"] = y * 8;
             room["width"] = width * 8;
             room["height"] = height * 8;
-            room["shapes"][2]["color"] = GetColor(color);
+            room["shapes"][2]["color"] = RoomData.GetColor(color);
             room["shapes"][0]["tileData"] = string.Concat(Enumerable.Repeat(" ", width * height));
             room["shapes"][0]["width"] = width;
             room["shapes"][0]["height"] = height;
@@ -91,20 +91,6 @@ namespace Edelweiss.Mapping.PacketReceivers
                 {"widget", "Mapping/MainView"},
                 {"item", room}
             });
-        }
-
-        private string GetColor(string choice)
-        {
-            return choice switch
-            {
-                "1" => "#ed6a1f",
-                "2" => "#88e33d",
-                "3" => "#3be3dd",
-                "4" => "#227ac7",
-                "5" => "#a723b0",
-                "6" => "#d61aa1",
-                _ => "#ffffff"
-            };
         }
     }
 }

@@ -69,7 +69,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                 sprites.Add(edgeRight);
             }
 
-            int requires = (int)entity["requires"];
+            int requires = entity.Get<int>("requires");
             if (requires > 0)
             {
                 int fits = HeartsPossible(5, 10, entity.width, requires);

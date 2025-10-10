@@ -37,10 +37,10 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<float> Justification(RoomData room, Entity entity) => [0.5f, 1.0f];
         public override int Depth(RoomData room, Entity entity) => 100;
-        public override string Texture(RoomData room, Entity entity) => $"characters/{entity["sprite"]}00";
+        public override string Texture(RoomData room, Entity entity) => $"characters/{entity.Get<string>("sprite")}00";
         public override List<float> Scale(RoomData room, Entity entity)
         {
-            return [(bool)entity["flipX"] ? -1 : 1, (bool)entity["flipY"] ? -1 : 1];
+            return [entity.Get<bool>("flipX") ? -1 : 1, entity.Get<bool>("flipY") ? -1 : 1];
         }
 
         public override bool Flip(RoomData room, Entity entity, bool horizontal, bool vertical)

@@ -49,6 +49,8 @@ namespace Edelweiss.Mapping.Entities
             }
             set
             {
+                if (!CelesteModLoader.defaultPlacements.ContainsKey(value))
+                    return;
                 _name = CelesteModLoader.defaultPlacements[value];
                 entityData = CelesteModLoader.entities[_name];
             }
@@ -333,6 +335,8 @@ namespace Edelweiss.Mapping.Entities
         /// <param name="updatePosition"></param>
         public void Draw(string entityObject = null, int entityIndex = 0, bool updatePosition = false)
         {
+            if (entityData == null)
+                return;
             JObject item = new()
             {
                 {"name", _id},
@@ -340,7 +344,6 @@ namespace Edelweiss.Mapping.Entities
                 {"y", y},
                 {"width", width},
                 {"height", height},
-                {"rotation", entityData.Rotation(entityRoom ?? RoomData.Default, this)},
                 {"onSelectionMoved", SelectionTool.SelectionMovedNetcode},
                 {"onSelectionChanged", SelectionTool.SelectionChangedNetcode},
                 {"onSelectionResized", SelectionTool.SelectionResizedNetcode},
@@ -380,16 +383,18 @@ namespace Edelweiss.Mapping.Entities
             {
                 int i = 0;
                 NodeLineRenderType nodeLineRenderType = entityData.NodeLineRenderType(this);
+                int offsetX = width / 2;
+                int offsetY = height / 2;
                 foreach (Point point in nodes)
                 {
                     if (nodeLineRenderType == NodeLineRenderType.Fan)
                     {
                         shapes.Add(new JObject() {
                         {"type", "line"},
-                        {"x1", 0},
-                        {"y1", 0},
-                        {"x2", point.X},
-                        {"y2", point.Y},
+                        {"x1", offsetX},
+                        {"y1", offsetY},
+                        {"x2", point.X + offsetX},
+                        {"y2", point.Y + offsetY},
                         {"color", "#ffffff"},
                         {"thickness", LoveModule.PEN_THICKNESS},
                         {"depth", depth + 1}
@@ -400,10 +405,10 @@ namespace Edelweiss.Mapping.Entities
                         Point previous = i == 0 ? Point.Empty : nodes[i - 1];
                         shapes.Add(new JObject() {
                         {"type", "line"},
-                        {"x1", previous.X},
-                        {"y1", previous.Y},
-                        {"x2", point.X},
-                        {"y2", point.Y},
+                        {"x1", previous.X + offsetX},
+                        {"y1", previous.Y + offsetY},
+                        {"x2", point.X + offsetX},
+                        {"y2", point.Y + offsetY},
                         {"color", "#ffffff"},
                         {"thickness", LoveModule.PEN_THICKNESS},
                         {"depth", depth + 1}
@@ -414,8 +419,8 @@ namespace Edelweiss.Mapping.Entities
                         shapes.Add(new JObject() {
                         {"type", "circle"},
                         {"radius", point.Distance(new Point(0, 0))},
-                        {"x", point.X},
-                        {"y", point.Y},
+                        {"x", point.X + offsetX},
+                        {"y", point.Y + offsetY},
                         {"color", "#ffffff"},
                         {"thickness", LoveModule.PEN_THICKNESS},
                         {"depth", depth + 1}
@@ -447,8 +452,7 @@ namespace Edelweiss.Mapping.Entities
                         "data",
                         new JObject()
                         {
-                            { "shapes", shapes },
-                            { "rotation", entityData.Rotation(entityRoom ?? RoomData.Default, this) }
+                            { "shapes", shapes }
                         }
                     }
                 });
@@ -564,6 +568,7 @@ namespace Edelweiss.Mapping.Entities
             writer.Write((byte)fields.Count); // Attr count
             foreach (var field in fields)
             {
+                Console.WriteLine((field.Key, field.Value, field.Value.GetType()));
                 writer.WriteAttribute(field.Key, field.Value);
             }
 
@@ -664,6 +669,46 @@ namespace Edelweiss.Mapping.Entities
             }
         }
 
+        /// <summary>
+        /// Gets the entity data with the given name
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="name"></param>
+        /// <param name="defaultValue"></param>
+        /// <returns></returns>
+        public T Get<T>(string name, T defaultValue = default)
+        {
+            return (data.GetValueOrDefault(name) is T t) ? t : defaultValue;
+        }
 
+        /// <inheritdoc/>
+        public void Decode(MapElement element)
+        {
+            Name = element.Name;
+            if (entityData == null)
+                return;
+            element.SetIfAttr("x", ref x);
+            element.SetIfAttr("y", ref y);
+            element.SetIfAttr("width", ref width);
+            element.SetIfAttr("height", ref height);
+            element.AttrIf<int>("id", v => _id = v.ToString());
+
+            foreach (var attribute in element.Attributes)
+            {
+                if (attribute.Key == "x" || attribute.Key == "y" || attribute.Key == "id" || attribute.Key == "originX" || attribute.Key == "originY")
+                    continue;
+
+                this[attribute.Key] = element.ProcessedAttr(attribute.Key);
+            }
+
+            foreach (MapElement node in element)
+            {
+                int nodeX = 0;
+                int nodeY = 0;
+                node.AttrIf<int>("x", v => nodeX = v - x);
+                node.AttrIf<int>("y", v => nodeY = v - y);
+                nodes.Add(new Point(nodeX, nodeY));
+            }
+        }
     }
 }

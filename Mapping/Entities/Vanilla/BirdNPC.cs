@@ -36,12 +36,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<float> Scale(RoomData room, Entity entity)
         {
-            return [modeFacingScale.GetValueOrDefault(entity["mode"].ToString(), 1), 1];
+            return [modeFacingScale.GetValueOrDefault(entity.Get<string>("mode"), 1), 1];
         }
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            entity["mode"] = modeFacingScale.Keys.ToList().Cycle(entity["mode"].ToString(), amount);
+            entity["mode"] = modeFacingScale.Keys.ToList().Cycle(entity.Get<string>("mode"), amount);
             return true;
         }
 

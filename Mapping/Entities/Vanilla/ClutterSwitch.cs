@@ -17,7 +17,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
             Sprite buttonSprite = new Sprite("objects/resortclutter/clutter_button00", entity);
-            Sprite clutterSprite = new Sprite($"objects/resortclutter/icon_{entity["type"]}", entity);
+            Sprite clutterSprite = new Sprite($"objects/resortclutter/icon_{entity.Get("type", "red")}", entity);
 
             buttonSprite.x += 16;
             buttonSprite.y += 16;
@@ -42,7 +42,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            entity["type"] = PlacementNames().Cycle(entity["type"].ToString(), amount);
+            entity["type"] = PlacementNames().Cycle(entity.Get("type", "red"), amount);
             return true;
         }
 

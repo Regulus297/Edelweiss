@@ -46,7 +46,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<float> Scale(RoomData room, Entity entity)
         {
-            return [(bool)entity["right"] ? 1 : -1, 1];
+            return [entity.Get<bool>("right") ? 1 : -1, 1];
         }
 
         public override bool Flip(RoomData room, Entity entity, bool horizontal, bool vertical)

@@ -47,7 +47,8 @@ namespace Edelweiss.Mapping.Entities
                 depth = Depth(room, entity),
                 scaleX = Scale(room, entity)[0],
                 scaleY = Scale(room, entity)[1],
-                color = Color(room, entity)
+                color = Color(room, entity),
+                rotation = Rotation(room, entity)
             }];
         }
 
@@ -157,11 +158,12 @@ namespace Edelweiss.Mapping.Entities
         /// <param name="nodeIndex">The 0-based index of the node in the entity</param>
         public virtual List<Drawable> NodeSprite(RoomData room, Entity entity, int nodeIndex)
         {
+            Point node = entity.GetNode(nodeIndex);
             return [new Sprite(NodeTexture(room, entity, nodeIndex)) {
                 justificationX = Justification(room, entity)[0],
                 justificationY = Justification(room, entity)[1],
-                x = entity.x,
-                y = entity.y
+                x = node.X,
+                y = node.Y
             }];
         }
 
@@ -285,7 +287,7 @@ namespace Edelweiss.Mapping.Entities
         }
 
         /// <summary>
-        /// The rotation of the entity in degrees
+        /// The rotation of the entity in radians
         /// </summary>
         /// <param name="room">The room the entity is in</param>
         /// <param name="entity">The entity instance</param>
@@ -337,9 +339,16 @@ namespace Edelweiss.Mapping.Entities
             List<Rectangle> output = [];
             for (int i = -1; i < entity.nodes.Count; i++)
             {
-                if (i == -1 && (entity.width != 0 || entity.height != 0))
+                if (entity.width != 0 || entity.height != 0)
                 {
-                    output.Add(new Rectangle(entity.x, entity.y, entity.width, entity.height));
+                    if (i == -1)
+                        output.Add(new Rectangle(entity.x, entity.y, entity.width, entity.height));
+                    else
+                    {
+                        Point node = entity.GetNode(i);
+                        output.Add(new Rectangle(node.X, node.Y, entity.width, entity.height));
+                    }
+                    
                     continue;
                 }
                 output.Add(GetDefaultRectangle(room, entity, i));
@@ -364,10 +373,7 @@ namespace Edelweiss.Mapping.Entities
             {
                 output = output.Combine(sprites[i].Bounds());
             }
-            if (nodeIndex == -1)
-                return output;
-            Point node = entity.nodes[nodeIndex];
-            return output.Translated(node.X, node.Y);
+            return output;
         }
 
         /// <summary>
@@ -432,13 +438,15 @@ namespace Edelweiss.Mapping.Entities
         public virtual object ProcessField(string fieldName, JToken value)
         {
             JObject fieldInfo = FieldInformation(fieldName);
+            object parsed = value.ToObject<object>();
+            if (parsed is byte || parsed is short || parsed is int || parsed is long)
+                parsed = Convert.ChangeType(parsed, typeof(int));
             if (fieldInfo == null)
-                return value.ToObject<object>();
+                return parsed;
 
             if (!fieldInfo.TryGetValue("fieldType", out JToken type))
-                return value.ToObject<object>();
+                return parsed;
 
-            object parsed = value.ToObject<object>();
             if (parsed is not string s)
                 return parsed;
             return type.ToObject<string>() switch

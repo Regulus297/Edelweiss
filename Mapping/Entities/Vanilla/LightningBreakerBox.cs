@@ -25,7 +25,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<float> Justification(RoomData room, Entity entity)
         {
-            return [(bool)entity["flipX"] ? 0.75f : 0.25f, 0.25f];
+            return [entity.Get<bool>("flipX") ? 0.75f : 0.25f, 0.25f];
         }
 
         public override int Depth(RoomData room, Entity entity) => -10550;
@@ -34,13 +34,13 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override bool Flip(RoomData room, Entity entity, bool horizontal, bool vertical)
         {
             if (horizontal)
-                entity["flipX"] = !(bool)entity["flipX"];
+                entity["flipX"] = !entity.Get<bool>("flipX");
             return horizontal;
         }
 
         public override List<float> Scale(RoomData room, Entity entity)
         {
-            return [(bool)entity["flipX"] ? -1 : 1, 1];
+            return [entity.Get<bool>("flipX") ? -1 : 1, 1];
         }
     }
 }

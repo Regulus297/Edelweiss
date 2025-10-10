@@ -26,7 +26,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            string suffix = entity["sprite"].ToString() switch
+            string suffix = entity.Get("sprite", "wood") switch
             {
                 "wood" => "00",
                 "temple_a" => "TempleA00",
@@ -45,7 +45,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            entity["sprite"] = PlacementNames().Cycle(entity["sprite"].ToString(), amount);
+            entity["sprite"] = PlacementNames().Cycle(entity.Get("sprite", "wood"), amount);
             return true;
         }
 

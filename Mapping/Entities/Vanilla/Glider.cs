@@ -30,7 +30,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
             Sprite glider = new Sprite("objects/glider/idle0", entity);
-            if ((bool)entity["bubble"])
+            if (entity.Get<bool>("bubble"))
             {
                 Script script = new Script();
 

@@ -82,12 +82,12 @@ namespace Edelweiss.Mapping.Drawables
         {
             x = entity.x;
             y = entity.y;
-            rotation = entity.entityData.Rotation(RoomData.Default, entity);
             justificationX = entity.justificationX;
             justificationY = entity.justificationY;
             rotation = entity.rotation;
             scaleX = entity.scaleX;
             scaleY = entity.scaleY;
+            depth = entity.depth;
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace Edelweiss.Mapping.SaveLoad
         /// Saves a map to the given path
         /// </summary>
         /// <param name="map">The map to save</param>
-        /// <param name="filePath">The path to save the file to, including the .bin extension</param>
+        /// <param name="filePath">The path to save the map to, including the .bin extension</param>
         public static void SaveMap(MapData map, string filePath)
         {
             using FileStream stream = File.Open(filePath, FileMode.Create);
@@ -46,6 +46,34 @@ namespace Edelweiss.Mapping.SaveLoad
             // Write content
             map.Encode(writer);
             writer.Flush();
+        }
+
+        /// <summary>
+        /// Loads a map from the given path
+        /// </summary>
+        /// <param name="filePath">The path to load the map from, including the .bin extension</param>
+        /// <returns></returns>
+        public static MapData LoadMap(string filePath)
+        {
+            using FileStream stream = File.Open(filePath, FileMode.Open);
+            using BinaryReader reader = new BinaryReader(stream);
+
+            reader.ReadString();
+            reader.ReadString();
+
+            backwardsLookup.Clear();
+            short lookupCount = reader.ReadInt16();
+            for (int i = 0; i < lookupCount; i++)
+            {
+                backwardsLookup.Add(reader.ReadString());
+            }
+
+            MapElement map = MapElement.Create(reader);
+
+            MapData mapData = new MapData();
+            mapData.Decode(map);
+
+            return mapData;
         }
 
         /// <summary>
@@ -156,6 +184,18 @@ namespace Edelweiss.Mapping.SaveLoad
         {
             writer.WriteLookupString(name);
             writer.WriteValue(value);
+        }
+
+        /// <summary>
+        /// Reads an attribute (key and value) from the writer
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="name">The name of the attribute</param>
+        /// <returns>The value of the attribute</returns>
+        public static object ReadAttribute(this BinaryReader reader, out string name)
+        {
+            name = reader.ReadLookupString();
+            return reader.ReadValue(out _);
         }
 
         /// <summary>

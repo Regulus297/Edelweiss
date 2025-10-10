@@ -23,9 +23,9 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            string texturePath = (bool)entity["twoDash"] ? "objects/refillTwo/" : "objects/refill/";
+            string texturePath = entity.Get<bool>("twoDash") ? "objects/refillTwo/" : "objects/refill/";
             Sprite refill = new Sprite(texturePath + "idle00", entity);
-            if ((bool)entity["oneUse"])
+            if (entity.Get<bool>("oneUse"))
             {
                 Sprite outline = new Sprite(texturePath + "outline", entity)
                 {

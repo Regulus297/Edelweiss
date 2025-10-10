@@ -24,7 +24,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override string Texture(RoomData room, Entity entity)
         {
-            bool winged = (bool)entity["winged"];
+            bool winged = entity.Get<bool>("winged");
             bool hasNodes = entity.nodes.Count > 0;
 
             string path = hasNodes ? "ghostgoldberry" : "goldberry";

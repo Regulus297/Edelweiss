@@ -27,7 +27,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         }
 
         public override List<Drawable> Sprite(RoomData room, Entity entity) => TileHelper.GetSprite(entity, "tiletype");
-        public override int Depth(RoomData room, Entity entity) => (bool)entity["behind"] ? 5000 : 0;
+        public override int Depth(RoomData room, Entity entity) => entity.Get<bool>("behind") ? 5000 : 0;
         public override bool Cycle(RoomData room, Entity entity, int amount) => TileHelper.Cycle(entity, "tiletype", amount);
         public override JObject FieldInformation(string fieldName) => TileHelper.GetFieldInformation(fieldName, "tiletype");
     }

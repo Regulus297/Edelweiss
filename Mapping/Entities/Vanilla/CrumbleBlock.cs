@@ -27,12 +27,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            return [new NinePatch($"objects/crumbleBlock/{entity["texture"]}", entity.x, entity.y, entity.width, 8, borderLeft: 0, borderRight: 0, borderTop: 0, borderBottom: 0)];
+            return [new NinePatch($"objects/crumbleBlock/{entity.Get("texture", "default")}", entity.x, entity.y, entity.width, 8, borderLeft: 0, borderRight: 0, borderTop: 0, borderBottom: 0)];
         }
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            entity["texture"] = PlacementNames().Cycle(entity["texture"].ToString(), amount);
+            entity["texture"] = PlacementNames().Cycle(entity.Get("texture", "default"), amount);
             return true;
         }
 

@@ -42,7 +42,7 @@ namespace Edelweiss.Mapping.Entities.Helpers
         /// <param name="opacity">The opacity of the tile object</param>
         public static List<Drawable> GetSprite(Entity entity, string key, bool foreground = true, float opacity = 1)
         {
-            return [new Tiles(entity[key].ToString(), foreground, entity.x, entity.y, entity.width / 8, entity.height / 8, opacity) {
+            return [new Tiles(entity.Get(key, "3"), foreground, entity.x, entity.y, entity.width / 8, entity.height / 8, opacity) {
                 depth = entity.depth
             }];
         }
@@ -73,7 +73,7 @@ namespace Edelweiss.Mapping.Entities.Helpers
                     {
                         int cx = -minX + x + entity.x / 8;
                         int cy = -minY + y + entity.y / 8;
-                        ids[cx + w * cy] = entity[key].ToString();
+                        ids[cx + w * cy] = entity.Get(key, "3");
                     }
                 }
             }
@@ -96,7 +96,7 @@ namespace Edelweiss.Mapping.Entities.Helpers
         /// </summary>
         public static bool Cycle(Entity entity, string key, int amount, bool foreground = true)
         {
-            entity[key] = GetCycleValue(entity[key].ToString(), amount, foreground);
+            entity[key] = GetCycleValue(entity.Get<string>(key).ToString(), amount, foreground);
             return true;
         }
 

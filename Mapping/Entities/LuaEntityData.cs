@@ -492,7 +492,7 @@ namespace Edelweiss.Mapping.Entities
                 if (rotationMethod.IsNil())
                     return base.Rotation(room, entity);
                 float radians = rotationMethod.Type == DataType.Number ? (float)rotationMethod.Number : (float)script.Call(rotationMethod, room.ToLuaTable(script), entity.ToLuaTable(script)).Number;
-                return radians * 180 / MathF.PI;
+                return radians;
             }
             catch (Exception e)
             {

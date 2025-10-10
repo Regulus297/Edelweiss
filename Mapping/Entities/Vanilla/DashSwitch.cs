@@ -43,13 +43,13 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
             List<string> sprites = ["default", "mirror"];
-            entity["sprite"] = sprites.Cycle(entity["sprite"].ToString(), amount);
+            entity["sprite"] = sprites.Cycle(entity.Get("sprite", "default"), amount);
             return true;
         }
 
         protected Sprite GetSprite(Entity entity)
         {
-            return new Sprite(entity["sprite"].ToString() == "default" ? "objects/temple/dashButton00" : "objects/temple/dashButtonMirror00", entity);
+            return new Sprite(entity.Get("sprite", "default") == "default" ? "objects/temple/dashButton00" : "objects/temple/dashButtonMirror00", entity);
         }
 
         protected bool RotateCommon(Entity entity, int sideIndex, int direction)
@@ -93,7 +93,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            bool leftSide = (bool)entity["leftSide"];
+            bool leftSide = entity.Get<bool>("leftSide");
             Sprite sprite = GetSprite(entity);
 
             if (leftSide)
@@ -115,14 +115,14 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         {
             if (horizontal)
             {
-                entity["leftSide"] = !(bool)entity["leftSide"];
+                entity["leftSide"] = !entity.Get<bool>("leftSide");
             }
             return horizontal;
         }
 
         public override bool Rotate(RoomData room, Entity entity, int rotation)
         {
-            return RotateCommon(entity, (bool)entity["leftSide"] ? 1 : 3, rotation);
+            return RotateCommon(entity, entity.Get<bool>("leftSide") ? 1 : 3, rotation);
         }
     }
 
@@ -135,7 +135,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override string EntityName => "dashSwitchV";
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            bool ceiling = (bool)entity["ceiling"];
+            bool ceiling = entity.Get<bool>("ceiling");
             Sprite sprite = GetSprite(entity);
 
             if (ceiling)
@@ -157,14 +157,14 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         {
             if (vertical)
             {
-                entity["ceiling"] = !(bool)entity["ceiling"];
+                entity["ceiling"] = !entity.Get<bool>("ceiling");
             }
             return vertical;
         }
         
         public override bool Rotate(RoomData room, Entity entity, int rotation)
         {
-            return RotateCommon(entity, (bool)entity["ceiling"] ? 2 : 0, rotation);
+            return RotateCommon(entity, entity.Get<bool>("ceiling") ? 2 : 0, rotation);
         }
     }
 }

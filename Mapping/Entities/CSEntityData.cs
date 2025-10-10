@@ -78,6 +78,10 @@ namespace Edelweiss.Mapping.Entities
                 return Rectangle(room, entity);
             if (nodeIndex >= 0 && MethodImplemented("NodeRectangle"))
                 return NodeRectangle(room, entity, nodeIndex);
+            if (nodeIndex >= 0 && !MethodImplemented(nameof(NodeTexture)) && !MethodImplemented(nameof(NodeSprite))) {
+                Point node = entity.nodes[nodeIndex];
+                return GetDefaultRectangle(room, entity, -1).Translated(node.X, node.Y);
+            }
             return base.GetDefaultRectangle(room, entity, nodeIndex);
         }
 
@@ -101,7 +105,7 @@ namespace Edelweiss.Mapping.Entities
             {
                 return false;
             }
-            entity[key] = !(bool)entity[key];
+            entity[key] = !entity.Get<bool>(key);
             return true;
         }
     }

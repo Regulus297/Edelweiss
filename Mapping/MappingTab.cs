@@ -37,7 +37,7 @@ namespace Edelweiss.Mapping
         internal static long RoomMouseNetcode { get; private set; }
         internal static long MaterialFavouritedNetcode { get; private set; }
         internal static long MaterialSearchedNetcode { get; private set; }
-        internal static long SaveMapNetcode { get; private set; }
+        internal static long MapFileNetcode { get; private set; }
         internal static MappingTool selectedTool;
 
         internal static MapData map = null;
@@ -50,7 +50,7 @@ namespace Edelweiss.Mapping
             RoomMouseNetcode = Plugin.CreateNetcode("RoomMouse", false);
             MaterialFavouritedNetcode = Plugin.CreateNetcode("MaterialFavourited", false);
             MaterialSearchedNetcode = Plugin.CreateNetcode("MaterialSearched", false);
-            SaveMapNetcode = Plugin.CreateNetcode("SaveMap", false);
+            MapFileNetcode = Plugin.CreateNetcode("MapFile", false);
         }
 
         public override void PostSetupContent()
@@ -78,6 +78,22 @@ namespace Edelweiss.Mapping
                 case "createRoom":
                     NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, FormLoader.LoadForm("Edelweiss:Forms/room_creation").ToString());
                     break;
+                case "fileMenu/openMap":
+                    NetworkManager.SendPacket(Netcode.OPEN_FILE_DIALOG, new JObject()
+                    {
+                        {"file", true},
+                        {"path", MainPlugin.CelesteDirectory},
+                        {"mode", "load"},
+                        {"pattern", "*.bin"},
+                        {"submit", new JObject() {
+                            {"netcode", MapFileNetcode},
+                            {"extraData", new JObject() {
+                                {"type", "load"}
+                            }}
+                        }}
+                    });
+                    break;
+
                 case "fileMenu/saveMapAs":
                     NetworkManager.SendPacket(Netcode.OPEN_FILE_DIALOG, new JObject()
                     {
@@ -85,7 +101,12 @@ namespace Edelweiss.Mapping
                         {"path", MainPlugin.CelesteDirectory},
                         {"mode", "save"},
                         {"pattern", "*.bin"},
-                        {"submit", SaveMapNetcode}
+                        {"submit", new JObject() {
+                            {"netcode", MapFileNetcode},
+                            {"extraData", new JObject() {
+                                {"type", "save"}
+                            }}
+                        }}
                     });
                     break;
                 case "fileMenu/saveMap":
@@ -105,6 +126,37 @@ namespace Edelweiss.Mapping
                 case "mapMenu/mapMeta":
                     NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, FormLoader.LoadForm("Edelweiss:Forms/map_meta", map.meta.ToJObject()).ToString());
                     break;
+            }
+        }
+
+        internal static void RedrawComplete()
+        {
+            JObject room = PluginLoader.RequestJObject("Edelweiss:GraphicsItems/room");
+            foreach (RoomData r in map.rooms)
+            {
+                room["x"] = r.x;
+                room["y"] = r.y;
+                room["width"] = r.width;
+                room["height"] = r.height;
+                room["shapes"][2]["color"] = RoomData.GetColor(r.color);
+                room["shapes"][0]["tileData"] = r.bgTileData;
+                room["shapes"][0]["width"] = r.width / 8;
+                room["shapes"][0]["height"] = r.height / 8;
+                room["shapes"][1]["tileData"] = r.fgTileData;
+                room["shapes"][1]["width"] = r.width / 8;
+                room["shapes"][1]["height"] = r.height / 8;
+                room["name"] = r.name;
+
+                NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()
+                {
+                    {"widget", "Mapping/MainView"},
+                    {"item", room}
+                });
+
+                foreach (Entity entity in r.entities)
+                {
+                    entity.Draw();
+                }
             }
         }
     }

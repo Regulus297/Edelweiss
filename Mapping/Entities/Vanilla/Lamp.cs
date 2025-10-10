@@ -26,7 +26,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            bool broken = (bool)entity["broken"];
+            bool broken = entity.Get<bool>("broken");
 
             Sprite sprite = new Sprite("scenery/lamp", entity)
             {

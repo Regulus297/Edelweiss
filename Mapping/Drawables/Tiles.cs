@@ -117,7 +117,7 @@ namespace Edelweiss.Mapping.Drawables
         /// <inheritdoc/>
         public override Rectangle Bounds()
         {
-            return new Rectangle(x, y, width, height);
+            return new Rectangle(x, y, width * 8, height * 8);
         }
 
         /// <inheritdoc/>

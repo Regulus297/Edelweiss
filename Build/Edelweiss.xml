@@ -740,6 +740,18 @@
             Updates the entity's data with the values from the given data
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.Get``1(System.String,``0)">
+            <summary>
+            Gets the entity data with the given name
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="name"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Entity.Decode(Edelweiss.Mapping.SaveLoad.MapElement)">
+            <inheritdoc/>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.EntityData">
             <summary>
             Base class for entity data
@@ -932,7 +944,7 @@
         </member>
         <member name="M:Edelweiss.Mapping.Entities.EntityData.Rotation(Edelweiss.Mapping.Entities.RoomData,Edelweiss.Mapping.Entities.Entity)">
             <summary>
-            The rotation of the entity in degrees
+            The rotation of the entity in radians
             </summary>
             <param name="room">The room the entity is in</param>
             <param name="entity">The entity instance</param>
@@ -1226,6 +1238,9 @@
         <member name="M:Edelweiss.Mapping.Entities.MapData.AddToLookup(Edelweiss.Mapping.SaveLoad.StringLookup)">
             <inheritdoc/>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.MapData.Decode(Edelweiss.Mapping.SaveLoad.MapElement)">
+            <inheritdoc/>
+        </member>
         <member name="M:Edelweiss.Mapping.Entities.MapData.Encode(System.IO.BinaryWriter)">
             <inheritdoc/>
         </member>
@@ -1415,6 +1430,9 @@
             Converts this map meta object to a JSON object
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.MapMeta.Decode(Edelweiss.Mapping.SaveLoad.MapElement)">
+            <inheritdoc/>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.RoomData">
             <summary>
             Class containing room data for the backend
@@ -1571,6 +1589,9 @@
         <member name="M:Edelweiss.Mapping.Entities.RoomData.Encode(System.IO.BinaryWriter)">
             <inheritdoc/>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.RoomData.Decode(Edelweiss.Mapping.SaveLoad.MapElement)">
+            <inheritdoc/>
+        </member>
         <member name="T:Edelweiss.Mapping.Keybinds.CycleKeybind">
             <summary>
             The keybind for cycling the state of an object. Defaults to E
@@ -1634,6 +1655,89 @@
             Saves the object to the writer
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.IMapSaveable.Decode(Edelweiss.Mapping.SaveLoad.MapElement)">
+            <summary>
+            Decodes the object from the given element
+            </summary>
+            <param name="element"></param>
+        </member>
+        <member name="T:Edelweiss.Mapping.SaveLoad.MapElement">
+            <summary>
+            Represents an element from a map file tree
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.SaveLoad.MapElement.Name">
+            <summary>
+            The name of the element
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.SaveLoad.MapElement.Attributes">
+            <summary>
+            The attributes the element has
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.SaveLoad.MapElement.Children">
+            <summary>
+            The children the element has
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapElement.Create(System.IO.BinaryReader)">
+            <summary>
+            Creates an element from the given reader
+            </summary>
+            <param name="reader"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapElement.Attr``1(System.String)">
+            <summary>
+            Returns the value of the attribute with the given name, returning the default value for the type if null
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapElement.ProcessedAttr(System.String)">
+            <summary>
+            Returns the value of the attribute with the given name.
+            If the value is a floating point number, boxes it as float
+            If the value is a whole number type, boxes it as int
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapElement.HasAttr(System.String)">
+            <summary>
+            Returns whether or not the element contains an attribute with the given name
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapElement.TryGetAttr``1(System.String,``0@)">
+            <summary>
+            Tries to get an attribute with the given name. If no such attribute exists or it is not of the desired type, returns false.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="name"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapElement.AttrIf``1(System.String,System.Action{``0})">
+            <summary>
+            Calls the callback with the attribute's value if the attribute exists
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="name"></param>
+            <param name="callback"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapElement.SetIfAttr``1(System.String,``0@)">
+            <summary>
+            Sets the desired variable to the value of an attribute if it exists
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="name"></param>
+            <param name="var"></param>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapElement.GetEnumerator">
+            <inheritdoc/>
+        </member>
         <member name="T:Edelweiss.Mapping.SaveLoad.MapSaveLoad">
             <summary>
             Class responsible for saving and loading Celeste maps
@@ -1654,7 +1758,14 @@
             Saves a map to the given path
             </summary>
             <param name="map">The map to save</param>
-            <param name="filePath">The path to save the file to, including the .bin extension</param>
+            <param name="filePath">The path to save the map to, including the .bin extension</param>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapSaveLoad.LoadMap(System.String)">
+            <summary>
+            Loads a map from the given path
+            </summary>
+            <param name="filePath">The path to load the map from, including the .bin extension</param>
+            <returns></returns>
         </member>
         <member name="M:Edelweiss.Mapping.SaveLoad.MapSaveLoad.CreateLookup(Edelweiss.Mapping.Entities.MapData)">
             <summary>
@@ -1694,6 +1805,14 @@
             <param name="writer"></param>
             <param name="name"></param>
             <param name="value"></param>
+        </member>
+        <member name="M:Edelweiss.Mapping.SaveLoad.MapSaveLoad.ReadAttribute(System.IO.BinaryReader,System.String@)">
+            <summary>
+            Reads an attribute (key and value) from the writer
+            </summary>
+            <param name="reader"></param>
+            <param name="name">The name of the attribute</param>
+            <returns>The value of the attribute</returns>
         </member>
         <member name="M:Edelweiss.Mapping.SaveLoad.MapSaveLoad.WriteRLEString(System.IO.BinaryWriter,System.String)">
             <summary>
@@ -2457,6 +2576,13 @@
             - mode: "save" if user can select nonexistent paths, "load" if only existing paths can be chosen <br/>
             - pattern: glob patterns that can be selected, each separated by two semicolons: "*.bin;;*.png" <br/>
             - submit: event data when the form is submitted. Sends the path and matched pattern to the specified netcode
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Network.Netcode.CLEAR_VIEW">
+            <summary>
+            Deletes all items in the ZoomableView with the given tracker. <br/>
+            Parameters: <br/>
+            - widget: the tracker for the ZoomableView
             </summary>
         </member>
         <member name="F:Edelweiss.Network.Netcode.KEY_PRESSED">

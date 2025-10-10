@@ -23,7 +23,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override string Texture(RoomData room, Entity entity)
         {
-            return entity["sprite"].ToString();
+            return entity.Get("sprite", "scenery/memorial/memorial");
         }
 
         public override List<string> Mods()

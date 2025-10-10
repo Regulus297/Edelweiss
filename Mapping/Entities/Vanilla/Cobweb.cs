@@ -34,7 +34,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            string color = entity["color"].ToString();
+            string color = entity.Get("color", "#ffffff");
             Point origin = new(entity.x, entity.y);
             Point firstNode = entity.nodes[0];
             firstNode.X += entity.x;

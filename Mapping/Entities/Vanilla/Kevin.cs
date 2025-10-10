@@ -28,7 +28,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            int frameIndex = entity["axes"].ToString() switch
+            int frameIndex = entity.Get<string>("axes") switch
             {
                 "both" => 03,
                 "vertical" => 02,
@@ -36,7 +36,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                 _ => 00
             };
 
-            bool chillout = (bool)entity["chillout"];
+            bool chillout = entity.Get<bool>("chillout");
             bool giant = entity.width >= 48 && entity.height >= 48 && chillout;
 
             NinePatch frame = new NinePatch($"objects/crushblock/block{frameIndex:00}", entity.x, entity.y, entity.width, entity.height, "border");
@@ -51,11 +51,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override bool Rotate(RoomData room, Entity entity, int rotation)
         {
-            entity["axes"] = entity["axes"].ToString() switch
+            entity["axes"] = entity.Get<string>("axes") switch
             {
                 "horizontal" => "vertical",
                 "vertical" => "horizontal",
-                _ => entity["axes"]
+                _ => entity.Get<string>("axes")
             };
             return true;
         }

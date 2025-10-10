@@ -13,7 +13,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<int> NodeLimits(RoomData room, Entity entity) => [0, 1];
         public override List<float> Justification(RoomData room, Entity entity) => [0, 0];
-        public override string Texture(RoomData room, Entity entity) => entity["texture"].ToString();
+        public override string Texture(RoomData room, Entity entity) => entity.Get("texture", "objects/ridgeGate");
         public override Dictionary<string, object> GetPlacementData()
         {
             return new Dictionary<string, object>()

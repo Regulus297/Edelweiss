@@ -24,7 +24,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            bool road = (bool)entity["hasRoadAndBarriers"];
+            bool road = entity.Get<bool>("hasRoadAndBarriers");
 
             Sprite body = new Sprite("scenery/car/body", entity);
             body.justificationY = 1.0f;
