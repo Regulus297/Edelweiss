@@ -1,24 +1,15 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Memorial : CSEntityData
+    internal class Memorial : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "everest/memorial";
 
         public override List<string> PlacementNames()
         {
             return ["memorial"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"dialog", "MEMORIAL"},
-                {"sprite", "scenery/memorial/memorial"},
-                {"spacing", 16}
-            };
         }
 
         public override string Texture(RoomData room, Entity entity)
@@ -33,5 +24,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override int Depth(RoomData room, Entity entity) => 100;
         public override List<float> Justification(RoomData room, Entity entity) => [0.5f, 1.0f];
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("dialog", "MEMORIAL")
+                .AddField("sprite", "scenery/memorial/memorial")
+                .AddField("spacing", 16);
+        }
     }
 }

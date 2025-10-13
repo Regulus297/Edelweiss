@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class EverestBirdTutorial : CSEntityData
+    internal class EverestBirdTutorial : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "everest/customBirdTutorial";
 
@@ -23,47 +24,21 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return ["Everest"];
         }
 
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"faceLeft", true},
-                {"birdId", ""},
-                {"onlyOnce", false},
-                {"caw", true},
-                {"info", "TUTORIAL_DREAMJUMP"},
-                {"controls", "DownRight,+,Dash,tinyarrow,Jump"}
-            };
-        }
-
         public override List<float> Scale(RoomData room, Entity entity)
         {
             return [entity.Get<bool>("faceLeft") ? -1 : 1, 1];
         }
 
-        public override bool Flip(RoomData room, Entity entity, bool horizontal, bool vertical)
-        {
-            if (horizontal)
-                entity["faceLeft"] = !entity.Get<bool>("faceLeft");
-            return horizontal;
-        }
 
-        public override JObject FieldInformation(string fieldName)
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            if (fieldName != "info")
-                return null;
-            return new JObject()
-            {
-                {"items", new JArray() {
-                    "TUTORIAL_CLIMB",
-                    "TUTORIAL_HOLD",
-                    "TUTORIAL_DASH",
-                    "TUTORIAL_DREAMJUMP",
-                    "TUTORIAL_CARRY",
-                    "hyperjump/tutorial00",
-                    "hyperjump/tutorial01"
-                }}
-            };
+            fieldInfo.AddField("faceLeft", true)
+                .AddField("birdId", "")
+                .AddField("onlyOnce", false)
+                .AddField("caw", true)
+                .AddOptionsField("info", "TUTORIAL_DREAMJUMP", "TUTORIAL_CLIMB", "TUTORIAL_HOLD", "TUTORIAL_DASH", "TUTORIAL_DREAMJUMP", "TUTORIAL_CARRY", "hyperjump/tutorial00", "hyperjump/tutorial01")
+                .AddField("controls", "DownRight,+,Dash,tinyarrow,Jump")
+                .SetHorizontalFlipField("faceLeft");
         }
     }
 }

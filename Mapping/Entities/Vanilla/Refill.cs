@@ -1,24 +1,16 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Refill : CSEntityData
+    internal class Refill : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "refill";
 
         public override List<string> PlacementNames()
         {
             return ["single", "double"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"twoDash", placement == "double"},
-                {"oneUse", false}
-            };
         }
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
@@ -35,9 +27,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             }
             return [refill];
         }
-        public override bool Cycle(RoomData room, Entity entity, int amount)
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return CycleBoolean(entity, "twoDash", amount);
+            fieldInfo.AddField("twoDash", placement == "double")
+                .AddField("oneUse", false)
+                .SetCyclableField("twoDash");
         }
     }
 }

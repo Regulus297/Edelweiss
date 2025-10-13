@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class FixedBridge : CSEntityData
+    internal class FixedBridge : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "bridgeFixed";
 
@@ -13,15 +14,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         {
             return ["bridge_fixed"];
         }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"width", 32}
-            };
-        }
-
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
             int x = 0;
@@ -45,6 +37,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             Sprite sprite = new Sprite("scenery/bridge_fixed", entity);
             int width = ((entity.width / sprite.data.width) + 1) * sprite.data.width;
             return [new Rectangle(entity.x, entity.y, width, sprite.data.height)];
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddResizability(32, null);
         }
     }
 }

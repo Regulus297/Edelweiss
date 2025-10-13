@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Fireball : CSEntityData
+    internal class Fireball : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "fireBall";
 
@@ -14,26 +15,18 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return ["fireball", "iceball"];
         }
 
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"amount", 3},
-                {"offset", 0.0},
-                {"speed", 1.0},
-                {"notCoreMode", placement == "iceball"}
-            };
-        }
-
         public override string Texture(RoomData room, Entity entity)
         {
-            bool ice = entity.Get<bool>("entityCoreMode");
+            bool ice = entity.Get<bool>("notCoreMode");
             return ice ? "objects/fireball/fireball09" : "objects/fireball/fireball01";
         }
-
-        public override bool Cycle(RoomData room, Entity entity, int amount)
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return CycleBoolean(entity, "notCoreMode", amount);
+            fieldInfo.AddField("amount", 3)
+                .AddField("offset", 0.0f)
+                .AddField("speed", 1.0f)
+                .AddField("notCoreMode", placement == "iceball")
+                .SetCyclableField("notCoreMode");
         }
     }
 }

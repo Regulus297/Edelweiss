@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Door : CSEntityData
+    internal class Door : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "door";
         public override int Depth(RoomData room, Entity entity) => 8998;
@@ -20,28 +21,10 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return entity.Get("type", "wood") == "wood" ? "objects/door/door00" : "objects/door/metaldoor00";
         }
 
-        public override Dictionary<string, object> GetPlacementData()
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return new Dictionary<string, object>()
-            {
-                {"type", placement}
-            };
-        }
-
-        public override bool Cycle(RoomData room, Entity entity, int amount)
-        {
-            entity["type"] = PlacementNames().Cycle(entity.Get("type", "wood"), amount);
-            return true;
-        }
-
-        public override JObject FieldInformation(string fieldName)
-        {
-            return new JObject()
-            {
-                {"items", new JArray() {
-                    "wood", "metal"
-                }}
-            };
+            fieldInfo.AddOptionsField("type", placement, "wood", "metal")
+                .SetCyclableField("type");
         }
     }
 }

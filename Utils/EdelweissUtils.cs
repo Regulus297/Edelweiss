@@ -317,6 +317,26 @@ namespace Edelweiss.Utils
         }
 
         /// <summary>
+        /// Cycles through an array
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items"></param>
+        /// <param name="current"></param>
+        /// <param name="amount"></param>
+        /// <returns></returns>
+        public static T Cycle<T>(this T[] items, T current, int amount = 1)
+        {
+            int i = Array.IndexOf(items, current);
+            if (i == -1)
+                return current;
+
+            i += amount;
+
+            i = i.Mod(items.Length);
+            return items[i];
+        }
+
+        /// <summary>
         /// Takes the modulus of two numbers ensuring the result is positive
         /// </summary>
         public static int Mod(this int a, int b)

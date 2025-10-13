@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal abstract class ClutterBlock : CSEntityData
+    internal abstract class ClutterBlock : CSEntityData, IFieldInfoEntity
     {
         public abstract string ClutterColor { get; }
 
@@ -102,24 +103,21 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         }
 
         public override int Depth(RoomData room, Entity entity) => -9998;
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"width", 8},
-                {"height", 8}
-            };
-        }
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
         {
-            entity.Name = entity.Name switch
+            entity.Name = entity.EntityName switch
             {
                 "redBlocks" => "yellowBlocks",
                 "yellowBlocks" => "greenBlocks",
                 _ => "redBlocks"
             };
             return true;
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddResizability();
         }
     }
 

@@ -93,6 +93,8 @@ class TileShape(ShapeRenderer):
         if x < 0 or x >= self.width or y < 0 or y >= self.height:
             return "✪"
         i = x + y * self.width
+        if i >= len(self.tiles):
+            return "✪"
         return self.tiles[i]
 
     @staticmethod

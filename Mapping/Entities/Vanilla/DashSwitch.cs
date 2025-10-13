@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal abstract class DashSwitch : CSEntityData
+    internal abstract class DashSwitch : CSEntityData, IFieldInfoEntity
     {
         public abstract List<string> Directions { get; }
         public abstract string FieldName { get; }
@@ -27,24 +28,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                 placements.Add($"{direction}_mirror");
             }
             return placements;
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"persistent", false},
-                {"sprite", placement.Split('_')[1]},
-                {"allGates", false},
-                {FieldName, Directions.IndexOf(placement.Split('_')[0]) != 0}
-            };
-        }
-
-        public override bool Cycle(RoomData room, Entity entity, int amount)
-        {
-            List<string> sprites = ["default", "mirror"];
-            entity["sprite"] = sprites.Cycle(entity.Get("sprite", "default"), amount);
-            return true;
         }
 
         protected Sprite GetSprite(Entity entity)
@@ -70,16 +53,13 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return sideIndex != targetIndex;
         }
 
-        public override JObject FieldInformation(string fieldName)
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            if (fieldName != "sprite")
-                return null;
-            return new JObject()
-            {
-                {"items", new JArray() {
-                    "default", "mirror"
-                }}
-            };
+            fieldInfo.AddField("persistent", false)
+                .AddOptionsField("sprite", placement.Split('_')[1], "default", "mirror")
+                .AddField("allGates", false)
+                .AddField(FieldName, Directions.IndexOf(placement.Split('_')[0]) != 0)
+                .SetCyclableField("sprite");
         }
     }
 

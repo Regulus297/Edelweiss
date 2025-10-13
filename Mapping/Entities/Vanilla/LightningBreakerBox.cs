@@ -1,26 +1,15 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class LightningBreakerBox : CSEntityData
+    internal class LightningBreakerBox : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "lightningBlock";
 
         public override List<string> PlacementNames()
         {
             return ["breaker_box"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"flipX", false},
-                {"music_progress", -1},
-                {"music_session", false},
-                {"music", ""},
-                {"flag", false}
-            };
         }
 
         public override List<float> Justification(RoomData room, Entity entity)
@@ -31,16 +20,19 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override int Depth(RoomData room, Entity entity) => -10550;
         public override string Texture(RoomData room, Entity entity) => "objects/breakerBox/Idle00";
 
-        public override bool Flip(RoomData room, Entity entity, bool horizontal, bool vertical)
-        {
-            if (horizontal)
-                entity["flipX"] = !entity.Get<bool>("flipX");
-            return horizontal;
-        }
-
         public override List<float> Scale(RoomData room, Entity entity)
         {
             return [entity.Get<bool>("flipX") ? -1 : 1, 1];
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("flipX", false)
+                .AddField("music_progress", -1)
+                .AddField("music_session", false)
+                .AddField("music", "")
+                .AddField("flag", false)
+                .SetHorizontalFlipField("flipX");
         }
     }
 }

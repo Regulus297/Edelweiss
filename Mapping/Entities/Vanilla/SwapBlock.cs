@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class SwapBlock : CSEntityData
+    internal class SwapBlock : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "swapBlock";
 
@@ -16,16 +17,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override List<string> PlacementNames()
         {
             return ["Normal", "Moon"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"theme", placement},
-                {"width", 16},
-                {"height", 16}
-            };
         }
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
@@ -94,23 +85,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             sprites.Add(middle);
         }
 
-        public override JObject FieldInformation(string fieldName)
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            if (fieldName != "theme")
-                return null;
-
-            return new JObject()
-            {
-                {"items", new JArray() {
-                    "Normal", "Moon"
-                }}
-            };
-        }
-
-        public override bool Cycle(RoomData room, Entity entity, int amount)
-        {
-            entity["theme"] = PlacementNames().Cycle(entity.Get("theme", "Normal"), amount);
-            return true;
+            fieldInfo.AddOptionsField("theme", placement, "Normal", "Moon")
+                .AddResizability(16, 16)
+                .SetCyclableField("theme");
         }
     }
 }

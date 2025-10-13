@@ -2,11 +2,12 @@ import json
 
 from PyQt5.QtCore import  QTimer
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QGraphicsView, QSizePolicy, QStackedWidget, QToolBar,
-                             QMainWindow, QComboBox)
+                             QMainWindow, QComboBox, QSplashScreen)
 
 from network import PyNetworkManager
 from Edelweiss.Network import Netcode
 from plugins import JSONPreprocessor
+from ui.loading_screen import LoadingScreen
 
 
 class MappingWindow(QMainWindow):
@@ -65,6 +66,8 @@ class MappingWindow(QMainWindow):
         self.tool_bar = QToolBar()
         self.addToolBar(self.tool_bar)
 
+        self.loadingScreen = None
+
 
         self.tab_switcher = QComboBox()
         self.tab_switcher.currentTextChanged.connect(self.on_tab_switched)
@@ -103,3 +106,7 @@ class MappingWindow(QMainWindow):
     def closeEvent(self, a0):
         PyNetworkManager.exit()
         super().closeEvent(a0)
+
+    def resizeEvent(self, a0):
+        if self.loadingScreen:
+            self.loadingScreen.setGeometry(self.rect())

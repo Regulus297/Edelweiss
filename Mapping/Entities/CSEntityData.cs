@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.RegistryTypes;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
@@ -40,6 +41,12 @@ namespace Edelweiss.Mapping.Entities
             {
                 CSEntityData created = (CSEntityData)Activator.CreateInstance(GetType());
                 created.placement = name;
+                if(created is IFieldInfoEntity fieldInfoEntity)
+                {
+                    EntityFieldInfo fieldInfo = new();
+                    fieldInfoEntity.InitializeFieldInfo(fieldInfo);
+                    IFieldInfoEntity.fieldInfos[created.Name] = fieldInfo;
+                }
                 CelesteModLoader.AddEntity("vanilla", created, EntityName);
             }
         }

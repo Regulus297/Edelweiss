@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Kevin : CSEntityData
+    internal class Kevin : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "crushBlock";
 
@@ -28,7 +29,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            int frameIndex = entity.Get<string>("axes") switch
+            int frameIndex = entity.Get<string>("axes").ToLower() switch
             {
                 "both" => 03,
                 "vertical" => 02,
@@ -58,6 +59,13 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                 _ => entity.Get<string>("axes")
             };
             return true;
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddResizability(24, 24)
+                .AddField("axes", placement)
+                .AddField("chillout", false);
         }
     }
 }

@@ -38,6 +38,7 @@ namespace Edelweiss.Plugins
             LoadAssembly(Assembly.GetExecutingAssembly());
             LoadJsonFiles(Directory.GetCurrentDirectory(), "Edelweiss");
             CelesteModLoader.LoadTexturesFromDirectory(Path.Join(Directory.GetCurrentDirectory(), "Resources"));
+            MainPlugin.textures.Value = CelesteModLoader.texturePaths;
 
             string directory = Path.Join(Directory.GetCurrentDirectory(), "Plugins");
 

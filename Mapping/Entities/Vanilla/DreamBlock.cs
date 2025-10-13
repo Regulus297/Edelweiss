@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class DreamBlock : CSEntityData
+    internal class DreamBlock : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "dreamBlock";
 
@@ -22,21 +23,13 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return entity.Get<bool>("below") ? 5000 : -11000;
         }
 
-        public override bool Cycle(RoomData room, Entity entity, int amount)
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return CycleBoolean(entity, "below", amount);
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"fastMoving", false},
-                {"below", false},
-                {"oneUse", false},
-                {"width", 8},
-                {"height", 8}
-            };
+            fieldInfo.AddField("fastMoving", false)
+                .AddField("below", false)
+                .AddField("oneUse", false)
+                .AddResizability()
+                .SetCyclableField("below");
         }
     }
 }

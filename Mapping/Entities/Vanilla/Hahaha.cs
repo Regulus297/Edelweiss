@@ -1,24 +1,16 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Hahaha : CSEntityData
+    internal class Hahaha : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "hahaha";
 
         public override List<string> PlacementNames()
         {
             return ["hahaha"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"ifset", ""},
-                {"triggerLaughSfx", false}
-            };
         }
 
         public override int Depth(RoomData room, Entity entity) => -10001;
@@ -38,6 +30,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             }
 
             return sprites; 
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("ifset", "")
+                .AddField("triggerLaughSfx", false);
         }
     }
 }

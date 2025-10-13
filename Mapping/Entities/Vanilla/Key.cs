@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Drawing;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Key : CSEntityData
+    internal class Key : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "key";
 
@@ -11,22 +12,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         {
             return ["normal", "with_return"];
         }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            if (placement == "with_return")
-            {
-                return new Dictionary<string, object>()
-                {
-                    {"nodes", new List<Point>() {
-                        {new Point(16, 0)},
-                        {new Point(32, 0)}
-                    }}
-                };
-            }
-            return base.GetPlacementData();
-        }
-
+        
         public override int Depth(RoomData room, Entity entity) => -1000000;
         public override NodeLineRenderType NodeLineRenderType(Entity entity) => Entities.NodeLineRenderType.Line;
 
@@ -39,6 +25,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                 return [2, 2];
             }
             return [0, 0];
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            if (placement == "with_return")
+                fieldInfo.AddNodes(new Point(16, 0), new Point(32, 0));
         }
     }
 }

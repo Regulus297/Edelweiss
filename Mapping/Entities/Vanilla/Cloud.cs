@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Cloud : CSEntityData
+    internal class Cloud : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "cloud";
 
@@ -27,18 +28,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return [sprite];
         }
 
-        public override Dictionary<string, object> GetPlacementData()
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return new Dictionary<string, object>()
-            {
-                {"fragile", placement == "fragile"},
-                {"small", false}
-            };
-        }
-
-        public override bool Cycle(RoomData room, Entity entity, int amount)
-        {
-            return CycleBoolean(entity, "fragile", amount);
+            fieldInfo.AddField("fragile", placement == "fragile")
+                .AddField("small", false)
+                .SetCyclableField("fragile");
         }
     }
 }

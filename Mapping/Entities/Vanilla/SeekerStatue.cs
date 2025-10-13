@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class SeekerStatue : CSEntityData
+    internal class SeekerStatue : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "seekerStatue";
 
@@ -24,16 +25,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override NodeLineRenderType NodeLineRenderType(Entity entity) => Entities.NodeLineRenderType.Line;
         public override string Texture(RoomData room, Entity entity) => "decals/5-temple/statue_e";
         public override string NodeTexture(RoomData room, Entity entity, int nodeIndex) => "characters/monsters/predator73";
-        public override JObject FieldInformation(string fieldName)
-        {
-            return new JObject()
-            {
-                {"items", new JArray() {
-                    "Distance", "PlayerRightOfX"
-                }}
-            };
-        }
 
         public override List<int> NodeLimits(RoomData room, Entity entity) => [1, -1];
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddOptionsField("hatch", "Distance", "Distance", "PlayerRightOfX");
+        }
     }
 }

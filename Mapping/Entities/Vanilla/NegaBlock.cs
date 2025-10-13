@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class NegaBlock : CSEntityData
+    internal class NegaBlock : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "negaBlock";
 
@@ -13,13 +14,9 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return ["nega_block"];
         }
 
-        public override Dictionary<string, object> GetPlacementData()
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return new Dictionary<string, object>()
-            {
-                {"width", 8},
-                {"height", 8}
-            };
+            fieldInfo.AddResizability();
         }
     }
 }

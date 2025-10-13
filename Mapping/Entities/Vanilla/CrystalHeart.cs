@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class CrystalHeart : CSEntityData
+    internal class CrystalHeart : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "blackGem";
 
@@ -13,15 +14,13 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override int Depth(RoomData room, Entity entity) => -2000000;
         public override string Texture(RoomData room, Entity entity) => "collectables/heartGem/0/00";
-        public override Dictionary<string, object> GetPlacementData()
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return new Dictionary<string, object>()
-            {
-                {"fake", false},
-                {"removeCameraTriggers", false},
-                {"fakeHeartDialog", "CH9_FAKE_HEART"},
-                {"keepGoingDialog", "CH9_KEEP_GOING"}
-            };
+            fieldInfo.AddField("fake", false)
+                .AddField("removeCameraTriggers", false)
+                .AddField("fakeHeartDialog", "CH9_FAKE)HEART")
+                .AddField("keepGoingDialog", "CH9_KEEP_GOING");
         }
     }
 }

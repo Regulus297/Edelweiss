@@ -2,27 +2,19 @@ using System.Collections.Generic;
 using System.Drawing;
 using Edelweiss.Loenn;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Glider : CSEntityData
+    internal class Glider : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "glider";
 
         public override List<string> PlacementNames()
         {
             return ["normal", "floating"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"tutorial", false},
-                {"bubble", placement == "floating"}
-            };
         }
 
         public override int Depth(RoomData room, Entity entity) => -5;
@@ -50,9 +42,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return [glider];
         }
 
-        public override bool Cycle(RoomData room, Entity entity, int amount)
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return CycleBoolean(entity, "bubble", amount);
+            fieldInfo.AddField("tutorial", false)
+                .AddField("bubble", placement == "floating")
+                .SetCyclableField("bubble");
         }
     }
 }

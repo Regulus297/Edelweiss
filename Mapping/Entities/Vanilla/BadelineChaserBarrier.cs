@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class BadelineChaserBarrier : CSEntityData
+    internal class BadelineChaserBarrier : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "darkChaserEnd";
 
@@ -14,13 +15,10 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override string FillColor(RoomData room, Entity entity) => EdelweissUtils.GetColor(0.4f, 0f, 0.4f, 0.4f);
         public override string BorderColor(RoomData room, Entity entity) => EdelweissUtils.GetColor(0.4f, 0, 0.4f, 1);
-        public override Dictionary<string, object> GetPlacementData()
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return new Dictionary<string, object>()
-            {
-                {"width", 8},
-                {"height", 8}
-            };
+            fieldInfo.AddResizability();
         }
     }
 }

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class GoldenBerry : CSEntityData
+    internal class GoldenBerry : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "goldenBerry";
 
@@ -11,15 +12,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override List<string> PlacementNames()
         {
             return ["golden", "golden_winged"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"winged", placement == "golden_winged"},
-                {"moon", false}
-            };
         }
 
         public override string Texture(RoomData room, Entity entity)
@@ -38,9 +30,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return "collectables/goldberry/seed00";
         }
 
-        public override bool Cycle(RoomData room, Entity entity, int amount)
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return CycleBoolean(entity, "winged", amount);
+            fieldInfo.AddField("winged", placement == "golden_winged")
+                .AddField("moon", false)
+                .SetCyclableField("winged");
         }
     }
 }

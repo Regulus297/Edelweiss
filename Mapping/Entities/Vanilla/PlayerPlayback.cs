@@ -2,12 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class PlayerPlayback : CSEntityData
+    internal class PlayerPlayback : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "playbackTutorial";
 
@@ -15,8 +16,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override void OnRegister()
         {
-            base.OnRegister();
-
             // Read from disk instead.
             tutorials = [];
             PluginAsset directory = Path.Join(MainPlugin.CelesteDirectory, "Content", "Tutorials");
@@ -24,6 +23,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             {
                 tutorials.Add(Path.GetFileNameWithoutExtension(file));
             }
+            base.OnRegister();
         }
 
         public override List<string> PlacementNames()
@@ -37,21 +37,9 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override NodeLineRenderType NodeLineRenderType(Entity entity) => Entities.NodeLineRenderType.Line;
         public override List<int> NodeLimits(RoomData room, Entity entity) => [0, 2];
 
-        public override Dictionary<string, object> GetPlacementData()
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return new Dictionary<string, object>()
-            {
-                {"tutorial", ""}
-            };
-        }
-
-        public override JObject FieldInformation(string fieldName)
-        {
-            return new JObject()
-            {
-                {"items", JArray.FromObject(tutorials)},
-                {"editable", true}
-            };
+            fieldInfo.AddOptionsField("tutorial", "", true, [.. tutorials]);
         }
     }
 }

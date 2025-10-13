@@ -1,26 +1,16 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Strawberry : CSEntityData
+    internal class Strawberry : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "strawberry";
 
         public override List<string> PlacementNames()
         {
             return ["normal", "winged", "moon"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"winged", placement == "winged"},
-                {"moon", placement == "moon"},
-                {"checkpointID", -1},
-                {"order", -1}
-            };
         }
 
         public override List<int> NodeLimits(RoomData room, Entity entity) => [0, -1];
@@ -41,5 +31,13 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         }
 
         public override int Depth(RoomData room, Entity entity) => -100;
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("winged", placement == "winged")
+                .AddField("moon", placement == "moon")
+                .AddField("checkpointID", -1)
+                .AddField("order", -1);
+        }
     }
 }

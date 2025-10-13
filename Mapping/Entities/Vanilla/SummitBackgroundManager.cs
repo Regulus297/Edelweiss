@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class SummitBackgroundManager : CSEntityData
+    internal class SummitBackgroundManager : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "SummitBackgroundManager";
 
@@ -10,19 +11,16 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         {
             return ["default"];
         }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"index", 0},
-                {"cutscene", ""},
-                {"intro_launch", false},
-                {"dark", false},
-                {"ambience", ""}
-            };
-        }
-
+        
         public override string Texture(RoomData room, Entity entity) => "@Internal@/summit_background_manager";
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("index", 0)
+                .AddField("cutscene", "")
+                .AddField("intro_launch", false)
+                .AddField("dark", false)
+                .AddField("ambience", "");
+        }
     }
 }

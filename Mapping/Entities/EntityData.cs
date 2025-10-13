@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
@@ -235,6 +237,10 @@ namespace Edelweiss.Mapping.Entities
         /// </summary>
         public virtual Dictionary<string, object> GetPlacementData()
         {
+            if(this is IFieldInfoEntity)
+            {
+                return IFieldInfoEntity.fieldInfos.GetValueOrDefault(Name)?.fields.Select(i => i).ToDictionary();
+            }
             return [];
         }
 
@@ -257,6 +263,10 @@ namespace Edelweiss.Mapping.Entities
         /// <returns>True if the entity is rotated, false if not</returns>
         public virtual bool Rotate(RoomData room, Entity entity, int rotation)
         {
+            if(this is IFieldInfoEntity)
+            {
+                return IFieldInfoEntity.fieldInfos[Name].Rotate(entity, rotation);
+            }
             return false;
         }
 
@@ -270,6 +280,10 @@ namespace Edelweiss.Mapping.Entities
         /// <returns>True if the flip changed the entity, false if not</returns>
         public virtual bool Flip(RoomData room, Entity entity, bool horizontal, bool vertical)
         {
+            if(this is IFieldInfoEntity)
+            {
+                return IFieldInfoEntity.fieldInfos[Name].Flip(entity, horizontal, vertical);
+            }
             return false;
         }
 
@@ -283,6 +297,10 @@ namespace Edelweiss.Mapping.Entities
         /// <returns>True if the entity was changed, false if not</returns>
         public virtual bool Cycle(RoomData room, Entity entity, int amount)
         {
+            if(this is IFieldInfoEntity)
+            {
+                return IFieldInfoEntity.fieldInfos[Name].Cycle(entity, amount);
+            }
             return false;
         }
 
@@ -426,6 +444,11 @@ namespace Edelweiss.Mapping.Entities
         /// </summary>
         public virtual JObject FieldInformation(string fieldName)
         {
+            if(this is IFieldInfoEntity)
+            {
+                var info = IFieldInfoEntity.fieldInfos.GetValueOrDefault(Name)?.GetFieldInfo(fieldName);
+                return info;
+            }
             return null;
         }
 

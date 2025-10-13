@@ -568,7 +568,6 @@ namespace Edelweiss.Mapping.Entities
             writer.Write((byte)fields.Count); // Attr count
             foreach (var field in fields)
             {
-                Console.WriteLine((field.Key, field.Value, field.Value.GetType()));
                 writer.WriteAttribute(field.Key, field.Value);
             }
 

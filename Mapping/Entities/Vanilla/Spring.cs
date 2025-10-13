@@ -1,19 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal abstract class Spring : CSEntityData
+    internal abstract class Spring : CSEntityData, IFieldInfoEntity
     {
         public override int Depth(RoomData room, Entity entity) => -8501;
         public override List<float> Justification(RoomData room, Entity entity) => [0.5f, 1.0f];
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"playerCanUse", true}
-            };
-        }
 
         public override List<string> PlacementNames()
         {
@@ -21,6 +15,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         }
 
         public override string Texture(RoomData room, Entity entity) => "objects/spring/00";
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("playerCanUse", true);
+        }
     }
 
     internal class SpringUp : Spring

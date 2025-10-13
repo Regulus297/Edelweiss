@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class SummitCheckpoint : CSEntityData
+    internal class SummitCheckpoint : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "summitcheckpoint";
         public override int Depth(RoomData room, Entity entity) => 8999;
@@ -12,14 +13,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override List<string> PlacementNames()
         {
             return ["default"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"number", 0}
-            };
         }
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
@@ -44,6 +37,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             frontDigit2.y += 4;
 
             return [back, backDigit1, backDigit2, frontDigit1, frontDigit2];
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("number", 0);
         }
     }
 }

@@ -1,24 +1,17 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class HangingLamp : CSEntityData
+    internal class HangingLamp : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "hanginglamp";
 
         public override List<string> PlacementNames()
         {
             return ["hanging_lamp"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"height", 16}
-            };
         }
 
         public override int Depth(RoomData room, Entity entity) => 2000;
@@ -60,6 +53,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             sprites.Add(bottom);
 
             return sprites;
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddResizability(null, 16);
         }
     }
 }

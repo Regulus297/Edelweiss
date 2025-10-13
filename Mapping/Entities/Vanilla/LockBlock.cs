@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class LockBlock : CSEntityData
+    internal class LockBlock : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "lockBlock";
 
@@ -59,6 +60,14 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                     "wood", "temple_a", "temple_b", "moon"
                 }}
             };
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddOptionsField("sprite", placement, "wood", "temple_a", "temple_b", "moon")
+                .AddField("unlock_sfx", "")
+                .AddField("stepMusicProgress", false)
+                .SetCyclableField("sprite");
         }
     }
 }

@@ -2,27 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class HeartDoor : CSEntityData
+    internal class HeartDoor : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "heartGemDoor";
 
         public override List<string> PlacementNames()
         {
             return ["door"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"width", 40},
-                {"requires", 0},
-                {"startHidden", false}
-            };
         }
 
         // TODO: warnbelowsize
@@ -113,6 +104,13 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             }
             Point node = entity.GetNode(0);
             return [new Rectangle(entity.x, 0, entity.width, room.height), new Rectangle(node.X - 8, node.Y, entity.width + 16, 8)];
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddResizability(40, null)
+                .AddIntField("requires", 0, 0, null)
+                .AddField("startHidden", false);
         }
     }
 }

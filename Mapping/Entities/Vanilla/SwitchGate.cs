@@ -1,28 +1,18 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class SwitchGate : CSEntityData
+    internal class SwitchGate : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "switchGate";
 
         public override List<string> PlacementNames()
         {
             return ["block", "mirror", "temple", "stars"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"width", 16},
-                {"height", 16},
-                {"sprite", placement},
-                {"persistent", false}
-            };
         }
 
         public override List<int> NodeLimits(RoomData room, Entity entity) => [1, 1];
@@ -43,21 +33,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return [block, middle];
         }
 
-        public override bool Cycle(RoomData room, Entity entity, int amount)
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            entity["sprite"] = PlacementNames().Cycle(entity.Get("sprite", "block"), amount);
-            return true;
-        }
-
-        public override JObject FieldInformation(string fieldName)
-        {
-            if (fieldName != "sprite")
-                return null;
-
-            return new JObject()
-            {
-                {"items", JArray.FromObject(PlacementNames())}
-            };
+            fieldInfo.AddResizability(16, 16)
+                .AddOptionsField("sprite", placement, [.. PlacementNames()])
+                .AddField("persistent", false)
+                .SetCyclableField("sprite");
         }
     }
 }

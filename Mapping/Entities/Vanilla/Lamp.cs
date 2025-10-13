@@ -1,24 +1,17 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Lamp : CSEntityData
+    internal class Lamp : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "lamp";
 
         public override List<string> PlacementNames()
         {
             return ["normal", "broken"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"broken", placement == "broken"}
-            };
         }
 
         public override int Depth(RoomData room, Entity entity) => 5;
@@ -45,11 +38,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return [sprite];
         }
 
-        public override bool Cycle(RoomData room, Entity entity, int amount)
-        {
-            return CycleBoolean(entity, "broken", amount);
-        }
-
         public override List<Rectangle> Selection(RoomData room, Entity entity)
         {
             Sprite sprite = new Sprite("scenery/lamp", entity)
@@ -58,6 +46,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                 justificationY = 0
             };
             return [new Rectangle(entity.x - sprite.atlasWidth / 4, entity.y - sprite.atlasHeight, sprite.atlasWidth / 2, sprite.atlasHeight)];
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("broken", placement == "broken")
+                .SetCyclableField("broken");
         }
     }
 }

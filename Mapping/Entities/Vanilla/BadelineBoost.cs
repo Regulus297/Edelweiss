@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class BadelineBoost : CSEntityData
+    internal class BadelineBoost : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "badelineBoost";
         public override int Depth(RoomData room, Entity entity)
@@ -25,21 +26,18 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return [0, -1];
         }
 
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>
-            {
-                {"lockCamera", true},
-                {"canSkip", false},
-                {"finalCh9Boost", false},
-                {"finalCh9GoldenBoost", false},
-                {"finalCh9Dialog", false}
-            };
-        }
-
         public override List<string> PlacementNames()
         {
             return ["boost"];
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("lockCamera", true)
+                .AddField("canSkip", false)
+                .AddField("finalCh9Boost", false)
+                .AddField("finalCh9GoldenBoost", false)
+                .AddField("finalCh9Dialog", false);
         }
     }
 }

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class SoundSource : CSEntityData
+    internal class SoundSource : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "soundSource";
 
@@ -36,22 +37,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return ["default"];
         }
 
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"sound", ""}
-            };
-        }
-
         public override string Texture(RoomData room, Entity entity) => "@Internal@/sound_source";
-        public override JObject FieldInformation(string fieldName)
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return new JObject()
-            {
-                {"items", JArray.FromObject(environmentalSounds.Keys)},
-                {"editable", true}
-            };
+            fieldInfo.AddOptionsField("sound", "", true, [.. environmentalSounds.Keys]);
         }
     }
 }

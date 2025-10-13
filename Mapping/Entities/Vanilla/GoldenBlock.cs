@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class GoldenBlock : CSEntityData
+    internal class GoldenBlock : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "goldenBlock";
 
@@ -16,15 +17,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         // TODO: Add warnBelowSize
 
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"width", 16},
-                {"height", 16}
-            };
-        }
-
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
             NinePatch ninePatch = new NinePatch("objects/goldblock", entity.x, entity.y, entity.width, entity.height);
@@ -32,6 +24,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             middle.x += entity.width / 2;
             middle.y += entity.height / 2;
             return [ninePatch, middle];
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddResizability(16, 16);
         }
     }
 }

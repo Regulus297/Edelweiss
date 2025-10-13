@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class BounceBlock : CSEntityData
+    internal class BounceBlock : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "bounceBlock";
 
@@ -33,19 +34,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return [ninePatch, crystalSprite];
         }
 
-        public override Dictionary<string, object> GetPlacementData()
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return new Dictionary<string, object>()
-            {
-                {"width", 16},
-                {"height", 16},
-                {"notCoreMode", placement == "ice"}
-            };
-        }
-
-        public override bool Cycle(RoomData room, Entity entity, int amount)
-        {
-            return CycleBoolean(entity, "notCoreMode", amount); 
+            fieldInfo.AddResizability(16, 16)
+                .AddField("notCoreMode", placement == "ice")
+                .SetCyclableField("notCoreMode");
         }
     }
 }

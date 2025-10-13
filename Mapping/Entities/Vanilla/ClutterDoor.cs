@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class ClutterDoor : CSEntityData
+    internal class ClutterDoor : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "clutterDoor";
 
@@ -53,6 +54,13 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                     "red", "green", "yellow", "lightning"
                 }}
             };
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddOptionsField("type", placement, "red", "green", "yellow", "lightning")
+                .AddResizability(24, 24)
+                .SetCyclableField("type");
         }
     }
 }

@@ -2,28 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Spinner : CSEntityData
+    internal class Spinner : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "spinner";
 
         public override List<string> PlacementNames()
         {
             return ["dust", "blue", "red", "purple", "core", "rainbow"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"color", placement == "dust" ? "blue" : placement},
-                {"dust", placement == "dust"},
-                {"attachToSolid", false}
-            };
         }
 
         private static string GetSpinnerTexture(string color, bool foreground)
@@ -97,20 +88,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return true;
         }
 
-        public override JObject FieldInformation(string fieldName)
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            if (fieldName == "color")
-                return null;
-            return new JObject()
-            {
-                {"items", new JObject() {
-                    {"Blue", "blue"},
-                    {"Red", "red"},
-                    {"Purple", "purple"},
-                    {"Core", "core"},
-                    {"Rainbow", "rainbow"}
-                }}
-            };
+            fieldInfo.AddOptionsField("color", placement == "dust" ? "blue" : placement, ("Blue", "blue"), ("Red", "red"), ("Purple", "purple"), ("Core", "core"), ("Rainbow", "rainbow"))
+                .AddField("dust", placement == "dust")
+                .AddField("attachToSolid", false)
+                .SetCyclableField("color");
         }
     }
 }

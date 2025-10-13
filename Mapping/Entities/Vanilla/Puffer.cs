@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
     // My puffer has the fucking white lines
     // This is the best and most important feature in the editor
-    internal class Puffer : CSEntityData
+    internal class Puffer : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "eyebomb";
 
@@ -36,23 +37,9 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return ["left", "right"];
         }
 
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"right", placement == "right"}
-            };
-        }
-
         public override List<float> Scale(RoomData room, Entity entity)
         {
             return [entity.Get<bool>("right") ? 1 : -1, 1];
-        }
-
-        public override bool Flip(RoomData room, Entity entity, bool horizontal, bool vertical)
-        {
-            CycleBoolean(entity, "right", horizontal ? 1 : 0);
-            return horizontal;
         }
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
@@ -66,6 +53,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             }
 
             return sprites;
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("right", placement == "right")
+                .SetHorizontalFlipField("right");
         }
     }
 }

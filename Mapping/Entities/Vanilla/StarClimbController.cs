@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
@@ -13,7 +14,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         public override string Texture(RoomData room, Entity entity) => "@Internal@/northern_lights";
     }
 
-    internal class EverestStarClimbController : CSEntityData
+    internal class EverestStarClimbController : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "everest/starClimbGraphicsController";
 
@@ -22,16 +23,13 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return ["default"];
         }
         public override string Texture(RoomData room, Entity entity) => "@Internal@/northern_lights";
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"fgColor", "#A3FFFF"},
-                {"bgColor", "#293E4B"}
-            };
-        }
-
+        
         public override List<string> Mods() => ["Everest"];
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("fgColor", "#A3FFFF")
+                .AddField("bgColor", "#293E4B");
+        }
     }
 }

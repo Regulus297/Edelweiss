@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class MoveBlock : CSEntityData
+    internal class MoveBlock : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "moveBlock";
 
@@ -28,19 +29,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             }
 
             return placements;
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            string[] split = placement.Split('_');
-            return new Dictionary<string, object>()
-            {
-                {"width", 16},
-                {"height", 16},
-                {"direction", split[0]},
-                {"canSteer", split[1] == "steer"},
-                {"fast", split[2] == "fast"}
-            };
         }
 
         public override int Depth(RoomData room, Entity entity) => 8995;
@@ -169,25 +157,15 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return sprites;
         }
 
-        public override bool Rotate(RoomData room, Entity entity, int rotation)
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            entity["direction"] = directions.Cycle(entity.Get("direction", "Up"), rotation);
-            return true;
-        }
-
-        public override bool Cycle(RoomData room, Entity entity, int amount)
-        {
-            return CycleBoolean(entity, "canSteer", amount);
-        }
-
-        public override JObject FieldInformation(string fieldName)
-        {
-            if (fieldName != "direction")
-                return null;
-            return new JObject()
-            {
-                {"items", JArray.FromObject(directions)}
-            };
+            string[] split = placement.Split('_');
+            fieldInfo.AddResizability(16, 16)
+                .AddOptionsField("direction", split[0], [.. directions])
+                .AddField("canSteer", split[1] == "steer")
+                .AddField("fast", split[2] == "fast")
+                .SetCyclableField("canSteer")
+                .SetRotateField("direction");
         }
     }
 }

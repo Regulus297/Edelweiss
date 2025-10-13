@@ -1055,6 +1055,136 @@
             Always visible
             </summary>
         </member>
+        <member name="T:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo">
+            <summary>
+            Data structure containing field info for entities
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.fields">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.AddField(System.String,System.Object)">
+            <summary>
+            Adds a field to the info
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.AddIntField(System.String,System.Int32,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Adds a field to the data which contains an integer value
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+            <param name="min"></param>
+            <param name="max"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.AddFloatField(System.String,System.Single,System.Nullable{System.Single},System.Nullable{System.Single})">
+            <summary>
+            Adds a field to the data which contains a float value
+            </summary>
+            <param name="name"></param>
+            <param name="value"></param>
+            <param name="min"></param>
+            <param name="max"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.AddOptionsField(System.String,System.String,System.String[])">
+            <summary>
+            Adds a field to the data which contains a string with options that is not editable
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.AddOptionsField(System.String,System.Object,System.Boolean,System.Object[])">
+            <summary>
+            Adds a field to the data which contains a string with options
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.AddOptionsField(System.String,System.Object,System.String,System.Object[])">
+            <summary>
+            Adds a field to the data which contains an object of the given type with options that is not editable
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.AddOptionsField(System.String,System.Object,System.Boolean,System.String,System.Object[])">
+            <summary>
+            Adds a field to the data which contains an object of the given type with options.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.AddOptionsField(System.String,System.Object,System.ValueTuple{System.String,System.String}[])">
+            <summary>
+            Adds a field to the data which contains an object of the given type with options that are key-value pairs
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.AddResizability(System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            Makes the entity resizable. By default, makes it 8*8 and resizable on both axes
+            </summary>
+            <param name="width">The starting width of the entity. Null if it cannot be resized horizontally</param>
+            <param name="height">The starting height of the entity. Null if it cannot be resized vertically</param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.AddNodes(System.Drawing.Point[])">
+            <summary>
+            Adds a list of nodes to the entity's placement
+            </summary>
+            <param name="nodes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.SetCyclableField(System.String)">
+            <summary>
+            This field will be changed when the entity's state is cycled
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.SetRotateField(System.String)">
+            <summary>
+            This field will be changed when the entity is rotated
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.SetHorizontalFlipField(System.String)">
+            <summary>
+            This field will be changed when the entity is flipped horizontally
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.SetVerticalFlipField(System.String)">
+            <summary>
+            This field will be changed when the entity is flipped vertically
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.Cycle(Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <summary>
+            Cycles the entity based on the cyclable field set
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.Rotate(Edelweiss.Mapping.Entities.Entity,System.Int32)">
+            <summary>
+            Rotates the entity based on the rotate field set
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.Flip(Edelweiss.Mapping.Entities.Entity,System.Boolean,System.Boolean)">
+            <summary>
+            Flips the entity based on the flip fields set
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo.GetFieldInfo(System.String)">
+            <summary>
+            Gets the field info for a specific field
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.Helpers.IFieldInfoEntity">
+            <summary>
+            Interface for entities that use custom field info
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.Helpers.IFieldInfoEntity.InitializeFieldInfo(Edelweiss.Mapping.Entities.Helpers.EntityFieldInfo)">
+            <summary>
+            Initializes the field info
+            </summary>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.Helpers.TileHelper">
             <summary>
             Class that assists in making fake tile entities
@@ -2585,6 +2715,15 @@
             - widget: the tracker for the ZoomableView
             </summary>
         </member>
+        <member name="F:Edelweiss.Network.Netcode.MODIFY_LOADING_SCREEN">
+            <summary>
+            Modifies the current loading screen. <br/>
+            Parameters: <br/>
+            - action: open, modify, close <br/>
+            - name: used with the open action, creates and opens a loading screen with the name <br/>
+            - progress: used with the modify action. Sets the current progress of the loading screen
+            </summary>
+        </member>
         <member name="F:Edelweiss.Network.Netcode.KEY_PRESSED">
             <summary>
             
@@ -3010,6 +3149,16 @@
             <summary>
             Cycles through a list
             </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Cycle``1(``0[],``0,System.Int32)">
+            <summary>
+            Cycles through an array
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="items"></param>
+            <param name="current"></param>
+            <param name="amount"></param>
+            <returns></returns>
         </member>
         <member name="M:Edelweiss.Utils.EdelweissUtils.Mod(System.Int32,System.Int32)">
             <summary>

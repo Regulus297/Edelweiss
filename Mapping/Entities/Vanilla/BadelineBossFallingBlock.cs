@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class BadelineBossFallingBlock : CSEntityData
+    internal class BadelineBossFallingBlock : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "finalBossFallingBlock";
 
@@ -12,18 +13,14 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return ["default"];
         }
 
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"width", 8},
-                {"height", 8}
-            };
-        }
-
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
             return [new Tiles("G", true, entity.x, entity.y, entity.width / 8, entity.height / 8)];
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddResizability();
         }
     }
 }

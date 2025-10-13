@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class CoreToggle : CSEntityData
+    internal class CoreToggle : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "coreModeToggle";
 
@@ -20,16 +21,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                 return "objects/coreFlipSwitch/switch15";
 
             return "objects/coreFlipSwitch/switch01";
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"onlyIce", placement == "ice"},
-                {"onlyFire", placement == "fire"},
-                {"persistent", false}
-            };
         }
 
         public override bool Cycle(RoomData room, Entity entity, int amount)
@@ -50,6 +41,13 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                 entity["onlyFire"] = false;
             }
             return true;
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("onlyIce", placement == "ice")
+                .AddField("onlyFire", placement == "fire")
+                .AddField("persistent", false);
         }
     }
 }

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Bonfire : CSEntityData
+    internal class Bonfire : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "bonfire";
 
@@ -26,34 +27,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             };
         }
 
-        public override bool Cycle(RoomData room, Entity entity, int amount)
-        {
-            string mode = entity.data["mode"].ToString().ToLower();
-            entity.data["mode"] = mode switch
-            {
-                "lit" => "Smoking",
-                "smoking" => "Unlit",
-                _ => "Lit"
-            };
-            return true;
-        }
 
-        public override Dictionary<string, object> GetPlacementData()
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return new Dictionary<string, object>()
-            {
-                {"mode", "Lit"}
-            };
-        }
-
-        public override JObject FieldInformation(string fieldName)
-        {
-            return new JObject()
-            {
-                {"items", new JArray() {
-                    "Lit", "Smoking", "Unlit"
-                }}
-            };
+            fieldInfo.AddOptionsField("mode", "Lit", "Lit", "Smoking", "Unlit")
+                .SetCyclableField("mode");
         }
     }
 }

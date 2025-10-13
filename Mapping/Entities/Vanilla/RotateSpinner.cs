@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class RotateSpinner : CSEntityData
+    internal class RotateSpinner : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "rotateSpinner";
 
@@ -28,20 +29,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
                 }
             }
             return placements;
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            string type = placement.Split('_')[0];
-            string direction = placement.Split('_')[1];
-
-            (bool dust, bool star) = types[type];
-            return new Dictionary<string, object>()
-            {
-                {"clockwise", direction == "clockwise"},
-                {"dust", dust},
-                {"star", star}
-            };
         }
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
@@ -94,6 +81,17 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             }
 
             return true;
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            string type = placement.Split('_')[0];
+            string direction = placement.Split('_')[1];
+
+            (bool dust, bool star) = types[type];
+            fieldInfo.AddField("clockwise", direction == "clockwise")
+                .AddField("dust", dust)
+                .AddField("star", star);
         }
     }
 }

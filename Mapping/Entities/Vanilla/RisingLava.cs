@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class RisingLava : CSEntityData
+    internal class RisingLava : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "risingLava";
 
@@ -11,14 +12,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return ["default"];
         }
 
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"intro", false}
-            };
-        }
-
         public override string Texture(RoomData room, Entity entity) => "@Internal@/rising_lava";
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("intro", false);
+        }
     }
 }

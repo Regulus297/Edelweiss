@@ -1,25 +1,18 @@
 using System;
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class IntroCar : CSEntityData
+    internal class IntroCar : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "introCar";
 
         public override List<string> PlacementNames()
         {
             return ["intro_car"];
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"hasRoadAndBarriers", false}
-            };
         }
 
         public override List<Drawable> Sprite(RoomData room, Entity entity)
@@ -77,9 +70,10 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return [body, wheel, .. pavements, barrier1, barrier2];
         }
 
-        public override bool Cycle(RoomData room, Entity entity, int amount)
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return CycleBoolean(entity, "hasRoadAndBarriers", amount);
+            fieldInfo.AddField("hasRoadAndBarriers", false)
+                .SetCyclableField("hasRoadAndBarriers");
         }
     }
 }

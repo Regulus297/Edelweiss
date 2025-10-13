@@ -9,9 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Edelweiss.Loenn;
 using Edelweiss.Mapping.Entities;
+using Edelweiss.Network;
 using Edelweiss.Plugins;
 using Edelweiss.Preferences;
 using MoonSharp.Interpreter;
+using Newtonsoft.Json.Linq;
 using YamlDotNet.RepresentationModel;
 
 namespace Edelweiss.Utils
@@ -76,12 +78,29 @@ namespace Edelweiss.Utils
 
         internal static void LoadMods()
         {
-            foreach (PluginAsset path in EdelweissUtils.GetPluginAssetsFromDirectory(Path.Join(MainPlugin.CelesteDirectory, "Mods")))
+            NetworkManager.SendPacket(Netcode.MODIFY_LOADING_SCREEN, new JObject()
+            {
+                {"action", "open"},
+                {"name", "main"}
+            });
+            List<PluginAsset> mods = EdelweissUtils.GetPluginAssetsFromDirectory(Path.Join(MainPlugin.CelesteDirectory, "Mods"));
+            int i = 0;
+            foreach (PluginAsset path in mods)
             {
                 LoadMod(path);
+                i++;
+                NetworkManager.SendPacket(Netcode.MODIFY_LOADING_SCREEN, new JObject()
+                {
+                    {"action", "modify"},
+                    {"progress", (float)i / mods.Count}
+                });
             }
             MainPlugin.textures.Value = texturePaths;
             PostLoadMods?.Invoke();
+            NetworkManager.SendPacket(Netcode.MODIFY_LOADING_SCREEN, new JObject()
+            {
+                {"action", "close"}
+            });
         }
 
         internal static void LoadMod(PluginAsset modPath)

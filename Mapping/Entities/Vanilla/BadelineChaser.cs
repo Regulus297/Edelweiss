@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class BadelineChaser : CSEntityData
+    internal class BadelineChaser : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "darkChaser";
 
@@ -13,12 +14,10 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override List<float> Justification(RoomData room, Entity entity) => [0.5f, 1.0f];
         public override string Texture(RoomData room, Entity entity) => "characters/badeline/sleep00";
-        public override Dictionary<string, object> GetPlacementData()
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return new Dictionary<string, object>
-            {
-                {"canChangeMusic", true}
-            };
+            fieldInfo.AddField("canChangeMusic", true);
         }
     }
 }

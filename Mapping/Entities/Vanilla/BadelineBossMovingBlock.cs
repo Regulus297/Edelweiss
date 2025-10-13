@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class BadelineBossMovingBlock : CSEntityData
+    internal class BadelineBossMovingBlock : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "finalBossMovingBlock";
 
@@ -16,16 +17,6 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return ["default"];
         }
 
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"nodeIndex", 0},
-                {"width", 8},
-                {"height", 8}
-            };
-        }
-
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
             return [new Tiles("G", true, entity.x, entity.y, entity.width / 8, entity.height / 8)];
@@ -35,6 +26,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         {
             Point node = entity.GetNode(nodeIndex);
             return [new Tiles("g", true, node.X, node.Y, entity.width / 8, entity.height / 8)];
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddIntField("nodeIndex", 0)
+                .AddResizability();
         }
     }
 }

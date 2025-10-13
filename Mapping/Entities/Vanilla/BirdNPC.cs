@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class BirdNPC : CSEntityData
+    internal class BirdNPC : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "bird";
 
@@ -39,30 +40,12 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return [modeFacingScale.GetValueOrDefault(entity.Get<string>("mode"), 1), 1];
         }
 
-        public override bool Cycle(RoomData room, Entity entity, int amount)
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            entity["mode"] = modeFacingScale.Keys.ToList().Cycle(entity.Get<string>("mode"), amount);
-            return true;
-        }
-
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"mode", "Sleeping"},
-                {"onlyOnce", false},
-                {"onlyIfPlayerLeft", false}
-            };
-        }
-
-        public override JObject FieldInformation(string fieldName)
-        {
-            if (fieldName != "mode")
-                return null;
-            return new JObject()
-            {
-                {"items", JArray.FromObject(modeFacingScale.Keys)}
-            };
+            fieldInfo.AddOptionsField("mode", "Sleeping", [.. modeFacingScale.Keys])
+                .AddField("onlyOnce", false)
+                .AddField("onlyIfPlayerLeft", false)
+                .SetCyclableField("mode");
         }
     }
 }

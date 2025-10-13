@@ -105,6 +105,15 @@ namespace Edelweiss.Network
         /// </summary>
         public const long CLEAR_VIEW = 0xb;
 
+        /// <summary>
+        /// Modifies the current loading screen. <br/>
+        /// Parameters: <br/>
+        /// - action: open, modify, close <br/>
+        /// - name: used with the open action, creates and opens a loading screen with the name <br/>
+        /// - progress: used with the modify action. Sets the current progress of the loading screen
+        /// </summary>
+        public const long MODIFY_LOADING_SCREEN = 0xc;
+
 
         // Received packets
 

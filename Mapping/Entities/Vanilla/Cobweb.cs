@@ -2,12 +2,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using Edelweiss.Loenn;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using MoonSharp.Interpreter;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class Cobweb : CSEntityData
+    internal class Cobweb : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "cobweb";
 
@@ -58,18 +59,15 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return lines;
         }
 
-        public override Dictionary<string, object> GetPlacementData()
-        {
-            return new Dictionary<string, object>()
-            {
-                {"color", "#696A6A"}
-            };
-        }
-
         public override Rectangle GetDefaultRectangle(RoomData room, Entity entity, int nodeIndex)
         {
             Point pos = nodeIndex == -1 ? new Point(entity.x, entity.y) : entity.GetNode(nodeIndex);
             return new Rectangle(pos.X - 2, pos.Y - 2, 5, 5);
+        }
+
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
+        {
+            fieldInfo.AddField("color", "#696a6a");
         }
     }
 }

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using Edelweiss.Mapping.Drawables;
+using Edelweiss.Mapping.Entities.Helpers;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class ClutterSwitch : CSEntityData
+    internal class ClutterSwitch : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "colorSwitch";
 
@@ -32,30 +33,10 @@ namespace Edelweiss.Mapping.Entities.Vanilla
             return [buttonSprite, clutterSprite];
         }
 
-        public override Dictionary<string, object> GetPlacementData()
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return new Dictionary<string, object>()
-            {
-                {"type", placement}
-            };
-        }
-
-        public override bool Cycle(RoomData room, Entity entity, int amount)
-        {
-            entity["type"] = PlacementNames().Cycle(entity.Get("type", "red"), amount);
-            return true;
-        }
-
-        public override JObject FieldInformation(string fieldName)
-        {
-            if (fieldName != "type")
-                return null;
-            return new JObject()
-            {
-                {"items", new JArray() {
-                    "red", "green", "yellow", "lightning"
-                }}
-            };
+            fieldInfo.AddOptionsField("type", placement, "red", "green", "yellow", "lightning")
+                .SetCyclableField("type");
         }
     }
 }

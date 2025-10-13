@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Edelweiss.Mapping.Entities.Helpers;
 
 namespace Edelweiss.Mapping.Entities.Vanilla
 {
-    internal class GlassBlock : CSEntityData
+    internal class GlassBlock : CSEntityData, IFieldInfoEntity
     {
         public override string EntityName => "glassBlock";
 
@@ -14,15 +15,11 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         {
             return ["glass_block"];
         }
-
-        public override Dictionary<string, object> GetPlacementData()
+        
+        public void InitializeFieldInfo(EntityFieldInfo fieldInfo)
         {
-            return new Dictionary<string, object>()
-            {
-                {"sinks", false},
-                {"width", 8},
-                {"height", 8}
-            };
+            fieldInfo.AddField("sinks", false)
+                .AddResizability();
         }
     }
 }
