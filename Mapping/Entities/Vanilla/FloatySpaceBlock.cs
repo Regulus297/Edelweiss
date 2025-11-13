@@ -29,7 +29,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         // TODO: fancy merge stuff
         public override List<Drawable> Sprite(RoomData room, Entity entity)
         {
-            List<Entity> entities = room.entities.Where(e => e.Name == entity.Name && e.Get<bool>("tiletype") == entity.Get<bool>("tiletype")).ToList();
+            List<Entity> entities = room.entities.Where(e => e.Value.Name == entity.Name && e.Value.Get<bool>("tiletype") == entity.Get<bool>("tiletype")).Select(e => e.Value).ToList();
 
             if (entities.Count <= 1 || !entities.Contains(entity))
                 return TileHelper.GetSprite(entity, "tiletype");

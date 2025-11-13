@@ -31,7 +31,7 @@ namespace Edelweiss.Mapping.PacketReceivers
             if (MappingTab.selectedTool is not SelectionTool)
                 return;
 
-            Entity found = MappingTab.map.allEntities.GetValueOrDefault(entityID);
+            Entity found = MappingTab.GetEntity(entityID);
             var others = SelectionTool.selected.Where(i => i.Item1.EntityName == found.EntityName && i.Item1._id != found._id).Select(i => i.Item1);
             found.UpdateData(data, -1, others.ToArray());
             found.entityRoom.RedrawEntities();
@@ -78,12 +78,13 @@ namespace Edelweiss.Mapping.PacketReceivers
             room["shapes"][1]["height"] = height;
             room["name"] = data.Value<string>("name");
 
-            MappingTab.map.rooms.Add(new RoomData(data)
+            RoomData created = new RoomData(data)
             {
                 map = MappingTab.map,
-                fgTileData = room["shapes"][1]["tileData"].ToString(),
-                bgTileData = room["shapes"][0]["tileData"].ToString()
-            });
+            };
+            created.fgTileData.Decode(room["shapes"][1]["tileData"].ToString());
+            created.bgTileData.Decode(room["shapes"][0]["tileData"].ToString());
+            MappingTab.map.rooms.Add(created);
             MappingTab.rooms.Value = MappingTab.map.rooms.Select(r => r.name);
 
             NetworkManager.SendPacket(Netcode.ADD_ITEM, new JObject()

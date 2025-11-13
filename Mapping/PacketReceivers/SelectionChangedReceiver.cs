@@ -15,7 +15,7 @@ namespace Edelweiss.Mapping.PacketReceivers
         public override void ProcessPacket(Packet packet)
         {
             JObject data = JObject.Parse(packet.data);
-            Entity found = MappingTab.map.allEntities.GetValueOrDefault(data.Value<string>("name"));
+            Entity found = MappingTab.GetEntity(data.Value<string>("name"));
             if (found == null)
                 return;
 

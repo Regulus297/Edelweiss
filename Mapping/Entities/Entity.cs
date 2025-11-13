@@ -120,15 +120,15 @@ namespace Edelweiss.Mapping.Entities
         internal EntityData entityData;
         internal RoomData entityRoom;
 
-        internal static Queue<string> DiscardedIDs = [];
+        internal static Dictionary<RoomData, Queue<string>> DiscardedIDs = [];
 
-        internal static string GetEntityID()
+        internal static string GetEntityID(RoomData roomData)
         {
-            if (DiscardedIDs.TryDequeue(out string id))
+            if (DiscardedIDs.TryGetValue(roomData, out var queue) && queue.TryDequeue(out string id))
             {
                 return id;
             }
-            return MappingTab.map.allEntities.Count.ToString();
+            return roomData.entities.Count.ToString();
         }
 
         /// <summary>
@@ -207,8 +207,10 @@ namespace Edelweiss.Mapping.Entities
             }
             this.width = width;
             this.height = height;
-            data["width"] = width;
-            data["height"] = height;
+            if (data.ContainsKey("width"))
+                data["width"] = width;
+            if(data.ContainsKey("height"))
+                data["height"] = height;
         }
 
         /// <summary>
@@ -339,7 +341,7 @@ namespace Edelweiss.Mapping.Entities
                 return;
             JObject item = new()
             {
-                {"name", _id},
+                {"name", $"{entityRoom?.name}:{_id}" },
                 {"x", x},
                 {"y", y},
                 {"width", width},
@@ -365,7 +367,7 @@ namespace Edelweiss.Mapping.Entities
                     {"resizeX", canResize[0] && j == 0},
                     {"resizeY", canResize[1] && j == 0},
                     {"tags", new JArray() {
-                        {EntityName}
+                        {$"{entityRoom?.name}{EntityName}" }
                     }}
                 });
                 j++;

@@ -412,7 +412,7 @@ namespace Edelweiss.Mapping.Entities
             JObject fieldInfo = new JObject();
             JObject form = new JObject()
             {
-                {"formID", $"EntityData : {entity._id}"},
+                {"formID", $"EntityData : {entity.entityRoom?.name}:{entity._id}"},
                 {"fields", fields},
                 {"fieldInfo", fieldInfo}
             };

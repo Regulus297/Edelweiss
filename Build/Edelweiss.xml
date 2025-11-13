@@ -1355,11 +1355,6 @@
             The rooms that the map contains
             </summary>
         </member>
-        <member name="F:Edelweiss.Mapping.Entities.MapData.allEntities">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="F:Edelweiss.Mapping.Entities.MapData.meta">
             <summary>
             The metadata for this map
@@ -1722,6 +1717,63 @@
         <member name="M:Edelweiss.Mapping.Entities.RoomData.Decode(Edelweiss.Mapping.SaveLoad.MapElement)">
             <inheritdoc/>
         </member>
+        <member name="T:Edelweiss.Mapping.Entities.TileMatrix">
+            <summary>
+            Represents a grid of tiles
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.TileMatrix.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Represents a grid of tiles
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.TileMatrix.Width">
+            <summary>
+            The width of the matrix
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.TileMatrix.Height">
+            <summary>
+            The height of the matrix
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.TileMatrix.TileData">
+            <summary>
+            The data in the matrix
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.TileMatrix.GetTile(System.Int32,System.Int32,System.Char)">
+            <summary>
+            Gets the tile ID at the given x and y coordinate, returning a whitespace if the tile is empty
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.TileMatrix.GetTileConverted(System.Int32,System.Int32,System.Char)">
+            <summary>
+            Gets the tile ID at the given x and y coordinate, returning 0 if the tile is empty
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.TileMatrix.SetTile(System.Int32,System.Int32,System.String)">
+            <summary>
+            Sets the tile ID at the given x and y coordinate to the provided tile
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.TileMatrix.Format">
+            <summary>
+            Converts the internal tile data to a saveable string
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.TileMatrix.Decode(System.String)">
+            <summary>
+            Sets the matrix's tile data from a saved string
+            </summary>
+            <param name="tileData"></param>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.TileMatrix.InBounds(System.Int32,System.Int32)">
+            <summary>
+            Determines whether the given x and y coordinates are in bounds
+            </summary>
+        </member>
         <member name="T:Edelweiss.Mapping.Keybinds.CycleKeybind">
             <summary>
             The keybind for cycling the state of an object. Defaults to E
@@ -1769,6 +1821,13 @@
         </member>
         <member name="P:Edelweiss.Mapping.Keybinds.VerticalFlipKeybind.DefaultBindings">
             <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.MappingTab.GetEntity(System.String)">
+            <summary>
+            Gets the entity object with the given name coming from the frontend
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
         </member>
         <member name="T:Edelweiss.Mapping.SaveLoad.IMapSaveable">
             <summary>

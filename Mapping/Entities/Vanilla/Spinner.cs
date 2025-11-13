@@ -34,7 +34,7 @@ namespace Edelweiss.Mapping.Entities.Vanilla
         {
             List<Drawable> sprites = [];
 
-            foreach (Entity other in room.entities)
+            foreach (Entity other in room.entities.Values)
             {
                 if (other.EntityName == entity.EntityName && !other.Get<bool>("dust") && other.Get<bool>("attachToSolid") == entity.Get<bool>("attachToSolid"))
                 {

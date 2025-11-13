@@ -18,11 +18,6 @@ namespace Edelweiss.Mapping.Entities
         public List<RoomData> rooms = [];
 
         /// <summary>
-        /// 
-        /// </summary>
-        public Dictionary<string, Entity> allEntities = [];
-
-        /// <summary>
         /// The metadata for this map
         /// </summary>
         public MapMeta meta = new MapMeta();

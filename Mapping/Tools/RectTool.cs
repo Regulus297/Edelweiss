@@ -40,9 +40,9 @@ namespace Edelweiss.Mapping.Tools
                         continue;
                     SetTile(ref tileData, room, loopX + startRoomX, loopY + startRoomY);
                     if(selectedLayer == 0)
-                        SetTile(ref backendRoom.fgTileData, room, loopX + startRoomX, loopY + startRoomY);
+                        backendRoom.fgTileData.SetTile(loopX + startRoomX, loopY + startRoomY, selectedMaterial);
                     else
-                        SetTile(ref backendRoom.bgTileData, room, loopX + startRoomX, loopY + startRoomY);
+                        backendRoom.bgTileData.SetTile(loopX + startRoomX, loopY + startRoomY, selectedMaterial);
                 }
             }
             NetworkManager.SendPacket(Netcode.MODIFY_ITEM_SHAPE, new JObject()

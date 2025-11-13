@@ -139,10 +139,10 @@ namespace Edelweiss.Mapping
                 room["width"] = r.width;
                 room["height"] = r.height;
                 room["shapes"][2]["color"] = RoomData.GetColor(r.color);
-                room["shapes"][0]["tileData"] = r.bgTileData;
+                room["shapes"][0]["tileData"] = r.bgTileData.TileData;
                 room["shapes"][0]["width"] = r.width / 8;
                 room["shapes"][0]["height"] = r.height / 8;
-                room["shapes"][1]["tileData"] = r.fgTileData;
+                room["shapes"][1]["tileData"] = r.fgTileData.TileData;
                 room["shapes"][1]["width"] = r.width / 8;
                 room["shapes"][1]["height"] = r.height / 8;
                 room["name"] = r.name;
@@ -153,11 +153,24 @@ namespace Edelweiss.Mapping
                     {"item", room}
                 });
 
-                foreach (Entity entity in r.entities)
+                foreach (Entity entity in r.entities.Values)
                 {
                     entity.Draw();
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the entity object with the given name coming from the frontend
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static Entity GetEntity(string name)
+        {
+            var split = name.Split(':');
+            string roomName = split[0];
+            RoomData room = map.rooms.FirstOrDefault(r => r.name == roomName);
+            return room?.entities.GetValueOrDefault(split[1]);
         }
     }
 }

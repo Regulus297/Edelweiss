@@ -26,7 +26,7 @@ namespace Edelweiss.Mapping.PacketReceivers
 
 
             string id = data.Value<string>("name");
-            Entity entity = MappingTab.map.allEntities.GetValueOrDefault(id);
+            Entity entity = MappingTab.GetEntity(id);
             if (entity == null)
                 return;
 

@@ -101,6 +101,8 @@ entities.glider.floating = Jelly (Floating)
 
 entities.goldenBlock.golden_block = Golden Block
 
+entities.gondola.gondola = Gondola
+
 entities.goldenBerry.golden = Golden Berry
 entities.goldenBerry.golden_winged = Golden Berry (Winged)
 
@@ -164,6 +166,7 @@ entities.moveBlock.Left_nosteer_fast = Move Block (Left, Fast)
 
 entities.negaBlock.nega_block = Nega Block
 
+entities.npc.default = NPC
 entities.everest/npc.npc = Custom NPC
 
 entities.friendlyGhost.oshiro_boss = Oshiro Boss
@@ -233,3 +236,80 @@ entities.rotateSpinner.dust_clockwise = Rotating Spinner (Dust, Clockwise)
 entities.rotateSpinner.dust_anticlockwise = Rotating Spinner (Dust, Counterclockwise)
 entities.rotateSpinner.star_clockwise = Rotating Spinner (Star, Clockwise)
 entities.rotateSpinner.star_anticlockwise = Rotating Spinner (Star, Counterclockwise)
+
+entities.seeker.default = Seeker
+entities.seekerBarrier.default = Seeker Barrier
+entities.seekerStatue.default = Seeker Statue
+entities.slider.default = Slider
+entities.soundSource.default = Sound Source
+entities.spinner.dust = Dust Sprite
+entities.spinner.blue = Crystal Spinner (Blue)
+entities.spinner.red = Crystal Spinner (Red)
+entities.spinner.purple = Crystal Spinner (Purple)
+entities.spinner.core = Crystal Spinner (Core)
+entities.spinner.rainbow = Crystal Spinner (Rainbow)
+
+entities.spring.default = Spring (Up)
+entities.wallSpringRight.default = Spring (Left)
+entities.wallSpringLeft.default = Spring (Right)
+
+entities.everest/starClimbGraphicsController.default = Star Climb Graphics Controller
+
+entities.strawberry.normal = Strawberry
+entities.strawberry.winged = Strawberry (Winged)
+entities.strawberry.moon = Strawberry (Moon)
+
+entities.blockField.default = Strawberry Blockfield
+
+entities.SummitBackgroundManger.default = Summit Background Manager
+
+entities.summitcheckpoint.default = Summit Checkpoint
+
+entities.summitcloud.default = Summit Cloud
+
+entities.swapBlock.Normal = Swap Block (Normal)
+entities.swapBlock.Moon = Swap Block (Moon)
+
+entities.switchGate.block = Switch Gate (Block)
+entities.switchGate.mirror = Switch Gate (Mirror)
+entities.switchGate.temple = Switch Gate (Temple)
+entities.switchGate.stars = Switch Gate (Stars)
+
+entities.templeBigEyeball.default = Temple Big Eyeball
+
+entities.templeCrackedBlock.default = Temple Cracked Block
+
+entities.templeEye.default = Temple Eye
+
+entities.templeGate.Theo_HoldingTheo = Temple Gate (Holding Theo)
+entities.templeGate.Default_CloseBehindPlayer = Temple Gate (Close Behind Player, Default)
+entities.templeGate.Mirror_CloseBehindPlayer = Temple Gate (Close Behind Player, Mirror)
+entities.templeGate.Default_NearestSwitch = Temple Gate (Nearest Switch, Default)
+entities.templeGate.Mirror_NearestSwitch = Temple Gate (Nearest Switch, Mirror)
+entities.templeGate.Default_TouchSwitches = Temple Gate (Touch Switches, Default)
+
+entities.templeMirror.default = Temple Mirror
+
+entities.templeMirrorPortal.default = Temple Mirror Portal
+
+entities.tentacles.default = Tentacles
+
+entities.theoCrystal.default = Theo Crystal
+
+entities.theoCrystalPedestal.default = Theo Crystal Pedestal
+
+entities.torch.default = Torch
+
+entities.touchSwitch.default = Touch Switch
+
+entities.trackSpinner.Slow_dust = Track Spinner (Dust, Slow)
+entities.trackSpinner.Slow_starfish = Track Spinner (Star, Slow)
+entities.trackSpinner.Slow_blade = Track Spinner (Blade, Slow)
+entities.trackSpinner.Normal_dust = Track Spinner (Dust, Normal)
+entities.trackSpinner.Normal_starfish = Track Spinner (Star, Normal)
+entities.trackSpinner.Normal_blade = Track Spinner (Blade, Normal)
+entities.trackSpinner.Fast_dust = Track Spinner (Dust, Fast)
+entities.trackSpinner.Fast_starfish = Track Spinner (Star, Fast)
+entities.trackSpinner.Fast_blade = Track Spinner (Blade, Fast)
+
+entities.trapdoor.default = Trapdoor

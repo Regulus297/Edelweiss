@@ -68,10 +68,12 @@ namespace Edelweiss.Mapping.Tools
                             NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
                             {
                                 {"widget", "Mapping/MainView"},
-                                {"item", $"{e.entityRoom.name}/{e._id}"},
+                                {"item", $"{e.entityRoom.name}/{e.entityRoom.name}:{e._id}"},
                                 {"action", "delete"}
                             });
-                            Entity.DiscardedIDs.Enqueue(e._id);
+                            if (!Entity.DiscardedIDs.ContainsKey(room))
+                                Entity.DiscardedIDs[room] = [];
+                            Entity.DiscardedIDs[room].Enqueue(e._id);
                         }
                     }
                 }

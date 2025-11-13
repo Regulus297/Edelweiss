@@ -17,8 +17,8 @@ namespace Edelweiss.Mapping.Entities.Vanilla
 
         public override void Draw(JArray shapes, RoomData room, Entity entity)
         {
-            int dx = room.x - entity.x;
-            int dy = room.y - entity.y;
+            int dx = -entity.x;
+            int dy = -entity.y;
             float angle = MathF.Atan2(dy, dx);
             float ox = MathF.Cos(angle) * 10;
             float oy = MathF.Sin(angle) * 10;

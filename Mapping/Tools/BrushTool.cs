@@ -19,9 +19,9 @@ namespace Edelweiss.Mapping.Tools
             RoomData backendRoom = MappingTab.map.rooms.Find(r => r.name == room["name"].ToString());
             SetTile(ref tileData, room, tileX, tileY);
             if(selectedLayer == 0)
-                SetTile(ref backendRoom.fgTileData, room, tileX, tileY);
+                backendRoom.fgTileData.SetTile(tileX, tileY, selectedMaterial);
             else
-                SetTile(ref backendRoom.bgTileData, room, tileX, tileY);
+                backendRoom.bgTileData.SetTile(tileX, tileY, selectedMaterial);
             NetworkManager.SendPacket(Netcode.MODIFY_ITEM_SHAPE, new JObject()
             {
                 {"widget", "Mapping/MainView"},

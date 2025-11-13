@@ -150,17 +150,17 @@ namespace Edelweiss.Mapping.Entities
         /// <summary>
         /// The foreground tiles in the room
         /// </summary>
-        public string fgTileData = "";
+        public TileMatrix fgTileData = new TileMatrix(data.Value<int>("width"), data.Value<int>("height"));
 
         /// <summary>
         /// The background tiles in the room
         /// </summary>
-        public string bgTileData = "";
+        public TileMatrix bgTileData = new TileMatrix(data.Value<int>("width"), data.Value<int>("height"));
 
         /// <summary>
         /// 
         /// </summary>
-        public List<Entity> entities = [];
+        public Dictionary<string, Entity> entities = [];
 
         /// <summary>
         /// The map this room belongs to
@@ -175,13 +175,13 @@ namespace Edelweiss.Mapping.Entities
             Table table = new(script);
             foreach (FieldInfo field in typeof(RoomData).GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
-                if (field.Name == nameof(map))
+                if (field.Name == nameof(map) || field.Name == nameof(fgTileData) || field.Name == nameof(bgTileData))
                 {
                     continue;
                 }
                 if (field.Name == "entities")
                 {
-                    table[field.Name] = entities.Select(e => e.ToLuaTable(script)).ToArray();
+                    table[field.Name] = entities.Select(e => e.Value.ToLuaTable(script)).ToArray();
                     continue;
                 }
                 table[field.Name] = field.GetValue(this);
@@ -194,9 +194,9 @@ namespace Edelweiss.Mapping.Entities
         /// </summary>
         public void RedrawEntities()
         {
-            foreach (Entity entity in entities)
+            foreach (Entity entity in entities.Values)
             {
-                entity.Draw($"{name}/{entity._id}", 0, true);
+                entity.Draw($"{name}/{name}:{entity._id}", 0, true);
             }
         }
 
@@ -206,8 +206,7 @@ namespace Edelweiss.Mapping.Entities
         /// <param name="entity"></param>
         public void RemoveEntity(Entity entity)
         {
-            entities.Remove(entity);
-            map.allEntities.Remove(entity._id);
+            entities.Remove(entity._id);
         }
 
         /// <inheritdoc/>
@@ -227,7 +226,7 @@ namespace Edelweiss.Mapping.Entities
                     lookup.Add(s);
                 }
             }
-            foreach (Entity entity in entities)
+            foreach (Entity entity in entities.Values)
             {
                 entity.AddToLookup(lookup);
             }
@@ -262,7 +261,7 @@ namespace Edelweiss.Mapping.Entities
             writer.WriteAttribute("offsetY", 0);
 
             writer.Write((short)entities.Count); // Child count
-            foreach (Entity entity in entities)
+            foreach (Entity entity in entities.Values)
             {
                 entity.Encode(writer);
             }
@@ -276,20 +275,15 @@ namespace Edelweiss.Mapping.Entities
             writer.WriteLookupString("solids");
             writer.Write((byte)1);
             writer.WriteLookupString("innerText");
-            writer.WriteRLEString(FormatTileData(fgTileData));
+            writer.WriteRLEString(fgTileData.Format());
             writer.Write((short)0);
 
             // bg
             writer.WriteLookupString("bg");
             writer.Write((byte)1);
             writer.WriteLookupString("innerText");
-            writer.WriteRLEString(FormatTileData(fgTileData));
+            writer.WriteRLEString(fgTileData.Format());
             writer.Write((short)0);
-        }
-
-        private string FormatTileData(string tileData)
-        {
-            return string.Join('\n', Enumerable.Range(0, tileData.Length / (width / 8)).Select(i => tileData.Substring(i * width / 8, width / 8))).Replace(' ', '0').TrimEnd('0', '\n');
         }
 
         /// <inheritdoc/>
@@ -306,6 +300,9 @@ namespace Edelweiss.Mapping.Entities
                 element.AttrIf<object>(name, v => field.SetValue(this, progress ? (string.IsNullOrEmpty(v.ToString()) ? 0f : float.Parse(v.ToString())) : (name == "c" ? v.ToString() : v)));
             }
 
+            fgTileData = new TileMatrix(width / 8, height / 8);
+            bgTileData = new TileMatrix(width / 8, height / 8);
+
             foreach (MapElement child in element)
             {
                 if (child.Name == "entities")
@@ -315,24 +312,18 @@ namespace Edelweiss.Mapping.Entities
                         Entity entity = new Entity("", "");
                         entity.Decode(entityElement);
                         entity.entityRoom = this;
-                        entities.Add(entity);
-                        map.allEntities[entity._id] = entity;
+                        entities[entity._id] = entity;
                     }
                 }
                 else if (child.Name == "solids")
                 {
-                    child.AttrIf<string>("innerText", v => fgTileData = DecodeTileData(v));
+                    child.AttrIf<string>("innerText", v => fgTileData.Decode(v));
                 }
                 else if (child.Name == "bg")
                 {
-                    child.AttrIf<string>("innerText", v => bgTileData = DecodeTileData(v));
+                    child.AttrIf<string>("innerText", v => bgTileData.Decode(v));
                 }
             }
-        }
-
-        private string DecodeTileData(string tileData)
-        {
-            return string.Join(string.Empty, tileData.Replace('0', ' ').Split('\n').Select(t => t.PadRight(width / 8)));
         }
 
         internal static string GetColor(string choice)

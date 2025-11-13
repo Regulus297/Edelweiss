@@ -21,7 +21,7 @@ namespace Edelweiss.Mapping.PacketReceivers
                 return;
 
             JObject data = JObject.Parse(packet.data);
-            Entity found = MappingTab.map.allEntities.GetValueOrDefault(data.Value<string>("name"));
+            Entity found = MappingTab.GetEntity(data.Value<string>("name"));
             var others = SelectionTool.selected.Where(i => i.Item1.EntityName == found.EntityName && i.Item1._id != found._id).Select(i => i.Item1);
             JObject form = found.entityData?.GetFormTemplate(found, -1, others.ToArray());
             NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, form);
