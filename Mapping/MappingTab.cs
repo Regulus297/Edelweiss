@@ -136,9 +136,9 @@ namespace Edelweiss.Mapping
             {
                 room["x"] = r.x;
                 room["y"] = r.y;
-                room["width"] = r.width;
-                room["height"] = r.height;
                 room["shapes"][2]["color"] = RoomData.GetColor(r.color);
+                room["shapes"][2]["width"] = r.width;
+                room["shapes"][2]["height"] = r.height;
                 room["shapes"][0]["tileData"] = r.bgTileData.TileData;
                 room["shapes"][0]["width"] = r.width / 8;
                 room["shapes"][0]["height"] = r.height / 8;

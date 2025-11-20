@@ -10,7 +10,7 @@ namespace Edelweiss.Loenn
 {
     internal class LoveModule : LoennModule
     {
-        public const float PEN_THICKNESS = 0.5f;
+        public const float PEN_THICKNESS = 1f;
 
 
         public override string ModuleName => "love";

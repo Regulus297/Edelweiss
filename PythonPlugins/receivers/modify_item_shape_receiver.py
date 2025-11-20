@@ -1,6 +1,7 @@
 from network import PacketReceiver
 from plugins import plugin_loadable, load_dependencies, JSONPreprocessor
 from ui import MappingWindow, CustomDrawItem
+from ui.opengl import GLWidget
 from Edelweiss.Network import Netcode
 
 
@@ -13,14 +14,25 @@ class ModifyItemShapeReceiver(PacketReceiver):
     def process_packet(self, packet):
         data = JSONPreprocessor.loads(packet.data)
         widget = MappingWindow.instance.get_tracked_widget(data["widget"])
-        if type(widget) != ZoomableView:
-            print(f"Failed to add item as widget {type(widget)} is not a {ZoomableView}")
-            return
-        
-        if data["item"] not in widget.trackedItems.keys():
+        if type(widget) == ZoomableView:
+            self._handle_zoomable(widget, data)
+        elif type(widget) == GLWidget:
+            self._handle_gl(widget, data)
+
+    def _handle_gl(self, widget, data):
+        if data["item"] not in widget.items:
             print(f"No item found with name {data['item']}")
             return
         
+        item = widget.items[data["item"]]
+        shape = item.shapes[data["index"]]
+        if shape is not None:
+            shape.refresh(data["data"])
+        
+    def _handle_zoomable(self, widget, data):
+        if data["item"] not in widget.trackedItems.keys():
+            print(f"No item found with name {data['item']}")
+            return
 
         item = widget.trackedGraphicsItems[data["item"]]
         shape = widget.trackedItems[data["item"]]["shapes"][data["index"]]

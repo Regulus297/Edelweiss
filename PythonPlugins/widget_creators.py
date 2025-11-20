@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QWidget, QSplitter, QPushButton, QLineEdit, QComboBo
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 import json
+from ui.opengl import GLWidget
 
 
 @plugin_loadable
@@ -256,3 +257,21 @@ class QLabelWidgetCreator(WidgetCreator):
         if "alignment" in data.keys():
             label.setAlignment(data["alignment"])
         return label
+
+@plugin_loadable
+class GLWidgetCreator(WidgetCreator):
+    def __init__(self):
+        super().__init__("GLWidget")
+
+    def create_widget(self, data, parent=None) -> QWidget:
+        widget = GLWidget(parent)
+        if "onMouseMoved" in data:
+            netcode, extraData = get_event_data(data["onMouseMoved"])
+            widget.onMouseMoved = lambda x, y: PyNetworkManager.send_packet(netcode, json.dumps({
+                "id": widget.objectName(),
+                "x": x,
+                "y": y,
+                "extraData": extraData
+            }))
+
+        return widget

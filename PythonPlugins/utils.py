@@ -1,6 +1,7 @@
 from plugins import plugin_loadable, UtilJsonFunction, load_dependencies, JSONPreprocessor
 from network import SyncedVariables
 from ui import MappingWindow
+from ui.opengl import GLWidget
 from Edelweiss.Network import Netcode
 from Edelweiss.Plugins import PluginLoader
 from PyQt5.QtCore import Qt
@@ -41,10 +42,11 @@ class PenWidthFunction(UtilJsonFunction):
     
     def call(self, *args) -> object:
         widget = MappingWindow.instance.get_tracked_widget(args[0])
-        if type(widget) != ZoomableView:
-            return 0
-        
-        return widget.pen_size
+        if type(widget) == ZoomableView:
+            return widget.pen_size
+        if type(widget) == GLWidget:
+            return widget.pen_size
+        return 0
 
 
 @plugin_loadable

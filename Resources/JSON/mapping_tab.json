@@ -7,7 +7,7 @@
         "currentIndex": 1,
         "children": [
             {
-                "type": "ZoomableView",
+                "type": "GLWidget",
                 "trackedAs": "Mapping/MainView",
                 "onMouseMoved": "@netcode('Edelweiss:MouseMoved')",
                 "layout": { 

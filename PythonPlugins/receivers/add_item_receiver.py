@@ -3,6 +3,8 @@ from plugins import plugin_loadable, load_dependencies, JSONPreprocessor
 from ui import MappingWindow, CustomDrawItem
 from Edelweiss.Network import Netcode
 
+from ui.opengl import GLWidget, GLItem
+
 
 @load_dependencies("../widgets/zoomable_view.py")
 @plugin_loadable
@@ -13,10 +15,23 @@ class AddItemReceiver(PacketReceiver):
     def process_packet(self, packet):
         data = JSONPreprocessor.loads(packet.data)
         widget = MappingWindow.instance.get_tracked_widget(data["widget"])
-        if type(widget) != ZoomableView:
-            print(f"Failed to add item as widget {type(widget)} is not a {ZoomableView}")
+        if type(widget) == ZoomableView:
+            self._add_item_zoomable(widget, data)
+            return
+        elif type(widget) == GLWidget:
+            self._add_item_gl(widget, data)
             return
         
+    def _add_item_gl(self, widget, data):
+        parent = None
+        if "parent" in data and data["parent"] in widget.items:
+            parent = widget.items[data["parent"]]
+
+        item = GLItem(data["item"], parent)
+        widget.addItem(item)
+
+
+    def _add_item_zoomable(self, widget, data):
         parent = None
         if "parent" in data and data["parent"] in widget.trackedItems:
             parent = widget.trackedGraphicsItems[data["parent"]]

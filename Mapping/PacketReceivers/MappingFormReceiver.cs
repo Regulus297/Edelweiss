@@ -70,6 +70,8 @@ namespace Edelweiss.Mapping.PacketReceivers
             room["width"] = width * 8;
             room["height"] = height * 8;
             room["shapes"][2]["color"] = RoomData.GetColor(color);
+            room["shapes"][2]["width"] = width * 8;
+            room["shapes"][2]["height"] = height * 8;
             room["shapes"][0]["tileData"] = string.Concat(Enumerable.Repeat(" ", width * height));
             room["shapes"][0]["width"] = width;
             room["shapes"][0]["height"] = height;

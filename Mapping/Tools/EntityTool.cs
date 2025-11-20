@@ -237,14 +237,11 @@ namespace Edelweiss.Mapping.Tools
 
         public override void OnSelect()
         {
-            NetworkManager.SendPacket(Netcode.MODIFY_ITEM_SHAPE, new JObject()
+            NetworkManager.SendPacket(Netcode.MODIFY_ITEM, new JObject()
             {
                 {"widget", "Mapping/MainView"},
                 {"item", "cursorGhost"},
-                {"index", 0},
-                {"data", new JObject() {
-                    {"visible", false}
-                }}
+                {"action", "clear"}
             });
         }
 
