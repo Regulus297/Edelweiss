@@ -9,7 +9,7 @@ from network import SyncedVariables
 class PixmapLoader:
     loaded_textures = {}
     loaded_paths = {}
-    loaded_bindless_textures = {}
+    loaded_bindless = {}
 
     tint_cache = {}
 
@@ -39,26 +39,17 @@ class PixmapLoader:
 
     @staticmethod
     def load_bindless_texture(key):
+        if key in PixmapLoader.loaded_bindless:
+            return PixmapLoader.loaded_bindless[key]
+
         pixmap = PixmapLoader.load_texture(key)
         if pixmap is None:
             return None, 0, 0
 
         img = pixmap.toImage().convertToFormat(QImage.Format_RGBA8888)
-        ptr = img.bits()
-        ptr.setsize(img.byteCount())
+        PixmapLoader.loaded_bindless[key] = (img.bits().asstring(img.byteCount()), img.width(), img.height())
 
-        return bytes(ptr), img.width(), img.height()
-
-    @staticmethod
-    def register_bindless_loc(key, loc):
-        PixmapLoader.loaded_bindless_textures[key] = loc
-
-    @staticmethod
-    def get_bindless_loc(key):
-        if key in PixmapLoader.loaded_bindless_textures:
-            return None
-
-        return PixmapLoader.loaded_bindless_textures[key]
+        return PixmapLoader.loaded_bindless[key]
 
     @staticmethod
     def clear_cache():

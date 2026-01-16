@@ -2,6 +2,8 @@ import os.path
 import subprocess
 import sys
 
+from PyQt5 import QtGui
+
 if os.path.exists(os.path.join(os.getcwd(), "Edelweiss.dll")):
     # Uncompressed, so decompress the file
     print("Decompressing!")
@@ -18,7 +20,6 @@ from ui import MappingWindow
 from network import PyNetworkManager
 
 PyNetworkManager.initialize()
-
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

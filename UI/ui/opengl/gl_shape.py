@@ -6,7 +6,7 @@ class GLShape:
     shapes = {}
 
     def __init__(self, name):
-        GLShape.shapes[name] = [self.vert(), self.frag(), self.initializer, self.instance_initializer, self.vertex_count(), self.instanced(), type(self)]
+        GLShape.shapes[name] = [self.vert(), self.frag(), self.initializer, self.instance_initializer, self.extras_initializer, self.vertex_count(), self.instanced(), type(self)]
         self.parent = None
         self.data = {}
 
@@ -37,6 +37,9 @@ class GLShape:
         glEnableVertexAttribArray(c)
         glVertexAttribPointer(c, 1, GL_FLOAT, GL_FALSE, 4, ctypes.c_void_p(0))
         glVertexAttribDivisor(c, 1)
+
+    def extras_initializer(self, arr):
+        ...
 
     def get_vertices(self):
         return []

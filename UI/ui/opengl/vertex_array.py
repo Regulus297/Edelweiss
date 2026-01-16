@@ -9,7 +9,8 @@ class VertexArray:
         self.shader = GLShape.compileShader(self.data[0], self.data[1])
         self.initializer = self.data[2]
         self.instance_initializer = self.data[3]
-        self.instanced = self.data[5]
+        self.extras_initializer = self.data[4]
+        self.instanced = self.data[6]
         self.vao = glGenVertexArrays(1)
         self.vbo = glGenBuffers(1)
         self.instance_vbo = glGenBuffers(1)
@@ -52,16 +53,16 @@ class VertexArray:
         glBufferData(GL_ARRAY_BUFFER, data.nbytes, data, GL_STATIC_DRAW)
         self.initializer()
 
-        glBindVertexArray(self.vao)
         glBindBuffer(GL_ARRAY_BUFFER, self.instance_vbo)
         glBufferData(GL_ARRAY_BUFFER, instance_data.nbytes, instance_data, GL_STATIC_DRAW)
         self.instance_initializer()
+        self.extras_initializer(self)
 
     @property
     def vertex_count(self):
         if self.instanced:
-            return self.data[4]
-        return self.data[4] * len(self.shapes)
+            return self.data[5]
+        return self.data[5] * len(self.shapes)
 
     @property
     def instance_count(self):

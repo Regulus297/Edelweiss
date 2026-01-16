@@ -103,13 +103,6 @@ namespace Edelweiss.Mapping.Drawables
         /// </summary>
         public override void Draw()
         {
-            // foreach (Sprite sprite in GetSprites())
-            // {
-            //     sprite.x += x;
-            //     sprite.y += y;
-            //     sprite.Draw();
-            // }
-
             if (SpriteDestination.destination == null)
                 return;
 
