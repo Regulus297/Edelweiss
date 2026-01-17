@@ -2783,6 +2783,14 @@
             - progress: used with the modify action. Sets the current progress of the loading screen
             </summary>
         </member>
+        <member name="F:Edelweiss.Network.Netcode.SHOW_POPUP">
+            <summary>
+            Shows a popup with the given text. <br/>
+            Parameters: <br/>
+            - text: the text the popup contains
+            - duration (optional): how long the popup lasts in milliseconds. 2000 by default.
+            </summary>
+        </member>
         <member name="F:Edelweiss.Network.Netcode.KEY_PRESSED">
             <summary>
             
@@ -3437,6 +3445,21 @@
             <param name="path">The path to the texture of the tile relative to Gameplay/tilesets/</param>
             <param name="masks">The patterns of the tile</param>
             <param name="ignores">Which tiles, if any, that the tile ignores</param>
+        </member>
+        <member name="T:Edelweiss.Utils.UI">
+            <summary>
+            Utilities for interacting with the UI from the backend
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.UI.ShowPopup(System.String,System.Int32)">
+            <summary>
+            Shows a popup on the UI with the given text and lasting for the specified duration
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.UI.ShowLocalizedPopup(System.String,System.Int32)">
+            <summary>
+            Shows a popup on the UI with the text associated with the given localization key and lasting for the specified duration
+            </summary>
         </member>
     </members>
 </doc>

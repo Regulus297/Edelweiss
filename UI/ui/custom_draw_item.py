@@ -231,10 +231,6 @@ class CustomDrawItem(QGraphicsItem):
                     current.shapes[0]["width"] = selection["width"]
                     current.shapes[0]["height"] = selection["height"]
 
-
-
-
-
         if update_shapes:
             self.clear()
             for shape in data["shapes"]:

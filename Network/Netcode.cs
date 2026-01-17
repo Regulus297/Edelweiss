@@ -114,6 +114,14 @@ namespace Edelweiss.Network
         /// </summary>
         public const long MODIFY_LOADING_SCREEN = 0xc;
 
+        /// <summary>
+        /// Shows a popup with the given text. <br/>
+        /// Parameters: <br/>
+        /// - text: the text the popup contains
+        /// - duration (optional): how long the popup lasts in milliseconds. 2000 by default.
+        /// </summary>
+        public const long SHOW_POPUP = 0xd;
+
 
         // Received packets
 

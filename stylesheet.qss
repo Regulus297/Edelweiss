@@ -164,3 +164,7 @@ QCheckBox::indicator:checked {
 QLabel {
     color: white;
 }
+
+Popup {
+    border: 2px solid #ffffff;
+}

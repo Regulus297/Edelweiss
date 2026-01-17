@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Edelweiss.Mapping.SaveLoad;
 using Edelweiss.Network;
 using Edelweiss.Plugins;
+using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.PacketReceivers
@@ -21,8 +22,10 @@ namespace Edelweiss.Mapping.PacketReceivers
                 try
                 {
                     MappingTab.filePath = data["path"].ToString();
-                    if (operation == "save")
+                    if (operation == "save") {
                         MapSaveLoad.SaveMap(MappingTab.map, MappingTab.filePath);
+                        UI.ShowLocalizedPopup("Edelweiss.Mapping.SavedMap");
+                    }
                     else if (operation == "load")
                     {
                         MappingTab.map = MapSaveLoad.LoadMap(MappingTab.filePath);

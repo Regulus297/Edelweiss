@@ -117,6 +117,7 @@ namespace Edelweiss.Mapping
                     try
                     {
                         MapSaveLoad.SaveMap(map, filePath);
+                        UI.ShowLocalizedPopup("Edelweiss.Mapping.SavedMap");
                     }
                     catch (Exception e)
                     {
