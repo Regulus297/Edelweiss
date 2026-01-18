@@ -1,4 +1,5 @@
 Tabs.MappingTab = Mapping
+Tabs.ModTab = Mod Management
 Tabs.ResourcesTab = Resources
 
 Tools.BrushTool = Brush
@@ -14,10 +15,14 @@ Line = Line
 Mapping.CreateRoom = Create Room
 Mapping.SaveMap = Save...
 Mapping.SaveMapAs = Save As...
+Mapping.OpenMap = Open Map...
 Mapping.File = File
 Mapping.MapMenu = Map
 Mapping.MapMeta = Metadata
 Mapping.SavedMap = Map successfully saved.
+
+Modding.Mod = Mods
+Modding.CreateMod = Create Mod
 
 RoomCreationForm = Create room
 RoomCreationForm.Submit = Create

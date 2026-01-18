@@ -25,5 +25,14 @@ namespace Edelweiss.Utils
         /// </summary>
         public static void ShowLocalizedPopup(string textKey, int duration = 2000) => ShowPopup(Language.GetText(textKey), duration);
 
+        /// <summary>
+        /// Shows a popup form taking the JSON from the given resource key
+        /// </summary>
+        /// <param name="formKey">The resource key to the JSON file containing the form source</param>
+        /// <param name="defaults">The default values to initialize the form to, if any</param>
+        public static void OpenForm(string formKey, JObject defaults = null)
+        {
+            NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, FormLoader.LoadForm(formKey, defaults).ToString());
+        }
     }
 }

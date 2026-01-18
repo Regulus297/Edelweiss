@@ -1,0 +1,7 @@
+{
+    "formID": "ModCreationForm",
+    "fields": {
+        "name": "",
+        "mapperName": ""
+    }
+}

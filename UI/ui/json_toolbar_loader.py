@@ -10,7 +10,7 @@ from .json_widget_loader import JSONWidgetLoader
 from .main_window import MappingWindow
 from plugins import get_event_data
 
-
+# TODO: make the netcode default to -4 if onclick is unspecified
 class JSONToolbarLoader:
     @staticmethod
     def init_toolbar(toolbar: Union[QMenu, QToolBar], data: dict, clear = lambda toolbar: toolbar.clear()):

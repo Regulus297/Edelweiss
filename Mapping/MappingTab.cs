@@ -4,6 +4,7 @@ using System.Linq;
 using Edelweiss.Mapping.Entities;
 using Edelweiss.Mapping.SaveLoad;
 using Edelweiss.Mapping.Tools;
+using Edelweiss.ModManagement;
 using Edelweiss.Network;
 using Edelweiss.Plugins;
 using Edelweiss.RegistryTypes;
@@ -12,6 +13,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping
 {
+    [LoadAfter(typeof(ModTab))]
     internal class MappingTab : CustomTab
     {
         public override string LayoutJSON => "Edelweiss:mapping_tab";
@@ -76,7 +78,7 @@ namespace Edelweiss.Mapping
             switch (actionName)
             {
                 case "createRoom":
-                    NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, FormLoader.LoadForm("Edelweiss:Forms/room_creation").ToString());
+                    UI.OpenForm("Edelweiss:Forms/room_creation");
                     break;
                 case "fileMenu/openMap":
                     NetworkManager.SendPacket(Netcode.OPEN_FILE_DIALOG, new JObject()
@@ -125,7 +127,7 @@ namespace Edelweiss.Mapping
                     }
                     break;
                 case "mapMenu/mapMeta":
-                    NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, FormLoader.LoadForm("Edelweiss:Forms/map_meta", map.meta.ToJObject()).ToString());
+                    UI.OpenForm("Edelweiss:Forms/map_meta", map.meta.ToJObject());
                     break;
             }
         }

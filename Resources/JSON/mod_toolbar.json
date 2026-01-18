@@ -1,0 +1,18 @@
+{
+    "items": [
+        {
+            "type": "menu",
+            "name": "@getText('Edelweiss.Modding.Mod')",
+            "id": "modMenu",
+            "items": [
+                {
+                    "type": "action",
+                    "name": "@getText('Edelweiss.Modding.CreateMod')",
+                    "id": "createMod",
+                    "shortcut": "Ctrl+N",
+                    "onclick": -4
+                }
+            ]
+        }
+    ]
+}

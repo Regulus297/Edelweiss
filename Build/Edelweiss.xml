@@ -3461,5 +3461,12 @@
             Shows a popup on the UI with the text associated with the given localization key and lasting for the specified duration
             </summary>
         </member>
+        <member name="M:Edelweiss.Utils.UI.OpenForm(System.String,Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Shows a popup form taking the JSON from the given resource key
+            </summary>
+            <param name="formKey">The resource key to the JSON file containing the form source</param>
+            <param name="defaults">The default values to initialize the form to, if any</param>
+        </member>
     </members>
 </doc>
