@@ -47,3 +47,10 @@ def get_layout_item(widget):
     
     return layout.itemAt(index)
 
+
+def copyJSON(json):
+    if type(json) == dict:
+        return {x: copyJSON(y) for x, y in json.items()}
+    elif type(json) == list:
+        return [copyJSON(x) for x in json]
+    return json

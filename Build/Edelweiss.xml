@@ -3285,13 +3285,14 @@
             <param name="defaults">The default values of the fields if any. If null, the defined values in the JSON file are used.</param>
             <returns></returns>
         </member>
-        <member name="M:Edelweiss.Utils.FormLoader.LoadForm(System.String,Newtonsoft.Json.Linq.JObject,Newtonsoft.Json.Linq.JObject)">
+        <member name="M:Edelweiss.Utils.FormLoader.LoadForm(System.String,Newtonsoft.Json.Linq.JObject,Newtonsoft.Json.Linq.JObject,System.String)">
             <summary>
             
             </summary>
             <param name="key"></param>
             <param name="formData"></param>
             <param name="defaults"></param>
+            <param name="parentForm"></param>
             <returns></returns>
         </member>
         <member name="T:Edelweiss.Utils.Language">
@@ -3467,6 +3468,16 @@
             </summary>
             <param name="formKey">The resource key to the JSON file containing the form source</param>
             <param name="defaults">The default values to initialize the form to, if any</param>
+        </member>
+        <member name="M:Edelweiss.Utils.UI.AddFormToWidget(System.String,System.String,Newtonsoft.Json.Linq.JObject,System.Boolean,System.Boolean)">
+            <summary>
+            Shows a popup form taking the JSON from the given resource key
+            </summary>
+            <param name="formKey">The resource key to the JSON file containing the form source</param>
+            <param name="parentName">The tracker for the widget the form should be added to</param>
+            <param name="defaults">The default values to initialize the form to, if any</param>
+            <param name="replace">If a form with the same ID already exists, closes the old one and before adding the new one if true</param>
+            <param name="enabled">If true, the form will be editable.</param>
         </member>
     </members>
 </doc>

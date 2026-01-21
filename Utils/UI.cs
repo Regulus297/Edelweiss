@@ -34,5 +34,22 @@ namespace Edelweiss.Utils
         {
             NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, FormLoader.LoadForm(formKey, defaults).ToString());
         }
+
+        /// <summary>
+        /// Shows a popup form taking the JSON from the given resource key
+        /// </summary>
+        /// <param name="formKey">The resource key to the JSON file containing the form source</param>
+        /// <param name="parentName">The tracker for the widget the form should be added to</param>
+        /// <param name="defaults">The default values to initialize the form to, if any</param>
+        /// <param name="replace">If a form with the same ID already exists, closes the old one and before adding the new one if true</param>
+        /// <param name="enabled">If true, the form will be editable.</param>
+        public static void AddFormToWidget(string formKey, string parentName, JObject defaults = null, bool replace = true, bool enabled = true)
+        {
+            JObject form = FormLoader.LoadForm(formKey, defaults);
+            form["parent"] = parentName;
+            form["replace"] = replace;
+            form["enabled"] = enabled;
+            NetworkManager.SendPacket(Netcode.OPEN_POPUP_FORM, form.ToString());
+        }
     }
 }

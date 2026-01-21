@@ -23,6 +23,11 @@ Mapping.SavedMap = Map successfully saved.
 
 Modding.Mod = Mods
 Modding.CreateMod = Create Mod
+Modding.ResourceHierarchyPresets = Resource Hierarchy Presets
+Modding.MapHierarchyPresets = Map Hierarchy Presets
+
+MapHierarchyPresets.Submit = OK
+ResourceHierarchyPresets.Submit = OK
 
 RoomCreationForm = Create room
 RoomCreationForm.Submit = Create

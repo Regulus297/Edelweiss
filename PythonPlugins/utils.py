@@ -50,7 +50,7 @@ class PenWidthFunction(UtilJsonFunction):
 @plugin_loadable
 class WidgetPropertyFunction(UtilJsonFunction):
     def __init__(self):
-        super().__init__("widget_property")
+        super().__init__("widgetProperty")
 
     def call(self, *args) -> object:
         if len(args) != 2:
@@ -61,7 +61,7 @@ class WidgetPropertyFunction(UtilJsonFunction):
             try:
                 return eval(f"widget.{args[1]}")
             except Exception as e:
-                print("Error while getting widget property:")
+                print("Error while getting widget property:", e)
                 return 
             
 

@@ -2,6 +2,12 @@
     "formID": "ModCreationForm",
     "fields": {
         "name": "",
-        "mapperName": ""
+        "mapperName": "",
+        "mapHierarchy": "@defer('@getVar(\\'Edelweiss:AllMapPresets\\')')"
+    },
+    "fieldInfo": {
+        "mapHierarchy": {
+            "type": "list"
+        }
     }
 }

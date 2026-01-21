@@ -1,4 +1,4 @@
-from ui import WidgetCreator, JSONWidgetLoader
+from ui import WidgetCreator, JSONWidgetLoader, FormList, ModifiableCombobox
 from plugins import plugin_loadable, load_dependencies, get_event_data
 from network import PyNetworkManager
 from PyQt5.QtWidgets import QWidget, QSplitter, QPushButton, QLineEdit, QComboBox, QCheckBox, QLabel
@@ -209,6 +209,11 @@ class QComboBoxWidgetCreator(WidgetCreator):
         super().__init__("QComboBox")
 
     def create_widget(self, data, parent=None) -> QWidget:
+        if data.get("modifiable"):
+            return self._create_modifiable_combobox(data, parent)
+        return self._create_default_combobox(data, parent)
+    
+    def _create_default_combobox(self, data, parent):
         combobox = QComboBox(parent)
         keyed = False
         if isinstance(data["items"], dict):
@@ -233,6 +238,46 @@ class QComboBoxWidgetCreator(WidgetCreator):
                 combobox.setCurrentText(str(data["default"]))
         return combobox
     
+    def _create_modifiable_combobox(self, data, parent):
+        combobox = ModifiableCombobox(data["defaults"] if "defaults" in data else data["items"], parent)
+        if "defaults" in data:
+            for item in data["items"]:
+                QTimer.singleShot(0, lambda: combobox.addItem(item))
+
+        if "canEditDefaults" in data:
+            combobox.canEditDefaults = bool(data["canEditDefaults"])
+
+        if "itemEdited" in data:
+            netcode, extraData = get_event_data(data["itemEdited"])
+            combobox.itemEdited.connect(lambda old, new: PyNetworkManager.send_packet(netcode, json.dumps({
+                "id": combobox.objectName(),
+                "old": old,
+                "new": new,
+                "extraData": extraData
+            })))
+        if "itemChanged" in data:
+            netcode1, extraData1 = get_event_data(data["itemChanged"])
+            combobox.itemChanged.connect(lambda item: PyNetworkManager.send_packet(netcode1, json.dumps({
+                "id": combobox.objectName(),
+                "item": item,
+                "extraData": extraData1
+            })))
+        if "itemAdded" in data:
+            netcode2, extraData2 = get_event_data(data["itemAdded"])
+            combobox.itemAdded.connect(lambda item: PyNetworkManager.send_packet(netcode2, json.dumps({
+                "id": combobox.objectName(),
+                "item": item,
+                "extraData": extraData2
+            })))
+        if "itemRemoved" in data:
+            netcode3, extraData3 = get_event_data(data["itemRemoved"])
+            combobox.itemRemoved.connect(lambda item: PyNetworkManager.send_packet(netcode3, json.dumps({
+                "id": combobox.objectName(),
+                "item": item,
+                "extraData": extraData3
+            })))
+
+        return combobox
 
 @plugin_loadable
 class QCheckBoxWidgetCreator(WidgetCreator):
@@ -252,7 +297,25 @@ class QLabelWidgetCreator(WidgetCreator):
         super().__init__("QLabel")
 
     def create_widget(self, data, parent=None) -> QWidget:
-        label = QLabel("" if "text" not in data.keys() else data["text"], parent)
-        if "alignment" in data.keys():
+        label = QLabel("" if "text" not in data else data["text"], parent)
+        if "alignment" in data:
             label.setAlignment(data["alignment"])
         return label
+
+
+@load_dependencies("common_code.py")
+@plugin_loadable
+class FormListWidgetCreator(WidgetCreator):
+    def __init__(self):
+        super().__init__("FormList")
+
+    def create_widget(self, data, parent=None) -> QWidget:
+        widgetJSON = data["widgetJSON"]
+        formList = FormList(lambda: JSONWidgetLoader.init_widget(copyJSON(widgetJSON), None))
+
+        if "items" in data:
+            for childJSON in data["items"]:
+                formList.addRow(JSONWidgetLoader.init_widget(childJSON, None))
+
+        return formList
+

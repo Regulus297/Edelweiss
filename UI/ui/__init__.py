@@ -7,9 +7,12 @@ from .shape_renderer import ShapeRenderer
 from .pixmap_loader import PixmapLoader
 from .selection_rect import SelectionRect
 from .loading_screen import LoadingScreen
+from .widgets.form_list import FormList
+from.widgets.modifiable_combobox import ModifiableCombobox
 
 
 __all__ = [
     "MappingWindow", "CustomDrawItem", "JSONWidgetLoader", "JSONToolbarLoader", "SceneWidget", "ShapeRenderer",
-    "WidgetCreator", "LayoutCreator", "CommonPropertySetter", "PixmapLoader", "SelectionRect", "LoadingScreen"
+    "WidgetCreator", "LayoutCreator", "CommonPropertySetter", "PixmapLoader", "SelectionRect", "LoadingScreen", "FormList",
+    "ModifiableCombobox"
 ]

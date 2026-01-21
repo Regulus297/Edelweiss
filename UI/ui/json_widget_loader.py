@@ -33,16 +33,17 @@ class JSONWidgetLoader:
         layout: QLayout = JSONWidgetLoader.layout_creators[data["type"]].create_layout(data, parent)
         parent.setLayout(layout)
         JSONWidgetLoader.set_common_layout_props(layout, data)
-        for child in data["children"]:
-            if "isLayout" in child and child["isLayout"]:
-                layout.addItem(JSONWidgetLoader.init_layout(child, parent))
-            elif "isSpacer" in child and child["isSpacer"]:
-                layout.addItem(QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Expanding))
-            else:
-                layout.addWidget(JSONWidgetLoader.init_widget(child, parent))
-            if "alignment" in child:
-                layout.itemAt(layout.count() - 1).setAlignment(child["alignment"])
 
+        if "children" in data:
+            for child in data["children"]:
+                if "isLayout" in child and child["isLayout"]:
+                    layout.addItem(JSONWidgetLoader.init_layout(child, parent))
+                elif "isSpacer" in child and child["isSpacer"]:
+                    layout.addItem(QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Expanding))
+                else:
+                    layout.addWidget(JSONWidgetLoader.init_widget(child, parent))
+                if "alignment" in child:
+                    layout.itemAt(layout.count() - 1).setAlignment(child["alignment"])
 
         return layout
 

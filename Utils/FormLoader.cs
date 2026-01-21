@@ -30,7 +30,7 @@ namespace Edelweiss.Utils
         /// <returns></returns>
         public static JObject LoadForm(string key, JObject defaults = null)
         {
-            if (formCache.TryGetValue(key, out JObject cached))
+            if (defaults == null && formCache.TryGetValue(key, out JObject cached))
                 return cached;
 
             return LoadForm(key, PluginLoader.RequestJObject(key), defaults);
@@ -42,19 +42,29 @@ namespace Edelweiss.Utils
         /// <param name="key"></param>
         /// <param name="formData"></param>
         /// <param name="defaults"></param>
+        /// <param name="parentForm"></param>
         /// <returns></returns>
-        public static JObject LoadForm(string key, JObject formData, JObject defaults = null)
+        public static JObject LoadForm(string key, JObject formData, JObject defaults = null, string parentForm = null)
         {
             JObject formWidget = new();
 
             string plugin = key.Split(":")[0];
 
-            string formID = formData.Value<string>("formID");
-            string formTitle = Language.GetTextOrDefault($"{plugin}.{formID}.Name") ?? formID.CamelCaseToText();
-            formWidget.Add("id", formID);
-            formWidget.Add("windowTitle", formTitle);
             formWidget.Add("type", "QWidget");
-            formWidget.Add("onsubmit", "@netcode('FORM_SUBMITTED')");
+            string formID;
+            if(parentForm == null) {
+                formID = formData.Value<string>("formID");
+                string formTitle = Language.GetTextOrDefault($"{plugin}.{formID}.Name") ?? formID.CamelCaseToText();
+                formWidget.Add("id", formID);
+                formWidget.Add("windowTitle", formTitle);
+                formWidget.Add("onsubmit", "@netcode('FORM_SUBMITTED')");
+                if(formData.ContainsKey("extraData"))
+                    formWidget.Add("extraData", formData["extraData"]);
+            }
+            else
+            {
+                formID = parentForm;    
+            }
 
             JObject layout = new()
             {
@@ -93,10 +103,7 @@ namespace Edelweiss.Utils
                     }
                     else
                     {
-                        if (fieldData.extraData == null)
-                        {
-                            fieldData.extraData = new JObject();
-                        }
+                        fieldData.extraData ??= new JObject();
                         fieldData.extraData["default"] = defaults?.Value<JToken>(fieldData.name);
                     }
                 }
@@ -123,7 +130,7 @@ namespace Edelweiss.Utils
                     {"row", field.row},
                     {"col", field.col}
                 };
-                JObject widget = GetWidget(field);
+                JObject widget = GetWidget(key, formID, field);
                 if (field.extraData != null)
                 {
                     foreach (var item in field.extraData)
@@ -137,16 +144,18 @@ namespace Edelweiss.Utils
                 children.Add(widget);
             }
 
-            JObject submitButton = new()
-            {
-                {"type", "QPushButton"},
-                {"text", Language.GetTextOrDefault($"{plugin}.{formID}.Submit") ?? "Submit"},
-                {"specialType", "submit"},
-                {"row", totalRows},
-                {"col", 0},
-                {"colspan", totalCols}
-            };
-            children.Add(submitButton);
+            if(parentForm == null) {
+                JObject submitButton = new()
+                {
+                    {"type", "QPushButton"},
+                    {"text", Language.GetTextOrDefault($"{plugin}.{formID}.Submit") ?? "Submit"},
+                    {"specialType", "submit"},
+                    {"row", totalRows},
+                    {"col", 0},
+                    {"colspan", totalCols}
+                };
+                children.Add(submitButton);
+            }
 
             layout.Add("children", JToken.FromObject(children));
             formWidget.Add("layout", layout);
@@ -233,7 +242,7 @@ namespace Edelweiss.Utils
             return GCD(b, a % b);
         }
 
-        private static JObject GetWidget(FieldData data)
+        private static JObject GetWidget(string key, string parentForm, FieldData data)
         {
             JObject widget;
             switch (data.type)
@@ -269,6 +278,24 @@ namespace Edelweiss.Utils
                         {"type", "QCheckBox"},
                         {"id", data.name},
                         {"default", data.value}
+                    };
+                    break;
+                case "formList":
+                    JArray childWidgets = new JArray();
+                    if(data.value is JArray)
+                    {
+                        foreach(JObject childJSON in data.value)
+                        {
+                            childWidgets.Add(LoadForm(key, data.extraData.Value<JObject>("form"), childJSON, parentForm));
+                        }
+                    }
+
+                    widget = new()
+                    {
+                        {"type", "FormList"},
+                        {"widgetJSON", LoadForm(key, data.extraData.Value<JObject>("form"), null, parentForm)},
+                        {"items", childWidgets},
+                        {"id", data.name}
                     };
                     break;
                 default:

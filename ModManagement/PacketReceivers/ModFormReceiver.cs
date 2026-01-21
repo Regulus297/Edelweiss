@@ -1,19 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using Edelweiss.Mapping.Entities;
-using Edelweiss.Mapping.Tools;
+using Edelweiss.ModManagement;
 using Edelweiss.Network;
 using Edelweiss.Plugins;
 using Edelweiss.Preferences;
 using Newtonsoft.Json.Linq;
-using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace Edelweiss.Mapping.PacketReceivers
+namespace Edelweiss.Modding.PacketReceivers
 {
     internal class ModFormReceiver : PacketReceiver
     {
@@ -26,10 +21,11 @@ namespace Edelweiss.Mapping.PacketReceivers
             JObject extraData = data.Value<JObject>("extraData");
             if (id == "ModCreationForm")
                 CreateMod(extraData);
-                
+            else if(id == "MapHierarchyPresets")
+                UpdateMapPresets(extraData);
         }
 
-        private void CreateMod(JObject data)
+        private static void CreateMod(JObject data)
         {
             string modName = data.Value<string>("name").Replace(' ', '_');
             string mapperName = data.Value<string>("mapperName").Replace(' ', '_');
@@ -47,11 +43,20 @@ namespace Edelweiss.Mapping.PacketReceivers
             File.WriteAllText(Path.Join(modDirectory, "everest.yaml"), serializer.Serialize(yamlList));
 
             // Edelweiss Meta
+            string mapHierarchy = data.Value<string>("mapHierarchy");
             JObject meta = new JObject()
             {
-                {"mapper", mapperName}
+                {"mapper", mapperName},
+                {"mapHierarchy", ModTab.GetMapPreset(mapHierarchy)}
             };
             File.WriteAllText(Path.Join(modDirectory, "edelweiss.meta.json"), meta.ToString());
+        }
+
+        private static void UpdateMapPresets(JObject data)
+        {
+            string preset = data.Value<string>("presetName");
+            data.Remove("presetName");
+            MapPresetsPref.CustomMapPresets[preset] = data;
         }
     }
 }
