@@ -2,7 +2,7 @@ using Edelweiss.RegistryTypes;
 
 namespace Edelweiss.Plugins
 {
-    [BaseRegistryObject()]
+    [BaseRegistryObject]
     public abstract class Plugin : IRegistryObject
     {
         public virtual string ID => GetType().Name;

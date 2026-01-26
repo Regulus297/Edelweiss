@@ -1,14 +1,17 @@
 import os.path
+from idlelib.delegator import Delegator
 
 if not os.path.exists(os.path.join(os.getcwd(), "Build/Edelweiss.dll")):
     os.chdir("../")
 
 
-from network.network_manager import PyNetworkManager
+from mvc import MVC
+from utils import System
 
-PyNetworkManager.initialize()
+def subscribe_to_model(model):
+    model.Subscribe("OnFailedFileLoad", System.Action(lambda: model.Controller.SetField("Value", input("Enter Celeste Directory: "))))
 
-while not PyNetworkManager.halt:
-    PyNetworkManager.update()
+MVC.addModelCreationCallback("CelesteDirectoryPref", subscribe_to_model)
+MVC.initialize()
 
-PyNetworkManager.exit()
+MVC.exit()

@@ -17,7 +17,7 @@ namespace Edelweiss.RegistryTypes
     /// Types marked with this attribute are "base" objects: all types inheriting from them are stored in their list.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class BaseRegistryObject : Attribute
+    public class BaseRegistryObjectAttribute : Attribute
     {
     }
 }

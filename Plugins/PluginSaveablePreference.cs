@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Plugins
 {
-    [BaseRegistryObject()]
+    [BaseRegistryObject]
     public abstract class PluginSaveablePreference : PluginRegistryObject
     {
         public JToken Value { get; set; }
