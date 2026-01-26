@@ -1,14 +1,18 @@
 import os.path
+from idlelib.delegator import Delegator
 
 if not os.path.exists(os.path.join(os.getcwd(), "Build/Edelweiss.dll")):
     os.chdir("../")
 
 
-from network.network_manager import PyNetworkManager
+from interop import Interop
+from utils import System
 
-PyNetworkManager.initialize()
+def subscribe_to_pref(pref):
+    mainInterop = Interop.getInterop("Edelweiss:MainInterop")
+    pref.OnFailedFileLoad += lambda: mainInterop.SetCelesteDirectory(input("Enter Celeste Directory: "))
 
-while not PyNetworkManager.halt:
-    PyNetworkManager.update()
+Interop.addSyncCallback("Edelweiss:CelesteDirectoryPref", subscribe_to_pref)
+Interop.initialize()
 
-PyNetworkManager.exit()
+Interop.exit()

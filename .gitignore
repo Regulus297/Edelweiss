@@ -1,7 +1,14 @@
 /prefs.json
+/log.txt
+/diagnostics.txt
+/blacklist.txt
 /bin/*
 /.vscode/*
 /.config/*
 /obj/*
 */.idea/*
 */.idea
+*/__pycache__/*
+**/__pycache__/*
+/Release/**/*
+/.cache/**/*

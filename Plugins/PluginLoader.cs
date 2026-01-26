@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Edelweiss.Interop;
 using Edelweiss.Network;
 using Edelweiss.RegistryTypes;
 using Newtonsoft.Json.Linq;
@@ -11,6 +12,9 @@ namespace Edelweiss.Plugins
 {
     public static class PluginLoader
     {
+        public static event Action PostLoadTypes;
+        public static event Action PostLoadPlugins;
+
         public static void LoadPlugins()
         {
             LoadPythonPlugins(Directory.GetCurrentDirectory());
@@ -33,6 +37,7 @@ namespace Edelweiss.Plugins
             }
 
             Registry.ForAll<Plugin>(plugin => plugin.PostSetupContent());
+            PostLoadPlugins?.Invoke();
         }
 
         private static bool ValidateModDirectory(string modDirectory, out string modFilePath)
@@ -73,6 +78,27 @@ namespace Edelweiss.Plugins
                         if (instance is PluginRegistryObject o)
                         {
                             o.Plugin = plugin;
+
+                            foreach(CustomAttributeData attrData in type.GetCustomAttributesData())
+                            {
+                                if(attrData.AttributeType.IsAssignableTo(typeof(PluginLoadAttribute)))
+                                {
+                                    PluginLoadAttribute attr = (PluginLoadAttribute)type.GetCustomAttribute(attrData.AttributeType);
+                                    attr.OnLoad(o);
+                                    PostLoadTypes += () => {
+                                        attr.PostLoadTypes(o);
+                                    };
+                                    PostLoadPlugins += () =>
+                                    {
+                                        attr.PostLoadPlugins(o);
+                                    };
+                                }
+                            }
+                        }
+
+                        if(instance is ISyncable syncable)
+                        {
+                            syncable.Sync();
                         }
 
                         Registry.registry[baseType].Add(instance);
@@ -81,6 +107,7 @@ namespace Edelweiss.Plugins
                     }
                 }
             }
+            PostLoadTypes?.Invoke();
             return plugin;
         }
 
@@ -89,27 +116,24 @@ namespace Edelweiss.Plugins
             string pluginDirectory = Path.Join(directory, "PythonPlugins");
             if (!Directory.Exists(pluginDirectory))
                 return;
-
-            var files = Directory.GetFiles(pluginDirectory, "*.py", SearchOption.AllDirectories);
-            if (files.Length == 0)
-                return;
-            JToken token = JToken.FromObject(files);
-            JObject obj = new()
-            {
-                { "files", token }
-            };
-            NetworkManager.SendPacket(Netcode.REGISTER_PYTHON_PLUGINS, obj);
         }
 
         public static void LoadBaseRegistryObjects(Assembly assembly)
         {
             foreach (Type type in assembly.GetTypes())
             {
-                if (type.IsAbstract && type.CustomAttributes.Any(a => a.AttributeType == typeof(BaseRegistryObject)))
+                if (type.IsAbstract && type.CustomAttributes.Any(a => a.AttributeType == typeof(BaseRegistryObjectAttribute)))
                 {
                     Registry.registry[type] = new();
                 }
             }
         }
+    }
+
+    public enum LoadStage
+    {
+        OnLoad,
+        PostLoadTypes,
+        PostLoadPlugins
     }
 }

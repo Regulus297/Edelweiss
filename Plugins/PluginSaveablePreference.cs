@@ -5,28 +5,46 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Plugins
 {
+    /// <summary>
+    ///
+    /// </summary>
     [BaseRegistryObject()]
     public abstract class PluginSaveablePreference : PluginRegistryObject
     {
-        public JToken Value { get; set; }
-        public virtual string Name => GetType().Name;
-        public string FullName => $"{Plugin.ID}:{Name}";
+        /// <summary>
+        /// The value of the preference
+        /// </summary>
+        public virtual JToken Value { get; set; }
 
+        /// <summary>
+        /// The loaded JSON object containing all currently loaded preferences
+        /// </summary>
         public static JToken AllPrefs { get; private set; }
 
-
+        /// <inheritdoc/>
         public sealed override void Load()
         {
             Value = AllPrefs.Value<JToken>(FullName);
             if (Value == null)
             {
-                SetDefaultValue();
+                PluginLoader.PostLoadTypes += SetDefaultValue;
             }
         }
-
+        
+        /// <summary>
+        /// Called if the preference was not found in the saved preferences.
+        /// </summary>
         public virtual void SetDefaultValue()
         {
-            
+
+        }
+
+        /// <summary>
+        /// Called before the preference is saved, to perform tasks necessary to save correctly
+        /// </summary>
+        public virtual void PrepForSave()
+        {
+
         }
 
         
@@ -48,6 +66,7 @@ namespace Edelweiss.Plugins
                 JObject obj = JObject.Parse("{}");
                 Registry.ForAll<PluginSaveablePreference>(pref =>
                 {
+                    pref.PrepForSave();
                     obj.Add(pref.FullName, pref.Value);
                 });
                 writer.WriteLine(obj.ToString());

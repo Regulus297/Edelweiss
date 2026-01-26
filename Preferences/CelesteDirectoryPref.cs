@@ -1,14 +1,27 @@
 using System;
+using Edelweiss.Interop;
 using Edelweiss.Plugins;
 
 namespace Edelweiss.Preferences
 {
-    public class CelesteDirectoryPref : PluginSaveablePreference
+    public class CelesteDirectoryPref : PluginSaveablePreference, ISyncable
     {
+        public event Action OnFailedFileLoad;
+
+        public string StringValue
+        {
+            get => Value?.ToString(); 
+            set => Value = value;
+        }
+
         public override void SetDefaultValue()
         {
-            Console.WriteLine("Enter Celeste Directory: ");
-            Value = Console.ReadLine();
+            OnFailedFileLoad?.Invoke();
+        }
+
+        string ISyncable.Name()
+        {
+            return FullName;
         }
     }
 }
