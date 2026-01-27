@@ -6,7 +6,7 @@ using Edelweiss.Utils;
 
 namespace Edelweiss.MVC
 {
-    public class Model
+    public class Model : Syncable
     {
         private static readonly Dictionary<Type, Dictionary<string, PropertyInfo>> propertyLookup = [];
         private static readonly Dictionary<Type, Dictionary<string, EventInfo>> eventLookup = [];
@@ -25,7 +25,7 @@ namespace Edelweiss.MVC
                 propertyLookup[value.GetType()] = properties;
                 foreach(PropertyInfo property in value.GetType().GetProperties())
                 {
-                    if(property.TryGetCustomAttribute(out ModelPropertyAttribute attr))
+                    if(property.TryGetCustomAttribute(true, out ModelPropertyAttribute attr))
                     {
                         properties[attr.Name ?? property.Name] = property;
                     }
@@ -36,7 +36,7 @@ namespace Edelweiss.MVC
                 eventLookup[value.GetType()] = events;
                 foreach(EventInfo evt in value.GetType().GetEvents())
                 {
-                    if(evt.TryGetCustomAttribute(out ModelPropertyAttribute attr))
+                    if(evt.TryGetCustomAttribute(true, out ModelPropertyAttribute attr))
                     {
                         events[attr.Name ?? evt.Name] = evt;
                     }
@@ -62,6 +62,10 @@ namespace Edelweiss.MVC
             if(handlerType.IsAssignableFrom(callback.GetType()))
             {
                 evt.AddEventHandler(Value, callback);
+            }
+            else
+            {
+                throw new ArgumentException($"Invalid delegate type for event {eventName}");
             }
         }
 

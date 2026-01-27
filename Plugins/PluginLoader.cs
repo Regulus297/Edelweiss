@@ -2,17 +2,15 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using Edelweiss.Network;
 using Edelweiss.RegistryTypes;
-using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Plugins
 {
     public static class PluginLoader
     {
-        private static event Action PostLoadTypes;
-        private static event Action PostLoadPlugins;
+        public static event Action PostLoadTypes;
+        public static event Action PostLoadPlugins;
+        public static event Action PostLoadUI;
 
         public static void LoadPlugins()
         {
@@ -79,11 +77,11 @@ namespace Edelweiss.Plugins
                             o.Plugin = plugin;
                         }
 
-                        foreach(CustomAttributeData attrData in type.GetCustomAttributesData())
+                        foreach(Attribute attrib in type.GetCustomAttributes(true).Cast<Attribute>())
                         {
-                            if(attrData.AttributeType.IsAssignableTo(typeof(PluginLoadAttribute)))
+                            if(attrib.GetType().IsAssignableTo(typeof(PluginLoadAttribute)))
                             {
-                                PluginLoadAttribute attr = (PluginLoadAttribute)type.GetCustomAttribute(attrData.AttributeType);
+                                PluginLoadAttribute attr = (PluginLoadAttribute)attrib;
                                 attr.OnLoad(instance);
                                 PostLoadTypes += () => {
                                     attr.PostLoadTypes(instance);
@@ -91,6 +89,10 @@ namespace Edelweiss.Plugins
                                 PostLoadPlugins += () =>
                                 {
                                     attr.PostLoadPlugins(instance);
+                                };
+                                PostLoadUI += () =>
+                                {
+                                    attr.PostLoadUI(instance);
                                 };
                             }
                         }
@@ -122,12 +124,18 @@ namespace Edelweiss.Plugins
                 }
             }
         }
+
+        internal static void PostLoad()
+        {
+            PostLoadUI?.Invoke();
+        }
     }
 
     public enum LoadStage
     {
         OnLoad,
         PostLoadTypes,
-        PostLoadPlugins
+        PostLoadPlugins,
+        PostLoadUI
     }
 }

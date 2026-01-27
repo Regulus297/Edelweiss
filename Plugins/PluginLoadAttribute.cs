@@ -3,7 +3,7 @@ using Edelweiss.RegistryTypes;
 
 namespace Edelweiss.Plugins
 {
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = true)]
     public abstract class PluginLoadAttribute : Attribute
     {
         public virtual void OnLoad(IRegistryObject value)
@@ -17,6 +17,11 @@ namespace Edelweiss.Plugins
         }
 
         public virtual void PostLoadPlugins(IRegistryObject value)
+        {
+            
+        }
+
+        public virtual void PostLoadUI(IRegistryObject value)
         {
             
         }

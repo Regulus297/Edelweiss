@@ -25,5 +25,11 @@ namespace Edelweiss.MVC
             if(LoadStage == LoadStage.PostLoadPlugins)
                 Model.Create(value);
         }
+        
+        public override void PostLoadUI(IRegistryObject value)
+        {
+            if(LoadStage == LoadStage.PostLoadUI)
+                Model.Create(value);
+        }
     }
 }
