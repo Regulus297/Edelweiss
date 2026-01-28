@@ -1,0 +1,24 @@
+{
+    "formID": "ResourceHierarchyPresets",
+    "fields": {
+        "default": "%category%/%mapper%/%mod%",
+        "XMLs": "%mapper%/%mod%",
+        "extras": []
+    },
+    "fieldInfo": {
+        "extras": {
+            "type": "formList",
+            "form": {
+                "fields": {
+                    "category": ["Tilesets", "Decals", "Stylegrounds"],
+                    "path": "%mapper%/%mod%"
+                }
+            }
+        }
+    },
+    "fieldLayout": [
+        ["default"],
+        ["XMLs"],
+        ["extras"]
+    ]
+}

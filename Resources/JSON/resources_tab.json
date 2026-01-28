@@ -1,0 +1,20 @@
+{
+    "type": "QSplitter",
+    "name": "Resources",
+    "horizontal": false,
+    "sizes": [5, 1],
+    "children": [
+        {
+            "type": "QPushButton",
+            "text": "Blahaj",
+            "id": "blahajButton",
+            "onclick": "@netcode('Edelweiss:NetcodeDynamic')"
+        },
+        {
+            "type": "QPushButton",
+            "text": "More blahaj",
+            "id": "moreBlahajButton",
+            "onclick": "@netcode('Edelweiss:NetcodeDynamic')"
+        }
+    ]
+}

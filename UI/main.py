@@ -3,6 +3,7 @@ import sys
 
 from PyQt5.QtWidgets import QApplication
 
+from plugins import PluginLoader
 
 if not os.path.exists(os.path.join(os.getcwd(), "Build/Edelweiss.dll")):
     os.chdir("../")
@@ -20,6 +21,7 @@ def subscribe_to_model(model):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     MVC.addModelCreationCallback("CelesteDirectoryPref", subscribe_to_model)
+    MVC.addModelCreationCallback("PythonPlugin", lambda model : PluginLoader.load_python_plugin(model.Get("Path")))
     MVC.initialize()
     window = MainWindow()
     MVC.post_load()

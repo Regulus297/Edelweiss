@@ -1,0 +1,109 @@
+{
+    "type": "QWidget",
+    "name": "Mapping",
+    "layout": {
+        "type": "QStackedLayout",
+        "stackingMode": "all",
+        "currentIndex": 1,
+        "children": [
+            {
+                "type": "ZoomableView",
+                "trackedAs": "Mapping/MainView",
+                "onMouseMoved": "@netcode('Edelweiss:MouseMoved')",
+                "layout": { 
+                    "type": "QHBoxLayout",
+                    "alignment": "@alignment('left')",
+                    "children": [
+                        {
+                            "type": "QWidget",
+                            "style": "background-color: #111111",
+                            "sizePolicyX": "Fixed",
+                            "layout": {
+                                "type": "QVBoxLayout",
+                                "children": [
+                                    {
+                                        "type": "ResizingList",
+                                        "items": "@defer('@getVar(\\'Edelweiss:Materials\\')')",
+                                        "keys": "@defer('@getVar(\\'Edelweiss:MaterialIDs\\')')",
+                                        "onCurrentItemChanged": "@netcode('LIST_SELECTION_CHANGED')",
+                                        "onItemDoubleClicked": "@netcode('Edelweiss:MaterialFavourited')",
+                                        "currentRow": "@defer('@getVar(\\'Edelweiss:SelectedMaterial\\')')",
+                                        "id": "materialList",
+                                        "trackedAs": "Mapping/MaterialList",
+                                        "sizePolicyY": "Expanding"
+                                    },
+                                    {
+                                        "type": "QLineEdit",
+                                        "style": "background-color: #1f2329",
+                                        "id": "materialSearch",
+                                        "trackedAs": "Mapping/MaterialSearch",
+                                        "onTextChanged": "@netcode('Edelweiss:MaterialSearched')"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "type": "QWidget",
+                            "sizePolicyX": "Fixed",
+                            "sizePolicyY": "Fixed",
+                            "alignment": "@alignment('top')",
+                            "layout": {
+                                "type": "QVBoxLayout",
+                                "children": [
+                                    {
+                                        "type": "ResizingList",
+                                        "items": "@defer('@getVar(\\'Edelweiss:Tools\\')')",
+                                        "keys": "@defer('@getVar(\\'Edelweiss:ToolIDs\\')')",
+                                        "onCurrentItemChanged": "@netcode('LIST_SELECTION_CHANGED')",
+                                        "id": "toolList",
+                                        "trackedAs": "Mapping/ToolList",
+                                        "sizePolicyY": "Fixed"
+                                    },
+                                    {
+                                        "type": "ResizingList",
+                                        "items": "@defer('@getVar(\\'Edelweiss:Modes\\')')",
+                                        "onCurrentItemChanged": "@netcode('LIST_SELECTION_CHANGED')",
+                                        "currentRow": "@defer('@getVar(\\'Edelweiss:SelectedMode\\')')",
+                                        "id": "modeList",
+                                        "trackedAs": "Mapping/ModeList",
+                                        "sizePolicyY": "Fixed"
+                                    },
+                                    {
+                                        "type": "ResizingList",
+                                        "items": "@defer('@getVar(\\'Edelweiss:Layers\\')')",
+                                        "onCurrentItemChanged": "@netcode('LIST_SELECTION_CHANGED')",
+                                        "currentRow": "@defer('@getVar(\\'Edelweiss:SelectedLayer\\')')",
+                                        "id": "layerList",
+                                        "trackedAs": "Mapping/LayerList",
+                                        "sizePolicyY": "Fixed"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "isSpacer": true
+                        },
+                        {
+                            "isLayout": true,
+                            "alignment": "@alignment('right')",
+                            "type": "QHBoxLayout",
+                            "children": [
+                                {
+                                    "alignment": "@alignment('right')",
+                                    "type": "ResizingList",
+                                    "items": "@defer('@getVar(\\'Edelweiss:Rooms\\')')",
+                                    "id": "roomList",
+                                    "trackedAs": "Mapping/RoomList",
+                                    "sizePolicyY": "Expanding",
+                                    "sizePolicyX": "Fixed"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+            
+        ]
+    }
+    
+}

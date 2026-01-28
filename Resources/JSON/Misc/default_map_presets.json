@@ -1,0 +1,22 @@
+{
+    "Default": {
+        "paths": [
+            {
+                "name": "Default",
+                "path": "{mapper}/{mod}"
+            }
+        ]
+    },
+    "Collab": {
+        "paths": [
+            {
+                "name": "Default",
+                "path": "{mod}/{map:Lobby}"
+            },
+            {
+                "name": "Lobby",
+                "path": "{mod}/0-Lobbies"
+            }
+        ]
+    }
+}

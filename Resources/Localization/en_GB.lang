@@ -1,0 +1,326 @@
+Tabs.MappingTab = Mapping
+Tabs.ModTab = Mod Management
+Tabs.ResourcesTab = Resources
+
+Tools.BrushTool = Brush
+Tools.RectTool = Rectangle
+Tools.EntityTool = Entity
+Tools.SelectionTool = Selection
+
+Foreground = Foreground
+Background = Background
+Fill = Fill
+Line = Line
+
+Mapping.CreateRoom = Create Room
+Mapping.SaveMap = Save...
+Mapping.SaveMapAs = Save As...
+Mapping.OpenMap = Open Map...
+Mapping.File = File
+Mapping.MapMenu = Map
+Mapping.MapMeta = Metadata
+Mapping.SavedMap = Map successfully saved.
+
+Modding.Mod = Mods
+Modding.CreateMod = Create Mod
+Modding.ResourceHierarchyPresets = Resource Hierarchy Presets
+Modding.MapHierarchyPresets = Map Hierarchy Presets
+
+MapHierarchyPresets.Submit = OK
+ResourceHierarchyPresets.Submit = OK
+
+RoomCreationForm = Create room
+RoomCreationForm.Submit = Create
+
+
+# Entities (typed manually, but still credits to Loenn)
+entities.badelineBoost.boost = Badeline Boost
+entities.finalBoss.boss = Badeline Boss
+entities.darkChaser.dark_chaser = Badeline Chaser
+entities.darkChaserEnd.barrier = Badeline Chaser Barrier
+entities.bird.bird = Bird NPC
+entities.birdPath.bird_path = Bird Path
+entities.bonfire.bonfire = Bonfire
+entities.booster.green = Booster (Green)
+entities.booster.red = Booster (Red)
+entities.bounceBlock.fire = Core Block (Fire)
+entities.bounceBlock.ice = Core Block (Ice)
+entities.bigSpinner.bumper = Bumper
+entities.cassette.cassette = Cassette
+entities.cliffside_flag.cliffside_flag = Cliffside Flag
+entities.cloud.normal = Cloud (White)
+entities.cloud.fragile = Cloud (Pink)
+entities.redBlocks.red = Clutter Block (Laundry)
+entities.yellowBlocks.yellow = Clutter Block (Boxes)
+entities.greenBlocks.green = Clutter Block (Books)
+entities.clutterCabinet.cabinet = Clutter Cabinet
+entities.clutterDoor.red = Clutter Door (Laundry)
+entities.clutterDoor.green = Clutter Door (Books)
+entities.clutterDoor.yellow = Clutter Door (Boxes)
+entities.clutterDoor.lightning = Clutter Door (Lightning)
+entities.colorSwitch.red = Clutter Switch (Laundry)
+entities.colorSwitch.green = Clutter Switch (Books)
+entities.colorSwitch.yellow = Clutter Switch (Boxes)
+entities.colorSwitch.lightning = Clutter Switch (Lightning)
+entities.cobweb.cobweb = Cobweb
+entities.coreModeToggle.both = Core Mode Toggle (Both)
+entities.coreModeToggle.fire = Core Mode Toggle (Fire)
+entities.coreModeToggle.ice = Core Mode Toggle (Ice)
+entities.blackGem.crystal_heart = Crystal Heart
+
+entities.dashSwitchH.left_default = Dash Switch (Left, Default)
+entities.dashSwitchH.left_mirror = Dash Switch (Left, Mirror)
+entities.dashSwitchH.right_default = Dash Switch (Right, Default)
+entities.dashSwitchH.right_mirror = Dash Switch (Right, Mirror)
+entities.dashSwitchV.up_default = Dash Switch (Up, Default)
+entities.dashSwitchV.up_mirror = Dash Switch (Up, Mirror)
+entities.dashSwitchV.down_default = Dash Switch (Down, Default)
+entities.dashSwitchV.down_mirror = Dash Switch (Down, Mirror)
+
+entities.door.wood = Door (Wood)
+entities.door.metal = Door (Metal)
+
+entities.dreamBlock.dream_block = Dream Block
+
+entities.dreammirror.normal = Dream Mirror
+
+entities.everest/customBirdTutorial.bird = Custom Bird Tutorial
+
+entities.infiniteStar.normal = Feather
+
+entities.fireBall.fireball = Fireball
+entities.fireBall.iceball = Iceball
+
+entities.fireBarrier.fire_barrier = Fire Barrier
+
+entities.bridgeFixed.bridge_fixed = Fixed Bridge
+
+entities.flingBird.fling_bird = Fling Bird
+
+entities.floatingDebris.floating_debris = Floating Debris
+
+entities.flutterbird.normal = Flutterbird
+
+entities.foregroundDebris.foreground_debris = Foreground Debris
+
+entities.birdForsakenCityGem.satellite = Forsaken City Satellite
+
+entities.glassBlock.glass_block = Glass Block
+
+entities.glider.normal = Jelly
+entities.glider.floating = Jelly (Floating)
+
+entities.goldenBlock.golden_block = Golden Block
+
+entities.gondola.gondola = Gondola
+
+entities.goldenBerry.golden = Golden Berry
+entities.goldenBerry.golden_winged = Golden Berry (Winged)
+
+entities.hahaha.hahaha = Hahaha
+
+entities.hanginglamp.hanging_lamp = Hanging Lamp
+
+entities.heartGemDoor.door = Heart Door
+
+entities.iceBlock.ice_block = Ice Block
+
+entities.wavedashmachine.cafe = Internet Café
+
+entities.introCar.intro_car = Intro Car
+
+entities.invisibleBarrier.invisible_barrier = Invisible Barrier
+
+entities.crushBlock.both = Kevin (Both)
+entities.crushBlock.horizontal = Kevin (Horizontal)
+entities.crushBlock.vertical = Kevin (Vertical)
+
+entities.kevins_pc.kevins_pc = Kevin's PC
+
+entities.key.normal = Key
+entities.key.with_return = Key (With Return)
+
+entities.killbox.killbox = Killbox
+
+entities.lamp.normal = Lamp
+entities.lamp.broken = Lamp (Broken)
+
+entities.lightning.lightning = Lightning
+
+entities.lightningBlock.breaker_box = Breaker Box
+
+entities.lockBlock.wood = Lock Block (Wood)
+entities.lockBlock.temple_a = Lock Block (Temple A)
+entities.lockBlock.temple_b = Lock Block (Temple B)
+entities.lockBlock.moon = Lock Block (Moon)
+
+entities.everest/memorial.memorial = Custom Memorial
+
+entities.moonCreature.moon_creature = Moon Creature
+
+entities.moveBlock.Up_steer_slow = Move Block (Up, Steerable)
+entities.moveBlock.Up_steer_fast = Move Block (Up, Steerable, Fast)
+entities.moveBlock.Up_nosteer_slow = Move Block (Up)
+entities.moveBlock.Up_nosteer_fast = Move Block (Up, Fast)
+entities.moveBlock.Right_steer_slow = Move Block (Right, Steerable)
+entities.moveBlock.Right_steer_fast = Move Block (Right, Steerable, Fast)
+entities.moveBlock.Right_nosteer_slow = Move Block (Right)
+entities.moveBlock.Right_nosteer_fast = Move Block (Right, Fast)
+entities.moveBlock.Down_steer_slow = Move Block (Down, Steerable)
+entities.moveBlock.Down_steer_fast = Move Block (Down, Steerable, Fast)
+entities.moveBlock.Down_nosteer_slow = Move Block (Down)
+entities.moveBlock.Down_nosteer_fast = Move Block (Down, Fast)
+entities.moveBlock.Left_steer_slow = Move Block (Left, Steerable)
+entities.moveBlock.Left_steer_fast = Move Block (Left, Steerable, Fast)
+entities.moveBlock.Left_nosteer_slow = Move Block (Left)
+entities.moveBlock.Left_nosteer_fast = Move Block (Left, Fast)
+
+entities.negaBlock.nega_block = Nega Block
+
+entities.npc.default = NPC
+entities.everest/npc.npc = Custom NPC
+
+entities.friendlyGhost.oshiro_boss = Oshiro Boss
+
+entities.oshirodoor.oshiro_door = Oshiro Door
+
+entities.payphone.payphone = Payphone
+
+entities.picoconsole.pico_console = Pico 8 Console
+
+entities.plateau.plateau = Plateau
+
+entities.player.player = Player Spawn Point
+
+entities.playbackTutorial.playback = Playback Tutorial
+
+entities.playerSeeker.player_seeker = Player Seeker
+
+entities.powerSourceNumber.default = Power Source Number
+
+entities.eyebomb.left = Puffer (Left)
+entities.eyebomb.right = Puffer (Right)
+
+entities.finalBossFallingBlock.default = Badeline Boss Falling Block
+
+entities.conditionBlock.default = Condition Block
+
+entities.everest/coreMessage.default = Custom Core Message
+
+entities.coverupWall.default = Coverup Wall
+
+entities.crumbleBlock.default = Crumble Block (Normal)
+entities.crumbleBlock.cliffside = Crumble Block (Cliffside)
+
+entities.crumbleWallOnRumble.default = Crumble Wall on Rumble
+
+entities.dashBlock.default = Dash Block
+
+entities.exitBlock.default = Exit Block
+
+entities.fakeBlock.default = Fake Block
+
+entities.fakeWall.default = Fake Wall
+
+entities.fallingBlock.default = Falling Block
+
+entities.floatySpaceBlock.default = Floaty Space Block
+
+entities.sandwichLava.default = Lava Sandwich
+
+entities.refill.single = Dash Refill
+entities.refill.double = Dash Refill (Two Dashes)
+
+entities.reflectionHeartStatue.default = Reflection Heart Statue
+
+entities.resortMirror.default = Resort Mirror
+
+entities.resortRoofEnding.default = Resort Roof Ending
+
+entities.ridgeGate.default = Ridge Gate
+
+entities.risingLava.default = Rising Lava
+
+entities.rotateSpinner.blade_clockwise = Rotating Spinner (Blade, Clockwise)
+entities.rotateSpinner.blade_anticlockwise = Rotating Spinner (Blade, Counterclockwise)
+entities.rotateSpinner.dust_clockwise = Rotating Spinner (Dust, Clockwise)
+entities.rotateSpinner.dust_anticlockwise = Rotating Spinner (Dust, Counterclockwise)
+entities.rotateSpinner.star_clockwise = Rotating Spinner (Star, Clockwise)
+entities.rotateSpinner.star_anticlockwise = Rotating Spinner (Star, Counterclockwise)
+
+entities.seeker.default = Seeker
+entities.seekerBarrier.default = Seeker Barrier
+entities.seekerStatue.default = Seeker Statue
+entities.slider.default = Slider
+entities.soundSource.default = Sound Source
+entities.spinner.dust = Dust Sprite
+entities.spinner.blue = Crystal Spinner (Blue)
+entities.spinner.red = Crystal Spinner (Red)
+entities.spinner.purple = Crystal Spinner (Purple)
+entities.spinner.core = Crystal Spinner (Core)
+entities.spinner.rainbow = Crystal Spinner (Rainbow)
+
+entities.spring.default = Spring (Up)
+entities.wallSpringRight.default = Spring (Left)
+entities.wallSpringLeft.default = Spring (Right)
+
+entities.everest/starClimbGraphicsController.default = Star Climb Graphics Controller
+
+entities.strawberry.normal = Strawberry
+entities.strawberry.winged = Strawberry (Winged)
+entities.strawberry.moon = Strawberry (Moon)
+
+entities.blockField.default = Strawberry Blockfield
+
+entities.SummitBackgroundManger.default = Summit Background Manager
+
+entities.summitcheckpoint.default = Summit Checkpoint
+
+entities.summitcloud.default = Summit Cloud
+
+entities.swapBlock.Normal = Swap Block (Normal)
+entities.swapBlock.Moon = Swap Block (Moon)
+
+entities.switchGate.block = Switch Gate (Block)
+entities.switchGate.mirror = Switch Gate (Mirror)
+entities.switchGate.temple = Switch Gate (Temple)
+entities.switchGate.stars = Switch Gate (Stars)
+
+entities.templeBigEyeball.default = Temple Big Eyeball
+
+entities.templeCrackedBlock.default = Temple Cracked Block
+
+entities.templeEye.default = Temple Eye
+
+entities.templeGate.Theo_HoldingTheo = Temple Gate (Holding Theo)
+entities.templeGate.Default_CloseBehindPlayer = Temple Gate (Close Behind Player, Default)
+entities.templeGate.Mirror_CloseBehindPlayer = Temple Gate (Close Behind Player, Mirror)
+entities.templeGate.Default_NearestSwitch = Temple Gate (Nearest Switch, Default)
+entities.templeGate.Mirror_NearestSwitch = Temple Gate (Nearest Switch, Mirror)
+entities.templeGate.Default_TouchSwitches = Temple Gate (Touch Switches, Default)
+
+entities.templeMirror.default = Temple Mirror
+
+entities.templeMirrorPortal.default = Temple Mirror Portal
+
+entities.tentacles.default = Tentacles
+
+entities.theoCrystal.default = Theo Crystal
+
+entities.theoCrystalPedestal.default = Theo Crystal Pedestal
+
+entities.torch.default = Torch
+
+entities.touchSwitch.default = Touch Switch
+
+entities.trackSpinner.Slow_dust = Track Spinner (Dust, Slow)
+entities.trackSpinner.Slow_starfish = Track Spinner (Star, Slow)
+entities.trackSpinner.Slow_blade = Track Spinner (Blade, Slow)
+entities.trackSpinner.Normal_dust = Track Spinner (Dust, Normal)
+entities.trackSpinner.Normal_starfish = Track Spinner (Star, Normal)
+entities.trackSpinner.Normal_blade = Track Spinner (Blade, Normal)
+entities.trackSpinner.Fast_dust = Track Spinner (Dust, Fast)
+entities.trackSpinner.Fast_starfish = Track Spinner (Star, Fast)
+entities.trackSpinner.Fast_blade = Track Spinner (Blade, Fast)
+
+entities.trapdoor.default = Trapdoor

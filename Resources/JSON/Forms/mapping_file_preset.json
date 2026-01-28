@@ -1,0 +1,24 @@
+{
+    "formID": "MapHierarchyPresets",
+    "fields": {
+        "paths": [{"name": "Default", "path": "%mapper%/%mod%"}]
+    },
+    "fieldInfo": {
+        "paths": {
+            "type": "formList",
+            "form": {
+                "fields": {
+                    "name": "Default",
+                    "path": "%mapper%/%mod%"
+                },
+                "fieldLayout": [
+                    ["name"],
+                    ["path"]
+                ]
+            }
+        }
+    },
+    "extraData": {
+        "presetName": "@defer('@widgetProperty(\\'Modding/MapPresetSelection\\', \\'combobox.currentText()\\')')"
+    }
+}
