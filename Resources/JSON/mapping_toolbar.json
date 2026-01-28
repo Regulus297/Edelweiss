@@ -1,49 +1,48 @@
 {
+    "model": {
+        "name": "Edelweiss:TabModelData",
+        "onclick": "ToolbarAction"
+    },
     "items": [
         {
             "type": "action",
-            "name": "@getText('Edelweiss.Mapping.CreateRoom')",
-            "id": "createRoom",
-            "onclick": -4
+            "name": "Create Room",
+            "id": "createRoom"
         },
         {
             "type": "menu",
-            "name": "@getText('Edelweiss.Mapping.File')",
+            "name": "File",
             "id": "fileMenu",
             "items": [
                 {
                     "type": "action",
-                    "name": "@getText('Edelweiss.Mapping.OpenMap')",
+                    "name": "Open Map",
                     "id": "openMap",
-                    "shortcut": "Ctrl+O",
-                    "onclick": -4
+                    "shortcut": "Ctrl+O"
                 },
                 {
                     "type": "action",
-                    "name": "@getText('Edelweiss.Mapping.SaveMap')",
+                    "name": "Save Map",
                     "id": "saveMap",
-                    "shortcut": "Ctrl+S",
-                    "onclick": -4
+                    "shortcut": "Ctrl+S"
                 },
                 {
                     "type": "action",
-                    "name": "@getText('Edelweiss.Mapping.SaveMapAs')",
+                    "name": "Save Map As",
                     "id": "saveMapAs",
-                    "shortcut": "Ctrl+Shift+S",
-                    "onclick": -4
+                    "shortcut": "Ctrl+Shift+S"
                 }
             ]
         },
         {
             "type": "menu",
-            "name": "@getText('Edelweiss.Mapping.MapMenu')",
+            "name": "Map",
             "id": "mapMenu",
             "items": [
                 {
                     "type": "action",
-                    "name": "@getText('Edelweiss.Mapping.MapMeta')",
-                    "id": "mapMeta",
-                    "onclick": -4
+                    "name": "Meta",
+                    "id": "mapMeta"
                 }
             ]
         }

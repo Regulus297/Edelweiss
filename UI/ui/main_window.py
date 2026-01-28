@@ -2,9 +2,10 @@ import json
 
 from PyQt5.QtCore import  QTimer
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QGraphicsView, QSizePolicy, QStackedWidget, QToolBar,
-                             QMainWindow, QComboBox, QSplashScreen)
+                             QMainWindow, QComboBox, QSplashScreen, QWidgetAction)
 
 from mvc import MVC
+from ui import JSONToolbarLoader
 from utils import System
 
 
@@ -82,6 +83,14 @@ class MainWindow(QMainWindow):
         # Set the index of the stackedwidget
         self.stack.setCurrentIndex(self.tab_switcher.currentIndex())
 
+    def change_toolbar(self, model):
+        for action in self.tool_bar.actions():
+            if isinstance(action, QWidgetAction) and action.defaultWidget() == self.tab_switcher:
+                continue
+            self.tool_bar.removeAction(action)
+        self.tool_bar.addSeparator()
+        JSONToolbarLoader.init_toolbar(self.tool_bar, json.loads(model.Get("ToolbarData")))
+
     @property
     def current_tab(self):
         return self.tabs[self.tab_switcher.currentIndex()]
@@ -94,3 +103,4 @@ class MainWindow(QMainWindow):
     def set_tab_model(self):
         self.tab_model_data = MVC.getSyncable("Edelweiss:TabModelData")
         self.tab_model_data.Subscribe("TabRegistered", System.Action[object](self.register_scene))
+        self.tab_model_data.Subscribe("SwitchedTab", System.Action[object](self.change_toolbar))

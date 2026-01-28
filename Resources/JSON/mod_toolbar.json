@@ -1,4 +1,8 @@
 {
+    "model": {
+        "name": "Edelweiss:TabModelData",
+        "onclick": "ToolbarAction"
+    },
     "items": [
         {
             "type": "menu",
@@ -9,8 +13,7 @@
                     "type": "action",
                     "name": "@getText('Edelweiss.Modding.CreateMod')",
                     "id": "createMod",
-                    "shortcut": "Ctrl+N",
-                    "onclick": -4
+                    "shortcut": "Ctrl+N"
                 }
             ]
         }

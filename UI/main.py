@@ -16,8 +16,6 @@ from utils import System
 def subscribe_to_model(model):
     model.Subscribe("OnFailedFileLoad", System.Action(lambda: model.Controller.SetField("Value", input("Enter Celeste Directory: "))))
 
-
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     MVC.addModelCreationCallback("CelesteDirectoryPref", subscribe_to_model)

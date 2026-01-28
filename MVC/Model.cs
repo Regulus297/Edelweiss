@@ -43,7 +43,7 @@ namespace Edelweiss.MVC
                 }
             }
 
-            if(value.GetType().TryGetCustomAttribute(out ControllerAttibute controllerAttibute) && controllerAttibute.ControllerType.IsAssignableTo(typeof(Controller)))
+            if(value.GetType().TryGetCustomAttribute(true, out CustomControllerAttribute controllerAttibute) && controllerAttibute.ControllerType.IsAssignableTo(typeof(Controller)))
             {
                 Controller = Controller.Create(controllerAttibute.ControllerType, this);
             }

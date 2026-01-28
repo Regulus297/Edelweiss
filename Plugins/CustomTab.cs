@@ -21,6 +21,8 @@ namespace Edelweiss.Plugins
         /// </summary>
         public abstract string ToolbarJSON { get; }
 
+        [ModelProperty] public string ToolbarData => PluginLoader.RequestJson(ToolbarJSON);
+
         /// <summary>
         /// The name that will be displayed in the editor
         /// </summary>
@@ -34,6 +36,7 @@ namespace Edelweiss.Plugins
 
         public sealed override void Load()
         {
+            registeredTabs[FullName] = this;
             PluginLoader.PostLoadUI += () => MainPlugin.TabData.RegisterTab(this);
             PostLoad();
         }
@@ -70,7 +73,7 @@ namespace Edelweiss.Plugins
         /// </summary>
         /// <param name="actionName">The identifier for the action that was triggered</param>
         /// <param name="extraData">Any additional data that was requested in the toolbar's JSON file</param>
-        public virtual void HandleToolbarClick(string actionName, JObject extraData)
+        public virtual void HandleToolbarClick(string actionName)
         {
 
         }

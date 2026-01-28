@@ -20,5 +20,10 @@ namespace Edelweiss.MVC.Controllers
             }
             return null;
         }
+
+        public void Execute(string name, params object[] args)
+        {
+            GetType().GetMethod(name).Invoke(this, args);
+        }
     }
 }

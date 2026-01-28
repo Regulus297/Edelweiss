@@ -1,12 +1,15 @@
 using System;
 using Edelweiss.MVC;
+using Edelweiss.MVC.Controllers;
 using Edelweiss.RegistryTypes;
 
 namespace Edelweiss.Plugins
 {
+    [CustomController(typeof(TabModelDataController))]
     public class TabModelData
     {
         [ModelProperty] public event Action<Model> TabRegistered;
+        [ModelProperty] public event Action<Model> SwitchedTab;
 
         private string currentTabID;
         [ModelProperty("Tab")] public string CurrentTabID { 
@@ -14,10 +17,11 @@ namespace Edelweiss.Plugins
             set
             {
                 currentTabID = value;
-                Console.WriteLine($"Switched Tab to: {currentTabID}");
+                SwitchedTab?.Invoke(Model.Create(CurrentTab));
             } 
         }
-        public CustomTab CurrentTab => CustomTab.registeredTabs[CurrentTabID];
+        
+        [ModelProperty("TabObject")] public CustomTab CurrentTab => CustomTab.registeredTabs[CurrentTabID];
 
         public void RegisterTab(CustomTab tab)
         {

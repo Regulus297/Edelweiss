@@ -7,7 +7,7 @@ namespace Edelweiss.Modding
     {
         public override string LayoutJSON => "";
 
-        public override string ToolbarJSON => "";
+        public override string ToolbarJSON => "Edelweiss:mod_toolbar";
 
         public override string DisplayName => "Modding";
     }
