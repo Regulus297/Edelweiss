@@ -1,0 +1,60 @@
+{
+    "formID": "RoomCreationForm",
+    "formTitle": "Create room",
+    "submitText": "Create",
+    "fields": {
+        "name": "a-01",
+        "x": 0,
+        "y": 0,
+        "width": 40,
+        "height": 23,
+        "cameraOffsetX": 0.0,
+        "cameraOffsetY": 0.0,
+        "windPattern": ["None", "Right", "Left"],
+        "colour": ["0", "1", "2", "3", "4", "5", "6"],
+        "underwater": false,
+        "space": false,
+        "disableDownTransition": false,
+        "checkpoint": false,
+        "dark": false,
+        "whisper": false,
+        "musicLayer1": true,
+        "musicLayer2": true,
+        "musicLayer3": true,
+        "musicLayer4": true,
+        "music": "",
+        "musicProgress": 0.0,
+        "ambience": "",
+        "ambienceProgress": 0.0
+    },
+    "fieldLayout": [
+        ["name"],
+        ["x", "y"],
+        ["width", "height"],
+        ["cameraOffsetX", "cameraOffsetY"],
+        ["windPattern", "colour"],
+        ["underwater", "space"],
+        ["disableDownTransition", "checkpoint"],
+        ["dark", "whisper"],
+        ["musicLayer1", "musicLayer2"],
+        ["musicLayer3", "musicLayer4"],
+        ["music", "musicProgress"],
+        ["ambience", "ambienceProgress"]
+    ],
+    "fieldInfo": {
+        "name": {
+            "validator": {
+                "type": "unique",
+                "array": "@defer('@getVar(\\'Edelweiss:Rooms\\')')"
+            }
+        },
+        "musicProgress": {
+            "min": 0.0,
+            "max": "@maxfloat()"
+        },
+        "ambienceProgress": {
+            "min": 0.0,
+            "max": "@maxfloat()"
+        }
+    }
+}

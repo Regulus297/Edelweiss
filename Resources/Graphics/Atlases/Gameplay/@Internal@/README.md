@@ -1,0 +1,2 @@
+# Assets: 
+As of now, all images in this directory and its subdirectories are copied from Loenn (https://github.com/CelestialCartographers/Loenn/tree/master/src/assets/atlases/Gameplay) and were seemingly initially made for Ahorn. I will make my own assets for these in the future.

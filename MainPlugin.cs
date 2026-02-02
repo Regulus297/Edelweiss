@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
-using Edelweiss.Network;
+using Edelweiss.Interop;
 using Edelweiss.Plugins;
 using Edelweiss.Preferences;
 using Edelweiss.RegistryTypes;
@@ -12,6 +10,8 @@ namespace Edelweiss
     {
         internal static MainPlugin Instance { get; private set; }
         public override string ID => "Edelweiss";
+
+        public static SyncableVariable<List<CustomTab>> Tabs = new("Edelweiss:Tabs", []);
 
         internal static string CelesteDirectory => Registry.registry[typeof(PluginSaveablePreference)].GetValue<CelesteDirectoryPref>().StringValue;
 

@@ -1,0 +1,36 @@
+{
+    "x": 0,
+    "y": 0,
+    "width": 90,
+    "height": 80,
+    "name": "room",
+    "onMousePressed": "@netcode('Edelweiss:RoomMouse')",
+    "onMouseMoved": "@netcode('Edelweiss:RoomMouse')",
+    "onMouseReleased": "@netcode('Edelweiss:RoomMouse')",
+    "selectable": true,
+    "focusable": true,
+    "shapes": [
+        {
+            "type": "tiles",
+            "tiles": "Edelweiss:BackgroundTiles",
+            "tileData": "Hello",
+            "depth": 10000
+        },
+        {
+            "type": "tiles",
+            "tiles": "Edelweiss:ForegroundTiles",
+            "tileData": "Hello",
+            "depth": -10000
+        },
+        {
+            "type": "rectangle",
+            "color": "#ffffff",
+            "thickness": "@defer('@pen_thickness(\\'Mapping/MainView\\')')",
+            "x": 0,
+            "y": 0,
+            "width": 1.0,
+            "height": 1.0,
+            "depth": -10000000000000000
+        }
+    ]
+}

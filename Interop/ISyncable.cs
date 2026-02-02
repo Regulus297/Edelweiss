@@ -5,7 +5,7 @@ namespace Edelweiss.Interop
 {
     public interface ISyncable
     {
-        public readonly static Dictionary<string, ISyncable> Syncables = [];
+        public readonly static Dictionary<string, object> Syncables = [];
         public string Name();
     }
 }

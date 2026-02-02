@@ -1,0 +1,179 @@
+QListWidget {
+    background-color: #111111;
+    padding: 5px;
+    border: none;
+}
+
+QLineEdit {
+    background-color: #1f2329;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+QListView::item, QPushButton {
+    background-color: #1f2329;
+    padding: 5px;
+    color: white;
+    outline: none;
+    border: none;
+}
+
+QPushButton {
+    border-radius: 5px;
+}
+
+QPushButton:disabled, QLineEdit:disabled {
+    background-color: #000;
+}
+
+MappingWindow, #popup {
+    background-color: #111111;
+}
+
+QListView::item:hover, QPushButton:hover {
+    background-color: #888888;
+}
+
+QListView::item:selected {
+    background-color: #6d9eed;
+    padding: 5px;
+    color: white;
+    border: none;
+    outline: none;
+}
+
+QListView::item:focus {
+    outline: none;
+}
+
+QScrollBar:vertical {
+    background: transparent;  /* Hide background */
+    width: 4px;  /* Adjust width of scrollbar */
+    margin: 0px;  /* Remove margins */
+    border: none;
+}
+
+QScrollBar::handle:vertical {
+    background: #555;  /* Handle color */
+    min-height: 20px;  /* Minimum handle size */
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical,
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical,
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: none;  /* Hide arrows and track */
+    border: none;
+}
+
+QGraphicsView {
+    border: none;
+}
+
+QToolBar {
+    border: none;
+    background-color: #111111;
+    outline: none;
+    padding: 5px;
+    spacing: 5px;
+}
+
+QToolButton {
+    color: white;
+    background-color: #1f2329;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+QToolButton[popupMode="1"] {
+    padding-right: 16px;
+}
+
+QToolButton::menu-button {
+    width: 16px;
+    color: white;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+
+QToolButton:pressed {
+    border-bottom-left-radius: 0px;
+}
+
+QToolButton::menu-button:pressed {
+    background-color: #6d9eed;
+    border-bottom-right-radius: 0px;
+}
+
+QToolButton::menu-button:hover {
+    background-color: transparent;
+}
+
+QToolButton::hover {
+    background-color: #888888;
+}
+
+QMenu {
+    background-color: #1f2329;
+    color: white;
+}
+
+QMenu::item:selected {
+    background: #6d9eed;
+}
+
+QComboBox {
+    background-color: #1f2329;
+    color: white;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 5px;
+    padding-right: 25px;
+}
+
+
+QComboBox QAbstractItemView {
+    background-color: #1f2329;
+    selection-background-color: #6d9eed;
+    selection-color: white;
+    padding: 5px;
+    outline: 0;
+    color: white;
+    font-size: 10px;
+}
+
+QCheckBox::indicator {
+    border: none;
+    outline: none;
+    background-color: #1f2329;
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+}
+
+
+QCheckBox::indicator:hover {
+    background-color: #888888;
+}
+
+QCheckBox::indicator:checked {
+    background-color: #6d9eed;
+}
+
+QLabel {
+    color: white;
+}
+
+QLabel#heading {
+    font-size: 20pt;
+    font-style: bold;
+}
+
+Popup {
+    border: 2px solid #ffffff;
+}

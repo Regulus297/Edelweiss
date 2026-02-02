@@ -7,9 +7,17 @@ namespace Edelweiss
 {
     public class MainInterop : PluginInterop
     {
+        private CustomTab current = null;
         public void SetCelesteDirectory(string directory)
         {
             Registry.registry[typeof(PluginSaveablePreference)].GetValue<CelesteDirectoryPref>().StringValue = directory;
+        }
+
+        public void ChangeTab(CustomTab tab)
+        {
+            current?.OnDeselect();
+            current = tab;
+            current.Select();
         }
     }
 }

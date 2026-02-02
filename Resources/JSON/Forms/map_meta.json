@@ -1,0 +1,40 @@
+{
+    "formID": "MapMetaForm",
+    "fields": {
+        "inventory": ["Default", "CH6End", "Core", "OldSite", "Prologue", "TheSummit", "Farewell"],
+        "wipe": {
+            "": "",
+            "Angled": "Celeste.AngledWipe",
+            "Curtain": "Celeste.CurtainWipe",
+            "Dream": "Celeste.DreamWipe",
+            "Drop": "Celeste.DropWipe",
+            "Fade": "Celeste.FadeWipe",
+            "Fall": "Celeste.FallWipe",
+            "Heart": "Celeste.HeartWipe",
+            "KeyDoor": "Celeste.KeyDoorWipe",
+            "Mountain": "Celeste.MountainWipe",
+            "Spotlight": "Celeste.SpotlightWipe",
+            "Starfield": "Celeste.StarfieldWipe",
+            "Wind": "Celeste.WindWipe"
+        },
+        "colourGrade": ["", "oldsite", "reflection", "cold", "credits", "feelingdown", "golden", "hot", "none", "panicattack", "templevoid"],
+        "introType": ["WakeUp", "Respawn", "WalkInRight", "WalkInLeft", "Jump", "Fall", "TempleMirrorVoid", "ThinkForABit", "None"],
+        "bloomBase": 0.0,
+        "bloomStrength": 0.0,
+        "darknessAlpha": 0.0,
+        "theoInBubble": false,
+        "seekerSlowdown": false,
+        "heartIsEnd": false,
+        "dreaming": false,
+        "interlude": false,
+        "overrideASideMeta": false
+    },
+    "fieldInfo": {
+        "wipe": {
+            "editable": true
+        },
+        "colourgrade": {
+            "editable": true
+        }
+    }
+}

@@ -1,6 +1,4 @@
-﻿using System;
-using Edelweiss.Network;
-using Edelweiss.Plugins;
+﻿using Edelweiss.Plugins;
 
 namespace Edelweiss;
 
