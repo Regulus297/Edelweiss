@@ -25,16 +25,10 @@ namespace Edelweiss.Plugins
         /// </summary>
         public abstract string DisplayName { get; }
 
-        /// <summary>
-        /// The list of all custom tabs indexed by their internal IDs
-        /// </summary>
-        public static Dictionary<string, CustomTab> registeredTabs = [];
-
         /// <inheritdoc/>
         public override void Load()
         {
-            MainPlugin.Tabs.Value.Add(this);
-            MainPlugin.Tabs.ForceUpdate();
+            MainVars.Tabs.Add(this);
         }
 
 

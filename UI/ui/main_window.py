@@ -4,7 +4,7 @@ from PyQt5.QtCore import  QTimer
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QGraphicsView, QSizePolicy, QStackedWidget, QToolBar,
                              QMainWindow, QComboBox, QSplashScreen)
 
-from interop import Interop
+from interop import Interop, ListBinding, SyncableProperty, InteropMethod
 
 
 class MainWindow(QMainWindow):
@@ -57,6 +57,9 @@ class MainWindow(QMainWindow):
         self.tab_switcher = QComboBox()
         self.tab_switcher.currentTextChanged.connect(self.on_tab_switched)
 
+        self._tab_switch_method = InteropMethod("Edelweiss:MainInterop.ChangeTab")
+        self._switcher_binding = ListBinding(SyncableProperty("Edelweiss.Tabs"), self.init_tabs, self.register_tab, lambda x: None)
+
 
         self.tool_bar.addWidget(self.tab_switcher)
 
@@ -66,8 +69,11 @@ class MainWindow(QMainWindow):
 
         self.showMaximized()
 
-        tabs = Interop.getSyncable("Edelweiss:Tabs")
-        for tab in tabs.Value:
+    def init_tabs(self, tabs):
+        self.tabs.clear()
+        self.tab_switcher.clear()
+
+        for tab in tabs:
             self.register_tab(tab)
 
     @property
@@ -75,8 +81,7 @@ class MainWindow(QMainWindow):
         return self.tabs[self.tab_switcher.currentIndex()]
 
     def on_tab_switched(self, text):
-        mainInterop = Interop.getInterop("Edelweiss:MainInterop")
-        mainInterop.ChangeTab(self.current_tab)
+        self._tab_switch_method(self.current_tab)
 
     def closeEvent(self, a0):
         Interop.exit()

@@ -2,6 +2,7 @@ import os.path
 import subprocess
 import sys
 
+
 if os.path.exists(os.path.join(os.getcwd(), "Edelweiss.dll")):
     # Uncompressed, so decompress the file
     print("Decompressing!")
@@ -14,9 +15,10 @@ if not os.path.exists(os.path.join(os.getcwd(), "Build/Edelweiss.dll")):
 from PyQt5.QtWidgets import QApplication
 
 from ui import MainWindow
+from interop import VariableBinding, SyncableProperty, InteropMethod, ListBinding
 
 from interop import Interop
-from utils import System
+
 
 def subscribe_to_pref(pref):
     mainInterop = Interop.getInterop("Edelweiss:MainInterop")

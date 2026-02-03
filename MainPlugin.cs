@@ -11,8 +11,6 @@ namespace Edelweiss
         internal static MainPlugin Instance { get; private set; }
         public override string ID => "Edelweiss";
 
-        public static SyncableVariable<List<CustomTab>> Tabs = new("Edelweiss:Tabs", []);
-
         internal static string CelesteDirectory => Registry.registry[typeof(PluginSaveablePreference)].GetValue<CelesteDirectoryPref>().StringValue;
 
         public override void Load()
