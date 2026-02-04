@@ -33,7 +33,7 @@ namespace Edelweiss.Plugins
         {
             LoadBlacklist();
             LoadLangFiles(Directory.GetCurrentDirectory(), "Edelweiss");
-            LoadPythonPlugins(Directory.GetCurrentDirectory());
+            LoadPythonPlugins(Directory.GetCurrentDirectory(), "Edelweiss");
             LoadAssembly(Assembly.GetExecutingAssembly());
             LoadJsonFiles(Directory.GetCurrentDirectory(), "Edelweiss");
 
@@ -62,7 +62,7 @@ namespace Edelweiss.Plugins
                     }
 
                     LoadLangFiles(pluginAsset, plugin.ID);
-                    LoadPythonPlugins(pluginAsset);
+                    LoadPythonPlugins(pluginAsset, plugin.ID);
                     LoadJsonFiles(pluginAsset, plugin.ID);
                 }
             }
@@ -188,7 +188,7 @@ namespace Edelweiss.Plugins
         /// <summary>
         /// Finds all the python plugins from a given directory and registers them with the frontend.
         /// </summary>
-        public static void LoadPythonPlugins(PluginAsset directory)
+        public static void LoadPythonPlugins(PluginAsset directory, string pluginID)
         {
             string pluginDirectory = "PythonPlugins";
             if (!directory.DirExists(pluginDirectory))
@@ -198,6 +198,12 @@ namespace Edelweiss.Plugins
             if (files.Length == 0)
                 return;
             
+            foreach(string file in files)
+            {
+                string key = $"{pluginID}:{file[(pluginDirectory.Length + 1)..^3]}";
+                key = key.Replace(Path.DirectorySeparatorChar, '/');
+                MainVars.PythonPlugins[key] = file;
+            }
         }
 
         /// <summary>
@@ -213,7 +219,7 @@ namespace Edelweiss.Plugins
 
             foreach (string file in directory.GetFiles(jsonDirectory, "*.json", SearchOption.AllDirectories))
             {
-                string key = $"{pluginID}:{file.Substring(0, file.Length - 5).Substring(jsonDirectory.Length + 1)}";
+                string key = $"{pluginID}:{file[(jsonDirectory.Length + 1)..^5]}";
                 key = key.Replace(Path.DirectorySeparatorChar, '/');
                 jsonPaths[key] = new(file, directory);
             }

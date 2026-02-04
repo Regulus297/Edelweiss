@@ -8,6 +8,7 @@ namespace Edelweiss.Interop
     {
         public event Action<T> ItemAdded;
         public event Action<T> ItemRemoved;
+        public event Action<int, T> ItemChanged;
         
         public void Add(T item)
         {
@@ -29,6 +30,16 @@ namespace Edelweiss.Interop
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public T this[int i]
+        {
+            get => Value[i];
+            set
+            {
+                Value[i] = value;
+                ItemChanged?.Invoke(i, value);
+            }
         }
     }
 }

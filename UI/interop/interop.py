@@ -5,6 +5,7 @@ import os
 import clr_loader
 import pythonnet
 
+
 pythonnet.load("coreclr")
 
 import clr
@@ -20,12 +21,15 @@ clr.AddReference(os.path.join(build_path, "Edelweiss.dll"))
 from Edelweiss import Main
 from Edelweiss.Interop import InteropExtensions, ISyncable, PluginInterop
 
+from plugins import PluginLoader
+
 class Interop:
     halt: bool = False
 
     @staticmethod
     def initialize():
         Main.Initialize()
+        PluginLoader.bind()
 
     @staticmethod
     def exit():
