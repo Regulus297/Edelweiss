@@ -25,6 +25,8 @@ namespace Edelweiss.Plugins
         /// </summary>
         public abstract string DisplayName { get; }
 
+        public string LayoutWidget => PluginLoader.RequestJson(LayoutJSON);
+
         /// <inheritdoc/>
         public override void Load()
         {

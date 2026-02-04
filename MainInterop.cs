@@ -19,5 +19,10 @@ namespace Edelweiss
             current = tab;
             current.Select();
         }
+
+        public void Debug(object message)
+        {
+            MainPlugin.Instance.Logger.Debug(message);
+        }
     }
 }

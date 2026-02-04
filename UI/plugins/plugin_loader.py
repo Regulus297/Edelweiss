@@ -2,17 +2,17 @@ import inspect
 import os.path
 
 
-
 class PluginLoader:
     loaded_dependencies = {}
     plugins_var = None
+    binding = None
 
     @staticmethod
     def bind():
         from interop import SyncableProperty
         from interop.dict_binding import DictBinding
         PluginLoader.plugins_var = SyncableProperty("Edelweiss.PythonPlugins")
-        DictBinding(PluginLoader.plugins_var, PluginLoader.load_plugins, lambda x : None, lambda x, _ : PluginLoader.load_python_plugin(x), lambda x: None)
+        PluginLoader.binding = DictBinding(PluginLoader.plugins_var, PluginLoader.load_plugins, lambda x : None, lambda _, x : PluginLoader.load_python_plugin(x), lambda x: None)
 
     @staticmethod
     def load_plugins(plugins):

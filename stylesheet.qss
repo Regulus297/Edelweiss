@@ -27,7 +27,7 @@ QPushButton:disabled, QLineEdit:disabled {
     background-color: #000;
 }
 
-MappingWindow, #popup {
+MainWindow, #popup {
     background-color: #111111;
 }
 

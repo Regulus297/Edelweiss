@@ -1,6 +1,7 @@
 using System;
 using Edelweiss.Interop;
 using Edelweiss.Plugins;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Preferences
 {
@@ -11,8 +12,20 @@ namespace Edelweiss.Preferences
         public string StringValue
         {
             get => Value?.ToString(); 
-            set => Value = value;
+            set {
+                Value = value;
+            }
         }
+
+        public override JToken Value { 
+            get => base.Value; 
+            set {
+                base.Value = value;
+                CelesteDirectory.Value = value.ToString();
+            }
+        }
+
+        public BindableVariable<string> CelesteDirectory = new BindableVariable<string>();
 
         public override void SetDefaultValue()
         {

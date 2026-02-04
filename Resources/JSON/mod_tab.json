@@ -5,56 +5,36 @@
         "type": "QHBoxLayout",
         "children": [
             {
-                "type": "QWidget",
-                "trackedAs": "Modding/MappingFilePreset",
-                "alignment": "@alignment('top')",
-                "layout": {
-                    "type": "QVBoxLayout",
-                    "children": [
-                        {
-                            "type": "QLabel",
-                            "text": "@getText('Edelweiss.Modding.MapHierarchyPresets')",
-                            "id": "heading"
-                        },
-                        {
-                            "type": "QComboBox",
-                            "id": "mapPresetSelection",
-                            "trackedAs": "Modding/MapPresetSelection",
-                            "items": "@defer('@getVar(\\'Edelweiss:CustomMapPresets\\')')" ,
-                            "modifiable": true,
-                            "defaults": ["Default", "Collab"],
-                            "itemChanged": "@netcode('Edelweiss:PresetChange')",
-                            "itemRemoved": {
-                                "netcode": "@netcode('Edelweiss:PresetChange')",
-                                "extraData": {
-                                    "operation": "removed"
-                                }
-                            },
-                            "itemEdited": "@netcode('Edelweiss:PresetChange')",
-                            "canEditDefaults": false
-                        }
-                    ]
+                "type": "QPushButton",
+                "text": "madelin celets",
+                "click": {
+                    "method": "Edelweiss:MainInterop.SetCelesteDirectory",
+                    "args": ["another celets directory"]
                 }
             },
             {
-                "type": "QWidget",
-                "trackedAs": "Modding/ResourceFilePreset",
-                "alignment": "@alignment('top')",
-                "layout": {
-                    "type": "QVBoxLayout",
-                    "children": [
-                        {
-                            "type": "QLabel",
-                            "text": "@getText('Edelweiss.Modding.ResourceHierarchyPresets')",
-                            "id": "heading"
-                        },
-                        {
-                            "type": "QComboBox",
-                            "defaults": ["Default"],
-                            "modifiable": true,
-                            "items": []
-                        }
-                    ]
+                "type": "QLabel",
+                "bind": {
+                    "text": "Edelweiss:CelesteDirectoryPref.CelesteDirectory"
+                }
+            },
+            {
+                "type": "QLineEdit",
+                "bind": {
+                    "text": "Edelweiss:CelesteDirectoryPref.CelesteDirectory"
+                }
+            },
+            {
+                "type": "QLineEdit",
+                "bind": {
+                    "text": {
+                        "property": "Edelweiss:CelesteDirectoryPref.CelesteDirectory",
+                        "sync": false
+                    }
+                },
+                "edit": {
+                    "method": "Edelweiss:MainInterop.Debug",
+                    "args": ["@text"]
                 }
             }
         ]

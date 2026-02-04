@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QGraphicsView, QSizePolicy, Q
                              QMainWindow, QComboBox, QSplashScreen)
 
 from interop import Interop, ListBinding, SyncableProperty, InteropMethod
+from .json_widget_loader import JSONWidgetLoader
 
 
 class MainWindow(QMainWindow):
@@ -25,7 +26,8 @@ class MainWindow(QMainWindow):
         return None
 
     def register_tab(self, tab):
-        # self.stack.addWidget(widget)
+        widget = JSONWidgetLoader.init_widget(json.loads(tab.LayoutWidget))
+        self.stack.addWidget(widget)
 
         self.tabs.append(tab)
         self.tab_switcher.addItem(tab.DisplayName)

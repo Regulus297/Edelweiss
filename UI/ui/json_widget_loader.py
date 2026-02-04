@@ -1,7 +1,7 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QLayout, QSplitter, QPushButton, QSizePolicy, QListWidget, QSpacerItem
+from PyQt5.QtWidgets import QWidget, QLayout, QSizePolicy, QSpacerItem
 
 
+# TODO: add a function to LayoutCreator to customise widget addition so QGridLayout doesn't need to modify the JSON
 class JSONWidgetLoader:
     widget_creators = {}
     layout_creators = {}
