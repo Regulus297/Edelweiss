@@ -60,7 +60,7 @@ class MainWindow(QMainWindow):
         self.tab_switcher.currentTextChanged.connect(self.on_tab_switched)
 
         self._tab_switch_method = InteropMethod("Edelweiss:MainInterop.ChangeTab")
-        self._switcher_binding = ListBinding(SyncableProperty("Edelweiss.Tabs"), self.init_tabs, self.register_tab, lambda x: None)
+        self._switcher_binding = ListBinding(SyncableProperty("Edelweiss.Tabs"), None, self.register_tab, None, None)
 
 
         self.tool_bar.addWidget(self.tab_switcher)
@@ -70,13 +70,6 @@ class MainWindow(QMainWindow):
             self.setStyleSheet(MainWindow.stylesheet)
 
         self.showMaximized()
-
-    def init_tabs(self, tabs):
-        self.tabs.clear()
-        self.tab_switcher.clear()
-
-        for tab in tabs:
-            self.register_tab(tab)
 
     @property
     def current_tab(self):

@@ -36,6 +36,29 @@
                     "method": "Edelweiss:MainInterop.Debug",
                     "args": ["@text"]
                 }
+            },
+            {
+                "type": "QComboBox",
+                "bind": {
+                    "options": "Edelweiss.PythonPlugins"
+                },
+                "change": {
+                    "method": "Edelweiss:MainInterop.Debug",
+                    "args": ["@index"]
+                }
+            },
+            {
+                "type": "QComboBox",
+                "modifiable": true,
+                "canEditDefaults": false,
+                "bind": {
+                    "options": "Edelweiss.SampleList",
+                    "defaults": "Edelweiss.SampleList"
+                },
+                "change": {
+                    "method": "Edelweiss:MainInterop.Debug",
+                    "args": ["@0"]
+                }
             }
         ]
     }

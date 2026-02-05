@@ -51,22 +51,8 @@ class ModifiableCombobox(QWidget):
         if index < 0:
             return
 
-        new_text = self.combobox.lineEdit().text()
-        old_text = self.combobox.itemText(index)
+        self.setItemText(index, self.combobox.lineEdit().text())
 
-        if not new_text or new_text == old_text:
-            return
-
-        if new_text in (self.combobox.itemText(i) for i in range(self.combobox.count())):
-            self.combobox.setItemText(index, old_text)
-            return
-
-        if old_text in self.removable_items:
-            self.removable_items.remove(old_text)
-            self.removable_items.add(new_text)
-
-        self.combobox.setItemText(index, new_text)
-        self.itemEdited.emit(old_text, new_text)
 
     def indexChanged(self, i):
         if self.combobox.currentText() not in self.removable_items:
@@ -93,16 +79,39 @@ class ModifiableCombobox(QWidget):
         self.combobox.addItem(text)
         self.removable_items.add(text)
         self.combobox.setCurrentIndex(self.combobox.count() - 1)
+        if self.combobox.count() == 1:
+            self.indexChanged(0)
 
     def remove_item(self):
-        index = self.combobox.currentIndex()
-        text = self.combobox.currentText()
+        self.removeItem(self.combobox.currentIndex())
 
+    def removeItem(self, i):
+        text = self.combobox.itemText(i)
         if text in self.removable_items:
             self.removable_items.remove(text)
-            self.combobox.removeItem(index)
+            self.combobox.removeItem(i)
 
         self.itemRemoved.emit(text)
+
+    def setItemText(self, index, new_text):
+        old_text = self.combobox.itemText(index)
+
+        if not new_text or new_text == old_text:
+            return
+
+        if new_text in (self.combobox.itemText(i) for i in range(self.combobox.count())):
+            self.combobox.setItemText(index, old_text)
+            return
+
+        if old_text in self.removable_items:
+            self.removable_items.remove(old_text)
+            self.removable_items.add(new_text)
+
+        self.combobox.setItemText(index, new_text)
+        self.itemEdited.emit(old_text, new_text)
+
+    def findText(self, text):
+        return self.combobox.findText(text)
 
     def setEditable(self, editable):
         self.combobox.lineEdit().setEnabled(editable)

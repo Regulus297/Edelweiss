@@ -5,27 +5,30 @@ class DictBinding:
     def __new__(cls, prop, changed, item_changed, item_added, item_removed, set_item=None, add_item=None, remove_item=None):
         set_item = DictBinding.method_wrapper(set_item, DictBinding._set_item_fallback)
         add_item = DictBinding.method_wrapper(add_item, lambda self, key, value: self.prop.get().Add(key, value))
-        remove_item = DictBinding.key_method_wrapper(remove_item, lambda self, key: self.prop.get().Remove(key))
+        remove_item = DictBinding.method_wrapper(remove_item, lambda self, key: self.prop.get().Remove(key))
+        changed = DictBinding.changed_wrapper(changed, item_added)
         return VariableBinding(prop, changed, None, {"ItemChanged": item_changed, "ItemAdded": item_added, "ItemRemoved": item_removed}, {"_set_item": set_item, "add": add_item, "remove": remove_item})
 
     @staticmethod
     def method_wrapper(callback, default):
-        def inner(self, key, value):
+        def inner(self, *args):
             if callback is None:
-                default(self, key, value)
-            callback(key, value)
+                default(self, *args)
+                return
+            callback(*args)
 
         return inner
 
     @staticmethod
-    def key_method_wrapper(callback, default):
-        def inner(self, key):
+    def changed_wrapper(callback, item_added):
+        def inner(value):
             if callback is None:
-                default(self, key)
-            callback(key)
+                for item in value:
+                    item_added(item.Key, item.Value)
+                return
+            callback(value)
 
         return inner
-
 
     @staticmethod
     def _set_item_fallback(self, key, value):

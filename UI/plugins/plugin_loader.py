@@ -9,15 +9,9 @@ class PluginLoader:
 
     @staticmethod
     def bind():
-        from interop import SyncableProperty
-        from interop.dict_binding import DictBinding
+        from interop import SyncableProperty, DictBinding
         PluginLoader.plugins_var = SyncableProperty("Edelweiss.PythonPlugins")
-        PluginLoader.binding = DictBinding(PluginLoader.plugins_var, PluginLoader.load_plugins, lambda x : None, lambda _, x : PluginLoader.load_python_plugin(x), lambda x: None)
-
-    @staticmethod
-    def load_plugins(plugins):
-        for pair in plugins:
-            PluginLoader.load_python_plugin(pair.Value)
+        PluginLoader.binding = DictBinding(PluginLoader.plugins_var, None, None, lambda _, x : PluginLoader.load_python_plugin(x), None)
 
     @staticmethod
     def load_python_plugin(filePath, exec_env=None, only_load_dependencies=False):

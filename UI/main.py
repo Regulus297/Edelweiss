@@ -15,7 +15,6 @@ if not os.path.exists(os.path.join(os.getcwd(), "Build/Edelweiss.dll")):
 from PyQt5.QtWidgets import QApplication
 
 from ui import MainWindow
-from interop import VariableBinding, SyncableProperty, InteropMethod, ListBinding
 
 from interop import Interop
 

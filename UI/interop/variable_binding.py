@@ -17,14 +17,26 @@ class VariableBinding:
         if modifiers is None:
             modifiers = {}
         self.prop: SyncableProperty = prop
-        self.changed = changed
+        self.changed = self.modifier_wrapper(changed)
         self.modify = modify
         self.event_hooks = event_hooks
         self.instance_type = VariableBinding
+        self.suppress = False
         for modifier_name, modifier in modifiers.items():
-            setattr(self, modifier_name, MethodType(modifier, self))
+            setattr(self, modifier_name, MethodType(self.modifier_wrapper(modifier), self))
         self.bind()
 
+    def modifier_wrapper(self, modifier):
+        def inner(*args):
+            if self.suppress:
+                return
+            modifier(*args)
+        return inner
+
+    def event_hook_wrapper(self, hook):
+        if hook is None:
+            return lambda *args: None
+        return hook
 
     def bind(self):
         var = self.prop.get()
@@ -32,7 +44,7 @@ class VariableBinding:
             var.ValueChanged += self.changed
             for name, callback in self.event_hooks.items():
                 event = getattr(var, name)
-                event += callback
+                event += self.event_hook_wrapper(callback)
         self.changed(var.Value)
 
     def set(self, value):
