@@ -17,5 +17,7 @@ namespace Edelweiss.Interop
                 ValueChanged?.Invoke(_value);
             }
         }
+
+        public static implicit operator BindableVariable<T>(T value) => new(value);
     }
 }

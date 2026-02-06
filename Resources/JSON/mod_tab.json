@@ -5,46 +5,25 @@
         "type": "QHBoxLayout",
         "children": [
             {
-                "type": "QPushButton",
-                "text": "madelin celets",
-                "click": {
-                    "method": "Edelweiss:MainInterop.SetCelesteDirectory",
-                    "args": ["another celets directory"]
-                }
-            },
-            {
                 "type": "QLabel",
                 "bind": {
-                    "text": "Edelweiss:CelesteDirectoryPref.CelesteDirectory"
+                    "text": "Edelweiss.Model.Name"
                 }
             },
             {
-                "type": "QLineEdit",
-                "bind": {
-                    "text": "Edelweiss:CelesteDirectoryPref.CelesteDirectory"
+                "type": "QPushButton",
+                "text": "Change Model Name",
+                "click": {
+                    "method": "Edelweiss:MainInterop.ChangeModelName",
+                    "args": ["new model name"]
                 }
             },
             {
-                "type": "QLineEdit",
-                "bind": {
-                    "text": {
-                        "property": "Edelweiss:CelesteDirectoryPref.CelesteDirectory",
-                        "sync": false
-                    }
-                },
-                "edit": {
-                    "method": "Edelweiss:MainInterop.Debug",
-                    "args": ["@text"]
-                }
-            },
-            {
-                "type": "QComboBox",
-                "bind": {
-                    "options": "Edelweiss.PythonPlugins"
-                },
-                "change": {
-                    "method": "Edelweiss:MainInterop.Debug",
-                    "args": ["@index"]
+                "type": "QPushButton",
+                "text": "Change Model Object",
+                "click": {
+                    "method": "Edelweiss:MainInterop.ChangeModelObject",
+                    "args": []
                 }
             },
             {
@@ -52,12 +31,8 @@
                 "modifiable": true,
                 "canEditDefaults": false,
                 "bind": {
-                    "options": "Edelweiss.SampleList",
-                    "defaults": "Edelweiss.SampleList"
-                },
-                "change": {
-                    "method": "Edelweiss:MainInterop.Debug",
-                    "args": ["@0"]
+                    "options": "Edelweiss.Model.SampleList",
+                    "defaults": "Edelweiss.Model.SampleList"
                 }
             }
         ]

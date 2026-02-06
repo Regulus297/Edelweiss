@@ -120,3 +120,8 @@ class ModifiableCombobox(QWidget):
         else:
             self.combobox.setFocusPolicy(Qt.FocusPolicy.NoFocus)
             self.combobox.clearFocus()
+
+    def clear(self):
+        for item in self.removable_items:
+            self.combobox.removeItem(self.combobox.findText(item))
+        self.removable_items.clear()

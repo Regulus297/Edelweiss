@@ -39,13 +39,12 @@ class VariableBinding:
         return hook
 
     def bind(self):
-        var = self.prop.get()
         if self.prop.sync:
-            var.ValueChanged += self.changed
+            self.prop.ValueChanged += self.changed
             for name, callback in self.event_hooks.items():
-                event = getattr(var, name)
+                event = getattr(self.prop, name)
                 event += self.event_hook_wrapper(callback)
-        self.changed(var.Value)
+        self.changed(self.prop.get().Value)
 
     def set(self, value):
         if self.modify is not None:

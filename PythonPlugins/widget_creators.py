@@ -62,7 +62,7 @@ class QComboBoxWidgetCreator(WidgetCreator):
         widget = ModifiableCombobox(WidgetBinding.get_value(data, "defaults"), parent)
         widget.canEditDefaults = data.get("canEditDefaults", True)
         params = {"text": widget.combobox.currentText, "index": widget.combobox.currentIndex}
-        options_binding = WidgetBinding(data, "options", None, None, lambda prop, w_setter, s_setter: ListBinding(prop, w_setter, widget.addItem, lambda item: self._remove_item(widget, item), widget.setItemText))
+        options_binding = WidgetBinding(data, "options", None, None, lambda prop, _, __: ListBinding(prop, widget.clear, widget.addItem, lambda item: self._remove_item(widget, item), widget.setItemText))
         change = WidgetMethod.create(widget, widget.itemChanged, data, "change", options_binding, params)
         add = WidgetMethod.create(widget, widget.itemAdded, data, "add", options_binding, params)
         remove = WidgetMethod.create(widget, widget.itemRemoved, data, "remove", options_binding, params)
@@ -77,17 +77,17 @@ class QComboBoxWidgetCreator(WidgetCreator):
         
     def _create_combobox(self, data, parent):
         widget = QComboBox(parent=parent)
-        binding = WidgetBinding(data, "options", None, None, lambda prop, w_setter, s_setter: self._ctor(widget, prop, w_setter, s_setter))
+        binding = WidgetBinding(data, "options", None, None, lambda prop, _, __: self._ctor(widget, prop))
         params = {"text": lambda: self._get_text(widget), "index": widget.currentIndex}
         method = WidgetMethod.create(widget, widget.currentTextChanged, data, "change", binding, params)
         return widget
 
-    def _ctor(self, widget, prop, w_setter, s_setter):
+    def _ctor(self, widget, prop):
         prop_type = prop.get().GetType().Name
         if prop_type == "BindableDictionary`2":
             setattr(widget, "__keyed__", True)
-            return DictBinding(prop, w_setter, lambda key, value: self._replace_item(widget, key, value), widget.addItem, lambda key, _: self._remove_item(widget, key))
-        return ListBinding(prop, w_setter, widget.addItem, lambda item: self._remove_item(widget, item), widget.setItemText)
+            return DictBinding(prop, widget.clear, lambda key, value: self._replace_item(widget, key, value), widget.addItem, lambda key, _: self._remove_item(widget, key))
+        return ListBinding(prop, widget.clear, widget.addItem, lambda item: self._remove_item(widget, item), widget.setItemText)
 
     def _remove_item(self, widget, key):
         i = widget.findText(key)

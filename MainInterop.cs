@@ -24,5 +24,15 @@ namespace Edelweiss
         {
             MainPlugin.Instance.Logger.Debug(message);
         }
+
+        public void ChangeModelName(string text)
+        {
+            MainVars.Model.Value.Name.Value = text;
+        }
+
+        public void ChangeModelObject()
+        {
+            MainVars.Model.Value = new SampleModel();
+        }
     }
 }
