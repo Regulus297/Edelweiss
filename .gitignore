@@ -12,3 +12,4 @@
 **/__pycache__/*
 /Release/**/*
 /.cache/**/*
+/crashlog.txt

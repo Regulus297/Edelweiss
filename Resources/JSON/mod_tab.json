@@ -27,10 +27,17 @@
                 }
             },
             {
+                "type": "QPushButton",
+                "text": "Change Submodel",
+                "click": {
+                    "method": "Edelweiss:MainInterop.ChangeSubmodel"
+                }
+            },
+            {
                 "type": "Form",
                 "model": "Edelweiss.Model",
                 "fields": [
-                    "Name", "Directory", "Selectable", "Plugin", "Bool", "Int"
+                    "Name", "Directory", "Selectable", "Plugin", "Bool", "Int", "Submodel"
                 ],
                 "fieldInfo": {
                     "Selectable": {
@@ -42,10 +49,17 @@
                         "bind": {
                             "options": "Edelweiss.PythonPlugins"
                         }
+                    },
+                    "Submodel": {
+                        "fields": ["SubName", "SubDirectory"],
+                        "fieldLayout": [
+                            ["SubName"],
+                            ["SubDirectory"]
+                        ]
                     }
                 },
                 "fieldLayout": [
-                    ["Name"],
+                    ["Name", "Submodel"],
                     ["Directory", "Bool", "Int"],
                     ["Selectable", "Plugin"]
                 ]

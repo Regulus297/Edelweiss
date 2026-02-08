@@ -39,5 +39,10 @@ namespace Edelweiss
         {
             MainPlugin.Instance.Logger.Debug(MainVars.Model.Value);
         }
+
+        public void ChangeSubmodel()
+        {
+            MainVars.Model.Value.Submodel.Value = new SampleModel.SubModel();
+        }
     }
 }

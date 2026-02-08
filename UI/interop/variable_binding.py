@@ -44,7 +44,7 @@ class VariableBinding:
             for name, callback in self.event_hooks.items():
                 event = getattr(self.prop, name)
                 event += self.event_hook_wrapper(callback)
-        self.changed(self.prop.get().Value)
+        self.changed(self.prop.get())
 
     def set(self, value):
         if self.modify is not None:

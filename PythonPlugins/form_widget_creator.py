@@ -27,6 +27,8 @@ class FieldInfo:
 class FormWidgetCreator(WidgetCreator):
     def __init__(self):
         super().__init__("Form")
+        self.type_lookup = {int: "int", str: "str", bool: "bool", float: "float"}
+
     def create_widget(self, data, parent=None):
         fields = self._load_fields(data)
         self._apply_layout(data, fields)
@@ -40,9 +42,9 @@ class FormWidgetCreator(WidgetCreator):
     def _load_fields(self, data):
         field_data = {}
         fields = data["fields"]
-        model = SyncableProperty(data["model"], False).get().Value
+        model = SyncableProperty(data["model"], False).get()
         for field in data["fields"]:
-            info = FieldInfo(field, field, type(getattr(model, field).Value).__name__, f"{data["model"]}.{field}")
+            info = FieldInfo(field, field, self.type_lookup.get(type(getattr(model, field).Value), "form"), f"{data["model"]}.{field}")
             field_data[field] = info
 
         return field_data
@@ -154,6 +156,13 @@ class FormWidgetCreator(WidgetCreator):
                     "text": field.value
                 }
             }
+        elif field.type == "form":
+            widget = {
+                "type": "Form",
+                "model": field.value,
+                "id": "bordered"
+            }
+            updateJSON(widget, field.data, "type")
 
 
         widget["row"] = field.row

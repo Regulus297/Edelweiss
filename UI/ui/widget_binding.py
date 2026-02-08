@@ -55,5 +55,5 @@ class WidgetBinding:
     def get_value(data, name):
         bindable, prop = WidgetBinding.get_property(data, name)
         if bindable:
-            return prop.get().Value
+            return prop.get()
         return prop

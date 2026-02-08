@@ -1,3 +1,4 @@
+import logging
 import os.path
 import subprocess
 import sys
@@ -25,6 +26,22 @@ def subscribe_to_pref(pref):
 
 if __name__ == '__main__':
     Interop.addSyncCallback("Edelweiss:CelesteDirectoryPref", subscribe_to_pref)
+
+    def excepthook(exc_type, exc_value, exc_tb):
+        logging.critical(
+            "Uncaught exception",
+            exc_info=(exc_type, exc_value, exc_tb)
+        )
+
+
+    logging.basicConfig(
+        filename="crashlog.txt",
+        level=logging.ERROR,
+        format="%(asctime)s - %(levelname)s - %(message)s"
+    )
+
+    sys.excepthook = excepthook
+
     Interop.initialize()
     app = QApplication(sys.argv)
     app.setDoubleClickInterval(200)

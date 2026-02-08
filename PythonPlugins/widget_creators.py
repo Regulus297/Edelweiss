@@ -99,7 +99,7 @@ class QComboBoxWidgetCreator(WidgetCreator):
 
     def _ctor(self, widget, prop):
         prop_type = prop.get().GetType().Name
-        if prop_type == "BindableDictionary`2":
+        if prop_type == "Dictionary`2":
             setattr(widget, "__keyed__", True)
             return DictBinding(prop, widget.clear, lambda key, value: self._replace_item(widget, key, value), widget.addItem, lambda key, _: self._remove_item(widget, key))
         return ListBinding(prop, widget.clear, widget.addItem, lambda item: self._remove_item(widget, item), widget.setItemText)

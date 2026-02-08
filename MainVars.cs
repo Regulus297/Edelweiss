@@ -13,12 +13,19 @@ namespace Edelweiss
 
     public class SampleModel
     {
+        public class SubModel
+        {
+            public BindableVariable<string> SubName = "";
+            public BindableVariable<string> SubDirectory = "";
+        }
+
         public BindableVariable<string> Name = "";
         public BindableVariable<string> Directory = "";
         public BindableVariable<string> Selectable = "";
         public BindableVariable<string> Plugin = "";
         public BindableVariable<bool> Bool = true;
         public BindableVariable<int> Int = 12;
+        public BindableVariable<SubModel> Submodel = new SubModel();
         public override string ToString() => $"{Name} {Directory} {Selectable} {Plugin} {Bool} {Int}";
     }
 }
