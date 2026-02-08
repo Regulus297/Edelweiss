@@ -4,7 +4,7 @@ from interop import InteropMethod
 class WidgetMethod:
     def __init__(self, data, signal, parameters, binding):
         self.interop_method = InteropMethod(data["method"])
-        self.args = data["args"]
+        self.args = data.get("args", [])
         self.parameters = parameters
         self.binding = binding
         signal.connect(self._invoke)

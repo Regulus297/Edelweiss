@@ -3,10 +3,6 @@ from ui import MainWindow
 from plugins import load_dependencies
 
 
-class CommonVars:
-    found_submit_button = None
-
-
 def get_size_policy(policy: str) -> QSizePolicy:
     if policy == "Expanding":
         return QSizePolicy.Expanding
@@ -45,3 +41,19 @@ def copyJSON(json):
     elif type(json) == list:
         return [copyJSON(x) for x in json]
     return json
+
+
+def updateJSON(json, new, *ignore_keys):
+    for key, item in new.items():
+        if key in ignore_keys:
+            continue
+        
+        if key not in json:
+            json[key] = item
+            continue
+
+        if isinstance(item, dict):
+            updateJSON(json[key], item)
+            continue
+            
+        json[key] = item

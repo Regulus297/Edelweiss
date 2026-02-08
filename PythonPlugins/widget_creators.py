@@ -2,7 +2,8 @@ from ui import WidgetCreator, WidgetBinding, WidgetMethod
 from ui.widgets import ModifiableCombobox
 from interop import ListBinding, VariableBinding, DictBinding
 from plugins import plugin_loadable
-from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QLineEdit, QComboBox
+from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QLineEdit, QComboBox, QCheckBox
+from PyQt5.QtGui import QIntValidator, QDoubleValidator
 
 
 @plugin_loadable
@@ -42,10 +43,21 @@ class QLineEditWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None):
         widget = QLineEdit(parent=parent)
-        binding = WidgetBinding(data, "text", widget.setText, None)
-        method = WidgetMethod.create(widget, widget.editingFinished, data, "edit", binding, {"text": widget.text})
+        binding = WidgetBinding(data, "text", lambda x: widget.setText(str(x)), None)
+
+        dataType = data.get("dataType")
+        t = str
+        if dataType == "int":
+            widget.setValidator(QIntValidator(widget))
+            t = int
+        elif dataType == "float":
+            widget.setValidator(QDoubleValidator(widget))
+            t = float
+
+        method = WidgetMethod.create(widget, widget.editingFinished, data, "edit", binding, {"text": lambda: t(widget.text())})
         if method is None:
-            binding.bind(widget, widget.editingFinished, lambda b: b.set(widget.text()))
+            binding.bind(widget, widget.editingFinished, lambda b: b.set(t(widget.text())))
+
         return widget
 
 @plugin_loadable
@@ -77,9 +89,12 @@ class QComboBoxWidgetCreator(WidgetCreator):
         
     def _create_combobox(self, data, parent):
         widget = QComboBox(parent=parent)
-        binding = WidgetBinding(data, "options", None, None, lambda prop, _, __: self._ctor(widget, prop))
+        binding = WidgetBinding(data, "options", widget.addItems, None, lambda prop, _, __: self._ctor(widget, prop))
+        selected_binding = WidgetBinding(data, "selected", lambda text: self._set_text(widget, text), None)
         params = {"text": lambda: self._get_text(widget), "index": widget.currentIndex}
-        method = WidgetMethod.create(widget, widget.currentTextChanged, data, "change", binding, params)
+        method = WidgetMethod.create(widget, widget.currentIndexChanged, data, "change", binding, params)
+        if method is None:
+            selected_binding.bind(widget, widget.currentIndexChanged, lambda b: b.set(self._get_text(widget)), True)
         return widget
 
     def _ctor(self, widget, prop):
@@ -101,3 +116,28 @@ class QComboBoxWidgetCreator(WidgetCreator):
         if getattr(widget, "__keyed__", False):
             return widget.currentData()
         return widget.currentText()
+
+    def _set_text(self, widget, text):
+        if widget.isEditable():
+            widget.setCurrentText(text)
+            return
+        
+        prev = widget.currentIndex()
+        widget.setCurrentIndex(max(0, widget.findText(text)))
+
+        if prev == widget.currentIndex():
+            widget.currentIndexChanged.emit(0)
+
+
+@plugin_loadable
+class QCheckBoxWidgetCreator(WidgetCreator):
+    def __init__(self):
+        super().__init__("QCheckBox")
+
+    def create_widget(self, data, parent=None):
+        widget = QCheckBox(parent)
+        binding = WidgetBinding(data, "checked", widget.setChecked, None)
+        method = WidgetMethod.create(widget, widget.toggled, data, "toggle", binding, {"checked": widget.isChecked})
+        if method is None:
+            binding.bind(widget, widget.toggled, lambda b: b.set(widget.isChecked()))
+        return widget

@@ -12,7 +12,8 @@ class SyncableProperty:
             self.leaf = True
         else:
             self.syncable = SyncableProperty(".".join(split[:-1]))
-            self.syncable.ValueChanged += self._rebind_events
+            if sync:
+                self.syncable.ValueChanged += self._rebind_events
             self.prop = split[-1]
             self.leaf = False
         self.sync = True
@@ -42,4 +43,7 @@ class SyncableProperty:
         return self._value
 
     def set(self, value):
-        getattr(self.syncable, self.prop).Value = value
+        if self.leaf:
+            getattr(self.syncable, self.prop).Value = value
+        else:
+            getattr(self.syncable.get().Value, self.prop).Value = value

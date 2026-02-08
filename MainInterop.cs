@@ -34,5 +34,10 @@ namespace Edelweiss
         {
             MainVars.Model.Value = new SampleModel();
         }
+
+        public void LogModelObject()
+        {
+            MainPlugin.Instance.Logger.Debug(MainVars.Model.Value);
+        }
     }
 }

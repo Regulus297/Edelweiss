@@ -8,7 +8,6 @@ class WidgetBinding:
             return
         self.widget_setter = widget_setter
         self.syncable_setter = syncable_setter
-        self.signal_updates = {}
         if custom_constructor is None:
             custom_constructor = VariableBinding
         self.custom_constructor = custom_constructor
@@ -17,12 +16,14 @@ class WidgetBinding:
         else:
             self.binding = self.custom_constructor(self.prop, self.widget_setter, self.syncable_setter)
 
-    def bind(self, widget, signal, callback=None):
+    def bind(self, widget, signal, callback, call=False):
         if not self.bindable:
             return
 
-        self.signal_updates[signal] = False
-        signal.connect(self._callback_wrapper(callback))
+        hook = self._callback_wrapper(callback)
+        signal.connect(hook)
+        if call:
+            hook()
 
         if hasattr(widget, "__bindings__"):
             widget.__bindings__.append(self)

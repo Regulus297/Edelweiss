@@ -15,6 +15,10 @@ namespace Edelweiss
     {
         public BindableVariable<string> Name = "";
         public BindableVariable<string> Directory = "";
-        public BindableList<string> SampleList = ["Sample"];
+        public BindableVariable<string> Selectable = "";
+        public BindableVariable<string> Plugin = "";
+        public BindableVariable<bool> Bool = true;
+        public BindableVariable<int> Int = 12;
+        public override string ToString() => $"{Name} {Directory} {Selectable} {Plugin} {Bool} {Int}";
     }
 }

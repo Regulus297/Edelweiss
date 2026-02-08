@@ -5,12 +5,6 @@
         "type": "QHBoxLayout",
         "children": [
             {
-                "type": "QLabel",
-                "bind": {
-                    "text": "Edelweiss.Model.Name"
-                }
-            },
-            {
                 "type": "QPushButton",
                 "text": "Change Model Name",
                 "click": {
@@ -22,18 +16,39 @@
                 "type": "QPushButton",
                 "text": "Change Model Object",
                 "click": {
-                    "method": "Edelweiss:MainInterop.ChangeModelObject",
-                    "args": []
+                    "method": "Edelweiss:MainInterop.ChangeModelObject"
                 }
             },
             {
-                "type": "QComboBox",
-                "modifiable": true,
-                "canEditDefaults": false,
-                "bind": {
-                    "options": "Edelweiss.Model.SampleList",
-                    "defaults": "Edelweiss.Model.SampleList"
+                "type": "QPushButton",
+                "text": "Log Model",
+                "click": {
+                    "method": "Edelweiss:MainInterop.LogModelObject"
                 }
+            },
+            {
+                "type": "Form",
+                "model": "Edelweiss.Model",
+                "fields": [
+                    "Name", "Directory", "Selectable", "Plugin", "Bool", "Int"
+                ],
+                "fieldInfo": {
+                    "Selectable": {
+                        "type": "list",
+                        "options": ["Option 1", "Option 2", "Option 3"]
+                    },
+                    "Plugin": {
+                        "type": "list",
+                        "bind": {
+                            "options": "Edelweiss.PythonPlugins"
+                        }
+                    }
+                },
+                "fieldLayout": [
+                    ["Name"],
+                    ["Directory", "Bool", "Int"],
+                    ["Selectable", "Plugin"]
+                ]
             }
         ]
     }

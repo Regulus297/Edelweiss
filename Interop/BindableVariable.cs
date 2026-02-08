@@ -19,5 +19,7 @@ namespace Edelweiss.Interop
         }
 
         public static implicit operator BindableVariable<T>(T value) => new(value);
+
+        public override string ToString() => Value.ToString();
     }
 }
