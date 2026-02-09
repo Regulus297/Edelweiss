@@ -42,7 +42,7 @@ namespace Edelweiss
 
         public void ChangeSubmodel()
         {
-            MainVars.Model.Value.Submodel.Value = new SampleModel.SubModel();
+            MainVars.Model.Value.Submodels[0] = new SampleModel.SubModel();
         }
     }
 }

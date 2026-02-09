@@ -163,6 +163,14 @@ class FormWidgetCreator(WidgetCreator):
                 "id": "bordered"
             }
             updateJSON(widget, field.data, "type")
+        elif field.type == "formList":
+            widget = {
+                "type": "FormList",
+                "bind": {
+                    "model": field.value
+                }
+            }
+            updateJSON(widget, field.data, "type")
 
 
         widget["row"] = field.row

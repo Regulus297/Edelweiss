@@ -7,19 +7,30 @@ namespace Edelweiss.Interop
     public class BindableList<T>() : BindableVariable<List<T>>([]), IEnumerable<T>
     {
         public event Action<T> ItemAdded;
-        public event Action<T> ItemRemoved;
+        public event Action<int, T> ItemRemoved;
         public event Action<int, T> ItemChanged;
         
         public void Add(T item)
         {
+            if(item == null)
+            {
+                Add();
+                return;
+            }
             Value.Add(item);
             ItemAdded?.Invoke(item);
         }
 
+        public void Add()
+        {
+            Add(Activator.CreateInstance<T>());
+        }
+
         public void Remove(T item)
         {
+            int index = Value.IndexOf(item);
             Value.Remove(item);
-            ItemRemoved?.Invoke(item);
+            ItemRemoved?.Invoke(index, item);
         }
 
         public IEnumerator<T> GetEnumerator()

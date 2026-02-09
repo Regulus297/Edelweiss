@@ -37,7 +37,7 @@
                 "type": "Form",
                 "model": "Edelweiss.Model",
                 "fields": [
-                    "Name", "Directory", "Selectable", "Plugin", "Bool", "Int", "Submodel"
+                    "Name", "Directory", "Selectable", "Plugin", "Bool", "Int", "Submodels"
                 ],
                 "fieldInfo": {
                     "Selectable": {
@@ -50,16 +50,19 @@
                             "options": "Edelweiss.PythonPlugins"
                         }
                     },
-                    "Submodel": {
-                        "fields": ["SubName", "SubDirectory"],
-                        "fieldLayout": [
-                            ["SubName"],
-                            ["SubDirectory"]
-                        ]
+                    "Submodels": {
+                        "type": "formList",
+                        "form": {
+                            "fields": ["SubName", "SubDirectory"],
+                            "fieldLayout": [
+                                ["SubName"],
+                                ["SubDirectory"]
+                            ]
+                        }
                     }
                 },
                 "fieldLayout": [
-                    ["Name", "Submodel"],
+                    ["Name", "Submodels"],
                     ["Directory", "Bool", "Int"],
                     ["Selectable", "Plugin"]
                 ]

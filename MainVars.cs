@@ -25,7 +25,10 @@ namespace Edelweiss
         public BindableVariable<string> Plugin = "";
         public BindableVariable<bool> Bool = true;
         public BindableVariable<int> Int = 12;
-        public BindableVariable<SubModel> Submodel = new SubModel();
+        public BindableList<SubModel> Submodels = [new SubModel() {
+            SubName = "Default",
+            SubDirectory = "Directory"
+        }];
         public override string ToString() => $"{Name} {Directory} {Selectable} {Plugin} {Bool} {Int}";
     }
 }
