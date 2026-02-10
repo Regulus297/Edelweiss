@@ -1,3 +1,6 @@
+import json
+import logging
+
 from PyQt5.QtWidgets import QWidget, QLayout, QSizePolicy, QSpacerItem
 
 
@@ -9,24 +12,28 @@ class JSONWidgetLoader:
 
     @staticmethod
     def init_widget(data, parent=None) -> QWidget:
-        widget_type = data["type"]
-        if widget_type not in JSONWidgetLoader.widget_creators.keys():
-            print(f"Unsupported widget type: {widget_type}")
-            return QWidget(parent)
+        try:
+            widget_type = data["type"]
+            if widget_type not in JSONWidgetLoader.widget_creators.keys():
+                print(f"Unsupported widget type: {widget_type}")
+                return QWidget(parent)
 
-        widget: QWidget = JSONWidgetLoader.widget_creators[widget_type].create_widget(data, parent)
-        setattr(widget, "__json_data__", data)
-        JSONWidgetLoader.set_common_widget_props(widget, data)
+            widget: QWidget = JSONWidgetLoader.widget_creators[widget_type].create_widget(data, parent)
+            setattr(widget, "__json_data__", data)
+            JSONWidgetLoader.set_common_widget_props(widget, data)
 
-        if "layout" in data.keys():
-            layout_data = data["layout"]
-            if layout_data["type"] not in JSONWidgetLoader.layout_creators.keys():
-                print(f"Unsupported layout type: {layout_data['type']}")
-                return widget
+            if "layout" in data.keys():
+                layout_data = data["layout"]
+                if layout_data["type"] not in JSONWidgetLoader.layout_creators.keys():
+                    print(f"Unsupported layout type: {layout_data['type']}")
+                    return widget
 
-            JSONWidgetLoader.init_layout(layout_data, widget)
+                JSONWidgetLoader.init_layout(layout_data, widget)
 
-        return widget
+            return widget
+        except Exception as e:
+            e.args = (f"{e.args[0]}\nwhile processing widget JSON:\n{json.dumps(data, indent=4)}",)
+            raise
 
     @staticmethod
     def init_layout(data, parent=None):

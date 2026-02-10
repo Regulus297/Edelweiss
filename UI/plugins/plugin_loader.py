@@ -18,7 +18,8 @@ class PluginLoader:
         if exec_env is None:
             exec_env = {}
         with open(filePath, "r") as f:
-            exec(f.read(), exec_env)
+            code = compile(f.read(), filename=filePath, mode="exec")
+            exec(code, exec_env)
             classes = {
                 obj
                 for obj in exec_env.values()

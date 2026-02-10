@@ -1,4 +1,4 @@
-from interop import InteropMethod
+from interop import InteropMethod, SyncableProperty
 
 
 class WidgetMethod:
@@ -19,8 +19,10 @@ class WidgetMethod:
                     param = arg[1:]
                     if param.isnumeric():
                         args.append(params[int(param)])
-                    else:
+                    elif param in self.parameters:
                         args.append(self.parameters[param]())
+                    else:
+                        args.append(SyncableProperty(param, False).get())
                     continue
             args.append(arg)
 
