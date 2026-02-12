@@ -10,5 +10,14 @@ namespace Edelweiss.Interop
             ISyncable.Syncables[self.Name()] = self;
             OnSync?.Invoke(self.Name(), self);
         }
+
+        public static void SafeInvoke<T>(this T evt, params object[] args) where T: MulticastDelegate
+        {
+            var handlers = evt;
+            foreach(T h in handlers.GetInvocationList())
+            {
+                
+            }
+        }
     }
 }

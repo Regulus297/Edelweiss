@@ -5,13 +5,13 @@ import os.path
 class PluginLoader:
     loaded_dependencies = {}
     plugins_var = None
-    binding = None
 
     @staticmethod
     def bind():
-        from interop import SyncableProperty, DictBinding
+        from interop import SyncableProperty
         PluginLoader.plugins_var = SyncableProperty("Edelweiss.PythonPlugins")
-        PluginLoader.binding = DictBinding(PluginLoader.plugins_var, None, None, lambda _, x : PluginLoader.load_python_plugin(x), None)
+        # PluginLoader.plugins_var.ItemAdded += lambda _, x: PluginLoader.load_python_plugin(x)
+        PluginLoader.plugins_var.resync()
 
     @staticmethod
     def load_python_plugin(filePath, exec_env=None, only_load_dependencies=False):

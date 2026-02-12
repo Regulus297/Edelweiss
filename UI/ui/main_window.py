@@ -4,7 +4,7 @@ from PyQt5.QtCore import  QTimer
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QGraphicsView, QSizePolicy, QStackedWidget, QToolBar,
                              QMainWindow, QComboBox, QSplashScreen)
 
-from interop import Interop, ListBinding, SyncableProperty, InteropMethod
+from interop import Interop, SyncableProperty, InteropMethod
 from .json_widget_loader import JSONWidgetLoader
 
 
@@ -60,7 +60,7 @@ class MainWindow(QMainWindow):
         self.tab_switcher.currentTextChanged.connect(self.on_tab_switched)
 
         self._tab_switch_method = InteropMethod("Edelweiss:MainInterop.ChangeTab")
-        self._switcher_binding = ListBinding(SyncableProperty("Edelweiss.Tabs"), None, self.register_tab, None, None)
+        self._switcher_binding = SyncableProperty("Edelweiss.Tabs", ItemAdded=self.register_tab)
 
 
         self.tool_bar.addWidget(self.tab_switcher)

@@ -156,9 +156,10 @@ class FormListWidgetCreator(WidgetCreator):
         widget = FormList(lambda i: self._generate_widget(json, i, model), parent)
         binding = WidgetBinding(data, "model", None, None, lambda prop, _, __: ListBinding(prop, widget.clear, lambda _: widget.new_row(), lambda index, _: widget.remove_row(widget.rows[index]), None))
         binding.bind(widget, widget.itemAdded, lambda b: b.add(None))
+        binding.bind(widget, widget.itemRemoved, lambda b, *args: b.remove(b.prop.get()[args[0]]))
         return widget
 
     def _generate_widget(self, json, index, model):
         copied = copyJSON(json)
-        copied["model"] = f"{model}[{index}]"
+        copied["model"] = f"{model}.@{index}"
         return JSONWidgetLoader.init_widget(copied)

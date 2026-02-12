@@ -1,68 +1,67 @@
 import re
 
 from .interop import Interop
+from .parser import NodeParser
 from .py_event import PyEvent
 
 
+# TODO: make type checks more robust
 class SyncableProperty:
-    def __init__(self, prop, sync=True):
-        split = prop.split(".")
-        self.transform = lambda x : x.Value
-        self.sync = True
-        if len(split) == 2:
-            self.syncable, self.prop = split
-            self.syncable = Interop.getSyncable(self.syncable)
-            self.leaf = True
-            self._parse_prop()
-        else:
-            self.syncable = SyncableProperty(".".join(split[:-1]))
-            if sync:
-                self.syncable.ValueChanged += self._rebind_events
-            self.prop = split[-1]
-            self.leaf = False
-            self._parse_prop()
-        self._value = None if sync else self.raw_get()
-        self.sync = sync
-        self._events = {}
-        self._init_events()
+    def __init__(self, prop, sync=True, **subscribers):
+        self.node = NodeParser.parse(prop, sync)
+        self.prop = prop
 
-    def _init_events(self):
-        var = self.raw_get()
-        for prop in dir(var):
-            value = getattr(var, prop)
-            if type(value).__name__ == "EventBinding":
-                event = PyEvent(value)
-                setattr(self, prop, event)
-                self._events[prop] = event
+        if self.sync and self.is_list:
+            self.node.ValueChanged += self._list_changed
+        elif self.sync and self.is_dict:
+            self.node.ValueChanged += self._dict_changed
 
-    def _rebind_events(self, _):
-        var = self.raw_get()
-        for name, event in self._events.items():
-            event.rebind(getattr(var, name))
-        self._events["ValueChanged"].invoke(self.transform(var))
+        for event, callbacks in subscribers.items():
+            evt = getattr(self, event)
+            if isinstance(callbacks, list):
+                for callback in callbacks:
+                    evt += callback
+            else:
+                evt += callbacks
 
-    def raw_get(self):
-        if self.sync:
-            return getattr(self.syncable if self.leaf else self.syncable.get(), self.prop)
-        return self._value
+        self.resync()
+
+    def resync(self):
+        self.node.ValueChanged.invoke(self.node.get())
+
+    def _list_changed(self, _):
+        for item in self.node.get():
+            self.node.ItemAdded.invoke(item)
+
+    def _dict_changed(self, _):
+        for item in self.node.get():
+            self.node.ItemAdded.invoke(item.Key, item.Value)
+
+    @property
+    def is_list(self):
+        return self.node.type_name().startswith("BindableList[")
+
+    @property
+    def is_dict(self):
+        return self.node.type_name().startswith("BindableDictionary[")
+
+    @property
+    def iterable(self):
+        return self.is_list or self.is_dict
 
     def get(self):
-        return self.transform(self.raw_get())
+        return self.node.get()
 
     def set(self, value):
-        if self.leaf:
-            getattr(self.syncable, self.prop).Value = value
-        else:
-            getattr(self.syncable.get(), self.prop).Value = value
+        self.node.set(value)
 
-    def _parse_prop(self):
-        index_match = re.match("(.+)\\[([0-9]+)]", self.prop)
-        if index_match:
-            self.prop = index_match.groups()[0]
-            index = int(index_match.groups()[1])
-            self.raw_get().ItemChanged += lambda i, item: self._refresh_item(i, item, index)
-            self.transform = lambda x: x.Value[index]
+    def __getattr__(self, item):
+        event = self.node.get_event(item)
+        if event:
+            return event
 
-    def _refresh_item(self, i, item, index):
-        if i == index:
-            self._rebind_events(item)
+        raise AttributeError(f"Property {self} has no attribute {item}")
+
+    @property
+    def sync(self):
+        return self.node.sync
