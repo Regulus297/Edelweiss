@@ -10,7 +10,7 @@ class PluginLoader:
     def bind():
         from interop import SyncableProperty
         PluginLoader.plugins_var = SyncableProperty("Edelweiss.PythonPlugins")
-        # PluginLoader.plugins_var.ItemAdded += lambda _, x: PluginLoader.load_python_plugin(x)
+        PluginLoader.plugins_var.ItemAdded += lambda _, x: PluginLoader.load_python_plugin(x)
         PluginLoader.plugins_var.resync()
 
     @staticmethod

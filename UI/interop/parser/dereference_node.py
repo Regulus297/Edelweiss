@@ -34,3 +34,6 @@ class DereferenceNode(BindingNode):
         for name, event in self._events.items():
             event.rebind(getattr(var, name))
         self._events["ValueChanged"].invoke(self.get())
+
+    def __repr__(self):
+        return f"{self.left}.{self.prop}"

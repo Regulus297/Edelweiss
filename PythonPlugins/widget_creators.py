@@ -1,6 +1,5 @@
-from ui import WidgetCreator, WidgetBinding, WidgetMethod, JSONWidgetLoader
+from ui import WidgetCreator, JSONWidgetLoader, WidgetBinding, WidgetMethod
 from ui.widgets import ModifiableCombobox, FormList
-from interop import ListBinding, VariableBinding, DictBinding
 from plugins import plugin_loadable, load_dependencies
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QLineEdit, QComboBox, QCheckBox
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
@@ -22,7 +21,7 @@ class QLabelWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None):
         widget = QLabel(parent=parent)
-        WidgetBinding(data, "text", widget.setText, None)
+        WidgetBinding(data, "text", ValueChanged=widget.setText)
         return widget
 
 @plugin_loadable
@@ -32,8 +31,8 @@ class QPushButtonWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None):
         widget = QPushButton(parent=parent)
-        WidgetBinding(data, "text", widget.setText, None)
-        WidgetMethod.create(widget, widget.pressed, data, "click", None)
+        binding = WidgetBinding(data, "text", ValueChanged=widget.setText)
+        WidgetMethod.create(widget, widget.clicked, data, "click", binding)
         return widget
 
 @plugin_loadable
@@ -43,7 +42,7 @@ class QLineEditWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None):
         widget = QLineEdit(parent=parent)
-        binding = WidgetBinding(data, "text", lambda x: widget.setText(str(x)), None)
+        binding = WidgetBinding(data, "text", ValueChanged=lambda v: widget.setText(str(v)))
 
         dataType = data.get("dataType")
         t = str
@@ -54,11 +53,11 @@ class QLineEditWidgetCreator(WidgetCreator):
             widget.setValidator(QDoubleValidator(widget))
             t = float
 
-        method = WidgetMethod.create(widget, widget.editingFinished, data, "edit", binding, {"text": lambda: t(widget.text())})
+        method = WidgetMethod.create(widget, widget.editingFinished, data, "edit", binding, {"text": lambda: t(widget.text)})
         if method is None:
-            binding.bind(widget, widget.editingFinished, lambda b: b.set(t(widget.text())))
-
+            widget.editingFinished.connect(lambda: binding.prop.set(t(widget.text())))
         return widget
+
 
 @plugin_loadable
 class QComboBoxWidgetCreator(WidgetCreator):
@@ -67,67 +66,53 @@ class QComboBoxWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None):
         if data.get("modifiable"):
-            return self._create_modifiable_combobox(data, parent)
+            return self._create_modifiable(data, parent)
         return self._create_combobox(data, parent)
 
-    def _create_modifiable_combobox(self, data, parent):
-        widget = ModifiableCombobox(WidgetBinding.get_value(data, "defaults"), parent)
-        widget.canEditDefaults = data.get("canEditDefaults", True)
-        params = {"text": widget.combobox.currentText, "index": widget.combobox.currentIndex}
-        options_binding = WidgetBinding(data, "options", None, None, lambda prop, _, __: ListBinding(prop, widget.clear, widget.addItem, lambda _, item: self._remove_item(widget, item), widget.setItemText))
-        change = WidgetMethod.create(widget, widget.itemChanged, data, "change", options_binding, params)
-        add = WidgetMethod.create(widget, widget.itemAdded, data, "add", options_binding, params)
-        remove = WidgetMethod.create(widget, widget.itemRemoved, data, "remove", options_binding, params)
-        edit = WidgetMethod.create(widget, widget.itemEdited, data, "edit", options_binding, params)
-        if add is None:
-            options_binding.bind(widget, widget.itemAdded, lambda b: b.add(widget.combobox.currentText()))
-        if remove is None:
-            options_binding.bind(widget, widget.itemRemoved, lambda b: b.remove(widget.combobox.currentText()))
-        if edit is None:
-            options_binding.bind(widget, widget.itemEdited, lambda b: b.__setitem__(widget.combobox.currentIndex(), widget.combobox.currentText()))
-        return widget
-        
     def _create_combobox(self, data, parent):
         widget = QComboBox(parent=parent)
-        binding = WidgetBinding(data, "options", widget.addItems, None, lambda prop, _, __: self._ctor(widget, prop))
-        selected_binding = WidgetBinding(data, "selected", lambda text: self._set_text(widget, text), None)
-        params = {"text": lambda: self._get_text(widget), "index": widget.currentIndex}
-        method = WidgetMethod.create(widget, widget.currentIndexChanged, data, "change", binding, params)
-        if method is None:
-            selected_binding.bind(widget, widget.currentIndexChanged, lambda b: b.set(self._get_text(widget)), True)
+        options_binding = WidgetBinding(data, "options", ItemAdded=widget.addItem)
+        setattr(widget, "__keyed__", options_binding.is_dict)
+        selected_binding = WidgetBinding(data, "selected", ValueChanged=[lambda text: self._set_text(widget, text)])
+        change = WidgetMethod.create(widget, widget.currentIndexChanged, data, "change", selected_binding, {"text": lambda: self._get_text(widget), "index": widget.currentIndex})
+        if change is None:
+            WidgetBinding.bind(widget.currentIndexChanged, lambda _: selected_binding.prop.set(self._get_text(widget)), pair=selected_binding.prop.ValueChanged, call_args=(None,))
         return widget
-
-    def _ctor(self, widget, prop):
-        prop_type = prop.get().GetType().Name
-        if prop_type == "Dictionary`2":
-            setattr(widget, "__keyed__", True)
-            return DictBinding(prop, widget.clear, lambda key, value: self._replace_item(widget, key, value), widget.addItem, lambda key, _: self._remove_item(widget, key))
-        return ListBinding(prop, widget.clear, widget.addItem, lambda _, item: self._remove_item(widget, item), widget.setItemText)
-
-    def _remove_item(self, widget, key):
-        i = widget.findText(key)
-        widget.removeItem(i)
-
-    def _replace_item(self, widget, key, value):
-        i = widget.findText(key)
-        widget.setItemData(i, value)
-
-    def _get_text(self, widget):
-        if getattr(widget, "__keyed__", False):
-            return widget.currentData()
-        return widget.currentText()
 
     def _set_text(self, widget, text):
         if widget.isEditable():
             widget.setCurrentText(text)
             return
-        
+
         prev = widget.currentIndex()
         widget.setCurrentIndex(max(0, widget.findText(text)))
 
         if prev == widget.currentIndex():
             widget.currentIndexChanged.emit(0)
 
+    def _get_text(self, widget):
+        if getattr(widget, "__keyed__", False):
+            return widget.currentData()
+        return widget.currentText()
+
+    def _create_modifiable(self, data, parent):
+        widget = ModifiableCombobox(WidgetBinding.get_value(data, "defaults"), parent)
+        widget.canEditDefaults = data.get("canEditDefaults", True)
+        params = {"text": widget.combobox.currentText, "index": widget.combobox.currentIndex}
+        options_binding = WidgetBinding(data, "options", ItemAdded=widget.addItem, ItemRemoved=lambda _, item: self._remove_item(widget, item), ItemChanged=widget.setItemText)
+        options_binding.clear = widget.clear
+        change = WidgetMethod.create(widget, widget.itemChanged, data, "change", options_binding, params)
+        add = WidgetMethod.create(widget, widget.itemAdded, data, "add", options_binding, params)
+        remove = WidgetMethod.create(widget, widget.itemRemoved, data, "removed", options_binding, params)
+        edit = WidgetMethod.create(widget, widget.itemEdited, data, "edit", options_binding, params)
+        if add is None:
+            WidgetBinding.bind(widget.itemAdded, lambda v: options_binding.prop.add(v), pair=options_binding.prop.ItemAdded)
+        if remove is None:
+            WidgetBinding.bind(widget.itemRemoved, lambda v: options_binding.prop.remove(v), pair=options_binding.prop.ItemRemoved)
+        if edit is None:
+            WidgetBinding.bind(widget.itemEdited, lambda _, v: options_binding.prop.set_item(widget.combobox.currentIndex(), v), pair=options_binding.prop.ItemChanged)
+        return widget
+    
 
 @plugin_loadable
 class QCheckBoxWidgetCreator(WidgetCreator):
@@ -136,30 +121,32 @@ class QCheckBoxWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None):
         widget = QCheckBox(parent)
-        binding = WidgetBinding(data, "checked", widget.setChecked, None)
+        binding = WidgetBinding(data, "checked", ValueChanged=widget.setChecked)
         method = WidgetMethod.create(widget, widget.toggled, data, "toggle", binding, {"checked": widget.isChecked})
         if method is None:
-            binding.bind(widget, widget.toggled, lambda b: b.set(widget.isChecked()))
+            WidgetBinding.bind(widget.toggled, lambda _: binding.prop.set(widget.isChecked()), pair=binding.prop.ValueChanged)
         return widget
 
-@load_dependencies("Edelweiss:common_code")
-@plugin_loadable
-class FormListWidgetCreator(WidgetCreator):
-    def __init__(self):
-        super().__init__("FormList")
+# TODO: fix this creator to not crash on model change
+# @load_dependencies("Edelweiss:common_code")
+# @plugin_loadable
+# class FormListWidgetCreator(WidgetCreator):
+#     def __init__(self):
+#         super().__init__("FormList")
 
-    def create_widget(self, data, parent=None):
-        json = data["form"]
-        json["type"] = "Form"
-        model = data["bind"]["model"]
+#     def create_widget(self, data, parent=None):
+#         json = data["form"]
+#         json["type"] = "Form"
+#         model = data["bind"]["model"]
 
-        widget = FormList(lambda i: self._generate_widget(json, i, model), parent)
-        binding = WidgetBinding(data, "model", None, None, lambda prop, _, __: ListBinding(prop, widget.clear, lambda _: widget.new_row(), lambda index, _: widget.remove_row(widget.rows[index]), None))
-        binding.bind(widget, widget.itemAdded, lambda b: b.add(None))
-        binding.bind(widget, widget.itemRemoved, lambda b, *args: b.remove(b.prop.get()[args[0]]))
-        return widget
+#         widget = FormList(lambda i: self._generate_widget(json, i, model), parent)
+#         binding = WidgetBinding(data, "model", ItemAdded=lambda _: widget.new_row(), ItemRemoved=lambda index, _: widget.remove_row(widget.rows[index]))
+#         binding.prop.clear = lambda: widget.clear(True)
+#         WidgetBinding.bind(widget.itemAdded, lambda: binding.prop.add(None), pair=binding.prop.ItemAdded)
+#         WidgetBinding.bind(widget.itemRemoved, lambda index: binding.prop.remove(binding.prop.get()[index]), pair=binding.prop.ItemRemoved)
+#         return widget
 
-    def _generate_widget(self, json, index, model):
-        copied = copyJSON(json)
-        copied["model"] = f"{model}.@{index}"
-        return JSONWidgetLoader.init_widget(copied)
+#     def _generate_widget(self, json, index, model):
+#         copied = copyJSON(json)
+#         copied["model"] = f"{model}.@{index}"
+#         return JSONWidgetLoader.init_widget(copied)

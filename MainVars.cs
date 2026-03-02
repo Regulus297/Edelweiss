@@ -8,6 +8,7 @@ namespace Edelweiss
         string ISyncable.Name() => MainPlugin.Instance.ID;
         public static readonly BindableList<CustomTab> Tabs = [];
         public static readonly BindableDictionary<string, string> PythonPlugins = [];
+        public static readonly BindableList<string> Strings = ["Default", "Default 2"];
         public static readonly BindableVariable<SampleModel> Model = new SampleModel();
     }
 

@@ -4,6 +4,7 @@ from ..interop import Interop
 
 class SyncableNode(BindingNode):
     def __init__(self, syncable):
+        self._name = syncable
         self.syncable = Interop.getSyncable(syncable)
         super().__init__(True)
 
@@ -12,3 +13,6 @@ class SyncableNode(BindingNode):
 
     def set(self, value):
         raise RuntimeError("Cannot set value of SyncableNode")
+
+    def __repr__(self):
+        return self._name

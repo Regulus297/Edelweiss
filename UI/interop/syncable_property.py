@@ -1,8 +1,4 @@
-import re
-
-from .interop import Interop
 from .parser import NodeParser
-from .py_event import PyEvent
 
 
 # TODO: make type checks more robust
@@ -10,6 +6,8 @@ class SyncableProperty:
     def __init__(self, prop, sync=True, **subscribers):
         self.node = NodeParser.parse(prop, sync)
         self.prop = prop
+
+        self._clear = None
 
         if self.sync and self.is_list:
             self.node.ValueChanged += self._list_changed
@@ -24,18 +22,33 @@ class SyncableProperty:
             else:
                 evt += callbacks
 
-        self.resync()
+        if self.sync:
+            self.resync()
 
     def resync(self):
         self.node.ValueChanged.invoke(self.node.get())
 
     def _list_changed(self, _):
+        if self._clear is not None:
+            self._clear()
         for item in self.node.get():
             self.node.ItemAdded.invoke(item)
 
     def _dict_changed(self, _):
+        if self._clear is not None:
+            self._clear()
         for item in self.node.get():
             self.node.ItemAdded.invoke(item.Key, item.Value)
+
+    @property
+    def clear(self):
+        return self._clear
+
+    @clear.setter
+    def clear(self, value):
+        if not self.iterable:
+            raise TypeError(f"Cannot set clear method for non-iterable syncable property: {self.prop}")
+        self._clear = value
 
     @property
     def is_list(self):
@@ -54,6 +67,15 @@ class SyncableProperty:
 
     def set(self, value):
         self.node.set(value)
+
+    def add(self, *args):
+        self.node.get().Add(*args)
+
+    def remove(self, value):
+        self.node.get().Remove(value)
+
+    def set_item(self, key, value):
+        self.node.get()[key] = value
 
     def __getattr__(self, item):
         event = self.node.get_event(item)

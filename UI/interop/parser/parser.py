@@ -14,7 +14,7 @@ class NodeParser:
         sub_node = NodeParser.parse(".".join(parts[:-1]), sync)
 
         if prop.startswith("@"):
-            if sub_node.type_name().startswith("List["):
+            if sub_node.type_name().startswith("BindableList["):
                 return IndexerNode(sub_node, int(prop[1:]), sync)
             return IndexerNode(sub_node, prop[1:], sync)
 

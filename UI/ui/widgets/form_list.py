@@ -44,14 +44,15 @@ class FormList(QWidget):
         layout.addWidget(removeButton)
         self.layout.insertWidget(self.layout.count() - 1, containerRow)
 
-    def remove_row(self, rowWidget):
+    def remove_row(self, rowWidget, suppress=False):
         rowWidget.parent().close()
-        self.itemRemoved.emit(self.rows.index(rowWidget))
+        if not suppress:
+            self.itemRemoved.emit(self.rows.index(rowWidget))
         self.rows.remove(rowWidget)
 
-    def clear(self):
+    def clear(self, suppress=False):
         while len(self.rows) > 0:
-            self.remove_row(self.rows[0])
+            self.remove_row(self.rows[0], suppress)
 
     def paintEvent(self, a0):
         QPainter(self).fillRect(self.rect(), self.backgroundColor)
