@@ -17,6 +17,7 @@ class IndexerNode(BindingNode):
         try:
             return self.left.get()[self.index]
         except Exception as e:
+            print("GAY")
             error = RuntimeError(f"Index out of range: index {self.index} for property {self}\nBase Exception:\n{e}")
             raise error
 
@@ -33,3 +34,11 @@ class IndexerNode(BindingNode):
 
     def __repr__(self):
         return f"{self.left}[{self.index}]"
+
+    def discard(self):
+        if self.sync:
+            self.left.ValueChanged -= self.rebind_events
+            self.left.ItemChanged -= self._refresh_value
+            self.left.ItemRemoved -= self._item_removed
+        self.left.discard()
+        del self.left

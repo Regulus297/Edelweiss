@@ -5,8 +5,16 @@ from interop.py_event import PyEvent
 class WidgetBinding:
     _signal_lookup = {}
 
-    def __init__(self, data, name, **subscribers):
-        self.bindable, self.prop = WidgetBinding.get_property(data, name, **subscribers)
+    def __init__(self, widget, data, name, **subscribers):
+        if hasattr(widget, "__bindings__"):
+            widget.__bindings__.append(self)
+        else:
+            widget.__bindings__ = [self]
+
+        self.bindable, self.prop = WidgetBinding.get_property(data, name)
+        if self.bindable:
+            self.prop.add_subscribers(**subscribers)
+
         if not self.bindable:
             if "ValueChanged" in subscribers:
                 callbacks = subscribers["ValueChanged"]
@@ -26,11 +34,11 @@ class WidgetBinding:
 
 
     @staticmethod
-    def get_property(data, name, **subscribers):
+    def get_property(data, name):
         if name in data:
             return False, data[name]
         if "bind" in data and name in data["bind"]:
-            return True, SyncableProperty(data["bind"][name], True, **subscribers)
+            return True, SyncableProperty(data["bind"][name], True)
         return None, None
 
     @staticmethod
@@ -67,3 +75,7 @@ class WidgetBinding:
         if self.bindable:
             return self.prop.is_list
         return isinstance(self.prop, list)
+
+    def discard(self):
+        if self.bindable:
+            self.prop.discard()

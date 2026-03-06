@@ -21,7 +21,7 @@ class QLabelWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None):
         widget = QLabel(parent=parent)
-        WidgetBinding(data, "text", ValueChanged=widget.setText)
+        WidgetBinding(widget, data, "text", ValueChanged=widget.setText)
         return widget
 
 @plugin_loadable
@@ -31,7 +31,7 @@ class QPushButtonWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None):
         widget = QPushButton(parent=parent)
-        binding = WidgetBinding(data, "text", ValueChanged=widget.setText)
+        binding = WidgetBinding(widget, data, "text", ValueChanged=widget.setText)
         WidgetMethod.create(widget, widget.clicked, data, "click", binding)
         return widget
 
@@ -42,7 +42,7 @@ class QLineEditWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None):
         widget = QLineEdit(parent=parent)
-        binding = WidgetBinding(data, "text", ValueChanged=lambda v: widget.setText(str(v)))
+        binding = WidgetBinding(widget, data, "text", ValueChanged=lambda v: widget.setText(str(v)))
 
         dataType = data.get("dataType")
         t = str
@@ -71,9 +71,9 @@ class QComboBoxWidgetCreator(WidgetCreator):
 
     def _create_combobox(self, data, parent):
         widget = QComboBox(parent=parent)
-        options_binding = WidgetBinding(data, "options", ItemAdded=widget.addItem)
+        options_binding = WidgetBinding(widget, data, "options", ItemAdded=widget.addItem)
         setattr(widget, "__keyed__", options_binding.is_dict)
-        selected_binding = WidgetBinding(data, "selected", ValueChanged=[lambda text: self._set_text(widget, text)])
+        selected_binding = WidgetBinding(widget, data, "selected", ValueChanged=[lambda text: self._set_text(widget, text)])
         change = WidgetMethod.create(widget, widget.currentIndexChanged, data, "change", selected_binding, {"text": lambda: self._get_text(widget), "index": widget.currentIndex})
         if change is None:
             WidgetBinding.bind(widget.currentIndexChanged, lambda _: selected_binding.prop.set(self._get_text(widget)), pair=selected_binding.prop.ValueChanged, call_args=(None,))
@@ -83,12 +83,16 @@ class QComboBoxWidgetCreator(WidgetCreator):
         if widget.isEditable():
             widget.setCurrentText(text)
             return
-
+        
+        widget.__bindings__[1].prop.ValueChanged.queue(lambda: self._set_index(widget, text))
+    
+    def _set_index(self, widget, text):
         prev = widget.currentIndex()
         widget.setCurrentIndex(max(0, widget.findText(text)))
 
         if prev == widget.currentIndex():
-            widget.currentIndexChanged.emit(0)
+            widget.currentIndexChanged.emit(prev)
+        
 
     def _get_text(self, widget):
         if getattr(widget, "__keyed__", False):
@@ -99,7 +103,7 @@ class QComboBoxWidgetCreator(WidgetCreator):
         widget = ModifiableCombobox(WidgetBinding.get_value(data, "defaults"), parent)
         widget.canEditDefaults = data.get("canEditDefaults", True)
         params = {"text": widget.combobox.currentText, "index": widget.combobox.currentIndex}
-        options_binding = WidgetBinding(data, "options", ItemAdded=widget.addItem, ItemRemoved=lambda _, item: self._remove_item(widget, item), ItemChanged=widget.setItemText)
+        options_binding = WidgetBinding(widget, data, "options", ItemAdded=widget.addItem, ItemRemoved=lambda _, item: self._remove_item(widget, item), ItemChanged=widget.setItemText)
         options_binding.clear = widget.clear
         change = WidgetMethod.create(widget, widget.itemChanged, data, "change", options_binding, params)
         add = WidgetMethod.create(widget, widget.itemAdded, data, "add", options_binding, params)
@@ -121,32 +125,32 @@ class QCheckBoxWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None):
         widget = QCheckBox(parent)
-        binding = WidgetBinding(data, "checked", ValueChanged=widget.setChecked)
+        binding = WidgetBinding(widget, data, "checked", ValueChanged=widget.setChecked)
         method = WidgetMethod.create(widget, widget.toggled, data, "toggle", binding, {"checked": widget.isChecked})
         if method is None:
             WidgetBinding.bind(widget.toggled, lambda _: binding.prop.set(widget.isChecked()), pair=binding.prop.ValueChanged)
         return widget
 
-# TODO: fix this creator to not crash on model change
-# @load_dependencies("Edelweiss:common_code")
-# @plugin_loadable
-# class FormListWidgetCreator(WidgetCreator):
-#     def __init__(self):
-#         super().__init__("FormList")
 
-#     def create_widget(self, data, parent=None):
-#         json = data["form"]
-#         json["type"] = "Form"
-#         model = data["bind"]["model"]
+@load_dependencies("Edelweiss:common_code")
+@plugin_loadable
+class FormListWidgetCreator(WidgetCreator):
+    def __init__(self):
+        super().__init__("FormList")
 
-#         widget = FormList(lambda i: self._generate_widget(json, i, model), parent)
-#         binding = WidgetBinding(data, "model", ItemAdded=lambda _: widget.new_row(), ItemRemoved=lambda index, _: widget.remove_row(widget.rows[index]))
-#         binding.prop.clear = lambda: widget.clear(True)
-#         WidgetBinding.bind(widget.itemAdded, lambda: binding.prop.add(None), pair=binding.prop.ItemAdded)
-#         WidgetBinding.bind(widget.itemRemoved, lambda index: binding.prop.remove(binding.prop.get()[index]), pair=binding.prop.ItemRemoved)
-#         return widget
+    def create_widget(self, data, parent=None):
+        json = data["form"]
+        json["type"] = "Form"
+        model = data["bind"]["model"]
 
-#     def _generate_widget(self, json, index, model):
-#         copied = copyJSON(json)
-#         copied["model"] = f"{model}.@{index}"
-#         return JSONWidgetLoader.init_widget(copied)
+        widget = FormList(lambda i: self._generate_widget(json, i, model), parent)
+        binding = WidgetBinding(widget, data, "model", ItemAdded=lambda _: widget.new_row(), ItemRemoved=lambda index, _: widget.remove_row(widget.rows[index]))
+        binding.prop.clear = lambda: widget.clear(True)
+        WidgetBinding.bind(widget.itemAdded, lambda: binding.prop.add(None), pair=binding.prop.ItemAdded)
+        WidgetBinding.bind(widget.itemRemoved, lambda index: binding.prop.remove(binding.prop.get()[index]), pair=binding.prop.ItemRemoved)
+        return widget
+
+    def _generate_widget(self, json, index, model):
+        copied = copyJSON(json)
+        copied["model"] = f"{model}.@{index}"
+        return JSONWidgetLoader.init_widget(copied)

@@ -37,3 +37,9 @@ class DereferenceNode(BindingNode):
 
     def __repr__(self):
         return f"{self.left}.{self.prop}"
+
+    def discard(self):
+        if self.sync:
+            self.left.ValueChanged -= self.rebind_events
+        self.left.discard()
+        del self

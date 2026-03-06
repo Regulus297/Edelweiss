@@ -2,6 +2,8 @@ from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QColor, QPainter
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton, QHBoxLayout, QSizePolicy
 
+from utils import UI
+
 
 # TODO: make this scrollable
 class FormList(QWidget):
@@ -45,7 +47,7 @@ class FormList(QWidget):
         self.layout.insertWidget(self.layout.count() - 1, containerRow)
 
     def remove_row(self, rowWidget, suppress=False):
-        rowWidget.parent().close()
+        UI.close(rowWidget.parent())
         if not suppress:
             self.itemRemoved.emit(self.rows.index(rowWidget))
         self.rows.remove(rowWidget)

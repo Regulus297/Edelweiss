@@ -14,6 +14,9 @@ class SyncableProperty:
         elif self.sync and self.is_dict:
             self.node.ValueChanged += self._dict_changed
 
+        self.add_subscribers(**subscribers)
+
+    def add_subscribers(self, **subscribers):
         for event, callbacks in subscribers.items():
             evt = getattr(self, event)
             if isinstance(callbacks, list):
@@ -87,3 +90,7 @@ class SyncableProperty:
     @property
     def sync(self):
         return self.node.sync
+
+    def discard(self):
+        self.node.discard()
+        del self

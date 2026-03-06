@@ -8,6 +8,7 @@ class PyEvent:
         self.blocked = False
         self.before = []
         self.after = []
+        self._queue = []
         if self.cs_event is not None:
             self.cs_event += self.invoke
 
@@ -43,6 +44,10 @@ class PyEvent:
         for callback in self.after:
             callback()
 
+        for callback in self._queue:
+            callback()
+        self._queue.clear()
+
     def setBlocked(self, blocked):
         self.blocked = blocked
 
@@ -51,3 +56,6 @@ class PyEvent:
         other.after.append(lambda: self.setBlocked(False))
         self.before.append(lambda: other.setBlocked(True))
         self.after.append(lambda: other.setBlocked(False))
+
+    def queue(self, callback):
+        self._queue.append(callback)

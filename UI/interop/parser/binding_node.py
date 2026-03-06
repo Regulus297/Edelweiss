@@ -40,3 +40,6 @@ class BindingNode:
 
     def get_event(self, name):
         return self._events.get(name)
+
+    def discard(self):
+        ...
