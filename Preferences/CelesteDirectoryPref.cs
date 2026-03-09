@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Preferences
 {
-    public class CelesteDirectoryPref : PluginSaveablePreference, ISyncable
+    internal class CelesteDirectoryPref : PluginSaveablePreference, ISyncable
     {
         public event Action OnFailedFileLoad;
 

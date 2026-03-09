@@ -1,0 +1,985 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Edelweiss</name>
+    </assembly>
+    <members>
+        <member name="T:Edelweiss.Interop.BindableConverter">
+            <summary>
+            A JSON serializer for BindableVariable that serializes just the value.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableConverter.CanConvert(System.Type)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Edelweiss.Interop.BindableDictionary`2">
+            <summary>
+            A variable that contains a list, invoking events when items are added, removed or changed
+            </summary>
+            <typeparam name="T">The key type</typeparam>
+            <typeparam name="U">The value type</typeparam>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableDictionary`2.#ctor">
+            <summary>
+            A variable that contains a list, invoking events when items are added, removed or changed
+            </summary>
+            <typeparam name="T">The key type</typeparam>
+            <typeparam name="U">The value type</typeparam>
+        </member>
+        <member name="E:Edelweiss.Interop.BindableDictionary`2.ItemChanged">
+            <summary>
+            Invoked when an item at a key is changed
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Interop.BindableDictionary`2.ItemRemoved">
+            <summary>
+            Invoked when an item at a key is removed
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Interop.BindableDictionary`2.ItemAdded">
+            <summary>
+            Invoked when an item at a key is added
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableDictionary`2.GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="P:Edelweiss.Interop.BindableDictionary`2.Item(`0)">
+            <summary>
+            Setting will invoke ItemChanged if the key is already in the list and ItemAdded if not
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableDictionary`2.Add(`0,`1)">
+            <summary>
+            Adds a key and value to the dictionary
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableDictionary`2.Remove(`0)">
+            <summary>
+            Removes the item at a given key
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Interop.BindableList`1">
+            <summary>
+            A variable that contains a list, invoking events when items are added, removed or changed
+            </summary>
+            <typeparam name="T">The type of elements in the list</typeparam>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableList`1.#ctor">
+            <summary>
+            A variable that contains a list, invoking events when items are added, removed or changed
+            </summary>
+            <typeparam name="T">The type of elements in the list</typeparam>
+        </member>
+        <member name="E:Edelweiss.Interop.BindableList`1.ItemAdded">
+            <summary>
+            Invoked when an item is added
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Interop.BindableList`1.ItemRemoved">
+            <summary>
+            Invoked when an item is removed: passes in the index and item
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Interop.BindableList`1.ItemChanged">
+            <summary>
+            Invoked when an item at an index is changed: passes in the index and item
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableList`1.Add(`0)">
+            <summary>
+            Adds an item to the list, invoking ItemAdded
+            </summary>
+            <param name="item">The item to add</param>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableList`1.Add">
+            <summary>
+            Adds an item to the list by creating an instance
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableList`1.Remove(`0)">
+            <summary>
+            Removes the given item from the list, invoking ItemRemoved
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableList`1.GetEnumerator">
+            <inheritdoc/>
+        </member>
+        <member name="P:Edelweiss.Interop.BindableList`1.Item(System.Int32)">
+            <summary>
+            Setting will invoke ItemChanged
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Interop.BindableVariable`1">
+            <summary>
+            A variable that invokes an event when its value is changed
+            </summary>
+            <typeparam name="T">The type this variable contains</typeparam>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableVariable`1.#ctor(`0)">
+            <summary>
+            A variable that invokes an event when its value is changed
+            </summary>
+            <typeparam name="T">The type this variable contains</typeparam>
+        </member>
+        <member name="F:Edelweiss.Interop.BindableVariable`1._value">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Interop.BindableVariable`1.suppressed">
+            <summary>
+            Whether this variable is blocked from invoking events
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableVariable`1.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Interop.BindableVariable`1.ValueChanged">
+            <summary>
+            Invoked when the value of this variable is set
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Interop.BindableVariable`1.Value">
+            <summary>
+            The value of the variable. Setting it will invoke ValueChanged
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableVariable`1.Suppress">
+            <summary>
+            Returns an object to suppress event invocations of this variable until disposed
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableVariable`1.op_Implicit(`0)~Edelweiss.Interop.BindableVariable{`0}">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableVariable`1.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="T:Edelweiss.Interop.InteropExtensions">
+            <summary>
+            Extension methods relating to interops
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Interop.InteropExtensions.OnSync">
+            <summary>
+            Event invoked when a syncable is synced with the frontend
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.InteropExtensions.Sync(Edelweiss.Interop.ISyncable)">
+            <summary>
+            Sync a syncable with the frontend
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.InteropExtensions.MakeTransform``2(Edelweiss.Interop.BindableList{``1},Edelweiss.Interop.BindableList{``0},System.Func{``0,``1})">
+            <summary>
+            Makes one bindable list be a Select operation on another list while automatically syncing them
+            </summary>
+            <param name="output"></param>
+            <param name="source">The source list</param>
+            <param name="transform">The transformation to apply to each element of the source list</param>
+        </member>
+        <member name="M:Edelweiss.Interop.InteropExtensions.MakeTransform``3(Edelweiss.Interop.BindableList{``2},Edelweiss.Interop.BindableDictionary{``0,``1},System.Func{``0,``1,``2})">
+            <summary>
+            Makes one bindable list be a Select operation on a dictionary while automatically syncing them
+            </summary>
+            <param name="output"></param>
+            <param name="source">The source dictionary</param>
+            <param name="transform">The transformation to apply to each key and value of the source dictionary</param>
+        </member>
+        <member name="T:Edelweiss.Interop.ISyncable">
+            <summary>
+            Interface all classes that need to sync with the UI must implement
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Interop.ISyncable.Syncables">
+            <summary>
+            Dictionary of all syncable keys to their values
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.ISyncable.Name">
+            <summary>
+            The key this syncable should be accessible with
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Interop.PluginInterop">
+            <summary>
+            Base class for an interop class that defines methods that can be called by the UI
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Interop.PluginInterop.Interops">
+            <summary>
+            The dictionary of all interop keys to their instances
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.PluginInterop.Load">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Interop.PluginInterop.OnLoad">
+            <summary>
+            Called when the Interop is loaded
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Interop.SuppressBindable`1">
+            <summary>
+            Disposable object that suppresses event invocations for its bindable
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.SuppressBindable`1.#ctor(Edelweiss.Interop.BindableVariable{`0})">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.SuppressBindable`1.Dispose">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Main">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Main.Initialize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Main.Exit">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Edelweiss.MainInterop">
+            <summary>
+            Interop for general purpose functions
+            </summary>
+        </member>
+        <member name="M:Edelweiss.MainInterop.SetCelesteDirectory(System.String)">
+            <summary>
+            Sets the Celeste Directory to the given value
+            </summary>
+        </member>
+        <member name="M:Edelweiss.MainInterop.ChangeTab(Edelweiss.Plugins.CustomTab)">
+            <summary>
+            Changes the currently selected tab
+            </summary>
+        </member>
+        <member name="M:Edelweiss.MainInterop.Debug(System.Object)">
+            <summary>
+            Logs a message through the main logger.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.MainVars">
+            <summary>
+            Class containing the main variables
+            </summary>
+        </member>
+        <member name="F:Edelweiss.MainVars.Tabs">
+            <summary>
+            The list of all defined tabs
+            </summary>
+        </member>
+        <member name="F:Edelweiss.MainVars.PythonPlugins">
+            <summary>
+            The dictionary of all python plugin keys to their paths
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Modding.MapDirectory">
+            <summary>
+            A class containing map hierarchy data
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.MapDirectory.Name">
+            <summary>
+            The name of the map type
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.MapDirectory.Directory">
+            <summary>
+            The directory that the map type is put in
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Modding.ModdingInterop">
+            <summary>
+            Interop for the modding tab
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Modding.ModdingInterop.ChangeMapPreset(System.String)">
+            <summary>
+            Changes the current map preset, adds a new one if it doesn't already exist
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Modding.ModdingInterop.RemoveMapPreset(System.String)">
+            <summary>
+            Removes the given map preset
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Modding.ModdingInterop.RenameMapPreset(System.String,System.String)">
+            <summary>
+            Renames the given map preset
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Modding.ModdingTab">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Modding.ModdingTab.LayoutJSON">
+            <inheritdoc/>
+        </member>
+        <member name="P:Edelweiss.Modding.ModdingTab.ToolbarJSON">
+            <inheritdoc/>
+        </member>
+        <member name="P:Edelweiss.Modding.ModdingTab.DisplayName">
+            <inheritdoc/>
+        </member>
+        <member name="F:Edelweiss.Modding.ModdingTab.MapPresets">
+            <summary>
+            The list of all map presets
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.ModdingTab.CurrentPreset">
+            <summary>
+            The currently selected preset
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.ModdingTab.MapPresetNames">
+            <summary>
+            The names of all map presets
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.ModdingTab.CurrentPresetName">
+            <summary>
+            The name of the currently selected preset
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Modding.ModdingTab.Load">
+            <inheritdoc/>
+        </member>
+        <member name="T:Edelweiss.Plugins.CustomTab">
+            <summary>
+            Registers a custom UI tab, like the mapping tab.
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.CustomTab.LayoutJSON">
+            <summary>
+            The key for the JSON file containing the layout of the tab
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.CustomTab.ToolbarJSON">
+            <summary>
+            The key for the JSON file containing the toolbar for the tab
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.CustomTab.DisplayName">
+            <summary>
+            The name that will be displayed in the editor
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.CustomTab.LayoutWidget">
+            <summary>
+            The JSON string for the widget
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.CustomTab.Load">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Plugins.CustomTab.OnSelect">
+            <summary>
+            Called when the user switches to this tab in the editor
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.CustomTab.OnDeselect">
+            <summary>
+            Called when the user switches away from this tab in the editor
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.CustomTab.HandleToolbarClick(System.String,Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Called when a toolbar action belonging to this tab's toolbar is triggered
+            </summary>
+            <param name="actionName">The identifier for the action that was triggered</param>
+            <param name="extraData">Any additional data that was requested in the toolbar's JSON file</param>
+        </member>
+        <member name="T:Edelweiss.Plugins.Loadable">
+            <summary>
+            Base class for all objects that need to be loaded by the PluginLoader but do not have any other function.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.LoadAfterAttribute">
+            <summary>
+            Classes marked with this attribute will require that the specified types be loaded before they can be loaded
+            </summary>
+            <param name="otherTypes">The types to load before this type</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.LoadAfterAttribute.#ctor(System.Type[])">
+            <summary>
+            Classes marked with this attribute will require that the specified types be loaded before they can be loaded
+            </summary>
+            <param name="otherTypes">The types to load before this type</param>
+        </member>
+        <member name="T:Edelweiss.Plugins.Logger">
+            <summary>
+            A class that logs messages
+            </summary>
+            <param name="plugin">The plugin this logger belongs to</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.#ctor(Edelweiss.Plugins.Plugin)">
+            <summary>
+            A class that logs messages
+            </summary>
+            <param name="plugin">The plugin this logger belongs to</param>
+        </member>
+        <member name="E:Edelweiss.Plugins.Logger.OnLog">
+            <summary>
+            Called when the corresponding Logger method is called
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Plugins.Logger.OnDebug">
+            <summary>
+            Called when the corresponding Logger method is called
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Plugins.Logger.OnWarn">
+            <summary>
+            Called when the corresponding Logger method is called
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Plugins.Logger.OnError">
+            <summary>
+            Called when the corresponding Logger method is called
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Plugins.Logger.OnWrite">
+            <summary>
+            Called when the corresponding Logger method is called
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.#ctor(Edelweiss.Plugins.Plugin,System.String)">
+            <summary>
+            Creates a Logger object that writes to a specific file
+            </summary>
+            <param name="plugin">The plugin this logger belongs to</param>
+            <param name="filePath">The file that the logger writes to</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Break(System.String)">
+            <summary>
+            Outputs an empty line in the log
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Break">
+            <summary>
+            Outputs an empty line in the log
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Log(System.Object)">
+            <summary>
+            Logs a message
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Debug(System.Object)">
+            <summary>
+            Logs a message for debugging
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Warn(System.Object)">
+            <summary>
+            Logs a warning
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Error(System.Object)">
+            <summary>
+            Logs an error
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Log(System.String,System.Object)">
+            <summary>
+            Logs a message with a given ID
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Debug(System.String,System.Object)">
+            <summary>
+            Logs a message for debugging with a given ID
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Warn(System.String,System.Object)">
+            <summary>
+            Logs a warning with a given ID
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Logger.Error(System.String,System.Object)">
+            <summary>
+            Logs an error with a given ID
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.Plugin">
+            <summary>
+            The basic plugin class
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.Plugin.ID">
+            <summary>
+            The ID of the plugin. Every plugin needs to have a unique identifier.
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.Plugin.Logger">
+            <summary>
+            The logger instance associated with this plugin
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.OnRegister">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.Load">
+            <summary>
+            Called when the plugin is loaded
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.PostSetupContent">
+            <summary>
+            Called after all plugins have been loaded
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.GetLocalizationKey(System.String)">
+            <summary>
+            Prefixes the plugin's ID to the given key.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.GetLocalization(System.String)">
+            <summary>
+            Prefixes the plugin's ID to the given key and attempts to get the localization for it.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.CreateCache(System.String)">
+            <summary>
+            Creates a cache file with the given filename at the cache directory for the plugin
+            </summary>
+            <param name="filename">The filename (with extension) for the cache file</param>
+            <returns>The stream of the cache file</returns>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.CacheExists(System.String)">
+            <summary>
+            Returns whether or not the given cache exists.
+            </summary>
+            <param name="filename">The cache path</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.Plugin.CachePath(System.String)">
+            <summary>
+            Returns the absolute path to the cache with the given name
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.PluginLoadAttribute">
+            <summary>
+            Base class for attributes that add custom functionality to plugin loading
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoadAttribute.OnLoad(Edelweiss.Plugins.PluginRegistryObject)">
+            <summary>
+            Called when the type attached to the attribute is loaded
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoadAttribute.PostLoadTypes(Edelweiss.Plugins.PluginRegistryObject)">
+            <summary>
+            Called after all types in the plugin are loaded
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoadAttribute.PostLoadPlugins(Edelweiss.Plugins.PluginRegistryObject)">
+            <summary>
+            Called after all plugins are loaded
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.PluginLoader">
+            <summary>
+            Handles all plugin-related code.
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Plugins.PluginLoader.PostLoadTypes">
+            <summary>
+            Invoked after all types in a plugin are loaded
+            </summary>
+        </member>
+        <member name="E:Edelweiss.Plugins.PluginLoader.PostLoadPlugins">
+            <summary>
+            Invoked after all plugins are loaded
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.PluginLoader.localization">
+            <summary>
+            Dictionary containing language keys to localization dictionary.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.LoadAssembly(System.Reflection.Assembly)">
+            <summary>
+            Loads all the types from an assembly.
+            </summary>
+            <param name="assembly"></param>
+            <returns>The plugin that the assembly defines</returns>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.LoadPythonPlugins(Edelweiss.Utils.PluginAsset,System.String)">
+            <summary>
+            Finds all the python plugins from a given directory and registers them with the frontend.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.LoadJsonFiles(Edelweiss.Utils.PluginAsset,System.String)">
+            <summary>
+            Loads all the JSON files from a given directory.
+            </summary>
+            <param name="directory"></param>
+            <param name="pluginID">The prefix that will be added to the key</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.LoadLangFiles(Edelweiss.Utils.PluginAsset,System.String,System.Boolean)">
+            <summary>
+            Loads the language files from a given directory.
+            </summary>
+            <param name="directory">The directory to load from</param>
+            <param name="pluginID">The prefix that will be added to the file key</param>
+            <param name="celesteMod">True if the directory is a Celeste mod, false if it is an Edelweiss plugin</param>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.RequestJson(System.String)">
+            <summary>
+            Returns the JSON content for the given key.
+            </summary>
+            <returns>An empty JSON object as a string if the key does not exist.</returns>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.RequestJObject(System.String)">
+            <summary>
+            Requests the JSON for a given key and parses it.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginLoader.LoadBaseRegistryObjects(System.Reflection.Assembly)">
+            <summary>
+            Loads the base registry types for a given assembly.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.PluginFileData">
+            <summary>
+            Contains the plugin asset for any given file and the path relative to the plugin asset
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginFileData.#ctor(System.String,Edelweiss.Utils.PluginAsset)">
+            <summary>
+            Contains the plugin asset for any given file and the path relative to the plugin asset
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.PluginFileData.filePath">
+            <summary>
+            The path of the file relative to the plugin asset
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.PluginFileData.asset">
+            <summary>
+            The plugin asset that contains the file
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.LoadStage">
+            <summary>
+            The stages of plugin loading
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.LoadStage.OnLoad">
+            <summary>
+            When the type itself is loaded
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.LoadStage.PostLoadTypes">
+            <summary>
+            After all types in the plugin are loaded
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.LoadStage.PostLoadPlugins">
+            <summary>
+            After all plugins are loaded
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.PluginRegistryObject">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginRegistryObject.Plugin">
+            <summary>
+            The plugin that this object is defined by
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginRegistryObject.Name">
+            <summary>
+            The name of the object
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginRegistryObject.FullName">
+            <summary>
+            The full identifier for the object, consisting of its defining plugin's ID and the object's name
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginRegistryObject.OnRegister">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginRegistryObject.Load">
+            <summary>
+            Called when the object is entered into the registry
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginRegistryObject.PostSetupContent">
+            <summary>
+            Called after all plugins have been loaded.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Plugins.PluginSaveablePreference">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginSaveablePreference.Value">
+            <summary>
+            The value of the preference
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginSaveablePreference.DefaultValueStage">
+            <summary>
+            The stage at which the default value of the preference is set.
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.PluginSaveablePreference.AllPrefs">
+            <summary>
+            The loaded JSON object containing all currently loaded preferences
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginSaveablePreference.Load">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginSaveablePreference.SetDefaultValue">
+            <summary>
+            Called if the preference was not found in the saved preferences.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Plugins.PluginSaveablePreference.PrepForSave">
+            <summary>
+            Called before the preference is saved, to perform tasks necessary to save correctly
+            </summary>
+        </member>
+        <member name="T:Edelweiss.RegistryTypes.IRegistryObject">
+            <summary>
+            An interface that all types to be stored in the registry must implement
+            </summary>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.IRegistryObject.OnRegister">
+            <summary>
+            Called when the object is added to the registry
+            </summary>
+        </member>
+        <member name="T:Edelweiss.RegistryTypes.BaseRegistryObjectAttribute">
+            <summary>
+            Types marked with this attribute are "base" objects: all types inheriting from them are stored in their list.
+            </summary>
+        </member>
+        <member name="T:Edelweiss.RegistryTypes.Registry">
+            <summary>
+            Contains all registry objects categorised into their respective registry lists
+            </summary>
+        </member>
+        <member name="F:Edelweiss.RegistryTypes.Registry.registry">
+            <summary>
+            The whole registry
+            </summary>
+        </member>
+        <member name="F:Edelweiss.RegistryTypes.Registry.allRegisteredTypes">
+            <summary>
+            The list of all types that have been added to the registry, regardless of type
+            </summary>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.Registry.ForAll``1(System.Action{``0})">
+            <summary>
+            Performs an action for all registered objects of a given type
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="action"></param>
+        </member>
+        <member name="T:Edelweiss.RegistryTypes.RegistryList`1">
+            <summary>
+            A list of registry objects.
+            Stores an integer ID, an instance of the type, and the type itself.
+            </summary>
+            <typeparam name="T">The type that is stored in the list</typeparam>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.RegistryList`1.Add(`0)">
+            <summary>
+            Adds an instance to the list
+            </summary>
+            <param name="value">An instance of the object to add</param>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.RegistryList`1.GetValue(System.Int32)">
+            <summary>
+            Gets the instance of a particular ID
+            </summary>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.RegistryList`1.GetValue(System.Type)">
+            <summary>
+            Gets the instance of a particular type
+            </summary>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.RegistryList`1.GetValue``1">
+            <summary>
+            Gets the instance of a particular type and casts it to the given type
+            </summary>
+            <typeparam name="U">The type to cast to</typeparam>
+        </member>
+        <member name="M:Edelweiss.RegistryTypes.RegistryList`1.GetIndex(`0)">
+            <summary>
+            Gets the ID of a particular instance
+            </summary>
+        </member>
+        <member name="P:Edelweiss.RegistryTypes.RegistryList`1.Count">
+            <summary>
+            The number of entries in the list
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Utils.EdelweissUtils">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.TryGetCustomAttribute``1(System.Reflection.MemberInfo,``0@)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T">The type of attribute to get</typeparam>
+            <param name="memberInfo"></param>
+            <param name="attr"></param>
+            <returns>Whether the member has the attribute</returns>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.GetPluginAssetsFromDirectory(System.String)">
+            <summary>
+            Gets all the directories and zip files in a directory, in that order and converts them to plugin assets
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Stream(System.IO.Compression.ZipArchive)">
+            <summary>
+            Exposes the private stream of a given zip archive
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.Path(System.IO.Compression.ZipArchive)">
+            <summary>
+            Returns the path to a given zip archive
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.EdelweissUtils.IsSubclassOfRawGeneric(System.Type,System.Type)">
+            <summary>
+            Alternative version of <see cref="M:System.Type.IsSubclassOf(System.Type)"/> that supports raw generic types (generic types without
+            any type parameters).
+            </summary>
+            <param name="baseType">The base type class for which the check is made.</param>
+            <param name="toCheck">To type to determine for whether it derives from <paramref name="baseType"/>.</param>
+        </member>
+        <member name="T:Edelweiss.Utils.Language">
+            <summary>
+            Handles all localization-related code
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.Language.CurrentLanguage">
+            <summary>
+            The currently selected language key.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.Language.GetText(System.String)">
+            <summary>
+            Returns the localization for a given key
+            </summary>
+            <returns>The localization if it exists, the key itself if it doesn't</returns>
+        </member>
+        <member name="M:Edelweiss.Utils.Language.GetTextOrDefault(System.String,System.String)">
+            <summary>
+            Returns the localization for a given key and the default value if it doesn't exist.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.Language.TryGetText(System.String,System.String@)">
+            <summary>
+            Attempts to get the localization for a given key.
+            </summary>
+            <returns>Whether or not the localization exists.</returns>
+        </member>
+        <member name="T:Edelweiss.Utils.PluginAsset">
+            <summary>
+            An object that can contain either a zip file or a directory
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.PluginAsset.IsZipFile">
+            <summary>
+            Whether or not this asset is a zip file
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.PluginAsset.AssetPath">
+            <summary>
+            The path to the directory this asset contains if it is not a zip file
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Utils.PluginAsset.PluginArchive">
+            <summary>
+            The archive this asset contains if it is a zip file
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.Finalize">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.op_Implicit(System.String)~Edelweiss.Utils.PluginAsset">
+            <summary>
+            Converts a path to a PluginAsset. If the path is a file, it is treated as a zip. If the path is a directory, the asset is treated as a directory.
+            </summary>
+            <param name="assetPath"></param>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.op_Implicit(System.IO.Compression.ZipArchive)~Edelweiss.Utils.PluginAsset">
+            <summary>
+            Converts a zip archive into a plugin asset
+            </summary>
+            <param name="pluginArchive"></param>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.DirExists(System.String)">
+            <summary>
+            Returns true if the asset contains a directory with the given path
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.FileExists(System.String)">
+            <summary>
+            Returns true if the asset contains a file with the given path
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.GetFiles(System.String,System.IO.SearchOption)">
+            <summary>
+            Returns all the files in the asset matching a given pattern
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.GetFiles(System.String,System.String,System.IO.SearchOption)">
+            <summary>
+            Returns all the files in the asset matching a given pattern and that are in the given path
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.GetStream(System.String)">
+            <summary>
+            Opens the entry with the given path and returns the stream
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.PluginAsset.ToString">
+            <summary>
+            Returns the directory if the asset is a directory and the path to the zip archive if it is a zip file.
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

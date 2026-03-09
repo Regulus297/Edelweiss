@@ -35,6 +35,10 @@ namespace Edelweiss.RegistryTypes
         /// </summary>
         public T GetValue(Type type) => instanceList[type];
 
+        /// <summary>
+        /// Gets the instance of a particular type and casts it to the given type
+        /// </summary>
+        /// <typeparam name="U">The type to cast to</typeparam>
         public U GetValue<U>() where U : class, IRegistryObject => GetValue(typeof(U)) as U;
 
         /// <summary>

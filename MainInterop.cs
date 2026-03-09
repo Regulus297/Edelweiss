@@ -5,14 +5,23 @@ using Edelweiss.RegistryTypes;
 
 namespace Edelweiss
 {
+    /// <summary>
+    /// Interop for general purpose functions
+    /// </summary>
     public class MainInterop : PluginInterop
     {
         private CustomTab current = null;
+        /// <summary>
+        /// Sets the Celeste Directory to the given value
+        /// </summary>
         public void SetCelesteDirectory(string directory)
         {
             Registry.registry[typeof(PluginSaveablePreference)].GetValue<CelesteDirectoryPref>().StringValue = directory;
         }
 
+        /// <summary>
+        /// Changes the currently selected tab
+        /// </summary>
         public void ChangeTab(CustomTab tab)
         {
             current?.OnDeselect();
@@ -20,29 +29,12 @@ namespace Edelweiss
             current.Select();
         }
 
+        /// <summary>
+        /// Logs a message through the main logger.
+        /// </summary>
         public void Debug(object message)
         {
             MainPlugin.Instance.Logger.Debug(message);
-        }
-
-        public void ChangeModelName(string text)
-        {
-            MainVars.Model.Value.Name.Value = text;
-        }
-
-        public void ChangeModelObject()
-        {
-            MainVars.Model.Value = new SampleModel();
-        }
-
-        public void LogModelObject()
-        {
-            MainPlugin.Instance.Logger.Debug(MainVars.Model.Value);
-        }
-
-        public void ChangeSubmodel()
-        {
-            MainVars.Model.Value.Submodels[0] = new SampleModel.SubModel();
         }
     }
 }

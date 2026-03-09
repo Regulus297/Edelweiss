@@ -16,6 +16,9 @@ namespace Edelweiss.Plugins
         /// </summary>
         public virtual JToken Value { get; set; }
 
+        /// <summary>
+        /// The stage at which the default value of the preference is set.
+        /// </summary>
         public virtual LoadStage DefaultValueStage => LoadStage.PostLoadTypes;
 
         /// <summary>

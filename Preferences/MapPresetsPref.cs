@@ -7,7 +7,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Preferences
 {
-    public class MapPresetsPref : PluginSaveablePreference
+    internal class MapPresetsPref : PluginSaveablePreference
     {
         private readonly JsonSerializerSettings settings = new JsonSerializerSettings();
 

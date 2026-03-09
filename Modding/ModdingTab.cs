@@ -5,20 +5,43 @@ using Edelweiss.Plugins;
 
 namespace Edelweiss.Modding
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ModdingTab : CustomTab, ISyncable
     {
+        /// <inheritdoc/>
         public override string LayoutJSON => "Edelweiss:mod_tab";
 
+        /// <inheritdoc/>
         public override string ToolbarJSON => "";
 
+        /// <inheritdoc/>
         public override string DisplayName => "Modding";
 
+        /// <summary>
+        /// The list of all map presets
+        /// </summary>
         public static BindableDictionary<string, List<MapDirectory>> MapPresets = [];
+
+        /// <summary>
+        /// The currently selected preset
+        /// </summary>
         public static BindableList<MapDirectory> CurrentPreset = [new MapDirectory()];
+
+        /// <summary>
+        /// The names of all map presets
+        /// </summary>
         public static BindableList<string> MapPresetNames = [];
+
+        /// <summary>
+        /// The name of the currently selected preset
+        /// </summary>
         public static BindableVariable<string> CurrentPresetName;
 
         string ISyncable.Name() => FullName;
+
+        /// <inheritdoc/>
         public override void Load()
         {
             CurrentPresetName = "Default";

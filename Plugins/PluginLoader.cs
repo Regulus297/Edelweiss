@@ -20,7 +20,15 @@ namespace Edelweiss.Plugins
         private static Dictionary<string, string> jsonCache = [];
 
         private static List<string> blacklist = [];
+
+        /// <summary>
+        /// Invoked after all types in a plugin are loaded
+        /// </summary>
         public static event Action PostLoadTypes;
+
+        /// <summary>
+        /// Invoked after all plugins are loaded
+        /// </summary>
         public static event Action PostLoadPlugins;
 
         /// <summary>
@@ -322,10 +330,22 @@ namespace Edelweiss.Plugins
         public PluginAsset asset = asset;
     }
 
+    /// <summary>
+    /// The stages of plugin loading
+    /// </summary>
     public enum LoadStage
     {
+        /// <summary>
+        /// When the type itself is loaded
+        /// </summary>
         OnLoad,
+        /// <summary>
+        /// After all types in the plugin are loaded
+        /// </summary>
         PostLoadTypes,
+        /// <summary>
+        /// After all plugins are loaded
+        /// </summary>
         PostLoadPlugins
     }
 }

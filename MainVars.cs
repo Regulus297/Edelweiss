@@ -3,33 +3,21 @@ using Edelweiss.Plugins;
 
 namespace Edelweiss
 {
+    /// <summary>
+    /// Class containing the main variables
+    /// </summary>
     public class MainVars : Loadable, ISyncable
     {
         string ISyncable.Name() => MainPlugin.Instance.ID;
+
+        /// <summary>
+        /// The list of all defined tabs
+        /// </summary>
         public static readonly BindableList<CustomTab> Tabs = [];
+
+        /// <summary>
+        /// The dictionary of all python plugin keys to their paths
+        /// </summary>
         public static readonly BindableDictionary<string, string> PythonPlugins = [];
-        public static readonly BindableList<string> Strings = ["Default", "Default 2"];
-        public static readonly BindableVariable<SampleModel> Model = new SampleModel();
-    }
-
-    public class SampleModel
-    {
-        public class SubModel
-        {
-            public BindableVariable<string> SubName = "";
-            public BindableVariable<string> SubDirectory = "";
-        }
-
-        public BindableVariable<string> Name = "";
-        public BindableVariable<string> Directory = "";
-        public BindableVariable<string> Selectable = "Option";
-        public BindableVariable<string> Plugin = "";
-        public BindableVariable<bool> Bool = true;
-        public BindableVariable<int> Int = 12;
-        public BindableList<SubModel> Submodels = [new SubModel() {
-            SubName = "Default",
-            SubDirectory = "Directory"
-        }];
-        public override string ToString() => $"{Name} {Directory} {Selectable} {Plugin} {Bool} {Int}";
     }
 }

@@ -6,8 +6,18 @@ using System.Reflection;
 
 namespace Edelweiss.Utils
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class EdelweissUtils
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T">The type of attribute to get</typeparam>
+        /// <param name="memberInfo"></param>
+        /// <param name="attr"></param>
+        /// <returns>Whether the member has the attribute</returns>
         public static bool TryGetCustomAttribute<T>(this MemberInfo memberInfo, out T attr) where T : Attribute
         {
             attr = memberInfo.GetCustomAttribute<T>();
