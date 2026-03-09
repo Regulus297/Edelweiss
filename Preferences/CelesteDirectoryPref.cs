@@ -21,7 +21,7 @@ namespace Edelweiss.Preferences
             get => base.Value; 
             set {
                 base.Value = value;
-                CelesteDirectory.Value = value.ToString();
+                CelesteDirectory.Value = value?.ToString();
             }
         }
 

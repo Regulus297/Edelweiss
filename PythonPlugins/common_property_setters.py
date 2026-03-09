@@ -94,21 +94,6 @@ class MaxHeightSetter(CommonPropertySetter):
         widget.setMaximumHeight(property_value)
 
 
-@load_dependencies("Edelweiss:common_code")
-@plugin_loadable
-class AlignmentSetter(CommonPropertySetter):
-    def __init__(self):
-        super().__init__("alignment")
-
-    def set_property(self, widget, property_value):
-        item = get_layout_item(widget)
-        if item is not None:
-            item.setAlignment(value(property_value))
-
-    def set_layout_property(self, layout, property_value):
-        layout.setAlignment(value(property_value))
-
-
 @plugin_loadable
 class ContentsMarginsSetter(CommonPropertySetter):
     def __init__(self):

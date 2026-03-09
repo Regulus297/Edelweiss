@@ -85,7 +85,7 @@ class SyncableProperty:
         if event:
             return event
 
-        raise AttributeError(f"Property {self} has no attribute {item}")
+        raise AttributeError(f"Property {self.prop} has no attribute {item}")
 
     @property
     def sync(self):

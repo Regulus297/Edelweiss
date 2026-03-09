@@ -1,6 +1,7 @@
 import json
 import logging
 
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QLayout, QSizePolicy, QSpacerItem
 
 
@@ -50,7 +51,7 @@ class JSONWidgetLoader:
                 else:
                     layout.addWidget(JSONWidgetLoader.init_widget(child, parent))
                 if "alignment" in child:
-                    layout.itemAt(layout.count() - 1).setAlignment(child["alignment"])
+                    layout.itemAt(layout.count() - 1).setAlignment(JSONWidgetLoader.get_alignment(child["alignment"]))
 
         return layout
 
@@ -65,6 +66,22 @@ class JSONWidgetLoader:
         for key, value in data.items():
             if key in JSONWidgetLoader.common_property_setters.keys():
                 JSONWidgetLoader.common_property_setters[key].set_layout_property(layout, value)
+
+    @staticmethod
+    def get_alignment(name):
+        if name == "right":
+            return Qt.AlignRight
+        elif name == "top":
+            return Qt.AlignTop
+        elif name == "bottom":
+            return Qt.AlignBottom
+        elif name == "center":
+            return Qt.AlignCenter
+        elif name == "vCenter":
+            return Qt.AlignVCenter
+        elif name == "hCenter":
+            return Qt.AlignHCenter
+        return Qt.AlignLeft
 
 
 class WidgetCreator:

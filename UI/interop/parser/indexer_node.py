@@ -14,12 +14,7 @@ class IndexerNode(BindingNode):
             self.left.ItemRemoved += self._item_removed
 
     def get(self) -> object:
-        try:
-            return self.left.get()[self.index]
-        except Exception as e:
-            print("GAY")
-            error = RuntimeError(f"Index out of range: index {self.index} for property {self}\nBase Exception:\n{e}")
-            raise error
+        return self.left.get()[self.index]
 
     def set(self, value):
         self.left.get()[self.index] = value

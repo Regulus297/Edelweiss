@@ -1,5 +1,5 @@
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtWidgets import QWidget, QComboBox, QHBoxLayout, QPushButton
+from PyQt5.QtWidgets import QWidget, QComboBox, QHBoxLayout, QPushButton, QSizePolicy
 
 
 class ModifiableCombobox(QWidget):
@@ -12,6 +12,8 @@ class ModifiableCombobox(QWidget):
         super().__init__(parent)
         self.default_items = default_items
         self.removable_items = removable_items if removable_items else set()
+
+        self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
 
         self.layout = QHBoxLayout()
         self.setLayout(self.layout)

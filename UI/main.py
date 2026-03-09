@@ -26,6 +26,7 @@ def subscribe_to_pref(pref):
 
 if __name__ == '__main__':
     Interop.addSyncCallback("Edelweiss:CelesteDirectoryPref", subscribe_to_pref)
+    open("crashlog.txt", "w").close()
 
     def excepthook(exc_type, exc_value, exc_tb):
         logging.critical(

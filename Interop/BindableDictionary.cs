@@ -24,9 +24,9 @@ namespace Edelweiss.Interop
             get => Value[i];
             set
             {
-                if(Value.ContainsKey(i))
+                if(!suppressed && Value.ContainsKey(i))
                     ItemChanged?.Invoke(i, value);
-                else
+                else if(!suppressed)
                     ItemAdded?.Invoke(i, value);
                 Value[i] = value;
             }
@@ -35,12 +35,14 @@ namespace Edelweiss.Interop
         public void Add(T key, U value)
         {
             Value.Add(key, value);
-            ItemAdded?.Invoke(key, value);
+            if(!suppressed)
+                ItemAdded?.Invoke(key, value);
         }
 
         public void Remove(T key)
         {
-            ItemRemoved?.Invoke(key, Value[key]);
+            if(!suppressed)
+                ItemRemoved?.Invoke(key, Value[key]);
             Value.Remove(key);
         }
     }

@@ -20,7 +20,7 @@ class FormList(QWidget):
         self.rows = []
 
         self.addButton = QPushButton("+")
-        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         self.addButton.pressed.connect(self.new_row)
         self.layout.addWidget(self.addButton)
         self.layout.setAlignment(Qt.AlignTop)

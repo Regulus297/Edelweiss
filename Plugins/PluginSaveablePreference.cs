@@ -16,6 +16,8 @@ namespace Edelweiss.Plugins
         /// </summary>
         public virtual JToken Value { get; set; }
 
+        public virtual LoadStage DefaultValueStage => LoadStage.PostLoadTypes;
+
         /// <summary>
         /// The loaded JSON object containing all currently loaded preferences
         /// </summary>
@@ -24,11 +26,18 @@ namespace Edelweiss.Plugins
         /// <inheritdoc/>
         public sealed override void Load()
         {
-            Value = AllPrefs.Value<JToken>(FullName);
-            if (Value == null)
+            JToken value = AllPrefs.Value<JToken>(FullName);
+            if (value == null)
             {
-                PluginLoader.PostLoadTypes += SetDefaultValue;
+                if(DefaultValueStage == LoadStage.PostLoadTypes)
+                    PluginLoader.PostLoadTypes += SetDefaultValue;
+                else if(DefaultValueStage == LoadStage.PostLoadPlugins)
+                    PluginLoader.PostLoadPlugins += SetDefaultValue;
+                else
+                    SetDefaultValue();
+                return;
             }
+            Value = value;
         }
         
         /// <summary>

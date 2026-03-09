@@ -4,7 +4,12 @@ namespace Edelweiss.Interop
 {
     public class BindableVariable<T>(T value = default)
     {
-        private T _value = value;
+        protected T _value = value;
+        public bool suppressed = false;
+
+        public BindableVariable() : this(default)
+        {
+        }
 
         public event Action<T> ValueChanged;
 
@@ -14,8 +19,14 @@ namespace Edelweiss.Interop
             set
             {
                 _value = value;
-                ValueChanged?.Invoke(_value);
+                if(!suppressed)
+                    ValueChanged?.Invoke(_value);
             }
+        }
+
+        public SuppressBindable<T> Suppress()
+        {
+            return new SuppressBindable<T>(this);
         }
 
         public static implicit operator BindableVariable<T>(T value) => new(value);

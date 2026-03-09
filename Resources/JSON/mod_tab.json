@@ -1,71 +1,56 @@
 {
     "type": "QWidget",
-    "name": "Mod",
     "layout": {
-        "type": "QHBoxLayout",
+        "type": "QVBoxLayout",
         "children": [
             {
-                "type": "QPushButton",
-                "text": "Change Model Name",
-                "click": {
-                    "method": "Edelweiss:MainInterop.ChangeModelName",
-                    "args": ["new model name"]
-                }
+                "type": "QLabel",
+                "text": "Map Hierarchy Presets",
+                "id": "heading"
             },
             {
-                "type": "QPushButton",
-                "text": "Change Model Object",
-                "click": {
-                    "method": "Edelweiss:MainInterop.ChangeModelObject"
-                }
-            },
-            {
-                "type": "QPushButton",
-                "text": "Log Model",
-                "click": {
-                    "method": "Edelweiss:MainInterop.LogModelObject"
-                }
-            },
-            {
-                "type": "QPushButton",
-                "text": "Change Submodel",
-                "click": {
-                    "method": "Edelweiss:MainInterop.ChangeSubmodel"
+                "type": "QComboBox",
+                "modifiable": true,
+                "canEditDefaults": false,
+                "defaults": ["Default", "CollabUtils2"],
+                "bind": {
+                    "options": "Edelweiss:ModdingTab.MapPresetNames",
+                    "selected": "Edelweiss:ModdingTab.CurrentPresetName"
+                },
+                "add": null,
+                "change": {
+                    "method": "Edelweiss:ModdingInterop.ChangeMapPreset",
+                    "args": ["@text"]
+                },
+                "remove": {
+                    "method": "Edelweiss:ModdingInterop.RemoveMapPreset",
+                    "args": ["@text"]
+                },
+                "edit": {
+                    "method": "Edelweiss:ModdingInterop.RenameMapPreset",
+                    "args": ["@0", "@1"]
                 }
             },
             {
                 "type": "Form",
-                "model": "Edelweiss.Model",
-                "fields": [
-                    "Name", "Directory", "Selectable", "Plugin", "Bool", "Int", "Submodels"
-                ],
+                "model": "Edelweiss:ModdingTab",
+                "fields": ["CurrentPreset"],
                 "fieldInfo": {
-                    "Selectable": {
-                        "type": "list",
-                        "options": ["Option 1", "Option 2", "Option 3"]
-                    },
-                    "Plugin": {
-                        "type": "list",
-                        "bind": {
-                            "options": "Edelweiss.PythonPlugins"
-                        }
-                    },
-                    "Submodels": {
+                    "CurrentPreset": {
                         "type": "formList",
+                        "label": false,
                         "form": {
-                            "fields": ["SubName", "SubDirectory"],
+                            "fields": ["Name", "Directory"],
                             "fieldLayout": [
-                                ["SubName"],
-                                ["SubDirectory"]
+                                ["Name"],
+                                ["Directory"]
                             ]
                         }
                     }
-                },
-                "fieldLayout": [
-                    ["Name", "Submodels"],
-                    ["Directory", "Bool", "Int"],
-                    ["Selectable", "Plugin"]
-                ]
+                }
+            },
+            {
+                "isSpacer": true
             }
         ]
     }

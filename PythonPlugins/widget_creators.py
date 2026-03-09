@@ -75,7 +75,7 @@ class QComboBoxWidgetCreator(WidgetCreator):
         setattr(widget, "__keyed__", options_binding.is_dict)
         selected_binding = WidgetBinding(widget, data, "selected", ValueChanged=[lambda text: self._set_text(widget, text)])
         change = WidgetMethod.create(widget, widget.currentIndexChanged, data, "change", selected_binding, {"text": lambda: self._get_text(widget), "index": widget.currentIndex})
-        if change is None:
+        if change is None and selected_binding.prop is not None:
             WidgetBinding.bind(widget.currentIndexChanged, lambda _: selected_binding.prop.set(self._get_text(widget)), pair=selected_binding.prop.ValueChanged, call_args=(None,))
         return widget
 
@@ -84,7 +84,8 @@ class QComboBoxWidgetCreator(WidgetCreator):
             widget.setCurrentText(text)
             return
         
-        widget.__bindings__[1].prop.ValueChanged.queue(lambda: self._set_index(widget, text))
+        if widget.__bindings__[1].prop is not None:
+            widget.__bindings__[1].prop.ValueChanged.queue(lambda: self._set_index(widget, text))
     
     def _set_index(self, widget, text):
         prev = widget.currentIndex()
@@ -105,6 +106,7 @@ class QComboBoxWidgetCreator(WidgetCreator):
         params = {"text": widget.combobox.currentText, "index": widget.combobox.currentIndex}
         options_binding = WidgetBinding(widget, data, "options", ItemAdded=widget.addItem, ItemRemoved=lambda _, item: self._remove_item(widget, item), ItemChanged=widget.setItemText)
         options_binding.clear = widget.clear
+        selected_binding = WidgetBinding(widget, data, "selected", ValueChanged=[lambda text: self._set_text(widget.combobox, text)])
         change = WidgetMethod.create(widget, widget.itemChanged, data, "change", options_binding, params)
         add = WidgetMethod.create(widget, widget.itemAdded, data, "add", options_binding, params)
         remove = WidgetMethod.create(widget, widget.itemRemoved, data, "removed", options_binding, params)
@@ -115,6 +117,8 @@ class QComboBoxWidgetCreator(WidgetCreator):
             WidgetBinding.bind(widget.itemRemoved, lambda v: options_binding.prop.remove(v), pair=options_binding.prop.ItemRemoved)
         if edit is None:
             WidgetBinding.bind(widget.itemEdited, lambda _, v: options_binding.prop.set_item(widget.combobox.currentIndex(), v), pair=options_binding.prop.ItemChanged)
+        if change is None:
+            WidgetBinding.bind(widget.itemChanged, lambda v: selected_binding.prop.set(v), pair=selected_binding.prop.ValueChanged)
         return widget
     
 

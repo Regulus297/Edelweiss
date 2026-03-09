@@ -18,7 +18,8 @@ namespace Edelweiss.Interop
                 return;
             }
             Value.Add(item);
-            ItemAdded?.Invoke(item);
+            if(!suppressed)
+                ItemAdded?.Invoke(item);
         }
 
         public void Add()
@@ -30,7 +31,8 @@ namespace Edelweiss.Interop
         {
             int index = Value.IndexOf(item);
             Value.Remove(item);
-            ItemRemoved?.Invoke(index, item);
+            if(!suppressed)
+                ItemRemoved?.Invoke(index, item);
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -49,7 +51,8 @@ namespace Edelweiss.Interop
             set
             {
                 Value[i] = value;
-                ItemChanged?.Invoke(i, value);
+                if(!suppressed)
+                    ItemChanged?.Invoke(i, value);
             }
         }
     }

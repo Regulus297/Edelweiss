@@ -15,6 +15,7 @@ class FieldInfo:
         self.rowspan = 1
         self.colspan = 1
         self.data = {}
+        self.label = True
         self.value = value
 
     def __repr__(self):
@@ -41,7 +42,6 @@ class FormWidgetCreator(WidgetCreator):
 
     def _load_fields(self, data):
         field_data = {}
-        fields = data["fields"]
         model = SyncableProperty(data["model"], False).get()
         for field in data["fields"]:
             info = FieldInfo(field, field, self.type_lookup.get(type(getattr(model, field).Value), "form"), f"{data["model"]}.{field}")
@@ -58,6 +58,7 @@ class FormWidgetCreator(WidgetCreator):
             field = fields[fieldName]
             field.type = info.get("type", field.type)
             field.data = info
+            field.label = info.get("label", True)
 
     def _apply_layout(self, data, fields):
         layout = data.get("fieldLayout")
@@ -112,14 +113,15 @@ class FormWidgetCreator(WidgetCreator):
         }
 
         for field in fields.values():
-            children.append({
-                "type": "QLabel",
-                "text": field.displayName,
-                "row": field.row,
-                "col": field.col,
-                "rowspan": field.rowspan,
-                "colspan": 1
-            })
+            if field.label:
+                children.append({
+                    "type": "QLabel",
+                    "text": field.displayName,
+                    "row": field.row,
+                    "col": field.col,
+                    "rowspan": field.rowspan,
+                    "colspan": 1
+                })
             children.append(self._get_widget(field))
 
         return widget
@@ -174,7 +176,7 @@ class FormWidgetCreator(WidgetCreator):
 
 
         widget["row"] = field.row
-        widget["col"] = field.col + 1
+        widget["col"] = (field.col + 1) if field.label else field.col
         widget["rowspan"] = field.rowspan
-        widget["colspan"] = field.colspan - 1
+        widget["colspan"] = (field.colspan - 1) if field.label else field.colspan
         return widget

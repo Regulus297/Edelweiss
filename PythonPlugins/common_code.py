@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QSizePolicy, QWidgetAction
+from PyQt5.QtCore import Qt
 from ui import MainWindow
 from plugins import load_dependencies
 

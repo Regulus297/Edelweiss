@@ -33,6 +33,9 @@ class WidgetMethod:
         if name not in data:
             return None
 
+        if data[name] is None:
+            return ""
+
         if parameters is None:
             parameters = {}
 
