@@ -281,6 +281,11 @@
             Logs a message through the main logger.
             </summary>
         </member>
+        <member name="M:Edelweiss.MainInterop.GetLocalization(System.String,System.String)">
+            <summary>
+            Gets the localization for a given key
+            </summary>
+        </member>
         <member name="T:Edelweiss.MainVars">
             <summary>
             Class containing the main variables
@@ -294,6 +299,11 @@
         <member name="F:Edelweiss.MainVars.PythonPlugins">
             <summary>
             The dictionary of all python plugin keys to their paths
+            </summary>
+        </member>
+        <member name="F:Edelweiss.MainVars.CurrentLanguage">
+            <summary>
+            The currently selected language
             </summary>
         </member>
         <member name="T:Edelweiss.Modding.MapDirectory">
@@ -889,11 +899,6 @@
         <member name="T:Edelweiss.Utils.Language">
             <summary>
             Handles all localization-related code
-            </summary>
-        </member>
-        <member name="P:Edelweiss.Utils.Language.CurrentLanguage">
-            <summary>
-            The currently selected language key.
             </summary>
         </member>
         <member name="M:Edelweiss.Utils.Language.GetText(System.String)">

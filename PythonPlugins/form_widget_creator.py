@@ -35,7 +35,7 @@ class FormWidgetCreator(WidgetCreator):
         self._apply_layout(data, fields)
         self._process_fields(data, fields)
 
-        widget = JSONWidgetLoader.init_widget(self._generate_widget(fields), parent)
+        widget = JSONWidgetLoader.init_widget(self._generate_widget(fields, data.get("root", "Edelweiss.Forms")), parent)
 
         
         return widget
@@ -102,7 +102,7 @@ class FormWidgetCreator(WidgetCreator):
             lcm = lcm * num // gcd
         return lcm
 
-    def _generate_widget(self, fields):
+    def _generate_widget(self, fields, root):
         children = []
         widget = {
             "type": "QWidget",
@@ -116,7 +116,7 @@ class FormWidgetCreator(WidgetCreator):
             if field.label:
                 children.append({
                     "type": "QLabel",
-                    "text": field.displayName,
+                    "text": f"{root}.{field.displayName}",
                     "row": field.row,
                     "col": field.col,
                     "rowspan": field.rowspan,

@@ -14,11 +14,13 @@ namespace Edelweiss.Modding
         /// </summary>
         public void ChangeMapPreset(string name)
         {
-            if(!ModdingTab.MapPresets.Value.ContainsKey(name))
-            {
-                ModdingTab.MapPresets[name] = [new MapDirectory()];
+            using(ModdingTab.MapPresets.Suppress()) {
+                if(!ModdingTab.MapPresets.Value.ContainsKey(name))
+                {
+                    ModdingTab.MapPresets[name] = [new MapDirectory()];
+                }
+                ModdingTab.CurrentPresetName.Value = name;
             }
-            ModdingTab.CurrentPresetName.Value = name;
         }
 
         /// <summary>
@@ -26,7 +28,9 @@ namespace Edelweiss.Modding
         /// </summary>
         public void RemoveMapPreset(string name)
         {
-            ModdingTab.MapPresets.Remove(name);
+            using(ModdingTab.MapPresets.Suppress()) {
+                ModdingTab.MapPresets.Remove(name);
+            }
         }
 
         /// <summary>

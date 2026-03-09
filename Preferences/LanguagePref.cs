@@ -12,12 +12,18 @@ namespace Edelweiss.Preferences
             set
             {
                 base.Value = value;
+                MainVars.CurrentLanguage.Value = value.ToString();
             }
         }
 
         public override void SetDefaultValue()
         {
-            Value = "en_gb";
+            MainVars.CurrentLanguage.Value = "en_gb";
+        }
+
+        public override void PrepForSave()
+        {
+            base.Value = MainVars.CurrentLanguage.Value;
         }
     }
 }

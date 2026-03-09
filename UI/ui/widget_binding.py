@@ -14,23 +14,25 @@ class WidgetBinding:
         self.bindable, self.prop = WidgetBinding.get_property(data, name)
         if self.bindable:
             self.prop.add_subscribers(**subscribers)
+        else:
+            self._sync_non_bindable(**subscribers)
 
-        if not self.bindable:
-            if "ValueChanged" in subscribers:
-                callbacks = subscribers["ValueChanged"]
+    def _sync_non_bindable(self, **subscribers):
+        if "ValueChanged" in subscribers:
+            callbacks = subscribers["ValueChanged"]
+            if isinstance(callbacks, list):
+                for callback in callbacks:
+                    callback(self.prop)
+            else:
+                callbacks(self.prop)
+        elif "ItemAdded" in subscribers:
+            callbacks = subscribers["ItemAdded"]
+            for item in self.prop:
                 if isinstance(callbacks, list):
                     for callback in callbacks:
-                        callback(self.prop)
+                        callback(item)
                 else:
-                    callbacks(self.prop)
-            elif "ItemAdded" in subscribers:
-                callbacks = subscribers["ItemAdded"]
-                for item in self.prop:
-                    if isinstance(callbacks, list):
-                        for callback in callbacks:
-                            callback(item)
-                    else:
-                        callbacks(item)
+                    callbacks(item)
 
 
     @staticmethod

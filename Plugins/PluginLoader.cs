@@ -255,18 +255,25 @@ namespace Edelweiss.Plugins
         internal static void LoadLangFile(Stream fileContent, string file, string pluginID)
         {
             string key = file.Substring(0, file.Length - 5);
-            if (!localization.ContainsKey(key))
-                localization[key] = [];
+            string language = key.Split(Path.DirectorySeparatorChar)[0];
+            if (!localization.ContainsKey(language))
+                localization[language] = [];
+
+            key = string.Join('.', key.Split(Path.DirectorySeparatorChar)[1..]);
+            if(key.EndsWith("._"))
+            {
+                key = key[..^2];
+            }
 
             string line;
             using (StreamReader reader = new(fileContent))
             {
                 while ((line = reader.ReadLine()) != null)
                 {
-                    if (line.StartsWith("#") || !line.Contains("="))
+                    if (line.StartsWith('#') || !line.Contains('='))
                         continue;
 
-                    localization[key][pluginID + "." + line.Split("=", StringSplitOptions.TrimEntries)[0]] = line.Split("=", StringSplitOptions.TrimEntries)[1];
+                    localization[language][pluginID + "." + key + "." + line.Split("=", StringSplitOptions.TrimEntries)[0]] = line.Split("=", StringSplitOptions.TrimEntries)[1];
                 }
             }
         }

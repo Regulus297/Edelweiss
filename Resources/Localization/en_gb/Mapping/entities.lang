@@ -1,0 +1,292 @@
+
+# Entities (typed manually, but still credits to Loenn)
+badelineBoost.boost = Badeline Boost
+finalBoss.boss = Badeline Boss
+darkChaser.dark_chaser = Badeline Chaser
+darkChaserEnd.barrier = Badeline Chaser Barrier
+bird.bird = Bird NPC
+birdPath.bird_path = Bird Path
+bonfire.bonfire = Bonfire
+booster.green = Booster (Green)
+booster.red = Booster (Red)
+bounceBlock.fire = Core Block (Fire)
+bounceBlock.ice = Core Block (Ice)
+bigSpinner.bumper = Bumper
+cassette.cassette = Cassette
+cliffside_flag.cliffside_flag = Cliffside Flag
+cloud.normal = Cloud (White)
+cloud.fragile = Cloud (Pink)
+redBlocks.red = Clutter Block (Laundry)
+yellowBlocks.yellow = Clutter Block (Boxes)
+greenBlocks.green = Clutter Block (Books)
+clutterCabinet.cabinet = Clutter Cabinet
+clutterDoor.red = Clutter Door (Laundry)
+clutterDoor.green = Clutter Door (Books)
+clutterDoor.yellow = Clutter Door (Boxes)
+clutterDoor.lightning = Clutter Door (Lightning)
+colorSwitch.red = Clutter Switch (Laundry)
+colorSwitch.green = Clutter Switch (Books)
+colorSwitch.yellow = Clutter Switch (Boxes)
+colorSwitch.lightning = Clutter Switch (Lightning)
+cobweb.cobweb = Cobweb
+coreModeToggle.both = Core Mode Toggle (Both)
+coreModeToggle.fire = Core Mode Toggle (Fire)
+coreModeToggle.ice = Core Mode Toggle (Ice)
+blackGem.crystal_heart = Crystal Heart
+
+dashSwitchH.left_default = Dash Switch (Left, Default)
+dashSwitchH.left_mirror = Dash Switch (Left, Mirror)
+dashSwitchH.right_default = Dash Switch (Right, Default)
+dashSwitchH.right_mirror = Dash Switch (Right, Mirror)
+dashSwitchV.up_default = Dash Switch (Up, Default)
+dashSwitchV.up_mirror = Dash Switch (Up, Mirror)
+dashSwitchV.down_default = Dash Switch (Down, Default)
+dashSwitchV.down_mirror = Dash Switch (Down, Mirror)
+
+door.wood = Door (Wood)
+door.metal = Door (Metal)
+
+dreamBlock.dream_block = Dream Block
+
+dreammirror.normal = Dream Mirror
+
+everest/customBirdTutorial.bird = Custom Bird Tutorial
+
+infiniteStar.normal = Feather
+
+fireBall.fireball = Fireball
+fireBall.iceball = Iceball
+
+fireBarrier.fire_barrier = Fire Barrier
+
+bridgeFixed.bridge_fixed = Fixed Bridge
+
+flingBird.fling_bird = Fling Bird
+
+floatingDebris.floating_debris = Floating Debris
+
+flutterbird.normal = Flutterbird
+
+foregroundDebris.foreground_debris = Foreground Debris
+
+birdForsakenCityGem.satellite = Forsaken City Satellite
+
+glassBlock.glass_block = Glass Block
+
+glider.normal = Jelly
+glider.floating = Jelly (Floating)
+
+goldenBlock.golden_block = Golden Block
+
+gondola.gondola = Gondola
+
+goldenBerry.golden = Golden Berry
+goldenBerry.golden_winged = Golden Berry (Winged)
+
+hahaha.hahaha = Hahaha
+
+hanginglamp.hanging_lamp = Hanging Lamp
+
+heartGemDoor.door = Heart Door
+
+iceBlock.ice_block = Ice Block
+
+wavedashmachine.cafe = Internet Café
+
+introCar.intro_car = Intro Car
+
+invisibleBarrier.invisible_barrier = Invisible Barrier
+
+crushBlock.both = Kevin (Both)
+crushBlock.horizontal = Kevin (Horizontal)
+crushBlock.vertical = Kevin (Vertical)
+
+kevins_pc.kevins_pc = Kevin's PC
+
+key.normal = Key
+key.with_return = Key (With Return)
+
+killbox.killbox = Killbox
+
+lamp.normal = Lamp
+lamp.broken = Lamp (Broken)
+
+lightning.lightning = Lightning
+
+lightningBlock.breaker_box = Breaker Box
+
+lockBlock.wood = Lock Block (Wood)
+lockBlock.temple_a = Lock Block (Temple A)
+lockBlock.temple_b = Lock Block (Temple B)
+lockBlock.moon = Lock Block (Moon)
+
+everest/memorial.memorial = Custom Memorial
+
+moonCreature.moon_creature = Moon Creature
+
+moveBlock.Up_steer_slow = Move Block (Up, Steerable)
+moveBlock.Up_steer_fast = Move Block (Up, Steerable, Fast)
+moveBlock.Up_nosteer_slow = Move Block (Up)
+moveBlock.Up_nosteer_fast = Move Block (Up, Fast)
+moveBlock.Right_steer_slow = Move Block (Right, Steerable)
+moveBlock.Right_steer_fast = Move Block (Right, Steerable, Fast)
+moveBlock.Right_nosteer_slow = Move Block (Right)
+moveBlock.Right_nosteer_fast = Move Block (Right, Fast)
+moveBlock.Down_steer_slow = Move Block (Down, Steerable)
+moveBlock.Down_steer_fast = Move Block (Down, Steerable, Fast)
+moveBlock.Down_nosteer_slow = Move Block (Down)
+moveBlock.Down_nosteer_fast = Move Block (Down, Fast)
+moveBlock.Left_steer_slow = Move Block (Left, Steerable)
+moveBlock.Left_steer_fast = Move Block (Left, Steerable, Fast)
+moveBlock.Left_nosteer_slow = Move Block (Left)
+moveBlock.Left_nosteer_fast = Move Block (Left, Fast)
+
+negaBlock.nega_block = Nega Block
+
+npc.default = NPC
+everest/npc.npc = Custom NPC
+
+friendlyGhost.oshiro_boss = Oshiro Boss
+
+oshirodoor.oshiro_door = Oshiro Door
+
+payphone.payphone = Payphone
+
+picoconsole.pico_console = Pico 8 Console
+
+plateau.plateau = Plateau
+
+player.player = Player Spawn Point
+
+playbackTutorial.playback = Playback Tutorial
+
+playerSeeker.player_seeker = Player Seeker
+
+powerSourceNumber.default = Power Source Number
+
+eyebomb.left = Puffer (Left)
+eyebomb.right = Puffer (Right)
+
+finalBossFallingBlock.default = Badeline Boss Falling Block
+
+conditionBlock.default = Condition Block
+
+everest/coreMessage.default = Custom Core Message
+
+coverupWall.default = Coverup Wall
+
+crumbleBlock.default = Crumble Block (Normal)
+crumbleBlock.cliffside = Crumble Block (Cliffside)
+
+crumbleWallOnRumble.default = Crumble Wall on Rumble
+
+dashBlock.default = Dash Block
+
+exitBlock.default = Exit Block
+
+fakeBlock.default = Fake Block
+
+fakeWall.default = Fake Wall
+
+fallingBlock.default = Falling Block
+
+floatySpaceBlock.default = Floaty Space Block
+
+sandwichLava.default = Lava Sandwich
+
+refill.single = Dash Refill
+refill.double = Dash Refill (Two Dashes)
+
+reflectionHeartStatue.default = Reflection Heart Statue
+
+resortMirror.default = Resort Mirror
+
+resortRoofEnding.default = Resort Roof Ending
+
+ridgeGate.default = Ridge Gate
+
+risingLava.default = Rising Lava
+
+rotateSpinner.blade_clockwise = Rotating Spinner (Blade, Clockwise)
+rotateSpinner.blade_anticlockwise = Rotating Spinner (Blade, Counterclockwise)
+rotateSpinner.dust_clockwise = Rotating Spinner (Dust, Clockwise)
+rotateSpinner.dust_anticlockwise = Rotating Spinner (Dust, Counterclockwise)
+rotateSpinner.star_clockwise = Rotating Spinner (Star, Clockwise)
+rotateSpinner.star_anticlockwise = Rotating Spinner (Star, Counterclockwise)
+
+seeker.default = Seeker
+seekerBarrier.default = Seeker Barrier
+seekerStatue.default = Seeker Statue
+slider.default = Slider
+soundSource.default = Sound Source
+spinner.dust = Dust Sprite
+spinner.blue = Crystal Spinner (Blue)
+spinner.red = Crystal Spinner (Red)
+spinner.purple = Crystal Spinner (Purple)
+spinner.core = Crystal Spinner (Core)
+spinner.rainbow = Crystal Spinner (Rainbow)
+
+spring.default = Spring (Up)
+wallSpringRight.default = Spring (Left)
+wallSpringLeft.default = Spring (Right)
+
+everest/starClimbGraphicsController.default = Star Climb Graphics Controller
+
+strawberry.normal = Strawberry
+strawberry.winged = Strawberry (Winged)
+strawberry.moon = Strawberry (Moon)
+
+blockField.default = Strawberry Blockfield
+
+SummitBackgroundManger.default = Summit Background Manager
+
+summitcheckpoint.default = Summit Checkpoint
+
+summitcloud.default = Summit Cloud
+
+swapBlock.Normal = Swap Block (Normal)
+swapBlock.Moon = Swap Block (Moon)
+
+switchGate.block = Switch Gate (Block)
+switchGate.mirror = Switch Gate (Mirror)
+switchGate.temple = Switch Gate (Temple)
+switchGate.stars = Switch Gate (Stars)
+
+templeBigEyeball.default = Temple Big Eyeball
+
+templeCrackedBlock.default = Temple Cracked Block
+
+templeEye.default = Temple Eye
+
+templeGate.Theo_HoldingTheo = Temple Gate (Holding Theo)
+templeGate.Default_CloseBehindPlayer = Temple Gate (Close Behind Player, Default)
+templeGate.Mirror_CloseBehindPlayer = Temple Gate (Close Behind Player, Mirror)
+templeGate.Default_NearestSwitch = Temple Gate (Nearest Switch, Default)
+templeGate.Mirror_NearestSwitch = Temple Gate (Nearest Switch, Mirror)
+templeGate.Default_TouchSwitches = Temple Gate (Touch Switches, Default)
+
+templeMirror.default = Temple Mirror
+
+templeMirrorPortal.default = Temple Mirror Portal
+
+tentacles.default = Tentacles
+
+theoCrystal.default = Theo Crystal
+
+theoCrystalPedestal.default = Theo Crystal Pedestal
+
+torch.default = Torch
+
+touchSwitch.default = Touch Switch
+
+trackSpinner.Slow_dust = Track Spinner (Dust, Slow)
+trackSpinner.Slow_starfish = Track Spinner (Star, Slow)
+trackSpinner.Slow_blade = Track Spinner (Blade, Slow)
+trackSpinner.Normal_dust = Track Spinner (Dust, Normal)
+trackSpinner.Normal_starfish = Track Spinner (Star, Normal)
+trackSpinner.Normal_blade = Track Spinner (Blade, Normal)
+trackSpinner.Fast_dust = Track Spinner (Dust, Fast)
+trackSpinner.Fast_starfish = Track Spinner (Star, Fast)
+trackSpinner.Fast_blade = Track Spinner (Blade, Fast)
+
+trapdoor.default = Trapdoor

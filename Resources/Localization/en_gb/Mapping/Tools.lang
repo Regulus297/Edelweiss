@@ -1,0 +1,9 @@
+BrushTool = Brush
+RectTool = Rectangle
+EntityTool = Entity
+SelectionTool = Selection
+
+Foreground = Foreground
+Background = Background
+Fill = Fill
+Line = Line

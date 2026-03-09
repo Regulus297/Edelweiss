@@ -1,4 +1,4 @@
-from ui import WidgetCreator, JSONWidgetLoader, WidgetBinding, WidgetMethod
+from ui import WidgetCreator, JSONWidgetLoader, WidgetBinding, WidgetMethod, LocalizedBinding
 from ui.widgets import ModifiableCombobox, FormList
 from plugins import plugin_loadable, load_dependencies
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QLineEdit, QComboBox, QCheckBox
@@ -21,7 +21,7 @@ class QLabelWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None):
         widget = QLabel(parent=parent)
-        WidgetBinding(widget, data, "text", ValueChanged=widget.setText)
+        LocalizedBinding(widget, data, "text", ValueChanged=widget.setText)
         return widget
 
 @plugin_loadable
@@ -31,7 +31,7 @@ class QPushButtonWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None):
         widget = QPushButton(parent=parent)
-        binding = WidgetBinding(widget, data, "text", ValueChanged=widget.setText)
+        binding = LocalizedBinding(widget, data, "text", ValueChanged=widget.setText)
         WidgetMethod.create(widget, widget.clicked, data, "click", binding)
         return widget
 
@@ -109,7 +109,7 @@ class QComboBoxWidgetCreator(WidgetCreator):
         selected_binding = WidgetBinding(widget, data, "selected", ValueChanged=[lambda text: self._set_text(widget.combobox, text)])
         change = WidgetMethod.create(widget, widget.itemChanged, data, "change", options_binding, params)
         add = WidgetMethod.create(widget, widget.itemAdded, data, "add", options_binding, params)
-        remove = WidgetMethod.create(widget, widget.itemRemoved, data, "removed", options_binding, params)
+        remove = WidgetMethod.create(widget, widget.itemRemoved, data, "remove", options_binding, params)
         edit = WidgetMethod.create(widget, widget.itemEdited, data, "edit", options_binding, params)
         if add is None:
             WidgetBinding.bind(widget.itemAdded, lambda v: options_binding.prop.add(v), pair=options_binding.prop.ItemAdded)

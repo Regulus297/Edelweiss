@@ -3,7 +3,6 @@ import os.path
 import subprocess
 import sys
 
-
 if os.path.exists(os.path.join(os.getcwd(), "Edelweiss.dll")):
     # Uncompressed, so decompress the file
     print("Decompressing!")

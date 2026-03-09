@@ -10,17 +10,12 @@ namespace Edelweiss.Utils
     public static class Language
     {
         /// <summary>
-        /// The currently selected language key.
-        /// </summary>
-        public static string CurrentLanguage => Registry.registry[typeof(PluginSaveablePreference)].GetValue<LanguagePref>().Value.ToString();
-
-        /// <summary>
         /// Returns the localization for a given key
         /// </summary>
         /// <returns>The localization if it exists, the key itself if it doesn't</returns>
         public static string GetText(string key)
         {
-            var localization = PluginLoader.localization[CurrentLanguage];
+            var localization = PluginLoader.localization[MainVars.CurrentLanguage.Value];
             if (localization.TryGetValue(key, out string text))
             {
                 return text;
@@ -42,7 +37,7 @@ namespace Edelweiss.Utils
         /// <returns>Whether or not the localization exists.</returns>
         public static bool TryGetText(string key, out string text)
         {
-            var localization = PluginLoader.localization[CurrentLanguage];
+            var localization = PluginLoader.localization[MainVars.CurrentLanguage.Value];
             return localization.TryGetValue(key, out text);
         }
     }

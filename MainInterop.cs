@@ -2,6 +2,7 @@ using Edelweiss.Interop;
 using Edelweiss.Plugins;
 using Edelweiss.Preferences;
 using Edelweiss.RegistryTypes;
+using Edelweiss.Utils;
 
 namespace Edelweiss
 {
@@ -36,5 +37,10 @@ namespace Edelweiss
         {
             MainPlugin.Instance.Logger.Debug(message);
         }
+
+        /// <summary>
+        /// Gets the localization for a given key
+        /// </summary>
+        public string GetLocalization(string key, string fallback = null) => Language.GetTextOrDefault(key, fallback ?? key);
     }
 }

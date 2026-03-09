@@ -5,7 +5,7 @@
         "children": [
             {
                 "type": "QLabel",
-                "text": "Map Hierarchy Presets",
+                "text": "Edelweiss.Modding.MapHierarchyPresets",
                 "id": "heading"
             },
             {
@@ -24,7 +24,7 @@
                 },
                 "remove": {
                     "method": "Edelweiss:ModdingInterop.RemoveMapPreset",
-                    "args": ["@text"]
+                    "args": ["@0"]
                 },
                 "edit": {
                     "method": "Edelweiss:ModdingInterop.RenameMapPreset",
@@ -40,6 +40,7 @@
                         "type": "formList",
                         "label": false,
                         "form": {
+                            "root": "Edelweiss.Modding.MapHierarchy",
                             "fields": ["Name", "Directory"],
                             "fieldLayout": [
                                 ["Name"],
@@ -47,6 +48,12 @@
                             ]
                         }
                     }
+                }
+            },
+            {
+                "type": "QLineEdit",
+                "bind": {
+                    "text": "Edelweiss.CurrentLanguage"
                 }
             },
             {

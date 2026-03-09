@@ -1,0 +1,7 @@
+Mod = Mods
+CreateMod = Create Mod
+ResourceHierarchyPresets = Resource Hierarchy Presets
+MapHierarchyPresets = Map Hierarchy Presets
+
+MapHierarchy.Name = Name
+MapHierarchy.Directory = Directory

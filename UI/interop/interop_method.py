@@ -7,4 +7,4 @@ class InteropMethod:
         self.interop = Interop.getInterop(self.interop)
 
     def __call__(self, *args):
-        getattr(self.interop, self.method)(*args)
+        return getattr(self.interop, self.method)(*args)

@@ -19,5 +19,10 @@ namespace Edelweiss
         /// The dictionary of all python plugin keys to their paths
         /// </summary>
         public static readonly BindableDictionary<string, string> PythonPlugins = [];
+
+        /// <summary>
+        /// The currently selected language
+        /// </summary>
+        public static readonly BindableVariable<string> CurrentLanguage = "en_gb";
     }
 }
