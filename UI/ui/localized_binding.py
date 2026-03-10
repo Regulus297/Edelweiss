@@ -13,6 +13,7 @@ class LocalizedBinding(WidgetBinding):
             LocalizedBinding.current_language = SyncableProperty("Edelweiss.CurrentLanguage")
 
         super().__init__(widget, data, name, **subscribers)
+        self.subscribers = subscribers
 
         if self.bindable:
             return
@@ -22,16 +23,25 @@ class LocalizedBinding(WidgetBinding):
             self._sync_non_bindable(**subscribers)
             return
 
-        self.default = None
+        self._default = self.prop
         if ":" in self.prop:
-            self.prop, self.default = self.prop.split(":")
+            self.prop, self._default = self.prop.split(":")
 
-        LocalizedBinding.current_language.ValueChanged += lambda _: self._update_value(**subscribers)
-        self._update_value(**subscribers)
+        LocalizedBinding.current_language.ValueChanged += lambda _: self._update_value()
+        self._update_value()
 
 
-    def _update_value(self, **subscribers):
+    def _update_value(self):
         temp = self.prop
         self.prop = LocalizedBinding.get_method(self.prop, self.default)
-        self._sync_non_bindable(**subscribers)
+        self._sync_non_bindable(**self.subscribers)
         self.prop = temp
+
+    @property
+    def default(self):
+        return self._default
+
+    @default.setter
+    def default(self, value):
+        self._default = value
+        self._update_value()

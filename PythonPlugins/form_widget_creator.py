@@ -117,6 +117,7 @@ class FormWidgetCreator(WidgetCreator):
                 children.append({
                     "type": "QLabel",
                     "text": f"{root}.{field.displayName}",
+                    "tooltip": f"{root}.{field.displayName}.Tooltip",
                     "row": field.row,
                     "col": field.col,
                     "rowspan": field.rowspan,

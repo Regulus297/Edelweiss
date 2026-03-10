@@ -181,3 +181,10 @@ Popup {
 #bordered {
     border: 2px solid #1f2329;
 }
+
+QToolTip {
+    border-style: none;
+    background-color: #1f2329;
+    padding: 4px;
+    color: #ffffff;
+}

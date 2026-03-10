@@ -1,4 +1,4 @@
-from ui import JSONWidgetLoader, CommonPropertySetter, MainWindow
+from ui import JSONWidgetLoader, CommonPropertySetter, MainWindow, LocalizedBinding
 from plugins import plugin_loadable, load_dependencies
 from PyQt5.QtWidgets import QPushButton, QApplication
 
@@ -43,16 +43,6 @@ class StylesheetSetter(CommonPropertySetter):
 
     def set_property(self, widget, property_value):
         widget.setStyleSheet(property_value)
-
-
-@plugin_loadable
-class TrackedAsSetter(CommonPropertySetter):
-    def __init__(self):
-        super().__init__("trackedAs")
-
-    def set_property(self, widget, property_value):
-        MainWindow.instance.trackedWidgets[property_value] = widget
-        setattr(widget, "__tracked_as__", property_value)
 
 
 @plugin_loadable
@@ -101,3 +91,14 @@ class ContentsMarginsSetter(CommonPropertySetter):
 
     def set_layout_property(self, layout, property_value):
         layout.setContentsMargins(*property_value)
+
+
+@plugin_loadable
+class TooltipSetter(CommonPropertySetter):
+    def __init__(self):
+        super().__init__("tooltip")
+
+    def set_property(self, widget, property_value):
+        binding = LocalizedBinding(widget, {"tooltip": property_value}, "tooltip", ValueChanged=[widget.setToolTip])
+        binding.default = None
+        

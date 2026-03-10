@@ -2,6 +2,9 @@ Mod = Mods
 CreateMod = Create Mod
 ResourceHierarchyPresets = Resource Hierarchy Presets
 MapHierarchyPresets = Map Hierarchy Presets
+SelectorDescription = Current Hierarchy Preset
 
 MapHierarchy.Name = Name
+MapHierarchy.Name.Tooltip = The name of the map type
 MapHierarchy.Directory = Directory
+MapHierarchy.Directory.Tooltip = The directory in which this map type will be put

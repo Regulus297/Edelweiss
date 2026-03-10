@@ -41,6 +41,6 @@ namespace Edelweiss
         /// <summary>
         /// Gets the localization for a given key
         /// </summary>
-        public string GetLocalization(string key, string fallback = null) => Language.GetTextOrDefault(key, fallback ?? key);
+        public string GetLocalization(string key, string fallback = null) => Language.GetTextOrDefault(key, fallback);
     }
 }

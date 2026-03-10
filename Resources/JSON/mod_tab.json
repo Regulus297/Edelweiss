@@ -10,6 +10,7 @@
             },
             {
                 "type": "QComboBox",
+                "tooltip": "Edelweiss.Modding.SelectorDescription",
                 "modifiable": true,
                 "canEditDefaults": false,
                 "defaults": ["Default", "CollabUtils2"],
