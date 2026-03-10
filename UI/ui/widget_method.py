@@ -2,11 +2,10 @@ from interop import InteropMethod, SyncableProperty
 
 
 class WidgetMethod:
-    def __init__(self, data, signal, parameters, binding):
+    def __init__(self, data, signal, parameters):
         self.interop_method = InteropMethod(data["method"])
         self.args = data.get("args", [])
         self.parameters = parameters
-        self.binding = binding
         signal.connect(self._invoke)
 
     def _invoke(self, *params):
@@ -29,7 +28,7 @@ class WidgetMethod:
         self.interop_method(*args)
 
     @classmethod
-    def create(cls, widget, signal, data, name, binding, parameters=None):
+    def create(cls, widget, signal, data, name, parameters=None):
         if name not in data:
             return None
 
@@ -39,6 +38,6 @@ class WidgetMethod:
         if parameters is None:
             parameters = {}
 
-        method = cls(data[name], signal, parameters, binding)
+        method = cls(data[name], signal, parameters)
         setattr(widget, f"__method_{name}__", method)
         return method

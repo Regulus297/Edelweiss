@@ -306,6 +306,11 @@
             The currently selected language
             </summary>
         </member>
+        <member name="E:Edelweiss.MainVars.TabSelected">
+            <summary>
+            Invoked when a tab is selected
+            </summary>
+        </member>
         <member name="T:Edelweiss.Modding.MapDirectory">
             <summary>
             A class containing map hierarchy data
@@ -401,6 +406,11 @@
         <member name="P:Edelweiss.Plugins.CustomTab.LayoutWidget">
             <summary>
             The JSON string for the widget
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.CustomTab.ToolbarWidget">
+            <summary>
+            The JSON string for the toolbar
             </summary>
         </member>
         <member name="M:Edelweiss.Plugins.CustomTab.Load">

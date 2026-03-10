@@ -32,7 +32,7 @@ class QPushButtonWidgetCreator(WidgetCreator):
     def create_widget(self, data, parent=None):
         widget = QPushButton(parent=parent)
         binding = LocalizedBinding(widget, data, "text", ValueChanged=widget.setText)
-        WidgetMethod.create(widget, widget.clicked, data, "click", binding)
+        WidgetMethod.create(widget, widget.clicked, data, "click")
         return widget
 
 @plugin_loadable
@@ -53,7 +53,7 @@ class QLineEditWidgetCreator(WidgetCreator):
             widget.setValidator(QDoubleValidator(widget))
             t = float
 
-        method = WidgetMethod.create(widget, widget.editingFinished, data, "edit", binding, {"text": lambda: t(widget.text)})
+        method = WidgetMethod.create(widget, widget.editingFinished, data, "edit", {"text": lambda: t(widget.text)})
         if method is None:
             widget.editingFinished.connect(lambda: binding.prop.set(t(widget.text())))
         return widget
@@ -74,7 +74,7 @@ class QComboBoxWidgetCreator(WidgetCreator):
         options_binding = WidgetBinding(widget, data, "options", ItemAdded=widget.addItem)
         setattr(widget, "__keyed__", options_binding.is_dict)
         selected_binding = WidgetBinding(widget, data, "selected", ValueChanged=[lambda text: self._set_text(widget, text)])
-        change = WidgetMethod.create(widget, widget.currentIndexChanged, data, "change", selected_binding, {"text": lambda: self._get_text(widget), "index": widget.currentIndex})
+        change = WidgetMethod.create(widget, widget.currentIndexChanged, data, "change", {"text": lambda: self._get_text(widget), "index": widget.currentIndex})
         if change is None and selected_binding.prop is not None:
             WidgetBinding.bind(widget.currentIndexChanged, lambda _: selected_binding.prop.set(self._get_text(widget)), pair=selected_binding.prop.ValueChanged, call_args=(None,))
         return widget
@@ -107,10 +107,10 @@ class QComboBoxWidgetCreator(WidgetCreator):
         options_binding = WidgetBinding(widget, data, "options", ItemAdded=widget.addItem, ItemRemoved=lambda _, item: self._remove_item(widget, item), ItemChanged=widget.setItemText)
         options_binding.clear = widget.clear
         selected_binding = WidgetBinding(widget, data, "selected", ValueChanged=[lambda text: self._set_text(widget.combobox, text)])
-        change = WidgetMethod.create(widget, widget.itemChanged, data, "change", options_binding, params)
-        add = WidgetMethod.create(widget, widget.itemAdded, data, "add", options_binding, params)
-        remove = WidgetMethod.create(widget, widget.itemRemoved, data, "remove", options_binding, params)
-        edit = WidgetMethod.create(widget, widget.itemEdited, data, "edit", options_binding, params)
+        change = WidgetMethod.create(widget, widget.itemChanged, data, "change", params)
+        add = WidgetMethod.create(widget, widget.itemAdded, data, "add", params)
+        remove = WidgetMethod.create(widget, widget.itemRemoved, data, "remove", params)
+        edit = WidgetMethod.create(widget, widget.itemEdited, data, "edit", params)
         if add is None:
             WidgetBinding.bind(widget.itemAdded, lambda v: options_binding.prop.add(v), pair=options_binding.prop.ItemAdded)
         if remove is None:
@@ -130,7 +130,7 @@ class QCheckBoxWidgetCreator(WidgetCreator):
     def create_widget(self, data, parent=None):
         widget = QCheckBox(parent)
         binding = WidgetBinding(widget, data, "checked", ValueChanged=widget.setChecked)
-        method = WidgetMethod.create(widget, widget.toggled, data, "toggle", binding, {"checked": widget.isChecked})
+        method = WidgetMethod.create(widget, widget.toggled, data, "toggle", {"checked": widget.isChecked})
         if method is None:
             WidgetBinding.bind(widget.toggled, lambda _: binding.prop.set(widget.isChecked()), pair=binding.prop.ValueChanged)
         return widget

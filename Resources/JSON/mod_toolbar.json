@@ -2,15 +2,16 @@
     "items": [
         {
             "type": "menu",
-            "name": "@getText('Edelweiss.Modding.Mod')",
-            "id": "modMenu",
+            "name": "Edelweiss.Modding.Mod",
             "items": [
                 {
                     "type": "action",
-                    "name": "@getText('Edelweiss.Modding.CreateMod')",
-                    "id": "createMod",
+                    "name": "Edelweiss.Modding.CreateMod",
                     "shortcut": "Ctrl+N",
-                    "onclick": -4
+                    "click": {
+                        "method": "Edelweiss:MainInterop.Debug",
+                        "args": ["hello!"]
+                    }
                 }
             ]
         }

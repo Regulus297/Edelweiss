@@ -1,3 +1,4 @@
+using System;
 using Edelweiss.Interop;
 using Edelweiss.Plugins;
 
@@ -24,5 +25,12 @@ namespace Edelweiss
         /// The currently selected language
         /// </summary>
         public static readonly BindableVariable<string> CurrentLanguage = "en_gb";
+
+        /// <summary>
+        /// Invoked when a tab is selected
+        /// </summary>
+        public static event Action<CustomTab> TabSelected;
+
+        internal static void SelectTab(CustomTab tab) => TabSelected?.Invoke(tab);
     }
 }

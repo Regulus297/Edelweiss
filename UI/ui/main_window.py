@@ -2,9 +2,11 @@ import json
 
 from PyQt5.QtCore import  QTimer
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QGraphicsView, QSizePolicy, QStackedWidget, QToolBar,
-                             QMainWindow, QComboBox, QSplashScreen)
+                             QMainWindow, QComboBox, QSplashScreen, QWidgetAction)
 
 from interop import Interop, SyncableProperty, InteropMethod
+from .json_toolbar_loader import JSONToolbarLoader
+from .widget_binding import WidgetBinding
 from .json_widget_loader import JSONWidgetLoader
 
 
@@ -55,21 +57,31 @@ class MainWindow(QMainWindow):
 
         self.loadingScreen = None
 
-
         self.tab_switcher = QComboBox()
         self.tab_switcher.currentTextChanged.connect(self.on_tab_switched)
+        self.tool_bar.addWidget(self.tab_switcher)
 
         self._tab_switch_method = InteropMethod("Edelweiss:MainInterop.ChangeTab")
+        self._switch_event = SyncableProperty("Edelweiss.TabSelected", sync=False).get()
+        self._switch_event += self.refresh_toolbar
         self._switcher_binding = SyncableProperty("Edelweiss.Tabs", ItemAdded=self.register_tab)
 
 
-        self.tool_bar.addWidget(self.tab_switcher)
 
         with open("stylesheet.qss", "r") as f:
             MainWindow.stylesheet = f.read()
             self.setStyleSheet(MainWindow.stylesheet)
 
         self.showMaximized()
+
+    def refresh_toolbar(self, tab):
+        for action in self.tool_bar.actions():
+            if isinstance(action, QWidgetAction) and action.defaultWidget() == self.tab_switcher:
+                continue
+            self.tool_bar.removeAction(action)
+        self.tool_bar.addSeparator()
+
+        JSONToolbarLoader.init_toolbar(self.tool_bar, json.loads(tab.ToolbarWidget))
 
     @property
     def current_tab(self):

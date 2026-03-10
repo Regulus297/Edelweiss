@@ -14,7 +14,7 @@ namespace Edelweiss.Modding
         public override string LayoutJSON => "Edelweiss:mod_tab";
 
         /// <inheritdoc/>
-        public override string ToolbarJSON => "";
+        public override string ToolbarJSON => "Edelweiss:mod_toolbar";
 
         /// <inheritdoc/>
         public override string DisplayName => "Modding";

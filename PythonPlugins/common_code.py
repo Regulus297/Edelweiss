@@ -12,14 +12,6 @@ def get_size_policy(policy: str) -> QSizePolicy:
 
     return  QSizePolicy.Fixed
 
-def clear_main_toolbar(toolbar):
-    for action in toolbar.actions():
-        if isinstance(action, QWidgetAction) and action.defaultWidget() == MainWindow.instance.tab_switcher:
-            continue
-        toolbar.removeAction(action)
-    toolbar.addSeparator()
-    
-
 def get_layout_item(widget):
     parent = widget.parentWidget()
     if parent is None:

@@ -30,6 +30,11 @@ namespace Edelweiss.Plugins
         /// </summary>
         public string LayoutWidget => PluginLoader.RequestJson(LayoutJSON);
 
+        /// <summary>
+        /// The JSON string for the toolbar
+        /// </summary>
+        public string ToolbarWidget => PluginLoader.RequestJson(ToolbarJSON);
+
         /// <inheritdoc/>
         public override void Load()
         {
@@ -47,7 +52,7 @@ namespace Edelweiss.Plugins
         /// </summary>
         public virtual void OnSelect()
         {
-            Plugin.Logger.Debug($"Tab selected: {FullName}");
+            
         }
 
         /// <summary>

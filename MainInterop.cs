@@ -28,6 +28,7 @@ namespace Edelweiss
             current?.OnDeselect();
             current = tab;
             current.Select();
+            MainVars.SelectTab(tab);
         }
 
         /// <summary>
