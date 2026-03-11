@@ -35,7 +35,7 @@ class FormWidgetCreator(WidgetCreator):
         self._apply_layout(data, fields)
         self._process_fields(data, fields)
 
-        widget = JSONWidgetLoader.init_widget(self._generate_widget(fields, data.get("root", "Edelweiss.Forms")), parent)
+        widget = JSONWidgetLoader.init_widget(self._generate_widget(fields, data), parent)
 
         
         return widget
@@ -102,7 +102,7 @@ class FormWidgetCreator(WidgetCreator):
             lcm = lcm * num // gcd
         return lcm
 
-    def _generate_widget(self, fields, root):
+    def _generate_widget(self, fields, data):
         children = []
         widget = {
             "type": "QWidget",
@@ -112,18 +112,35 @@ class FormWidgetCreator(WidgetCreator):
             }
         }
 
+        root = data.get("root", "Edelweiss.Forms")
+        max_row = 0
+        cols = 0
         for field in fields.values():
             if field.label:
                 children.append({
                     "type": "QLabel",
-                    "text": f"{root}.{field.displayName}",
+                    "text": f"{root}.{field.displayName}:{field.displayName}",
                     "tooltip": f"{root}.{field.displayName}.Tooltip",
                     "row": field.row,
                     "col": field.col,
                     "rowspan": field.rowspan,
                     "colspan": 1
                 })
+            max_row = max(max_row, field.row)
+            cols = max(cols, field.col + field.colspan)
             children.append(self._get_widget(field))
+
+        if "submit" in data:
+            children.append({
+                "type": "QPushButton",
+                "text": f"{root}.Submit:Submit",
+                "row": max_row + 1,
+                "col": 0,
+                "rowspan": 1,
+                "colspan": cols,
+                "click": data["submit"],
+                "specialType": "submit"
+            })
 
         return widget
 

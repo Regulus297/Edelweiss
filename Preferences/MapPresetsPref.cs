@@ -9,20 +9,13 @@ namespace Edelweiss.Preferences
 {
     internal class MapPresetsPref : PluginSaveablePreference
     {
-        private readonly JsonSerializerSettings settings = new JsonSerializerSettings();
-
-        public MapPresetsPref()
-        {
-            settings.Converters.Add(new BindableConverter());
-        }
-
         public override JToken Value
         {
             get => base.Value;
             set
             {
                 base.Value = value;
-                ModdingTab.MapPresets.Value = JsonConvert.DeserializeObject<Dictionary<string, List<MapDirectory>>>(value.ToString(), settings);
+                ModdingTab.MapPresets.Value = JsonConvert.DeserializeObject<Dictionary<string, List<MapDirectory>>>(value.ToString());
             }
         }
 
@@ -57,7 +50,7 @@ namespace Edelweiss.Preferences
 
         public override void PrepForSave()
         {
-            JsonSerializer serializer = JsonSerializer.Create(settings);
+            JsonSerializer serializer = JsonSerializer.Create(JsonConvert.DefaultSettings());
             Value = JObject.FromObject(ModdingTab.MapPresets.Value, serializer);
         }
     }

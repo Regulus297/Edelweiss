@@ -1,6 +1,7 @@
 using System;
 using Edelweiss.Interop;
 using Edelweiss.Plugins;
+using Edelweiss.Utils;
 
 namespace Edelweiss
 {
@@ -31,6 +32,19 @@ namespace Edelweiss
         /// </summary>
         public static event Action<CustomTab> TabSelected;
 
+        /// <summary>
+        /// Invoked with the JSON source of the file when <see cref="UI.OpenPopupWidget(string)"/> is called.
+        /// </summary>
+        public static event Action<string> OnOpenWidget;
+        
+        /// <summary>
+        /// Invoked with the JSON source of the file when <see cref="UI.OpenFileDialog(string)"/> is called.
+        /// </summary>
+        public static event Action<string> OnOpenFileDialog;
+        
+
         internal static void SelectTab(CustomTab tab) => TabSelected?.Invoke(tab);
+        internal static void OpenWidget(string data) => OnOpenWidget?.Invoke(data);
+        internal static void OpenFileDialog(string data) => OnOpenFileDialog?.Invoke(data);
     }
 }

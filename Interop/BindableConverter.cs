@@ -27,7 +27,7 @@ namespace Edelweiss.Interop
         /// <inheritdoc/>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            writer.WriteValue(value.GetType().GetField("_value", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(value));
+            serializer.Serialize(writer, value.GetType().GetField("_value", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(value));
         }
     }
 }

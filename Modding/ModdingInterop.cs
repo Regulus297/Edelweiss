@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
 using Edelweiss.Interop;
+using Edelweiss.Utils;
+using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Modding
 {
@@ -46,6 +48,27 @@ namespace Edelweiss.Modding
                 ModdingTab.MapPresets[name] = ModdingTab.MapPresets[prev];
                 ModdingTab.MapPresets.Remove(prev);
             }
+        }
+
+        /// <summary>
+        /// Opens a popup form for mod creation
+        /// </summary>
+        public void CreateMod()
+        {
+            ModdingTab.CreatingMod = new ModData()
+            {
+                Name = "",
+                Mapper = ""
+            };
+            UI.OpenPopupWidget("Edelweiss:Forms/mod_creation");
+        }
+
+        /// <summary>
+        /// Saves the current mod to the Celeste mods directory
+        /// </summary>
+        public void SaveMod()
+        {
+            ModdingTab.CreatingMod.Value.Save();
         }
     }
 }

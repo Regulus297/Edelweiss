@@ -1,4 +1,7 @@
-﻿using Edelweiss.Plugins;
+﻿using System.Text.Json;
+using Edelweiss.Interop;
+using Edelweiss.Plugins;
+using Newtonsoft.Json;
 
 namespace Edelweiss;
 
@@ -12,6 +15,10 @@ public class Main
     /// </summary>
     public static void Initialize()
     {
+        JsonConvert.DefaultSettings = () => new JsonSerializerSettings()
+        {
+            Converters = { new BindableConverter() }
+        };
         PluginSaveablePreference.LoadPrefs();
         PluginLoader.LoadPlugins();
     }

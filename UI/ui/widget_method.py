@@ -6,7 +6,8 @@ class WidgetMethod:
         self.interop_method = InteropMethod(data["method"])
         self.args = data.get("args", [])
         self.parameters = parameters
-        signal.connect(self._invoke)
+        if signal is not None:
+            signal.connect(self._invoke)
 
     def _invoke(self, *params):
         args = []
@@ -39,5 +40,6 @@ class WidgetMethod:
             parameters = {}
 
         method = cls(data[name], signal, parameters)
-        setattr(widget, f"__method_{name}__", method)
+        if widget is not None:
+            setattr(widget, f"__method_{name}__", method)
         return method

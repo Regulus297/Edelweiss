@@ -39,6 +39,11 @@ namespace Edelweiss.Modding
         /// </summary>
         public static BindableVariable<string> CurrentPresetName;
 
+        /// <summary>
+        /// The mod that is currently being created
+        /// </summary>
+        public static BindableVariable<ModData> CreatingMod;
+
         string ISyncable.Name() => FullName;
 
         /// <inheritdoc/>

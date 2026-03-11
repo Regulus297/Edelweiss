@@ -1,5 +1,6 @@
 from ui import JSONWidgetLoader, CommonPropertySetter, MainWindow, LocalizedBinding
 from plugins import plugin_loadable, load_dependencies
+from utils import UI
 from PyQt5.QtWidgets import QPushButton, QApplication
 
 
@@ -71,7 +72,7 @@ class SpecialTypeSetter(CommonPropertySetter):
 
     def set_property(self, widget, property_value):
         if property_value == "submit" and isinstance(widget, QPushButton):
-            CommonVars.found_submit_button = widget
+            widget.clicked.connect(lambda: UI.close(widget.parent()))
 
 @plugin_loadable
 class MaxHeightSetter(CommonPropertySetter):

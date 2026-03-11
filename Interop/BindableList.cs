@@ -85,5 +85,13 @@ namespace Edelweiss.Interop
                     ItemChanged?.Invoke(i, value);
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static implicit operator BindableList<T>(List<T> value) => new()
+        {
+            Value = value
+        };
     }
 }

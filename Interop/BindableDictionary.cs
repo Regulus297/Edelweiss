@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using YamlDotNet.Core.Tokens;
 
 namespace Edelweiss.Interop
 {
@@ -72,5 +73,13 @@ namespace Edelweiss.Interop
                 ItemRemoved?.Invoke(key, Value[key]);
             Value.Remove(key);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static implicit operator BindableDictionary<T, U>(Dictionary<T, U> value) => new()
+        {
+            Value = value
+        };
     }
 }

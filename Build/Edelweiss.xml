@@ -65,6 +65,11 @@
             Removes the item at a given key
             </summary>
         </member>
+        <member name="M:Edelweiss.Interop.BindableDictionary`2.op_Implicit(System.Collections.Generic.Dictionary{`0,`1})~Edelweiss.Interop.BindableDictionary{`0,`1}">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Edelweiss.Interop.BindableList`1">
             <summary>
             A variable that contains a list, invoking events when items are added, removed or changed
@@ -115,6 +120,11 @@
         <member name="P:Edelweiss.Interop.BindableList`1.Item(System.Int32)">
             <summary>
             Setting will invoke ItemChanged
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.BindableList`1.op_Implicit(System.Collections.Generic.List{`0})~Edelweiss.Interop.BindableList{`0}">
+            <summary>
+            
             </summary>
         </member>
         <member name="T:Edelweiss.Interop.BindableVariable`1">
@@ -311,6 +321,16 @@
             Invoked when a tab is selected
             </summary>
         </member>
+        <member name="E:Edelweiss.MainVars.OnOpenWidget">
+            <summary>
+            Invoked with the JSON source of the file when <see cref="M:Edelweiss.Utils.UI.OpenPopupWidget(System.String)"/> is called.
+            </summary>
+        </member>
+        <member name="E:Edelweiss.MainVars.OnOpenFileDialog">
+            <summary>
+            Invoked with the JSON source of the file when <see cref="M:Edelweiss.Utils.UI.OpenFileDialog(System.String)"/> is called.
+            </summary>
+        </member>
         <member name="T:Edelweiss.Modding.MapDirectory">
             <summary>
             A class containing map hierarchy data
@@ -324,6 +344,41 @@
         <member name="F:Edelweiss.Modding.MapDirectory.Directory">
             <summary>
             The directory that the map type is put in
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Modding.ModData">
+            <summary>
+            Class containing the data for a Celeste mod
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.ModData.Name">
+            <summary>
+            The name of the mod
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.ModData.Mapper">
+            <summary>
+            The name of the mapper
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.ModData.MapHierarchy">
+            <summary>
+            The map hierarchy used 
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.ModData.MapHierarchyName">
+            <summary>
+            This is not saved or set when loading from disk, only for setting the hierarchy when creating a new mod. Do not use.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Modding.ModData.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Modding.ModData.Save">
+            <summary>
+            Saves the mod to a folder in the Celeste directory
             </summary>
         </member>
         <member name="T:Edelweiss.Modding.ModdingInterop">
@@ -344,6 +399,16 @@
         <member name="M:Edelweiss.Modding.ModdingInterop.RenameMapPreset(System.String,System.String)">
             <summary>
             Renames the given map preset
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Modding.ModdingInterop.CreateMod">
+            <summary>
+            Opens a popup form for mod creation
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Modding.ModdingInterop.SaveMod">
+            <summary>
+            Saves the current mod to the Celeste mods directory
             </summary>
         </member>
         <member name="T:Edelweiss.Modding.ModdingTab">
@@ -378,6 +443,11 @@
         <member name="F:Edelweiss.Modding.ModdingTab.CurrentPresetName">
             <summary>
             The name of the currently selected preset
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.ModdingTab.CreatingMod">
+            <summary>
+            The mod that is currently being created
             </summary>
         </member>
         <member name="M:Edelweiss.Modding.ModdingTab.Load">
@@ -995,6 +1065,28 @@
             Returns the directory if the asset is a directory and the path to the zip archive if it is a zip file.
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:Edelweiss.Utils.UI">
+            <summary>
+            UI utilities
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.UI.OpenPopupWidget(System.String)">
+            <summary>
+            Opens a popup widget taking the data from the given key
+            </summary>
+            <param name="key">The resource key for the widget data</param>
+        </member>
+        <member name="M:Edelweiss.Utils.UI.OpenFileDialog(System.String)">
+            <summary>
+            Opens a popup file dialog taking the data from the given key
+            </summary>
+            <param name="key">The resource key for the file dialog</param>
+        </member>
+        <member name="M:Edelweiss.Utils.UI.OpenFileDialog(Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Opens a popup file dialog using the given JObject as the source
+            </summary>
         </member>
     </members>
 </doc>

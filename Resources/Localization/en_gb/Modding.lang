@@ -8,3 +8,8 @@ MapHierarchy.Name = Name
 MapHierarchy.Name.Tooltip = The name of the map type
 MapHierarchy.Directory = Directory
 MapHierarchy.Directory.Tooltip = The directory in which this map type will be put
+
+ModCreation.MapHierarchyName = Map Hierarchy
+ModCreation.MapHierarchyName.Tooltip = The name of the map hierarchy preset this mod should use
+ModCreation.Name.Tooltip = The name of the mod
+ModCreation.Mapper.Tooltip = The name of the mapper

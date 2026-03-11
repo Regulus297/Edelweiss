@@ -9,8 +9,7 @@
                     "name": "Edelweiss.Modding.CreateMod",
                     "shortcut": "Ctrl+N",
                     "click": {
-                        "method": "Edelweiss:MainInterop.Debug",
-                        "args": ["hello!"]
+                        "method": "Edelweiss:ModdingInterop.CreateMod"
                     }
                 }
             ]

@@ -1,13 +1,17 @@
 {
-    "formID": "ModCreationForm",
-    "fields": {
-        "name": "",
-        "mapperName": "",
-        "mapHierarchy": "@defer('@getVar(\\'Edelweiss:AllMapPresets\\')')"
+    "type": "Form",
+    "model": "Edelweiss:ModdingTab.CreatingMod",
+    "fields": ["Name", "Mapper", "MapHierarchyName"],
+    "root": "Edelweiss.Modding.ModCreation",
+    "submit": {
+        "method": "Edelweiss:ModdingInterop.SaveMod"
     },
     "fieldInfo": {
-        "mapHierarchy": {
-            "type": "list"
+        "MapHierarchyName": {
+            "type": "list",
+            "bind": {
+                "options": "Edelweiss:ModdingTab.MapPresetNames"
+            }
         }
     }
 }
