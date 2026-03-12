@@ -64,6 +64,7 @@ class MainWindow(QMainWindow):
         self._switch_event = SyncableProperty("Edelweiss.TabSelected", sync=False).get()
         self._switch_event += self.refresh_toolbar
         self._switcher_binding = SyncableProperty("Edelweiss.Tabs", ItemAdded=self.register_tab)
+        self._enabled_binding = SyncableProperty("Edelweiss:ModdingTab.HasCurrentMod", ValueChanged=self.tab_switcher.setEnabled)
 
         with open("stylesheet.qss", "r") as f:
             MainWindow.stylesheet = f.read()
@@ -86,6 +87,7 @@ class MainWindow(QMainWindow):
 
     def on_tab_switched(self, _):
         self._tab_switch_method(self.current_tab)
+        self.stack.setCurrentIndex(self.tab_switcher.currentIndex())
 
     def closeEvent(self, a0):
         Interop.exit()

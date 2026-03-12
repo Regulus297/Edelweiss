@@ -102,7 +102,6 @@ class QComboBoxWidgetCreator(WidgetCreator):
 
         if prev == widget.currentIndex():
             widget.currentIndexChanged.emit(prev)
-        
 
     def _get_text(self, widget):
         if getattr(widget, "__keyed__", False):

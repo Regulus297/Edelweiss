@@ -15,7 +15,7 @@
         },
         "RootDirectory": {
             "type": "file",
-            "title": "Edelweiss.Modding.ModDirectory",
+            "title": "Edelweiss.Modding.ModCreation.ModDirectory",
             "directory": true
         }
     }

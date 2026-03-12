@@ -11,6 +11,14 @@
                     "click": {
                         "method": "Edelweiss:ModdingInterop.CreateMod"
                     }
+                },
+                {
+                    "type": "action",
+                    "name": "Edelweiss.Modding.OpenMod",
+                    "shortcut": "Ctrl+O",
+                    "click": {
+                        "method": "Edelweiss:ModdingInterop.OpenMod"
+                    }
                 }
             ]
         }

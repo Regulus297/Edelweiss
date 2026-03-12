@@ -44,12 +44,25 @@ namespace Edelweiss.Modding
         /// </summary>
         public static BindableVariable<ModData> CreatingMod;
 
+        /// <summary>
+        /// The mod that is currently being edited
+        /// </summary>
+        public static BindableVariable<ModData> CurrentMod;
+
+        /// <summary>
+        /// Whether a mod is currently being edited
+        /// </summary>
+        public static BindableVariable<bool> HasCurrentMod;
+
         string ISyncable.Name() => FullName;
 
         /// <inheritdoc/>
         public override void Load()
         {
             CurrentPresetName = "Default";
+            CurrentMod = new BindableVariable<ModData>(null);
+            HasCurrentMod = false;
+            CurrentMod.ValueChanged += value => HasCurrentMod.Value = value != null;
             MapPresetNames.MakeTransform(MapPresets, (name, _) => name);
             CurrentPresetName.ValueChanged += value => CurrentPreset.Value = MapPresets[value];
             CurrentPresetName.Value = "Default";

@@ -1,6 +1,8 @@
 using System;
+using System.IO;
 using System.Linq;
 using Edelweiss.Interop;
+using Edelweiss.Plugins;
 using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
@@ -70,6 +72,32 @@ namespace Edelweiss.Modding
         {
             ModdingTab.CreatingMod.Value.Save();
             UI.ShowPopup($"Edelweiss.Modding.CreatedMod{{{ModdingTab.CreatingMod.Value.Name}}}");
+            ModdingTab.CurrentMod.Value = ModdingTab.CreatingMod.Value;
+        }
+
+        /// <summary>
+        /// Opens a file dialog to load a mod
+        /// </summary>
+        public void OpenMod()
+        {
+            UI.OpenFileDialog(new JObject()
+            {
+                {"file", false},
+                {"path", Path.Join(MainPlugin.CelesteDirectory, "Mods")},
+                {"submit", new JObject() {
+                    {"method", "Edelweiss:ModdingInterop.LoadMod"},
+                    {"args", new JArray() { "@path" }}
+                }}
+            });
+        }
+
+        /// <summary>
+        /// Loads a mod from the given path and sets it to the current mod
+        /// </summary>
+        public void LoadMod(string path)
+        {
+            ModdingTab.CurrentMod.Value = ModData.Load(path.Replace('/', Path.DirectorySeparatorChar));
+            UI.ShowPopup($"Edelweiss.Modding.LoadedMod{{{ModdingTab.CurrentMod.Value.Name}}}");
         }
     }
 }

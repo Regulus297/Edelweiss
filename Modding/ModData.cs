@@ -71,5 +71,32 @@ namespace Edelweiss.Modding
             // Edelweiss meta
             File.WriteAllText(Path.Join(modDirectory, "edelweiss.meta.json"), JsonConvert.SerializeObject(this, Formatting.Indented));
         }
+
+        /// <summary>
+        /// Loads a mod from the given path. Only works if the folder given contains edelweiss.meta.json
+        /// </summary>
+        public static ModData Load(string path)
+        {
+            if(File.Exists(Path.Join(path, "edelweiss.meta.json")))
+            {
+                ModData data = JsonConvert.DeserializeObject<ModData>(File.ReadAllText(Path.Join(path, "edelweiss.meta.json")));
+                data.ModDirectory = path;
+                return data;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// The path to the mod folder
+        /// </summary>
+        public string ModDirectory
+        {
+            get => Path.Join(RootDirectory.Value, Name.Value);
+            set
+            {
+                Name = value.Split(Path.DirectorySeparatorChar)[^1];
+                RootDirectory = string.Join(Path.DirectorySeparatorChar, value.Split(Path.DirectorySeparatorChar)[..^1]);
+            }
+        }
     }
 }

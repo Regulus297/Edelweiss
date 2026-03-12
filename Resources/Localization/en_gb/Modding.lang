@@ -1,9 +1,11 @@
 Mod = Mods
 CreateMod = Create Mod
+OpenMod = Open Mod...
 ResourceHierarchyPresets = Resource Hierarchy Presets
 MapHierarchyPresets = Map Hierarchy Presets
 SelectorDescription = Current Hierarchy Preset
 CreatedMod = Created Mod {0}
+LoadedMod = Loaded Mod {0}
 
 MapHierarchy.Name = Name
 MapHierarchy.Name.Tooltip = The name of the map type
@@ -14,3 +16,6 @@ ModCreation.MapHierarchyName = Map Hierarchy
 ModCreation.MapHierarchyName.Tooltip = The name of the map hierarchy preset this mod should use
 ModCreation.Name.Tooltip = The name of the mod
 ModCreation.Mapper.Tooltip = The name of the mapper
+ModCreation.RootDirectory = Directory
+ModCreation.RootDirectory.Tooltip = The directory in which the mod folder will be placed
+ModCreation.ModDirectory = Select mod directory...

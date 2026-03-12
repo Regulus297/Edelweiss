@@ -40,7 +40,12 @@ namespace Edelweiss.Plugins
                     SetDefaultValue();
                 return;
             }
-            Value = value;
+            if(DefaultValueStage == LoadStage.PostLoadTypes)
+                PluginLoader.PostLoadTypes += () => Value = value;
+            else if(DefaultValueStage == LoadStage.PostLoadPlugins)
+                PluginLoader.PostLoadPlugins += () => Value = value;
+            else
+                Value = value;
         }
         
         /// <summary>

@@ -341,6 +341,20 @@
             Invoked when <see cref="M:Edelweiss.Utils.UI.ShowPopup(System.String)"/> is called
             </summary>
         </member>
+        <member name="T:Edelweiss.Mapping.MappingTab">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.MappingTab.LayoutJSON">
+            <inheritdoc/>
+        </member>
+        <member name="P:Edelweiss.Mapping.MappingTab.ToolbarJSON">
+            <inheritdoc/>
+        </member>
+        <member name="P:Edelweiss.Mapping.MappingTab.DisplayName">
+            <inheritdoc/>
+        </member>
         <member name="T:Edelweiss.Modding.MapDirectory">
             <summary>
             A class containing map hierarchy data
@@ -396,6 +410,16 @@
             Saves the mod to a folder in the Celeste directory
             </summary>
         </member>
+        <member name="M:Edelweiss.Modding.ModData.Load(System.String)">
+            <summary>
+            Loads a mod from the given path. Only works if the folder given contains edelweiss.meta.json
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Modding.ModData.ModDirectory">
+            <summary>
+            The path to the mod folder
+            </summary>
+        </member>
         <member name="T:Edelweiss.Modding.ModdingInterop">
             <summary>
             Interop for the modding tab
@@ -424,6 +448,16 @@
         <member name="M:Edelweiss.Modding.ModdingInterop.SaveMod">
             <summary>
             Saves the current mod to the Celeste mods directory
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Modding.ModdingInterop.OpenMod">
+            <summary>
+            Opens a file dialog to load a mod
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Modding.ModdingInterop.LoadMod(System.String)">
+            <summary>
+            Loads a mod from the given path and sets it to the current mod
             </summary>
         </member>
         <member name="T:Edelweiss.Modding.ModdingTab">
@@ -463,6 +497,16 @@
         <member name="F:Edelweiss.Modding.ModdingTab.CreatingMod">
             <summary>
             The mod that is currently being created
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.ModdingTab.CurrentMod">
+            <summary>
+            The mod that is currently being edited
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.ModdingTab.HasCurrentMod">
+            <summary>
+            Whether a mod is currently being edited
             </summary>
         </member>
         <member name="M:Edelweiss.Modding.ModdingTab.Load">
