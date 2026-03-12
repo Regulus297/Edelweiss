@@ -25,6 +25,12 @@ namespace Edelweiss.Modding
         public BindableVariable<string> Mapper;
 
         /// <summary>
+        /// The root directory which the mod will be placed in
+        /// </summary>
+        [JsonIgnore]
+        public BindableVariable<string> RootDirectory = Path.Join(MainPlugin.CelesteDirectory, "Mods");
+
+        /// <summary>
         /// The map hierarchy used 
         /// </summary>
         public BindableList<MapDirectory> MapHierarchy = [];
@@ -49,7 +55,7 @@ namespace Edelweiss.Modding
         /// </summary>
         public void Save()
         {
-            string modDirectory = Path.Join(MainPlugin.CelesteDirectory, "Mods", Name.Value);
+            string modDirectory = Path.Join(RootDirectory.Value, Name.Value).Replace('/', Path.DirectorySeparatorChar);
             Directory.CreateDirectory(modDirectory);
 
             // everest.yaml

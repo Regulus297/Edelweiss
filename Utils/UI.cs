@@ -33,5 +33,14 @@ namespace Edelweiss.Utils
         {
             MainVars.OpenFileDialog(obj.ToString());
         }
+
+        /// <summary>
+        /// Opens a toast-style popup with the given text
+        /// </summary>
+        /// <param name="text">Either the localization key for the text, or a text literal prefixed with @</param>
+        public static void ShowPopup(string text)
+        {
+            MainVars.ShowPopup(text);
+        }
     }
 }

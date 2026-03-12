@@ -316,6 +316,11 @@
             The currently selected language
             </summary>
         </member>
+        <member name="F:Edelweiss.MainVars.TexturePaths">
+            <summary>
+            The loaded texture keys to the absolute paths to the texture
+            </summary>
+        </member>
         <member name="E:Edelweiss.MainVars.TabSelected">
             <summary>
             Invoked when a tab is selected
@@ -329,6 +334,11 @@
         <member name="E:Edelweiss.MainVars.OnOpenFileDialog">
             <summary>
             Invoked with the JSON source of the file when <see cref="M:Edelweiss.Utils.UI.OpenFileDialog(System.String)"/> is called.
+            </summary>
+        </member>
+        <member name="E:Edelweiss.MainVars.OnShowPopup">
+            <summary>
+            Invoked when <see cref="M:Edelweiss.Utils.UI.ShowPopup(System.String)"/> is called
             </summary>
         </member>
         <member name="T:Edelweiss.Modding.MapDirectory">
@@ -359,6 +369,11 @@
         <member name="F:Edelweiss.Modding.ModData.Mapper">
             <summary>
             The name of the mapper
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.ModData.RootDirectory">
+            <summary>
+            The root directory which the mod will be placed in
             </summary>
         </member>
         <member name="F:Edelweiss.Modding.ModData.MapHierarchy">
@@ -795,6 +810,61 @@
             After all plugins are loaded
             </summary>
         </member>
+        <member name="T:Edelweiss.Plugins.TextureData">
+            <summary>
+            Contains data for a texture
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.TextureData.width">
+            <summary>
+            The width of the texture in pixels
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.TextureData.height">
+            <summary>
+            The height of the texture in pixels
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.TextureData.atlasX">
+            <summary>
+            The position of the texture in the atlas
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.TextureData.atlasY">
+            <summary>
+            The position of the texture in the atlas
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.TextureData.atlasWidth">
+            <summary>
+            The width and height of the texture in the atlas
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.TextureData.atlasHeight">
+            <summary>
+            The width and height of the texture in the atlas
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.TextureData.atlasOffsetX">
+            <summary>
+            The position at which the texture starts in the atlas as compared to the padded texture
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Plugins.TextureData.atlasOffsetY">
+            <summary>
+            The position at which the texture starts in the atlas as compared to the padded texture
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.TextureData.paddedWidth">
+            <summary>
+            The width of the padded texture
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Plugins.TextureData.paddedHeight">
+            <summary>
+            The height of the padded texture
+            </summary>
+        </member>
         <member name="T:Edelweiss.Plugins.PluginRegistryObject">
             <summary>
             
@@ -1087,6 +1157,12 @@
             <summary>
             Opens a popup file dialog using the given JObject as the source
             </summary>
+        </member>
+        <member name="M:Edelweiss.Utils.UI.ShowPopup(System.String)">
+            <summary>
+            Opens a toast-style popup with the given text
+            </summary>
+            <param name="text">Either the localization key for the text, or a text literal prefixed with @</param>
         </member>
     </members>
 </doc>

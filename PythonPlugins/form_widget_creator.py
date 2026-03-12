@@ -168,7 +168,7 @@ class FormWidgetCreator(WidgetCreator):
                     "checked": field.value
                 }
             }
-        elif field.type == "int" or field.type == "float":
+        elif field.type == "int" or field.type == "float" or field.type == "file":
             widget = {
                 "type": "QLineEdit",
                 "dataType": field.type,
@@ -176,6 +176,7 @@ class FormWidgetCreator(WidgetCreator):
                     "text": field.value
                 }
             }
+            updateJSON(widget, field.data, "type")
         elif field.type == "form":
             widget = {
                 "type": "Form",

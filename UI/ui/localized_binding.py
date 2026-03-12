@@ -1,3 +1,5 @@
+import re
+
 from interop import InteropMethod, SyncableProperty
 from .widget_binding import WidgetBinding
 
@@ -27,13 +29,18 @@ class LocalizedBinding(WidgetBinding):
         if ":" in self.prop:
             self.prop, self._default = self.prop.split(":")
 
+        self.format_args = [arg[1:-1] for arg in re.findall("\{.+}", self.prop)]
+        self.prop = self.prop.split("{")[0]
+
         LocalizedBinding.current_language.ValueChanged += lambda _: self._update_value()
         self._update_value()
 
 
     def _update_value(self):
         temp = self.prop
-        self.prop = LocalizedBinding.get_method(self.prop, self.default)
+        self.prop: str = LocalizedBinding.get_method(self.prop, self.default)
+        for i, arg in enumerate(self.format_args):
+            self.prop = self.prop.replace("{" + str(i) + "}", arg)
         self._sync_non_bindable(**self.subscribers)
         self.prop = temp
 

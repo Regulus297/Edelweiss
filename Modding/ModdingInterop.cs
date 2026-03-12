@@ -69,6 +69,7 @@ namespace Edelweiss.Modding
         public void SaveMod()
         {
             ModdingTab.CreatingMod.Value.Save();
+            UI.ShowPopup($"Edelweiss.Modding.CreatedMod{{{ModdingTab.CreatingMod.Value.Name}}}");
         }
     }
 }

@@ -9,7 +9,6 @@ from .json_toolbar_loader import JSONToolbarLoader
 from .widget_binding import WidgetBinding
 from .json_widget_loader import JSONWidgetLoader
 
-
 class MainWindow(QMainWindow):
     instance = None
     stylesheet = ""
@@ -66,8 +65,6 @@ class MainWindow(QMainWindow):
         self._switch_event += self.refresh_toolbar
         self._switcher_binding = SyncableProperty("Edelweiss.Tabs", ItemAdded=self.register_tab)
 
-
-
         with open("stylesheet.qss", "r") as f:
             MainWindow.stylesheet = f.read()
             self.setStyleSheet(MainWindow.stylesheet)
@@ -87,7 +84,7 @@ class MainWindow(QMainWindow):
     def current_tab(self):
         return self.tabs[self.tab_switcher.currentIndex()]
 
-    def on_tab_switched(self, text):
+    def on_tab_switched(self, _):
         self._tab_switch_method(self.current_tab)
 
     def closeEvent(self, a0):

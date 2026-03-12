@@ -28,6 +28,11 @@ namespace Edelweiss
         public static readonly BindableVariable<string> CurrentLanguage = "en_gb";
 
         /// <summary>
+        /// The loaded texture keys to the absolute paths to the texture
+        /// </summary>
+        public static readonly BindableDictionary<string, string> TexturePaths = [];
+
+        /// <summary>
         /// Invoked when a tab is selected
         /// </summary>
         public static event Action<CustomTab> TabSelected;
@@ -41,10 +46,17 @@ namespace Edelweiss
         /// Invoked with the JSON source of the file when <see cref="UI.OpenFileDialog(string)"/> is called.
         /// </summary>
         public static event Action<string> OnOpenFileDialog;
+
+        /// <summary>
+        /// Invoked when <see cref="UI.ShowPopup(string)"/> is called
+        /// </summary>
+        public static event Action<string> OnShowPopup;
+        
         
 
         internal static void SelectTab(CustomTab tab) => TabSelected?.Invoke(tab);
         internal static void OpenWidget(string data) => OnOpenWidget?.Invoke(data);
         internal static void OpenFileDialog(string data) => OnOpenFileDialog?.Invoke(data);
+        internal static void ShowPopup(string text) => OnShowPopup?.Invoke(text);
     }
 }

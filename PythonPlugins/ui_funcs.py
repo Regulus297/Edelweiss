@@ -1,5 +1,5 @@
-from ui import JSONWidgetLoader, MainWindow, WidgetMethod
-from plugins import plugin_loadable
+from ui import JSONWidgetLoader, MainWindow, WidgetMethod, LocalizedBinding
+from plugins import plugin_loadable, load_dependencies
 from interop import SyncableProperty
 from PyQt5.QtWidgets import QFileDialog
 import json
@@ -46,3 +46,16 @@ class OpenFileDialogFunc:
             return
         
         WidgetMethod.create(None, None, data, "submit", {"path": lambda: path, "pattern": lambda: pattern})._invoke()
+
+
+@load_dependencies("Edelweiss:widgets/popup")
+@plugin_loadable
+class ShowPopupFunc:
+    def __init__(self):
+        event = SyncableProperty("Edelweiss.OnShowPopup", False).get()
+        event += self.show
+
+    def show(self, text):
+        popup = Popup("")
+        LocalizedBinding(popup, {"text": text}, "text", ValueChanged=popup.setText)
+        popup.show()

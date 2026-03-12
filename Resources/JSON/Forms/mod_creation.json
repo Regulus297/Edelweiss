@@ -1,7 +1,7 @@
 {
     "type": "Form",
     "model": "Edelweiss:ModdingTab.CreatingMod",
-    "fields": ["Name", "Mapper", "MapHierarchyName"],
+    "fields": ["Name", "Mapper", "MapHierarchyName", "RootDirectory"],
     "root": "Edelweiss.Modding.ModCreation",
     "submit": {
         "method": "Edelweiss:ModdingInterop.SaveMod"
@@ -12,6 +12,11 @@
             "bind": {
                 "options": "Edelweiss:ModdingTab.MapPresetNames"
             }
+        },
+        "RootDirectory": {
+            "type": "file",
+            "title": "Edelweiss.Modding.ModDirectory",
+            "directory": true
         }
     }
 }

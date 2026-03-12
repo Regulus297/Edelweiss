@@ -1,5 +1,5 @@
 from ui import WidgetCreator, JSONWidgetLoader, WidgetBinding, WidgetMethod, LocalizedBinding
-from ui.widgets import ModifiableCombobox, FormList
+from ui.widgets import ModifiableCombobox, FormList, FileLineEdit
 from plugins import plugin_loadable, load_dependencies
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QLineEdit, QComboBox, QCheckBox
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
@@ -41,10 +41,19 @@ class QLineEditWidgetCreator(WidgetCreator):
         super().__init__("QLineEdit")
 
     def create_widget(self, data, parent=None):
+        dataType = data.get("dataType")
+        if dataType == "file":
+            widget = FileLineEdit("", data.get("filter"), data.get("directory", False), parent)
+            binding = WidgetBinding(widget, data, "text", ValueChanged=lambda v: widget.setText(str(v)))
+            LocalizedBinding(widget, data, "title", ValueChanged=widget.setTitle)
+            method = WidgetMethod.create(widget, widget.editingFinished, data, "edit", {"text": lambda: t(widget.text)})
+            if method is None:
+                widget.editingFinished.connect(lambda: binding.prop.set(widget.text()))
+            return widget
+
         widget = QLineEdit(parent=parent)
         binding = WidgetBinding(widget, data, "text", ValueChanged=lambda v: widget.setText(str(v)))
 
-        dataType = data.get("dataType")
         t = str
         if dataType == "int":
             widget.setValidator(QIntValidator(widget))

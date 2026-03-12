@@ -19,6 +19,9 @@ namespace Edelweiss.Plugins
         private static Dictionary<string, PluginFileData> jsonPaths = [];
         private static Dictionary<string, string> jsonCache = [];
 
+        internal static Dictionary<string, TextureData> textureDataCache = [];
+        internal static List<string> vanillaTextures = [];
+
         private static List<string> blacklist = [];
 
         /// <summary>
@@ -44,6 +47,7 @@ namespace Edelweiss.Plugins
             LoadPythonPlugins(Directory.GetCurrentDirectory(), "Edelweiss");
             LoadAssembly(Assembly.GetExecutingAssembly());
             LoadJsonFiles(Directory.GetCurrentDirectory(), "Edelweiss");
+            LoadTexturesFromDirectory(Path.Join(Directory.GetCurrentDirectory(), "Resources"));
 
             string directory = Path.Join(Directory.GetCurrentDirectory(), "Plugins");
 
@@ -319,6 +323,28 @@ namespace Edelweiss.Plugins
                 }
             }
         }
+
+        internal static bool LoadTexturesFromDirectory(PluginAsset path)
+        {
+            string graphicsPath = Path.Join("Graphics", "Atlases");
+            if (!path.DirExists(graphicsPath))
+                return false;
+
+            Logger.Log(nameof(PluginLoader), $"Loading textures from {path}");
+
+            foreach (string file in path.GetFiles(graphicsPath, "*.png", SearchOption.AllDirectories))
+            {
+                string key = file.Substring(0, file.Length - 4).Substring(graphicsPath.Length + 1).Replace(Path.DirectorySeparatorChar, '/');
+                if (vanillaTextures.Contains(key))
+                {
+                    Logger.Warn(nameof(PluginLoader), $"Mod {path} replaces vanilla texture {key}: skipping the texture");
+                    continue;
+                }
+                MainVars.TexturePaths[key] = path.IsZipFile ? path.PluginArchive.Path() + char.ConvertFromUtf32(0) + file : Path.Join(path.AssetPath, file);
+            }
+
+            return true;
+        }
     }
 
     /// <summary>
@@ -354,5 +380,92 @@ namespace Edelweiss.Plugins
         /// After all plugins are loaded
         /// </summary>
         PostLoadPlugins
+    }
+
+    /// <summary>
+    /// Contains data for a texture
+    /// </summary>
+    public class TextureData
+    {
+        private int _width;
+
+        /// <summary>
+        /// The width of the texture in pixels
+        /// </summary>
+        public int width
+        {
+            get
+            {
+                return atlasWidth < 0 ? _width : atlasWidth;
+            }
+            set
+            {
+                _width = value;
+            }
+        }
+
+        private int _height;
+
+        /// <summary>
+        /// The height of the texture in pixels
+        /// </summary>
+        public int height
+        {
+            get
+            {
+                return atlasHeight < 0 ? _height : atlasHeight;
+            }
+            set
+            {
+                _height = value;
+            }
+        }
+
+        /// <summary>
+        /// The position of the texture in the atlas
+        /// </summary>
+        public int atlasX = -1, atlasY = -1;
+
+        /// <summary>
+        /// The width and height of the texture in the atlas
+        /// </summary>
+        public int atlasWidth = -1, atlasHeight = -1;
+
+        /// <summary>
+        /// The position at which the texture starts in the atlas as compared to the padded texture
+        /// </summary>
+        public int atlasOffsetX = 0, atlasOffsetY = 0;
+
+        private int _paddedWidth = 0, _paddedHeight = 0;
+
+        /// <summary>
+        /// The width of the padded texture
+        /// </summary>
+        public int paddedWidth
+        {
+            get
+            {
+                return _paddedWidth <= 0 ? width : _paddedWidth;
+            }
+            set
+            {
+                _paddedWidth = value;
+            }
+        }
+
+        /// <summary>
+        /// The height of the padded texture
+        /// </summary>
+        public int paddedHeight
+        {
+            get
+            {
+                return _paddedHeight <= 0 ? height : _paddedHeight;
+            }
+            set
+            {
+                _paddedHeight = value;
+            }
+        }
     }
 }
