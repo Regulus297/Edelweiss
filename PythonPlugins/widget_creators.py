@@ -1,6 +1,7 @@
 from ui import WidgetCreator, JSONWidgetLoader, WidgetBinding, WidgetMethod, LocalizedBinding
 from ui.widgets import ModifiableCombobox, FormList, FileLineEdit
 from plugins import plugin_loadable, load_dependencies
+from utils import Enum
 from PyQt5.QtWidgets import QWidget, QLabel, QPushButton, QLineEdit, QComboBox, QCheckBox
 from PyQt5.QtGui import QIntValidator, QDoubleValidator
 
@@ -51,17 +52,21 @@ class QLineEditWidgetCreator(WidgetCreator):
                 widget.editingFinished.connect(lambda: binding.prop.set(widget.text()))
             return widget
 
-        widget = QLineEdit(parent=parent)
-        binding = WidgetBinding(widget, data, "text", ValueChanged=lambda v: widget.setText(str(v)))
-
+        widget = QLineEdit(parent=parent)       
         t = str
+        set_t = str
         if dataType == "int":
             widget.setValidator(QIntValidator(widget))
             t = int
         elif dataType == "float":
-            widget.setValidator(QDoubleValidator(widget))
+            validator = QDoubleValidator(widget)
+            widget.setValidator(validator)
+            set_t = lambda v: f"{v:.6f}".rstrip('0').rstrip('.')
             t = float
 
+        binding = WidgetBinding(widget, data, "text", ValueChanged=lambda v: widget.setText(set_t(v)))
+
+ 
         method = WidgetMethod.create(widget, widget.editingFinished, data, "edit", {"text": lambda: t(widget.text)})
         if method is None:
             widget.editingFinished.connect(lambda: binding.prop.set(t(widget.text())))
@@ -82,7 +87,18 @@ class QComboBoxWidgetCreator(WidgetCreator):
         widget = QComboBox(parent=parent)
         options_binding = WidgetBinding(widget, data, "options", ItemAdded=widget.addItem)
         setattr(widget, "__keyed__", options_binding.is_dict)
-        selected_binding = WidgetBinding(widget, data, "selected", ValueChanged=[lambda text: self._set_text(widget, text)])
+        selected_binding = WidgetBinding(widget, data, "selected")
+        if options_binding.prop is None:
+            enumType = type(selected_binding.prop.get())
+            if Enum.isEnum(enumType):
+                setattr(widget, "__enum__", {})
+                for value in Enum.getValues(enumType):
+                    widget.addItem(value.ToString())
+                    widget.__enum__[value.ToString()] = value
+        
+        selected_binding.prop.add_subscribers(ValueChanged=[lambda text: self._set_text(widget, text)])
+        widget.setEditable(data.get("editable", False))
+
         change = WidgetMethod.create(widget, widget.currentIndexChanged, data, "change", {"text": lambda: self._get_text(widget), "index": widget.currentIndex})
         if change is None and selected_binding.prop is not None:
             WidgetBinding.bind(widget.currentIndexChanged, lambda _: selected_binding.prop.set(self._get_text(widget)), pair=selected_binding.prop.ValueChanged, call_args=(None,))
@@ -98,12 +114,19 @@ class QComboBoxWidgetCreator(WidgetCreator):
     
     def _set_index(self, widget, text):
         prev = widget.currentIndex()
-        widget.setCurrentIndex(max(0, widget.findText(text)))
+        if hasattr(widget, "__enum__"):
+            widget.setCurrentIndex(max(0, widget.findText(text.ToString())))
+        elif getattr(widget, "__keyed__", False):
+            widget.setCurrentIndex(max(0, widget.findData(text)))
+        else:
+            widget.setCurrentIndex(max(0, widget.findText(text)))
 
         if prev == widget.currentIndex():
             widget.currentIndexChanged.emit(prev)
 
     def _get_text(self, widget):
+        if hasattr(widget, "__enum__"):
+            return widget.__enum__[widget.currentText()]
         if getattr(widget, "__keyed__", False):
             return widget.currentData()
         return widget.currentText()

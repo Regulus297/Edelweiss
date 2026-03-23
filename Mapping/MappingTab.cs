@@ -1,3 +1,4 @@
+using Edelweiss.Interop;
 using Edelweiss.Modding;
 using Edelweiss.Plugins;
 
@@ -17,5 +18,8 @@ namespace Edelweiss.Mapping
 
         /// <inheritdoc/>
         public override string DisplayName => "Mapping";
+
+        public static BindableVariable<MapData> CurrentMap = new BindableVariable<MapData>(null);
+        public static BindableVariable<MapData> CreatingMap = new BindableVariable<MapData>(null);
     }
 }

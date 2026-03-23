@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Edelweiss.Interop;
 using Edelweiss.RegistryTypes;
 using Newtonsoft.Json.Linq;
 
@@ -8,7 +9,7 @@ namespace Edelweiss.Plugins
     /// Registers a custom UI tab, like the mapping tab.
     /// </summary>
     [BaseRegistryObject]
-    public abstract class CustomTab : PluginRegistryObject
+    public abstract class CustomTab : PluginRegistryObject, ISyncable
     {
         /// <summary>
         /// The key for the JSON file containing the layout of the tab
@@ -72,5 +73,7 @@ namespace Edelweiss.Plugins
         {
 
         }
+
+        string ISyncable.Name() => FullName;
     }
 }

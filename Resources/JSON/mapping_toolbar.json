@@ -1,4 +1,12 @@
 {
     "items": [
+        {
+            "type": "action",
+            "name": "Edelweiss.Mapping.CreateMap",
+            "shortcut": "Ctrl+N",
+            "click": {
+                "method": "Edelweiss:MappingInterop.CreateMap"
+            }
+        }
     ]
 }

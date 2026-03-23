@@ -14,7 +14,7 @@ class WidgetBinding:
         self.bindable, self.prop = WidgetBinding.get_property(data, name)
         if self.bindable:
             self.prop.add_subscribers(**subscribers)
-        else:
+        elif self.bindable is not None:
             self._sync_non_bindable(**subscribers)
 
     def _sync_non_bindable(self, **subscribers):

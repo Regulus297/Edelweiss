@@ -33,7 +33,15 @@ namespace Edelweiss.Modding
         /// <summary>
         /// The map hierarchy used 
         /// </summary>
-        public BindableList<MapDirectory> MapHierarchy = [];
+        public BindableList<MapDirectory> MapHierarchy
+        {
+            get => mapHierarchy;
+            set => mapHierarchy.Value = value.Value;
+        }
+
+        private BindableList<MapDirectory> mapHierarchy = [];
+
+        public BindableList<string> MapDirectoryNames = [];
 
         /// <summary>
         /// This is not saved or set when loading from disk, only for setting the hierarchy when creating a new mod. Do not use.
@@ -48,6 +56,7 @@ namespace Edelweiss.Modding
         public ModData()
         {
             MapHierarchyName.ValueChanged += value => MapHierarchy.Value = ModdingTab.MapPresets[value];
+            MapDirectoryNames.MakeTransform(MapHierarchy, d => d.Name.Value);
         }
 
         /// <summary>

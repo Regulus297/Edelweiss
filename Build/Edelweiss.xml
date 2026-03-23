@@ -341,6 +341,186 @@
             Invoked when <see cref="M:Edelweiss.Utils.UI.ShowPopup(System.String)"/> is called
             </summary>
         </member>
+        <member name="T:Edelweiss.Mapping.Entities.MapMeta">
+            <summary>
+            An object containing metadata for a map
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.MapMeta.Inventory">
+            <summary>
+            Options for player inventory (moves the player has access to)
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.Default">
+            <summary>
+            1 dash, dream blocks enabled, wearing a backpack, ground refills enabled
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.CH6End">
+            <summary>
+            2 dashes, dream blocks enabled, wearing a backpack, ground refills enabled
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.Core">
+            <summary>
+            2 dashes, dream blocks enabled, wearing a backpack, ground refills disabled
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.OldSite">
+            <summary>
+            1 dash, dream blocks disabled, wearing a backpack, ground refills enabled
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.Prologue">
+            <summary>
+            0 dashes, dream blocks disabled, wearing a backpack, ground refills enabled
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.TheSummit">
+            <summary>
+            2 dashes, dream blocks enabled, no backpack, ground refills enabled
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.Inventory.Farewell">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.Entities.MapMeta.IntroType">
+            <summary>
+            The way the player enters the map
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.WakeUp">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.Respawn">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.WalkInRight">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.WalkInLeft">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.Jump">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.Fall">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.TempleMirrorVoid">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.ThinkForABit">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.IntroType.None">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.inventory">
+            <summary>
+            The inventory the player has at the start of the map
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.introType">
+            <summary>
+            The way the player enters the map
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.path">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.poemID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.startLevel">
+            <summary>
+            The room the player spawns into on entering the map
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.heartIsEnd">
+            <summary>
+            True if collecting a crystal heart ends the map
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.seekerSlowdown">
+            <summary>
+            Whether Seekers can slow down time while attacking the player
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.theoInBubble">
+            <summary>
+            Whether Theo (and other holdables) can be held while in a booster
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.dreaming">
+            <summary>
+            Whether the player starts the chapter dreaming.
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.interlude">
+            <summary>
+            Whether the map is an interlude chapter: no B-Side and deaths aren't counted
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.overrideASideMeta">
+            <summary>
+            If false, the meta for the A-Side of this map will take priority over the map's metadata
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.wipe">
+            <summary>
+            The wipe that plays upon death
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.colourGrade">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.bloomBase">
+            <summary>
+            The base bloom level
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.bloomStrength">
+            <summary>
+            The bloom strength
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.Entities.MapMeta.darknessAlpha">
+            <summary>
+            The alpha used for darkness
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.MappingInterop">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:Edelweiss.Mapping.MappingTab">
             <summary>
             
@@ -390,7 +570,7 @@
             The root directory which the mod will be placed in
             </summary>
         </member>
-        <member name="F:Edelweiss.Modding.ModData.MapHierarchy">
+        <member name="P:Edelweiss.Modding.ModData.MapHierarchy">
             <summary>
             The map hierarchy used 
             </summary>

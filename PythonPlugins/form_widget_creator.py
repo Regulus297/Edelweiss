@@ -1,6 +1,7 @@
 from ui import WidgetCreator, JSONWidgetLoader, WidgetBinding
 from interop import SyncableProperty
 from plugins import plugin_loadable, load_dependencies
+from utils import Enum
 from PyQt5.QtWidgets import QWidget, QGridLayout, QLineEdit
 import math
 
@@ -37,14 +38,16 @@ class FormWidgetCreator(WidgetCreator):
 
         widget = JSONWidgetLoader.init_widget(self._generate_widget(fields, data), parent)
 
-        
         return widget
 
     def _load_fields(self, data):
         field_data = {}
         model = SyncableProperty(data["model"], False).get()
         for field in data["fields"]:
-            info = FieldInfo(field, field, self.type_lookup.get(type(getattr(model, field).Value), "form"), f"{data["model"]}.{field}")
+            dataType = type(getattr(model, field).Value)
+            info = FieldInfo(field, field, self.type_lookup.get(dataType, "form"), f"{data["model"]}.{field}")
+            if info.type == "form" and Enum.isEnum(dataType):
+                info.type = "list"
             field_data[field] = info
 
         return field_data

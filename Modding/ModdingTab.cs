@@ -8,7 +8,7 @@ namespace Edelweiss.Modding
     /// <summary>
     /// 
     /// </summary>
-    public class ModdingTab : CustomTab, ISyncable
+    public class ModdingTab : CustomTab
     {
         /// <inheritdoc/>
         public override string LayoutJSON => "Edelweiss:mod_tab";
@@ -53,8 +53,6 @@ namespace Edelweiss.Modding
         /// Whether a mod is currently being edited
         /// </summary>
         public static BindableVariable<bool> HasCurrentMod;
-
-        string ISyncable.Name() => FullName;
 
         /// <inheritdoc/>
         public override void Load()
