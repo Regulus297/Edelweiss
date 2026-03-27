@@ -1,18 +1,18 @@
 from System import Enum as enum
 import clr
 
+from .cs_utils import CSUtils
+
 
 class Enum:
     @staticmethod
+    @CSUtils.convert_type
     def isEnum(enumType):
-        if isinstance(enumType, type):
-            return clr.GetClrType(enumType).IsEnum
         return enumType.IsEnum
 
     @staticmethod
+    @CSUtils.convert_type
     def getValues(enumType):
-        if isinstance(enumType, type):
-            return enum.GetValues[clr.GetClrType(enumType)]()
         return enum.GetValues[enumType]()
 
     @staticmethod

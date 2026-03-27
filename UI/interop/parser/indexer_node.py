@@ -36,4 +36,4 @@ class IndexerNode(BindingNode):
             self.left.ItemChanged -= self._refresh_value
             self.left.ItemRemoved -= self._item_removed
         self.left.discard()
-        del self.left
+        del self

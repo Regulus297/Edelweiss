@@ -1,49 +1,7 @@
 {
     "type": "Form",
     "model": "Edelweiss:MappingTab.CreatingMap",
-    "root": "Edelweiss.Mapping.CreateMap",
-    "fields": ["Name", "MapType", "MapMeta"],
-    "fieldInfo": {
-        "MapType": {
-            "type": "list",
-            "bind": {
-                "options": "Edelweiss:ModdingTab.CurrentMod.MapDirectoryNames"
-            }
-        },
-        "MapMeta": {
-            "root": "Edelweiss.Mapping.MapMeta",
-            "type": "form",
-            "fields": ["inventory", "wipe", "colourGrade", "introType", "bloomBase", "bloomStrength", "darknessAlpha", "theoInBubble", "seekerSlowdown", "heartIsEnd", "dreaming", "interlude", "overrideASideMeta"],
-            "fieldInfo": {
-                "wipe": {
-                    "type": "list",
-                    "options": {
-                        "": "",
-                        "Angled": "Celeste.AngledWipe",
-                        "Curtain": "Celeste.CurtainWipe",
-                        "Dream": "Celeste.DreamWipe",
-                        "Drop": "Celeste.DropWipe",
-                        "Fade": "Celeste.FadeWipe",
-                        "Fall": "Celeste.FallWipe",
-                        "Heart": "Celeste.HeartWipe",
-                        "KeyDoor": "Celeste.KeyDoorWipe",
-                        "Mountain": "Celeste.MountainWipe",
-                        "Spotlight": "Celeste.SpotlightWipe",
-                        "Starfield": "Celeste.StarfieldWipe",
-                        "Wind": "Celeste.WindWipe"
-                    },
-                    "editable": true
-                },
-                "colourGrade": {
-                    "type": "list",
-                    "options":  ["", "oldsite", "reflection", "cold", "credits", "feelingdown", "golden", "hot", "none", "panicattack", "templevoid"],
-                    "editable": true
-                }
-            }
-        }
-    },
-    "fieldLayout": [
-        ["Name", "MapType"],
-        ["MapMeta"]
-    ]
+    "submit": {
+        "method": "Edelweiss:MappingInterop.SaveMap"
+    }
 }

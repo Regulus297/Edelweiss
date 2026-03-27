@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using Edelweiss.Interop;
+using Edelweiss.Mapping;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -41,7 +42,20 @@ namespace Edelweiss.Modding
 
         private BindableList<MapDirectory> mapHierarchy = [];
 
+        /// <summary>
+        /// The names of all map directory presets in this mod
+        /// </summary>
         public BindableList<string> MapDirectoryNames = [];
+
+        /// <summary>
+        /// A dictionary of each of the map types to the maps of that type
+        /// </summary>
+        public BindableDictionary<string, BindableList<string>> MapsByType = [];
+
+        /// <summary>
+        /// All maps in this mod
+        /// </summary>
+        public BindableList<MapData> Maps = [];
 
         /// <summary>
         /// This is not saved or set when loading from disk, only for setting the hierarchy when creating a new mod. Do not use.
@@ -57,6 +71,14 @@ namespace Edelweiss.Modding
         {
             MapHierarchyName.ValueChanged += value => MapHierarchy.Value = ModdingTab.MapPresets[value];
             MapDirectoryNames.MakeTransform(MapHierarchy, d => d.Name.Value);
+            MapDirectoryNames.ValueChanged += v =>
+            {
+                MapsByType.Value = [];
+                foreach(string type in v)
+                {
+                    MapsByType[type] = [];
+                }
+            };
         }
 
         /// <summary>
@@ -93,6 +115,15 @@ namespace Edelweiss.Modding
                 return data;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Add a map to the mod
+        /// </summary>
+        public void AddMap(MapData map)
+        {
+            MapsByType[map.MapDirectory.Value.Name.Value].Add(map.Name.Value);
+            Maps.Add(map);
         }
 
         /// <summary>

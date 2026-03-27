@@ -4,9 +4,9 @@ from PyQt5.QtWidgets import QWidget
 class UI:
     @staticmethod
     def close(widget: QWidget):
+        for binding in getattr(widget, "__bindings__", []):
+            binding.discard()
         for child in widget.children():
-            if isinstance(child, QWidget):
+            if hasattr(child, "__bindings__"):
                 UI.close(child)
-                for binding in getattr(child, "__bindings__", []):
-                    binding.discard()
-        widget.close()
+        widget.deleteLater()

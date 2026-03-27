@@ -14,6 +14,11 @@ namespace Edelweiss.Interop
         protected T _value = value;
 
         /// <summary>
+        /// The old value of the variable. The default value if the value has not yet been changed
+        /// </summary>
+        public T OldValue { get; private set; } = default;
+
+        /// <summary>
         /// Whether this variable is blocked from invoking events
         /// </summary>
         public bool suppressed = false;
@@ -33,11 +38,12 @@ namespace Edelweiss.Interop
         /// <summary>
         /// The value of the variable. Setting it will invoke ValueChanged
         /// </summary>
-        public T Value
+        public virtual T Value
         {
             get => _value;
             set
             {
+                OldValue = _value;
                 _value = value;
                 if(!suppressed)
                     ValueChanged?.Invoke(_value);

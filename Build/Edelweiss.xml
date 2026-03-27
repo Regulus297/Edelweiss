@@ -144,6 +144,11 @@
             
             </summary>
         </member>
+        <member name="P:Edelweiss.Interop.BindableVariable`1.OldValue">
+            <summary>
+            The old value of the variable. The default value if the value has not yet been changed
+            </summary>
+        </member>
         <member name="F:Edelweiss.Interop.BindableVariable`1.suppressed">
             <summary>
             Whether this variable is blocked from invoking events
@@ -176,6 +181,119 @@
         </member>
         <member name="M:Edelweiss.Interop.BindableVariable`1.ToString">
             <inheritdoc/>
+        </member>
+        <member name="T:Edelweiss.Interop.Forms.FormField">
+            <summary>
+            Class representing a field of a form object
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.Forms.FormField.#ctor(System.String,System.String,Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Class representing a field of a form object
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Interop.Forms.FormField.Name">
+            <summary>
+            The name of the field.
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Interop.Forms.FormField.Type">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Interop.Forms.FormField.FieldInfo">
+            <summary>
+            Gets any addition field info for the field.
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Interop.Forms.FormField.Dynamic">
+            <summary>
+            Whether this field is dynamic. If true, the value set will be at Object.DynamicFields.@Name instead of Object.Name
+            </summary>
+        </member>
+        <member name="T:Edelweiss.Interop.Forms.FormObject">
+            <summary>
+            Base class for objects that can be used to dynamically generate forms
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.Forms.FormObject.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Interop.Forms.FormObject.Value">
+            <summary>
+            For Form Objects, this should never be set to. Use <see cref="M:Edelweiss.Interop.Forms.FormObject.CopyFrom(Edelweiss.Interop.Forms.FormObject)"/> instead.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.Forms.FormObject.CopyFrom(Edelweiss.Interop.Forms.FormObject)">
+            <summary>
+            Copy the data from another form object. Ideally should be of the same type as this instance.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.Forms.FormObject.InitializeFields">
+            <summary/>
+        </member>
+        <member name="P:Edelweiss.Interop.Forms.FormObject.LocalizationRoot">
+            <summary>
+            The root localization key for this form
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Interop.Forms.FormObject.DynamicFields">
+            <summary>
+            The values of fields that have been added dynamically
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.Forms.FormObject.AddField(System.String)">
+            <summary>
+            Adds a field with the given name and auto-determined type
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.Forms.FormObject.AddField(System.String,System.String)">
+            <summary>
+            Adds a field with the given name and given type
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.Forms.FormObject.AddField(System.String,System.String,Newtonsoft.Json.Linq.JObject)">
+            <summary>
+            Adds a field with the given name, given type and given extra field information.
+            Do not use this for enum types, use <see cref="M:Edelweiss.Interop.Forms.FormObject.AddField(System.String)"/> instead. The options will be auto-generated.
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.Forms.FormObject.CreateOptionsField(System.String,System.String[])">
+            <summary>
+            Creates a field that is a selection from multiple static options
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.Forms.FormObject.CreateOptionsField(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+            <summary>
+            Adds a field that is a selection from several options with different display values and internal values
+            </summary>
+            <param name="name" />
+            <param name="options">Dictionary of the display name of the option to the internal value of the option</param>
+        </member>
+        <member name="M:Edelweiss.Interop.Forms.FormObject.CreateOptionsField(System.String,System.String)">
+            <summary>
+            Adds a field that is a selection from several options that can be dynamically updated
+            </summary>
+            <param name="name" />
+            <param name="options">The SyncableProperty for the options</param>
+        </member>
+        <member name="M:Edelweiss.Interop.Forms.FormObject.AddDynamicField(Edelweiss.Interop.Forms.FormField,System.Object)">
+            <summary>
+            Makes the field with the given name a dynamic field
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.Forms.FormObject.GetField(System.String)">
+            <summary>
+            Gets the field with the given name
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Interop.Forms.FormObject.RemoveField(System.String)">
+            <summary>
+            Removes the field with the given name
+            </summary>
         </member>
         <member name="T:Edelweiss.Interop.InteropExtensions">
             <summary>
@@ -340,6 +458,43 @@
             <summary>
             Invoked when <see cref="M:Edelweiss.Utils.UI.ShowPopup(System.String)"/> is called
             </summary>
+        </member>
+        <member name="T:Edelweiss.Mapping.MapData">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.MapData.Name">
+            <summary>
+            The name of this map
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.MapData.MapType">
+            <summary>
+            The type of map this is
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.MapData.MapDirectory">
+            <summary>
+            The MapDirectory in which this map will be placed. Determined automatically.
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.MapData.MapMeta">
+            <summary>
+            The metadata for the map
+            </summary>
+        </member>
+        <member name="P:Edelweiss.Mapping.MapData.LocalizationRoot">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.MapData.#ctor">
+            <summary />
+        </member>
+        <member name="M:Edelweiss.Mapping.MapData.InitializeFields">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.MapData.CopyFrom(Edelweiss.Interop.Forms.FormObject)">
+            <inheritdoc/>
         </member>
         <member name="T:Edelweiss.Mapping.Entities.MapMeta">
             <summary>
@@ -521,6 +676,16 @@
             
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.MappingInterop.CreateMap">
+            <summary>
+            Opens a popup to create the given map
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.MappingInterop.SaveMap">
+            <summary>
+            Saves the currently being created map and sets it to the current map.
+            </summary>
+        </member>
         <member name="T:Edelweiss.Mapping.MappingTab">
             <summary>
             
@@ -534,6 +699,16 @@
         </member>
         <member name="P:Edelweiss.Mapping.MappingTab.DisplayName">
             <inheritdoc/>
+        </member>
+        <member name="F:Edelweiss.Mapping.MappingTab.CurrentMap">
+            <summary>
+            The map being currently edited
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Mapping.MappingTab.CreatingMap">
+            <summary>
+            The map being currently edited
+            </summary>
         </member>
         <member name="T:Edelweiss.Modding.MapDirectory">
             <summary>
@@ -575,6 +750,21 @@
             The map hierarchy used 
             </summary>
         </member>
+        <member name="F:Edelweiss.Modding.ModData.MapDirectoryNames">
+            <summary>
+            The names of all map directory presets in this mod
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.ModData.MapsByType">
+            <summary>
+            A dictionary of each of the map types to the maps of that type
+            </summary>
+        </member>
+        <member name="F:Edelweiss.Modding.ModData.Maps">
+            <summary>
+            All maps in this mod
+            </summary>
+        </member>
         <member name="F:Edelweiss.Modding.ModData.MapHierarchyName">
             <summary>
             This is not saved or set when loading from disk, only for setting the hierarchy when creating a new mod. Do not use.
@@ -593,6 +783,11 @@
         <member name="M:Edelweiss.Modding.ModData.Load(System.String)">
             <summary>
             Loads a mod from the given path. Only works if the folder given contains edelweiss.meta.json
+            </summary>
+        </member>
+        <member name="M:Edelweiss.Modding.ModData.AddMap(Edelweiss.Mapping.MapData)">
+            <summary>
+            Add a map to the mod
             </summary>
         </member>
         <member name="P:Edelweiss.Modding.ModData.ModDirectory">

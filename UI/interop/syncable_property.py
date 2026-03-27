@@ -1,13 +1,14 @@
+from utils import CSUtils
 from .parser import NodeParser
 
 
-# TODO: make type checks more robust
 class SyncableProperty:
     def __init__(self, prop, sync=True, **subscribers):
         self.node = NodeParser.parse(prop, sync)
         self.prop = prop
 
         self._clear = None
+        self._copy = False
 
         if self.sync and self.is_list:
             self.node.ValueChanged += self._list_changed
@@ -34,13 +35,21 @@ class SyncableProperty:
     def _list_changed(self, _):
         if self._clear is not None:
             self._clear()
-        for item in self.node.get():
+
+        value = self.node.get()
+        if self._copy:
+            value = [item for item in value]
+        for item in value:
             self.node.ItemAdded.invoke(item)
 
     def _dict_changed(self, _):
         if self._clear is not None:
             self._clear()
-        for item in self.node.get():
+
+        value = self.node.get()
+        if self._copy:
+            value = [item for item in value]
+        for item in value:
             self.node.ItemAdded.invoke(item.Key, item.Value)
 
     @property
@@ -54,12 +63,22 @@ class SyncableProperty:
         self._clear = value
 
     @property
+    def copy(self):
+        return self._copy
+
+    @copy.setter
+    def copy(self, value):
+        if not self.iterable:
+            raise TypeError(f"Cannot set copy property for non-iterable syncable property: {self.prop}")
+        self._copy = value
+
+    @property
     def is_list(self):
-        return self.node.type_name().startswith("BindableList[")
+        return CSUtils.typeIsBindableList(type(self.node.get()))
 
     @property
     def is_dict(self):
-        return self.node.type_name().startswith("BindableDictionary[")
+        return CSUtils.typeIsBindableDict(type(self.node.get()))
 
     @property
     def iterable(self):

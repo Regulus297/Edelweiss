@@ -19,7 +19,14 @@ namespace Edelweiss.Mapping
         /// <inheritdoc/>
         public override string DisplayName => "Mapping";
 
-        public static BindableVariable<MapData> CurrentMap = new BindableVariable<MapData>(null);
-        public static BindableVariable<MapData> CreatingMap = new BindableVariable<MapData>(null);
+        /// <summary>
+        /// The map being currently edited
+        /// </summary>
+        public static readonly MapData CurrentMap = new MapData();
+
+        /// <summary>
+        /// The map being currently edited
+        /// </summary>
+        public static readonly MapData CreatingMap = new MapData();
     }
 }

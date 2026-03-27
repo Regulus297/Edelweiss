@@ -1,7 +1,8 @@
 from ui import WidgetCreator, JSONWidgetLoader, WidgetBinding
 from interop import SyncableProperty
 from plugins import plugin_loadable, load_dependencies
-from utils import Enum
+from utils import Enum, CSUtils, UI
+import json
 from PyQt5.QtWidgets import QWidget, QGridLayout, QLineEdit
 import math
 
@@ -33,6 +34,9 @@ class FormWidgetCreator(WidgetCreator):
 
     def create_widget(self, data, parent=None):
         fields = self._load_fields(data)
+        if isinstance(fields, QWidget):
+            return fields
+        
         self._apply_layout(data, fields)
         self._process_fields(data, fields)
 
@@ -43,6 +47,9 @@ class FormWidgetCreator(WidgetCreator):
     def _load_fields(self, data):
         field_data = {}
         model = SyncableProperty(data["model"], False).get()
+        if CSUtils.typeIsBindableList(type(model)):
+            return self._load_formobject(model, data["model"], data.get("submit"))
+
         for field in data["fields"]:
             dataType = type(getattr(model, field).Value)
             info = FieldInfo(field, field, self.type_lookup.get(dataType, "form"), f"{data["model"]}.{field}")
@@ -51,6 +58,63 @@ class FormWidgetCreator(WidgetCreator):
             field_data[field] = info
 
         return field_data
+    
+    def _load_formobject(self, obj, model, submit):
+        widget = QWidget()
+        layout = QGridLayout()
+        widget.setLayout(layout)
+        binding = WidgetBinding(widget, {"bind": {"model": model}}, "model")
+        binding.prop.copy = True
+        binding.prop.add_subscribers(ItemAdded=lambda f: self._create_formfield(layout, obj, model, f), ItemRemoved=lambda _, f: self._remove_formfield(layout, f))
+        
+        if submit is not None:
+            layout.addWidget(JSONWidgetLoader.init_widget({
+                "type": "QPushButton",
+                "text": f"{obj.LocalizationRoot}.Submit:Submit",
+                "click": submit,
+                "specialType": "submit"
+            }), 100, 0, 1, 4)
+        return widget
+
+    def _create_formfield(self, layout, obj, model, f):
+        index = obj.Value.IndexOf(f)
+        field = FieldInfo(f.Name, f.Name, f.Type, f"{model}.DynamicFields.@{f.Name}" if f.Dynamic else f"{model}.{f.Name}")
+        if field.type is None:
+            dataType = type(SyncableProperty(field.value, False).get())
+            field.type = self.type_lookup.get(dataType, "form")
+            if field.type == "form" and Enum.isEnum(dataType):
+               field.type = "list"
+        
+        if f.FieldInfo is not None:
+            info = json.loads(f.FieldInfo.ToString())
+            field.data = info
+            field.label = info.get("label", True)
+
+        field.row = index // 2
+        field.col = 2 * (index % 2)
+        field.colspan = 2
+
+        root = obj.LocalizationRoot
+        if field.label:
+            label = JSONWidgetLoader.init_widget({
+                "type": "QLabel",
+                "text": f"{root}.{field.displayName}:{field.displayName}",
+                "tooltip": f"{root}.{field.displayName}.Tooltip"
+            })
+            setattr(label, "__fieldkey__", field.name)
+            layout.addWidget(label, field.row, field.col, field.rowspan, 1)
+
+        widget_data = self._get_widget(field)
+        widget = JSONWidgetLoader.init_widget(widget_data)
+        setattr(widget, "__fieldkey__", field.name)
+        layout.addWidget(widget, widget_data["row"], widget_data["col"], widget_data["rowspan"], widget_data["colspan"])
+
+    
+    def _remove_formfield(self, layout: QGridLayout, f):
+        for i in range(layout.count()):
+            widget = layout.itemAt(i).widget()
+            if getattr(widget, "__fieldkey__", None) == f.Name:
+                UI.close(widget)
 
     def _process_fields(self, data, fields):
         fieldInfo = data.get("fieldInfo")

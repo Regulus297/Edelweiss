@@ -1,3 +1,4 @@
+from utils import CSUtils
 from .dereference_node import DereferenceNode
 from .indexer_node import IndexerNode
 from .syncable_node import SyncableNode
@@ -14,7 +15,7 @@ class NodeParser:
         sub_node = NodeParser.parse(".".join(parts[:-1]), sync)
 
         if prop.startswith("@"):
-            if sub_node.type_name().startswith("BindableList["):
+            if CSUtils.typeIsBindableList(type(sub_node.get())):
                 return IndexerNode(sub_node, int(prop[1:]), sync)
             return IndexerNode(sub_node, prop[1:], sync)
 

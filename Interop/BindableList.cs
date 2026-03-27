@@ -56,8 +56,7 @@ namespace Edelweiss.Interop
         public void Remove(T item)
         {
             int index = Value.IndexOf(item);
-            Value.Remove(item);
-            if(!suppressed)
+            if(Value.Remove(item) && !suppressed)
                 ItemRemoved?.Invoke(index, item);
         }
 
