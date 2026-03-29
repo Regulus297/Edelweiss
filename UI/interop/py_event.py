@@ -59,3 +59,6 @@ class PyEvent:
 
     def queue(self, callback):
         self._queue.append(callback)
+
+    def discard(self):
+        self._subscribers.clear()

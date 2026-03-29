@@ -1,5 +1,6 @@
 from interop import SyncableProperty
 from interop.py_event import PyEvent
+from utils import UI
 
 
 class WidgetBinding:
@@ -10,6 +11,10 @@ class WidgetBinding:
             widget.__bindings__.append(self)
         else:
             widget.__bindings__ = [self]
+
+        self._widget = widget
+
+        UI.all_bindings.append(self)
 
         self.bindable, self.prop = WidgetBinding.get_property(data, name)
         if self.bindable:
@@ -81,3 +86,8 @@ class WidgetBinding:
     def discard(self):
         if self.bindable:
             self.prop.discard()
+        UI.all_bindings.remove(self)
+        del self
+
+    def __repr__(self):
+        return f"{self._widget} {self.prop}"

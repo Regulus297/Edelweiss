@@ -1,10 +1,11 @@
 import json
 
-from PyQt5.QtCore import  QTimer
+from PyQt5.QtCore import QTimer, Qt
 from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QGraphicsView, QSizePolicy, QStackedWidget, QToolBar,
                              QMainWindow, QComboBox, QSplashScreen, QWidgetAction)
 
 from interop import Interop, SyncableProperty, InteropMethod
+from utils import UI
 from .json_toolbar_loader import JSONToolbarLoader
 from .widget_binding import WidgetBinding
 from .json_widget_loader import JSONWidgetLoader
@@ -92,6 +93,10 @@ class MainWindow(QMainWindow):
     def closeEvent(self, a0):
         Interop.exit()
         super().closeEvent(a0)
+
+    def keyPressEvent(self, a0):
+        if a0.key() == Qt.Key_F12:
+            UI.debug()
 
     def resizeEvent(self, a0):
         if self.loadingScreen:

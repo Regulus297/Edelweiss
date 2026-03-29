@@ -35,5 +35,6 @@ class IndexerNode(BindingNode):
             self.left.ValueChanged -= self.rebind_events
             self.left.ItemChanged -= self._refresh_value
             self.left.ItemRemoved -= self._item_removed
+        super().discard()
         self.left.discard()
         del self

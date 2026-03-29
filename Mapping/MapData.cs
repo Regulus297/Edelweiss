@@ -31,7 +31,7 @@ namespace Edelweiss.Mapping
         /// <summary>
         /// The metadata for the map
         /// </summary>
-        public BindableVariable<MapMeta> MapMeta = new MapMeta();
+        public MapMeta MapMeta = new MapMeta();
         
         /// <inheritdoc/>
         public override string LocalizationRoot => "Edelweiss.Mapping.CreateMap";
@@ -87,7 +87,7 @@ namespace Edelweiss.Mapping
         {
             AddField(nameof(Name));
             Add(CreateOptionsField(nameof(MapType), "Edelweiss:ModdingTab.CurrentMod.MapDirectoryNames"));
-            AddField(nameof(MapMeta), "form", PluginLoader.RequestJObject("Edelweiss:Forms/map_meta_info"));
+            AddField(nameof(MapMeta));
         }
 
         /// <inheritdoc/>
@@ -97,8 +97,10 @@ namespace Edelweiss.Mapping
             {
                 Name.Value = m.Name.Value;
                 MapType.Value = m.MapType.Value;
-                MapMeta.Value = m.MapMeta.Value;
+                MapMeta.CopyFrom(m.MapMeta);
+                
                 Value = other.Value;
+                DynamicFields.Value = other.DynamicFields.Value;
             }
         }
     }

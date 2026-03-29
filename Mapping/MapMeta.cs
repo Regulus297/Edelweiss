@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Edelweiss.Interop;
+using Edelweiss.Interop.Forms;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Mapping.Entities
@@ -8,7 +10,7 @@ namespace Edelweiss.Mapping.Entities
     /// <summary>
     /// An object containing metadata for a map
     /// </summary>
-    public class MapMeta
+    public class MapMeta() : FormObject()
     {
         /// <summary>
         /// Options for player inventory (moves the player has access to)
@@ -88,6 +90,25 @@ namespace Edelweiss.Mapping.Entities
             None
         }
 
+        private static readonly Dictionary<string, string> WipeOptions = new Dictionary<string, string>()
+        {
+            {"", ""},
+            {"Angled", "Celeste.AngledWipe"},
+            {"Curtain", "Celeste.CurtainWipe"},
+            {"Dream", "Celeste.DreamWipe"},
+            {"Drop", "Celeste.DropWipe"},
+            {"Fade", "Celeste.FadeWipe"},
+            {"Fall", "Celeste.FallWipe"},
+            {"Heart", "Celeste.HeartWipe"},
+            {"KeyDoor", "Celeste.KeyDoorWipe"},
+            {"Mountain", "Celeste.MountainWipe"},
+            {"Spotlight", "Celeste.SpotlightWipe"},
+            {"Starfield", "Celeste.StarfieldWipe"},
+            {"Wind", "Celeste.WindWipe"}
+        };
+
+        private static readonly string[] ColourGradeOptions = ["", "oldsite", "reflection", "cold", "credits", "feelingdown", "golden", "hot", "none", "panicattack", "templevoid"];
+
         /// <summary>
         /// The inventory the player has at the start of the map
         /// </summary>
@@ -101,12 +122,14 @@ namespace Edelweiss.Mapping.Entities
         /// <summary>
         /// 
         /// </summary>
-        public BindableVariable<string> path;
+        [FormIgnore]
+        public BindableVariable<string> path = "";
 
         /// <summary>
         /// 
         /// </summary>
-        public BindableVariable<string> poemID;
+        [FormIgnore]
+        public BindableVariable<string> poemID = "";
 
         /// <summary>
         /// The room the player spawns into on entering the map
@@ -143,11 +166,13 @@ namespace Edelweiss.Mapping.Entities
         /// <summary>
         /// The wipe that plays upon death
         /// </summary>
+        [FormIgnore]
         public BindableVariable<string> wipe = "";
 
         /// <summary>
         ///
         /// </summary>
+        [FormIgnore]
         public BindableVariable<string> colourGrade = "";
 
         /// <summary>
@@ -164,5 +189,43 @@ namespace Edelweiss.Mapping.Entities
         /// The alpha used for darkness
         /// </summary>
         public BindableVariable<float> darknessAlpha = 0.05f;
+
+        /// <inheritdoc/>
+        public override void CopyFrom(FormObject other)
+        {
+            if(other is MapMeta m)
+            {
+                inventory.Value = m.inventory.Value;
+                introType.Value = m.introType.Value;
+                path.Value = m.path.Value;
+                poemID.Value = m.poemID.Value;
+                startLevel.Value = m.startLevel.Value;
+                heartIsEnd.Value = m.heartIsEnd.Value;
+                seekerSlowdown.Value = m.seekerSlowdown.Value;
+                theoInBubble.Value = m.theoInBubble.Value;
+                dreaming.Value = m.dreaming.Value;
+                interlude.Value = m.interlude.Value;
+                overrideASideMeta.Value = m.overrideASideMeta.Value;
+                wipe.Value = m.wipe.Value;
+                colourGrade.Value = m.colourGrade.Value;
+                bloomBase.Value = m.bloomBase.Value;
+                bloomStrength.Value = m.bloomStrength.Value;
+                darknessAlpha.Value = m.darknessAlpha.Value;
+                
+                Value = other.Value;
+                DynamicFields.Value = other.DynamicFields.Value;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override string LocalizationRoot => "Edelweiss.Mapping.MapMeta";
+
+        /// <inheritdoc/>
+        public override void InitializeFields()
+        {
+            base.InitializeFields();
+            Add(CreateOptionsField(nameof(wipe), WipeOptions, true));
+            Add(CreateOptionsField(nameof(colourGrade), ColourGradeOptions, true));
+        }
     }
 }

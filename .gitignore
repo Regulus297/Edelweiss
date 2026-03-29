@@ -13,3 +13,4 @@
 /Release/**/*
 /.cache/**/*
 /crashlog.txt
+/debug.txt

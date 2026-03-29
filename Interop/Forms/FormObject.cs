@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using Edelweiss.Utils;
 using Newtonsoft.Json.Linq;
 
 namespace Edelweiss.Interop.Forms
@@ -9,6 +11,8 @@ namespace Edelweiss.Interop.Forms
     /// </summary>
     public abstract class FormObject : BindableList<FormField>
     {
+        private static readonly Dictionary<Type, List<FormField>> fieldCache = [];
+
         /// <summary>
         /// 
         /// </summary>
@@ -32,7 +36,25 @@ namespace Edelweiss.Interop.Forms
         public abstract void CopyFrom(FormObject other);
 
         /// <summary/>
-        public abstract void InitializeFields();
+        public virtual void InitializeFields()
+        {
+            if(fieldCache.TryGetValue(GetType(), out List<FormField> value))
+            {
+                Value = [..value];
+                return;
+            }
+
+            value = [];
+            foreach(FieldInfo info in GetType().GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+            {
+                if(info.FieldType.IsSubclassOfRawGeneric(typeof(BindableVariable<>)) && !info.TryGetCustomAttribute(out FormIgnoreAttribute _))
+                {
+                    value.Add(new FormField(info.Name, null));
+                }
+            }
+            fieldCache[GetType()] = [..value];
+            Value = value;
+        }
 
         /// <summary>
         /// The root localization key for this form
@@ -63,11 +85,12 @@ namespace Edelweiss.Interop.Forms
         /// <summary>
         /// Creates a field that is a selection from multiple static options
         /// </summary>
-        protected FormField CreateOptionsField(string name, string[] options)
+        protected FormField CreateOptionsField(string name, string[] options, bool editable = false)
         {
             return new FormField(name, "list", new JObject()
             {
-                {"options", JArray.FromObject(options)}    
+                {"options", JArray.FromObject(options)},
+                {"editable", editable}
             });
         }
 
@@ -76,11 +99,13 @@ namespace Edelweiss.Interop.Forms
         /// </summary>
         /// <param name="name" />
         /// <param name="options">Dictionary of the display name of the option to the internal value of the option</param>
-        protected FormField CreateOptionsField(string name, Dictionary<string, string> options)
+        /// <param name="editable"></param>
+        protected FormField CreateOptionsField(string name, Dictionary<string, string> options, bool editable = false)
         {
             return new FormField(name, "list", new JObject()
             {
-                {"options", JObject.FromObject(options)}    
+                {"options", JObject.FromObject(options)},
+                {"editable", editable}
             });
         }
 
@@ -89,12 +114,14 @@ namespace Edelweiss.Interop.Forms
         /// </summary>
         /// <param name="name" />
         /// <param name="options">The SyncableProperty for the options</param>
-        protected FormField CreateOptionsField(string name, string options)
+        /// <param name="editable"></param>
+        protected FormField CreateOptionsField(string name, string options, bool editable = false)
         {
             return new FormField(name, "list", new JObject()
             {
                 {"bind", new JObject() {
-                    {"options", options}
+                    {"options", options},
+                    {"editable", editable}
                 }}    
             });
         }

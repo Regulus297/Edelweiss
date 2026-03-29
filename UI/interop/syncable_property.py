@@ -1,11 +1,15 @@
 from utils import CSUtils
 from .parser import NodeParser
+from utils import UI
 
 
 class SyncableProperty:
     def __init__(self, prop, sync=True, **subscribers):
         self.node = NodeParser.parse(prop, sync)
         self.prop = prop
+        self._discarded = False
+
+        UI.all_props.append(self)
 
         self._clear = None
         self._copy = False
@@ -22,12 +26,23 @@ class SyncableProperty:
             evt = getattr(self, event)
             if isinstance(callbacks, list):
                 for callback in callbacks:
-                    evt += callback
+                    evt += self._wrapper(callback)
             else:
-                evt += callbacks
+                evt += self._wrapper(callbacks)
 
         if self.sync:
             self.resync()
+
+    def _wrapper(self, callback):
+        def inner(*args):
+            try:
+                callback(*args)
+            except Exception as e:
+                e.args = (f"{e.args[0]}\n\nIn syncable property {self.prop} of index {UI.all_props.index(self)}",)
+                UI.debug()
+                raise
+
+        return inner
 
     def resync(self):
         self.node.ValueChanged.invoke(self.node.get())
@@ -112,4 +127,14 @@ class SyncableProperty:
 
     def discard(self):
         self.node.discard()
+        self._discarded = True
         del self
+
+    def __repr__(self):
+        return self.prop
+
+    def log(self, f):
+        f.write(self.prop)
+        f.write(f" Discarded: {self._discarded}\n")
+        for name, event in self.node._events.items():
+            f.write(f"\t-{name}: {list(event._subscribers.keys())}\n")

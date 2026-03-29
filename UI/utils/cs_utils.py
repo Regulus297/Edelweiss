@@ -1,3 +1,5 @@
+import logging
+
 from Edelweiss.Utils import EdelweissUtils
 import clr
 
@@ -8,7 +10,11 @@ class CSUtils:
     def convert_type(callback):
         def inner(cs_type):
             if isinstance(cs_type, type):
-                return callback(clr.GetClrType(cs_type))
+                try:
+                    return callback(clr.GetClrType(cs_type))
+                except TypeError:
+                    logging.error(f"Failed converting type {cs_type}")
+                    raise
             else:
                 return callback(cs_type)
         return inner

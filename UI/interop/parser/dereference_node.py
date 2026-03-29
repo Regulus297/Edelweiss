@@ -41,5 +41,6 @@ class DereferenceNode(BindingNode):
     def discard(self):
         if self.sync:
             self.left.ValueChanged -= self.rebind_events
+        super().discard()
         self.left.discard()
         del self

@@ -212,6 +212,11 @@
             Whether this field is dynamic. If true, the value set will be at Object.DynamicFields.@Name instead of Object.Name
             </summary>
         </member>
+        <member name="T:Edelweiss.Interop.Forms.FormIgnoreAttribute">
+            <summary>
+            Designates that a particular field of a FormObject should not be included in automatic field generation
+            </summary>
+        </member>
         <member name="T:Edelweiss.Interop.Forms.FormObject">
             <summary>
             Base class for objects that can be used to dynamically generate forms
@@ -261,24 +266,26 @@
             Do not use this for enum types, use <see cref="M:Edelweiss.Interop.Forms.FormObject.AddField(System.String)"/> instead. The options will be auto-generated.
             </summary>
         </member>
-        <member name="M:Edelweiss.Interop.Forms.FormObject.CreateOptionsField(System.String,System.String[])">
+        <member name="M:Edelweiss.Interop.Forms.FormObject.CreateOptionsField(System.String,System.String[],System.Boolean)">
             <summary>
             Creates a field that is a selection from multiple static options
             </summary>
         </member>
-        <member name="M:Edelweiss.Interop.Forms.FormObject.CreateOptionsField(System.String,System.Collections.Generic.Dictionary{System.String,System.String})">
+        <member name="M:Edelweiss.Interop.Forms.FormObject.CreateOptionsField(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Boolean)">
             <summary>
             Adds a field that is a selection from several options with different display values and internal values
             </summary>
             <param name="name" />
             <param name="options">Dictionary of the display name of the option to the internal value of the option</param>
+            <param name="editable"></param>
         </member>
-        <member name="M:Edelweiss.Interop.Forms.FormObject.CreateOptionsField(System.String,System.String)">
+        <member name="M:Edelweiss.Interop.Forms.FormObject.CreateOptionsField(System.String,System.String,System.Boolean)">
             <summary>
             Adds a field that is a selection from several options that can be dynamically updated
             </summary>
             <param name="name" />
             <param name="options">The SyncableProperty for the options</param>
+            <param name="editable"></param>
         </member>
         <member name="M:Edelweiss.Interop.Forms.FormObject.AddDynamicField(Edelweiss.Interop.Forms.FormField,System.Object)">
             <summary>
@@ -501,6 +508,11 @@
             An object containing metadata for a map
             </summary>
         </member>
+        <member name="M:Edelweiss.Mapping.Entities.MapMeta.#ctor">
+            <summary>
+            An object containing metadata for a map
+            </summary>
+        </member>
         <member name="T:Edelweiss.Mapping.Entities.MapMeta.Inventory">
             <summary>
             Options for player inventory (moves the player has access to)
@@ -670,6 +682,15 @@
             <summary>
             The alpha used for darkness
             </summary>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.MapMeta.CopyFrom(Edelweiss.Interop.Forms.FormObject)">
+            <inheritdoc/>
+        </member>
+        <member name="P:Edelweiss.Mapping.Entities.MapMeta.LocalizationRoot">
+            <inheritdoc/>
+        </member>
+        <member name="M:Edelweiss.Mapping.Entities.MapMeta.InitializeFields">
+            <inheritdoc/>
         </member>
         <member name="T:Edelweiss.Mapping.MappingInterop">
             <summary>
